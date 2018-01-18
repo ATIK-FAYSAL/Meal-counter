@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.atik_faysal.mealcounter">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".FirstPage"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SecondPage"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ThirdPage"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LogInActivity"
+            android:label="" />
+        <activity android:name=".CreateNewAccount" />
+        <activity
+            android:name=".HomePageActivity"
+            android:label=""
+            android:theme="@style/AppTheme"></activity>
+    </application>
+
+</manifest>

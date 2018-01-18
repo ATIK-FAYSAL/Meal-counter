@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/log_in_page_background">
+
+    <Button
+        android:id="@+id/bContinue"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/layout1"
+        android:layout_marginTop="87dp"
+        android:background="#0C0535"
+        android:text="continue"
+        android:textColor="#BDBDBD"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:drawableRight="@drawable/right_icon"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout1">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="121dp">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Input meal by admin"
+                android:textColor="#BDBDBD"
+                android:textSize="22dp"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Input meal by myself"
+                android:textColor="#BDBDBD"
+                android:textSize="22dp"
+                android:textStyle="bold" />
+        </RadioGroup>
+    </LinearLayout>
+
+
+</RelativeLayout>

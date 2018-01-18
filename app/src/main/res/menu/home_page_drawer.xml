@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/makeGroup"
+            android:icon="@drawable/icon_group"
+            android:title="Make group" />
+        <item
+            android:id="@+id/editProfile"
+            android:icon="@drawable/icon_edit"
+            android:title="Edit profile" />
+        <item
+            android:id="@+id/acceptRequest"
+            android:icon="@drawable/icon_accept"
+            android:title="Accept request" />
+        <item
+            android:id="@+id/makeAdmin"
+            android:icon="@drawable/icon_admin"
+            android:title="Make admin" />
+        <item
+            android:id="@+id/member"
+            android:icon="@drawable/icon_member"
+            android:title="Member's" />
+
+        <item
+            android:id="@+id/setAlarm"
+            android:icon="@drawable/icon_alarm"
+            android:title="Set alarm" />
+        <item
+            android:id="@+id/setting"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Setting" />
+        <item
+            android:id="@+id/feedback"
+            android:icon="@drawable/icon_feedback"
+            android:title="Feedback" />
+        <item
+            android:id="@+id/aboutUs"
+            android:icon="@drawable/icon_about_us"
+            android:title="About us" />
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/icon_logout"
+            android:title="Log out" />
+    </group>
+
+
+
+</menu>

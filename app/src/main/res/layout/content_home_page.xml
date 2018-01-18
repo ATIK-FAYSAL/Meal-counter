@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.atik_faysal.mealcounter.HomePageActivity"
+    tools:showIn="@layout/app_bar_home_page">
+
+    <android.support.design.widget.CoordinatorLayout android:id="@+id/coordinatorlayout"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        app:expandedTitleMarginStart="70dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar"/>
+        <android.support.design.widget.AppBarLayout
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:layout_width="fill_parent"
+            android:layout_height="230dp">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/CollapsingToolbarLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                android:background="@drawable/log_in_page_background"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+
+               <RelativeLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="65dp">
+                   
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/rlayout2"
+                       android:orientation="horizontal"
+                       android:layout_marginTop="5dp"
+                       android:layout_marginLeft="20dp"
+                       android:layout_marginRight="20dp"
+                       android:layout_marginBottom="5dp">
+
+                       <TextView
+                           android:layout_width="0dp"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="2"
+                           android:text="Total Cost"
+                           android:textSize="16dp"
+                           android:textStyle="bold"
+                           android:gravity="center"
+                           android:layout_marginLeft="20dp"
+                           android:layout_marginTop="5dp"
+                           android:layout_marginBottom="5dp"
+                           android:textColor="#9E9E9E"/>
+                       <TextView
+                           android:id="@+id/txtTaka"
+                           android:layout_width="0dp"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1"
+                           android:textSize="16dp"
+                           android:textStyle="bold"
+                           android:layout_marginLeft="40dp"
+                           android:layout_marginRight="30dp"
+                           android:layout_marginBottom="5dp"
+                           android:layout_marginTop="5dp"
+                           android:drawableLeft="@drawable/icon_taka"
+                           android:hint="  200"/>
+                   </LinearLayout>
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/rlayout3"
+                       android:layout_below="@id/rlayout2"
+                       android:orientation="horizontal"
+                       android:layout_marginTop="5dp"
+                       android:layout_marginLeft="20dp"
+                       android:layout_marginRight="20dp"
+                       android:layout_marginBottom="5dp">
+
+                       <TextView
+                           android:layout_width="0dp"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="2"
+                           android:text="Total Meal"
+                           android:textSize="16dp"
+                           android:textStyle="bold"
+                           android:gravity="center"
+                           android:layout_marginLeft="20dp"
+                           android:textColor="#9E9E9E"/>
+                       <TextView
+                           android:id="@+id/txtMeal"
+                           android:layout_width="0dp"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1"
+                           android:textSize="16dp"
+                           android:textStyle="bold"
+                           android:layout_marginLeft="40dp"
+                           android:layout_marginRight="30dp"
+
+                           android:hint="  200"/>
+                   </LinearLayout>
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/rlayout4"
+                       android:layout_below="@id/rlayout3"
+                       android:orientation="horizontal"
+                       android:layout_marginTop="5dp"
+                       android:layout_marginLeft="20dp"
+                       android:layout_marginRight="20dp"
+                       android:layout_marginBottom="5dp">
+
+                       <TextView
+                           android:layout_width="0dp"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="2"
+                           android:text="Today's Meal"
+                           android:textSize="16dp"
+                           android:textStyle="bold"
+                           android:gravity="center"
+                           android:layout_marginLeft="20dp"
+                           android:textColor="#9E9E9E"/>
+                       <TextView
+                           android:id="@+id/txtTmeal"
+                           android:layout_width="0dp"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1"
+                           android:textSize="16dp"
+                           android:textStyle="bold"
+                           android:layout_marginLeft="40dp"
+                           android:layout_marginRight="30dp"
+
+                           android:hint="  200"/>
+                   </LinearLayout>
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:id="@+id/rlayout5"
+                       android:layout_below="@id/rlayout4"
+                       android:orientation="horizontal"
+                       android:layout_marginTop="5dp"
+                       android:layout_marginLeft="20dp"
+                       android:layout_marginRight="20dp"
+                       android:layout_marginBottom="5dp">
+
+                       <TextView
+                           android:layout_width="0dp"
+                           android:layout_height="wrap_content"
+                           android:layout_marginLeft="20dp"
+                           android:layout_weight="2"
+                           android:gravity="center"
+                           android:text="My Meal"
+                           android:textColor="#9E9E9E"
+                           android:textSize="16dp"
+                           android:textStyle="bold" />
+                       <TextView
+                           android:id="@+id/txtMmeal"
+                           android:layout_width="0dp"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1"
+                           android:textSize="16dp"
+                           android:textStyle="bold"
+                           android:layout_marginLeft="40dp"
+                           android:layout_marginRight="30dp"
+                           android:hint="  200"/>
+                   </LinearLayout>
+
+               </RelativeLayout>
+
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/home_background"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/layout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_style"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:id="@+id/img1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:src="@mipmap/ic_launcher"
+                            android:text="Input Meal"
+                            android:textColor="#E0E8EE"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/text1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/img1"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="INPUT MEAL"
+                            android:textColor="#9E9E9E"
+                            android:textSize="16dp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="15dp"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/button_style"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:id="@+id/img2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:drawableTop="@mipmap/ic_launcher"
+                            android:gravity="center"
+                            android:src="@mipmap/ic_launcher" />
+
+                        <TextView
+                            android:id="@+id/text2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/img2"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="MY MEAL"
+                            android:textColor="#9E9E9E"
+                            android:textSize="16dp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="15dp"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout2"
+                    android:layout_below="@id/layout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_style"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:id="@+id/img3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:src="@mipmap/ic_launcher"
+                            android:text="Input Meal"
+                            android:textColor="#E0E8EE"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/text3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/img3"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="INPUT MEAL"
+                            android:textColor="#9E9E9E"
+                            android:textSize="16dp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="15dp"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/button_style"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:id="@+id/img4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:drawableTop="@mipmap/ic_launcher"
+                            android:gravity="center"
+                            android:src="@mipmap/ic_launcher" />
+
+                        <TextView
+                            android:id="@+id/text4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/img4"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="MY MEAL"
+                            android:textColor="#9E9E9E"
+                            android:textSize="16dp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="15dp"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout3"
+                    android:layout_below="@+id/layout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_style"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:id="@+id/img5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:src="@mipmap/ic_launcher"
+                            android:text="Input Meal"
+                            android:textColor="#E0E8EE"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/text5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/img5"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="INPUT MEAL"
+                            android:textColor="#9E9E9E"
+                            android:textSize="16dp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="15dp"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/button_style"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:id="@+id/img6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:drawableTop="@mipmap/ic_launcher"
+                            android:gravity="center"
+                            android:src="@mipmap/ic_launcher" />
+
+                        <TextView
+                            android:id="@+id/text6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/img6"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="MY MEAL"
+                            android:textColor="#9E9E9E"
+                            android:textSize="16dp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="15dp"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout4"
+                    android:layout_below="@id/layout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_style"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:id="@+id/img7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:src="@mipmap/ic_launcher"
+                            android:text="Input Meal"
+                            android:textColor="#E0E8EE"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/text7"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/img7"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="INPUT MEAL"
+                            android:textColor="#9E9E9E"
+                            android:textSize="16dp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="15dp"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/button_style"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:id="@+id/img8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:drawableTop="@mipmap/ic_launcher"
+                            android:gravity="center"
+                            android:src="@mipmap/ic_launcher" />
+
+                        <TextView
+                            android:id="@+id/text8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/img8"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="MY MEAL"
+                            android:textColor="#9E9E9E"
+                            android:textSize="16dp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="15dp"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</RelativeLayout>
