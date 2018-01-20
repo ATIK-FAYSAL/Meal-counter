@@ -8,8 +8,8 @@ android:color="#130D17">
         <gradient
             android:angle="45"
             android:startColor="#170920"
-            android:centerColor="#210E2E"
-            android:endColor="#170920" />
+            android:centerColor="#300356"
+            android:endColor="#300356" />
     </shape>
 </item>
 </ripple>

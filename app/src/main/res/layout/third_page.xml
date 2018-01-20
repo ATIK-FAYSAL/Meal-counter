@@ -34,23 +34,26 @@
             android:layout_marginTop="121dp">
 
             <RadioButton
+                android:id="@+id/rByManager"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Input cost by admin"
                 android:textColor="#BDBDBD"
                 android:textSize="22dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:onClick="costInputType"/>
 
             <RadioButton
-                android:id="@+id/radioButton"
+                android:id="@+id/rByMyself"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Input cost by myself"
                 android:textColor="#BDBDBD"
                 android:textSize="22dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:onClick="costInputType"/>
         </RadioGroup>
     </LinearLayout>
 </RelativeLayout>

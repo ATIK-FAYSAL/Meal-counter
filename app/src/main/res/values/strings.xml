@@ -10,4 +10,14 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_home_page">HomePageActivity</string>
+
+    <string name="FACEBOOK_APP_ID">153237681999470</string>
+    <string name="ACCOUNT_KIT_CLIENT_TOKEN">5084f8a3c266897669d5882f379a5e11</string>
+    <string name="log_in_protocall">ak5084f8a3c266897669d5882f379a5e11</string>
+    <string name="permissions_read_phone_state_message">
+        Grant permission to read your phone number from your device to pre-fill.
+    </string>
+    <string name="permissions_read_phone_state_title">Read Phone Number</string>
+    <string name="permissions_receive_sms_message">Grant permission to read your SMS code from your device to pre-fill.</string>
+    <string name="permissions_receive_sms_title">Read SMS Code</string>
 </resources>
