@@ -1,6 +1,7 @@
 package com.atik_faysal.mealcounter;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.atik_faysal.backend.*;
 import com.facebook.accountkit.ui.LoginType;
+import com.atik_faysal.model.*;
 import static android.content.ContentValues.TAG;
 
 /**
@@ -30,10 +32,13 @@ public class CreateNewAccount extends AppCompatActivity
         //component variable
         private EditText eName,eUserName,ePassword,eAddress,eEmail;
         private TextView txtSign,txtProceed;
-
+        //String variable declaration
         private String name,userName,address,password,email;
-        private  String phoneNumber;
 
+        //class object declaration
+        private PhoneNumberVerification numberVerification;
+        private UserInformationModel userInformationModel;
+        private InsertMemberInformation insertMemberInformation;
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
@@ -52,8 +57,13 @@ public class CreateNewAccount extends AppCompatActivity
                 txtSign = findViewById(R.id.txtSignIn);
                 txtProceed = findViewById(R.id.txtProceed);
 
+                //object initialize
+                //numberVerification = new PhoneNumberVerification(this);
+                userInformationModel = new UserInformationModel();
+                insertMemberInformation = new InsertMemberInformation(this);
+                numberVerification = new PhoneNumberVerification();
+
                 //calling method
-                userInformation();
                 onButtonClick();
         }
 
@@ -78,9 +88,27 @@ public class CreateNewAccount extends AppCompatActivity
                 txtProceed.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                                PhoneNumberVerification phoneNumberVerification = new PhoneNumberVerification(CreateNewAccount.this);
-                                phoneNumberVerification.onLogin(LoginType.PHONE);
+                                //userInformation();
+                                /*if(checkUserInformation(name,userName,email,password))
+                                {
+                                        startActivity(new Intent(CreateNewAccount.this,PhoneNumberVerification.class));
+                                        userInformationModel.setName("atik");
+                                        userInformationModel.setEmail("atik@gmail.com");
+                                        userInformationModel.setAddress("dhaka");
+                                        userInformationModel.setUserName("atik1404");
+                                        userInformationModel.setPassword("123456");
+                                }*/
+                                //numberVerification.setUserInformation("atik","atik1404","atik@gmail.com","dhaka","12345");
+                                /*Intent intent = new Intent(CreateNewAccount.this,PhoneNumberVerification.class);
+                                intent.putExtra("name","atik");
+                                intent.putExtra("userName","atik1404");
+                                intent.putExtra("email","atik@gmail.com");
+                                intent.putExtra("address","dhaka");
+                                intent.putExtra("password","atik123");
+                                startActivity(intent);*/
 
+                               InsertMemberInformation memberInformation = new InsertMemberInformation(CreateNewAccount.this);
+                                memberInformation.execute("insertMember","atik","atik123","atik@gmail.com","01794037303","dhaka","12345");
                         }
                 });
         }
@@ -88,41 +116,50 @@ public class CreateNewAccount extends AppCompatActivity
         private boolean checkUserInformation(String name,String userName,String email,String password)
         {
                 boolean flag = true;
-                Pattern ps = Pattern.compile("[a-zA-Z]");
-                Matcher ms = ps.matcher(name);
-                if(!ms.matches())
+
+                if(password.length()<6)
                 {
-                        eName.setError("Invalid Name");
+                        ePassword.setError("Too short");
+                        ePassword.requestFocus();
                         flag = false;
-                        eName.requestFocus();
+                }
+
+                if(eAddress.getText().toString().isEmpty())
+                {
+                        eAddress.setError("Invalid address");
+                        flag = false;
+                        eAddress.requestFocus();
                 }
 
                 if(!email.contains("@"))
                 {
                         eEmail.setError("Invalid email");
-                        flag = false;
-                }
-
-                if(password.length()<6)
-                {
-                        ePassword.setError("Too short");
-                        flag = false;
-                }
-
-                if(userName.length()<5)
-                {
-                        eUserName.setError("User name must be in 6 to 12 character");
+                        eEmail.requestFocus();
                         flag = false;
                 }
 
                 if(name.length()<3)
                 {
                         eName.setError("Invalid name");
+                        eName.requestFocus();
                         flag = false;
                 }
 
+                for(char c : name.toCharArray()){
+                        if(Character.isDigit(c)){
+                                eName.setError("Invalid Name");
+                                flag = false;
+                                eName.requestFocus();
+                        }
+                }
+
+                if(userName.length()<5)
+                {
+                        eUserName.setError("User name must be in 6 to 12 character");
+                        eUserName.requestFocus();
+                        flag = false;
+                }
                 return flag;
         }
-
 
 }

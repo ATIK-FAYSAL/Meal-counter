@@ -1,33 +1,32 @@
 package com.atik_faysal.backend;
 
-import android.*;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
 
+import android.util.Log;
 import android.widget.Toast;
 
+import com.atik_faysal.mealcounter.R;
+import com.atik_faysal.model.UserInformationModel;
 import com.facebook.accountkit.AccessToken;
 import com.facebook.accountkit.Account;
 import com.facebook.accountkit.AccountKit;
 import com.facebook.accountkit.AccountKitCallback;
 import com.facebook.accountkit.AccountKitError;
 import com.facebook.accountkit.AccountKitLoginResult;
+import com.facebook.accountkit.PhoneNumber;
 import com.facebook.accountkit.ui.AccountKitActivity;
 import com.facebook.accountkit.ui.AccountKitConfiguration;
 import com.facebook.accountkit.ui.LoginType;
@@ -37,8 +36,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import java.util.HashMap;
 import java.util.Map;
 import com.atik_faysal.mealcounter.CreateNewAccount;
-
-
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by USER on 1/19/2018.
@@ -51,19 +49,18 @@ public class PhoneNumberVerification extends AppCompatActivity
 
         private int nextPermissionsRequestCode = 4000;
         private final Map<Integer, OnCompleteListener> permissionsListeners = new HashMap<>();
-        private Context context;
 
-        private CreateNewAccount createNewAccount;
+        private UserInformationModel userInformationModel;
+        private InsertMemberInformation memberInformation;
 
-        public PhoneNumberVerification(Context context)
-        {
-                this.context = context;
-                activity = (Activity)context;
-                createNewAccount = new CreateNewAccount();
+        private String name,userName,address,email,phone,password;
+
+        @Override
+        protected void onCreate(@Nullable Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                memberInformation = new InsertMemberInformation(this);
+                onLogin(LoginType.PHONE);
         }
-
-        private Activity activity;
-
 
         public interface OnCompleteListener {
                 void onComplete();
@@ -81,22 +78,23 @@ public class PhoneNumberVerification extends AppCompatActivity
 
                 final String toastMessage;
                 final AccountKitLoginResult loginResult = AccountKit.loginResultWithIntent(data);
-                if (loginResult == null || loginResult.wasCancelled())
-                {
+                if (loginResult == null || loginResult.wasCancelled()) {
                         toastMessage = "Cancelled";
-                        Toast.makeText(context,toastMessage,Toast.LENGTH_SHORT).show();
-                }
-                else if (loginResult.getError() != null) {
-                        Toast.makeText(context,"Error",Toast.LENGTH_SHORT).show();
+                        finish();
+                        Toast.makeText(PhoneNumberVerification.this, toastMessage, Toast.LENGTH_SHORT).show();
+                } else if (loginResult.getError() != null) {
+                        Toast.makeText(PhoneNumberVerification.this, "Error", Toast.LENGTH_SHORT).show();
                 } else {
                         final AccessToken accessToken = loginResult.getAccessToken();
                         if (accessToken != null) {
 
-                                AccountKit.getCurrentAccount(new  AccountKitCallback<Account>() {
+                                AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
                                         @Override
                                         public void onSuccess(final Account account) {
-                                                Toast.makeText(context,"phone: "+account.getPhoneNumber(),Toast.LENGTH_LONG).show();
-                                                //createNewAccount.getPhoneNumber(account.getPhoneNumber().toString());
+                                                PhoneNumber phoneNumber = account.getPhoneNumber();
+                                                memberInformation.execute("insertMember",name,userName,email,phoneNumber.toString(),address,password);
+                                                //Toast.makeText(PhoneNumberVerification.this,name+"\n"+"\n"+userName+"\n"+address+"\n"+email+"\n"+password,Toast.LENGTH_SHORT).show();
+                                                finish();
                                         }
 
                                         @Override
@@ -105,7 +103,7 @@ public class PhoneNumberVerification extends AppCompatActivity
                                 });
                         } else {
                                 toastMessage = "Unknown response type";
-                                Toast.makeText(context,toastMessage,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PhoneNumberVerification.this, toastMessage, Toast.LENGTH_SHORT).show();
                         }
                 }
 
@@ -113,14 +111,26 @@ public class PhoneNumberVerification extends AppCompatActivity
 
         public void onLogin(final LoginType loginType)
         {
-                final Intent intent = new Intent(context, AccountKitActivity.class);
+               try {
+                       name = getIntent().getExtras().getString("name");
+                       userName = getIntent().getExtras().getString("userName");
+                       email = getIntent().getExtras().getString("email");
+                       address = getIntent().getExtras().getString("address");
+                       password = getIntent().getExtras().getString("password");
+               }catch (NullPointerException e)
+               {
+                       Toast.makeText(this,e.toString(),Toast.LENGTH_SHORT).show();
+               }
+
+
+                final Intent intent = new Intent(PhoneNumberVerification.this, AccountKitActivity.class);
                 final AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder = new AccountKitConfiguration.AccountKitConfigurationBuilder(loginType, AccountKitActivity.ResponseType.TOKEN);
                 final AccountKitConfiguration configuration = configurationBuilder.build();
                 intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION, configuration);
                 OnCompleteListener completeListener = new OnCompleteListener() {
                         @Override
                         public void onComplete() {
-                                activity.startActivityForResult(intent, FRAMEWORK_REQUEST_CODE);
+                                startActivityForResult(intent, FRAMEWORK_REQUEST_CODE);
                         }
                 };
                 if (configuration.isReceiveSMSEnabled() && !canReadSmsWithoutPermission()) {
@@ -154,13 +164,13 @@ public class PhoneNumberVerification extends AppCompatActivity
 
         private boolean isGooglePlayServicesAvailable() {
                 final GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-                int googlePlayServicesAvailable = apiAvailability.isGooglePlayServicesAvailable(context);
+                int googlePlayServicesAvailable = apiAvailability.isGooglePlayServicesAvailable(PhoneNumberVerification.this);
                 return googlePlayServicesAvailable == ConnectionResult.SUCCESS;
         }
 
         private boolean canReadSmsWithoutPermission() {
                 final GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-                int googlePlayServicesAvailable = apiAvailability.isGooglePlayServicesAvailable(context);
+                int googlePlayServicesAvailable = apiAvailability.isGooglePlayServicesAvailable(PhoneNumberVerification.this);
                 if (googlePlayServicesAvailable == ConnectionResult.SUCCESS) {
                         return true;
                 }
@@ -218,5 +228,16 @@ public class PhoneNumberVerification extends AppCompatActivity
                 if (permissionsListener != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         permissionsListener.onComplete();
                 }
+        }
+
+
+
+        public void setUserInformation(String name,String userName,String email,String address,String password)
+        {
+                this.name = name;
+                this.userName = userName;
+                this.email = email;
+                this.address = address;
+                this.password = password;
         }
 }

@@ -41,8 +41,17 @@ public class LogInActivity extends AppCompatActivity
                 setContentView(R.layout.log_in_page);
                 initComponent();
                 actionComponent();
+                clossApp();
         }
 
+
+        @Override
+        public void onBackPressed() {
+                Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.putExtra("flag",true);
+                startActivity(intent);
+        }
 
         private void initComponent()
         {
@@ -67,6 +76,12 @@ public class LogInActivity extends AppCompatActivity
                                startActivity(new Intent(LogInActivity.this,HomePageActivity.class));
                         }
                 });
+        }
+
+
+        private void clossApp()
+        {
+                if(getIntent().getBooleanExtra("flag",false))finish();
         }
 
 }

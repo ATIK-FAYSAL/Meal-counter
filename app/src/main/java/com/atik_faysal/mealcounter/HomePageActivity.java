@@ -1,5 +1,8 @@
 package com.atik_faysal.mealcounter;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -25,6 +28,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.home_page);
                 initComponent();
+                clossApp();
         }
 
         private void initComponent()
@@ -43,7 +47,21 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
         @Override
         public void onBackPressed() {
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Exit");
+                builder.setMessage("Want to exit ?");
+                builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.putExtra("flag",true);
+                                startActivity(intent);
+                        }
+                });
+                builder.setNegativeButton("no",null);
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
         }
 
         @Override
@@ -59,10 +77,14 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 // Handle navigation view item clicks here.
                 int id = item.getItemId();
 
-
-
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
+        }
+
+
+        private void clossApp()
+        {
+                if(getIntent().getBooleanExtra("flag",false))finish();
         }
 }
