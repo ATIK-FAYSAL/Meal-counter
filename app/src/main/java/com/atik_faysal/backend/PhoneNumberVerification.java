@@ -18,6 +18,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.atik_faysal.mealcounter.AlertDialogClass;
+import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.UserInformationModel;
 import com.facebook.accountkit.AccessToken;
@@ -50,8 +52,9 @@ public class PhoneNumberVerification extends AppCompatActivity
         private int nextPermissionsRequestCode = 4000;
         private final Map<Integer, OnCompleteListener> permissionsListeners = new HashMap<>();
 
-        private UserInformationModel userInformationModel;
         private InsertMemberInformation memberInformation;
+        private CheckInternetIsOn checkInternet;
+        private AlertDialogClass dialogClass;
 
         private String name,userName,address,email,phone,password;
 
@@ -59,6 +62,8 @@ public class PhoneNumberVerification extends AppCompatActivity
         protected void onCreate(@Nullable Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
                 memberInformation = new InsertMemberInformation(this);
+                checkInternet = new CheckInternetIsOn(this);
+                dialogClass = new AlertDialogClass(this);
                 onLogin(LoginType.PHONE);
         }
 
@@ -91,8 +96,11 @@ public class PhoneNumberVerification extends AppCompatActivity
                                 AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
                                         @Override
                                         public void onSuccess(final Account account) {
-                                                PhoneNumber phoneNumber = account.getPhoneNumber();
-                                                memberInformation.execute("insertMember",name,userName,email,phoneNumber.toString(),address,password);
+                                                if(checkInternet.isOnline())
+                                                {
+                                                        PhoneNumber phoneNumber = account.getPhoneNumber();
+                                                        memberInformation.execute("insertMember",name,userName,email,phoneNumber.toString(),address,password);
+                                                }else dialogClass.ifNoInternet();
                                                 //Toast.makeText(PhoneNumberVerification.this,name+"\n"+"\n"+userName+"\n"+address+"\n"+email+"\n"+password,Toast.LENGTH_SHORT).show();
                                                 finish();
                                         }

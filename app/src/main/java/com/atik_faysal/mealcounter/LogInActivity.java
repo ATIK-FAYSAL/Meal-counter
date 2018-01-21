@@ -17,15 +17,18 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.atik_faysal.backend.UserLogIn;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by USER on 1/17/2018.
+ *
  */
 
 public class LogInActivity extends AppCompatActivity
@@ -34,6 +37,11 @@ public class LogInActivity extends AppCompatActivity
         private TextView txtSingUp,txtForgotPass;
         private Button bSignIn;
         private CheckBox checkBox;
+        private EditText txtUserName,txtUserPassword;
+
+        private UserLogIn userLogIn;
+        private CheckInternetIsOn checkInternet;
+        private AlertDialogClass dialogClass;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +49,7 @@ public class LogInActivity extends AppCompatActivity
                 setContentView(R.layout.log_in_page);
                 initComponent();
                 actionComponent();
-                clossApp();
+                closeApp();
         }
 
 
@@ -59,8 +67,13 @@ public class LogInActivity extends AppCompatActivity
                 txtForgotPass = findViewById(R.id.txtForgotPass);
                 bSignIn = findViewById(R.id.bSignIn);
                 checkBox = findViewById(R.id.cRemember);
-        }
+                txtUserName = findViewById(R.id.eUserName);
+                txtUserPassword = findViewById(R.id.ePassword);
 
+                userLogIn = new UserLogIn(this);
+                checkInternet = new CheckInternetIsOn(this);
+                dialogClass = new AlertDialogClass(this);
+        }
 
         private void actionComponent()
         {
@@ -73,13 +86,13 @@ public class LogInActivity extends AppCompatActivity
                 bSignIn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                               startActivity(new Intent(LogInActivity.this,HomePageActivity.class));
+                                if(checkInternet.isOnline())new UserLogIn(LogInActivity.this).execute("login",txtUserName.getText().toString(),txtUserPassword.getText().toString());
+                                else dialogClass.ifNoInternet();
                         }
                 });
         }
 
-
-        private void clossApp()
+        private void closeApp()
         {
                 if(getIntent().getBooleanExtra("flag",false))finish();
         }

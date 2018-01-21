@@ -41,7 +41,8 @@
                 android:layout_marginLeft="40dp"
                 android:gravity="center"
                 android:inputType="textPersonName"
-                android:drawableLeft="@drawable/icon_username"/>
+                android:drawableLeft="@drawable/icon_username"
+                android:textColor="#fff"/>
         </LinearLayout>
 
         <LinearLayout
@@ -62,7 +63,8 @@
                 android:layout_marginLeft="40dp"
                 android:gravity="center"
                 android:inputType="textPassword"
-                android:drawableLeft="@drawable/icon_password"/>
+                android:drawableLeft="@drawable/icon_password"
+                android:textColor="#fff"/>
         </LinearLayout>
 
         <LinearLayout

@@ -1,15 +1,14 @@
 package com.atik_faysal.backend;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
+
+import android.content.Context;
+import android.widget.Toast;
 
 import com.atik_faysal.mealcounter.HomePageActivity;
 
@@ -25,33 +24,24 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-
-import static android.content.ContentValues.TAG;
 /**
- * Created by USER on 1/20/2018.
+ * Created by USER on 1/21/2018.
  */
 
-public class InsertMemberInformation extends AsyncTask<String,Void,String>
+public class UserLogIn extends AsyncTask<String,Void,String>
 {
-
         private Context context;
-        private String name,phone,userName,address,email,password;
-        String memberType = "member";
-        String taka = "0",groupId = "null";
+         ProgressDialog ringProgressDialog;
 
-
-        ProgressDialog ringProgressDialog;
-
-        public InsertMemberInformation(Context context)
+        public UserLogIn(Context context)
         {
                 this.context = context;
         }
 
-
         @Override
         protected void onPreExecute() {
                 super.onPreExecute();
-                ringProgressDialog = ProgressDialog.show(context, "Please wait", "Saving your Information...", true);
+                ringProgressDialog = ProgressDialog.show(context, "Please wait", "Authenticating...", true);
                 ringProgressDialog.setCancelable(true);
                 new Thread(new Runnable() {
                         @Override
@@ -69,14 +59,13 @@ public class InsertMemberInformation extends AsyncTask<String,Void,String>
         @Override
         protected String doInBackground(String... params)
         {
-                String insertMemberUrl = "http://192.168.56.1/insert_member_info.php";
+                String insertMemberUrl = "http://192.168.56.1/user_log_in.php";
 
+                StringBuilder result = new StringBuilder();
+                String userName = params[1];
+                String password = params[2];
 
-                StringBuilder result= new StringBuilder();
-
-                name = params[1];userName = params[2];email = params[3];phone = params[4];address = params[5];password = params[6];
-
-                if(params[0].equals("insertMember"))
+                if(params[0].equals("login"))
                 {
                         try {
                                 URL url = new URL(insertMemberUrl);
@@ -87,16 +76,8 @@ public class InsertMemberInformation extends AsyncTask<String,Void,String>
                                 OutputStream outputStream = httpsURLConnection.getOutputStream();
                                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream,"UTF-8");
                                 BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
-                                String postInfo = URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(name,"UTF-8")+"&"
-                                        +URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
-                                        +URLEncoder.encode("email","UTF-8")+"="+URLEncoder.encode(email,"UTF-8")+"&"
-                                        +URLEncoder.encode("phone","UTF-8")+"="+URLEncoder.encode(phone,"UTF-8")+"&"
-                                        +URLEncoder.encode("address","UTF-8")+"="+URLEncoder.encode(address,"UTF-8")+"&"
-                                        +URLEncoder.encode("taka","UTF-8")+"="+URLEncoder.encode(taka,"UTF-8")+"&"
-                                        +URLEncoder.encode("memberType","UTF-8")+"="+URLEncoder.encode(memberType,"UTF-8")+"&"
-                                        +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8")+"&"
-                                        +URLEncoder.encode("groupId","UTF-8")+"="+URLEncoder.encode(groupId,"UTF-8");
-
+                                String postInfo = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
+                                        +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8");
 
                                 bufferedWriter.write(postInfo);
                                 bufferedWriter.flush();
@@ -130,24 +111,23 @@ public class InsertMemberInformation extends AsyncTask<String,Void,String>
                         }
 
                 }
-
                 return null;
         }
 
 
         @Override
         protected void onPostExecute(String result) {
-                if(result.equals("Information saving complete"))
+                super.onPostExecute(result);
+                if(result.equals("log in success"))
                 {
                         ringProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                                 @Override
                                 public void onDismiss(DialogInterface dialog) {
-                                        closeActivity((Activity) context,HomePageActivity.class);
+                                        closeActivity((Activity)context,HomePageActivity.class);
                                 }
                         });
                 }else Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
         }
-
 
         private static void closeActivity(Activity context, Class<?> clazz) {
                 Intent intent = new Intent(context, clazz);
