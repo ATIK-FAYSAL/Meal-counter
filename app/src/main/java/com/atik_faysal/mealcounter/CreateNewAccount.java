@@ -2,20 +2,20 @@ package com.atik_faysal.mealcounter;
 
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import com.atik_faysal.backend.*;
-import com.facebook.accountkit.ui.LoginType;
 import com.atik_faysal.model.*;
 import static android.content.ContentValues.TAG;
 
@@ -24,6 +24,7 @@ import static android.content.ContentValues.TAG;
  * userInformation-->Void.  get userInformation from component.
  * onButtonClick-->Void.    start action by clicking on button.
  * checkUserInformation-->Boolean.  check user information,if  information follow condition then return true ,otherwise return false
+ * getDate-->String ,get current date from system and return
  */
 
 
@@ -39,6 +40,7 @@ public class CreateNewAccount extends AppCompatActivity
         private PhoneNumberVerification numberVerification;
         private UserInformationModel userInformationModel;
         private InsertMemberInformation insertMemberInformation;
+        private CheckUserNameExist userNameExist;
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
@@ -88,27 +90,31 @@ public class CreateNewAccount extends AppCompatActivity
                 txtProceed.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                                //userInformation();
-                                /*if(checkUserInformation(name,userName,email,password))
+                                userInformation();
+                                if(checkUserInformation(name,userName,email,password))
                                 {
-                                        startActivity(new Intent(CreateNewAccount.this,PhoneNumberVerification.class));
-                                        userInformationModel.setName("atik");
-                                        userInformationModel.setEmail("atik@gmail.com");
-                                        userInformationModel.setAddress("dhaka");
-                                        userInformationModel.setUserName("atik1404");
-                                        userInformationModel.setPassword("123456");
-                                }*/
+                                        new CheckUserNameExist(CreateNewAccount.this,name,userName,address,email,password).execute(userName);
+                                        /*Intent intent = new Intent(CreateNewAccount.this,PhoneNumberVerification.class);
+                                        intent.putExtra("name","atik faysal");
+                                        intent.putExtra("userName","atik1404");
+                                        intent.putExtra("email","atik@gmail.com");
+                                        intent.putExtra("address","dhaka");
+                                        intent.putExtra("password","atik123");
+                                        startActivity(intent);*/
+                                }
                                 //numberVerification.setUserInformation("atik","atik1404","atik@gmail.com","dhaka","12345");
-                                /*Intent intent = new Intent(CreateNewAccount.this,PhoneNumberVerification.class);
-                                intent.putExtra("name","atik");
+                               /* Intent intent = new Intent(CreateNewAccount.this,PhoneNumberVerification.class);
+                                intent.putExtra("name","atik faysal");
                                 intent.putExtra("userName","atik1404");
                                 intent.putExtra("email","atik@gmail.com");
                                 intent.putExtra("address","dhaka");
                                 intent.putExtra("password","atik123");
                                 startActivity(intent);*/
 
-                               InsertMemberInformation memberInformation = new InsertMemberInformation(CreateNewAccount.this);
-                                memberInformation.execute("insertMember","atik","atik123","atik@gmail.com","01794037303","dhaka","12345");
+                              // InsertMemberInformation memberInformation = new InsertMemberInformation(CreateNewAccount.this);
+                              // memberInformation.execute("insertMember","atik","atik123","atik@gmail.com","01794037303","dhaka","12345",getDate());
+                                //InsertMemberInformation memberInformation = new InsertMemberInformation(CreateNewAccount.this);
+                                //memberInformation.execute("insertMember","atik","atik123","atik@gmail.com","01794037303","dhaka","12345",getDate());
                         }
                 });
         }
@@ -162,4 +168,11 @@ public class CreateNewAccount extends AppCompatActivity
                 return flag;
         }
 
+        protected String getDate()
+        {
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MMM.dd hh:mm aaa");
+                String date = dateFormat.format(calendar.getTime());
+                return date;
+        }
 }

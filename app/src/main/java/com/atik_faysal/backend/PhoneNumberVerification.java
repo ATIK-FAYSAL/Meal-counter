@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
+import com.atik_faysal.mealcounter.HomePageActivity;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.UserInformationModel;
 import com.facebook.accountkit.AccessToken;
@@ -35,6 +37,8 @@ import com.facebook.accountkit.ui.LoginType;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import com.atik_faysal.mealcounter.CreateNewAccount;
@@ -56,7 +60,7 @@ public class PhoneNumberVerification extends AppCompatActivity
         private CheckInternetIsOn checkInternet;
         private AlertDialogClass dialogClass;
 
-        private String name,userName,address,email,phone,password;
+        private String name,userName,address,email,password;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +73,14 @@ public class PhoneNumberVerification extends AppCompatActivity
 
         public interface OnCompleteListener {
                 void onComplete();
+        }
+
+        protected String getDate()
+        {
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MMM.dd hh:mm aaa");
+                String date = dateFormat.format(calendar.getTime());
+                return date;
         }
 
         @Override
@@ -98,11 +110,11 @@ public class PhoneNumberVerification extends AppCompatActivity
                                         public void onSuccess(final Account account) {
                                                 if(checkInternet.isOnline())
                                                 {
+
                                                         PhoneNumber phoneNumber = account.getPhoneNumber();
-                                                        memberInformation.execute("insertMember",name,userName,email,phoneNumber.toString(),address,password);
+                                                        progressDialog(phoneNumber.toString());
                                                 }else dialogClass.ifNoInternet();
                                                 //Toast.makeText(PhoneNumberVerification.this,name+"\n"+"\n"+userName+"\n"+address+"\n"+email+"\n"+password,Toast.LENGTH_SHORT).show();
-                                                finish();
                                         }
 
                                         @Override
@@ -238,14 +250,25 @@ public class PhoneNumberVerification extends AppCompatActivity
                 }
         }
 
-
-
-        public void setUserInformation(String name,String userName,String email,String address,String password)
+        protected void progressDialog(final String phoneNumber)
         {
-                this.name = name;
-                this.userName = userName;
-                this.email = email;
-                this.address = address;
-                this.password = password;
+                final ProgressDialog ringProgressDialog = ProgressDialog.show(PhoneNumberVerification.this, "Please wait", "Saving your information...", true);
+                ringProgressDialog.setCancelable(true);
+                new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                                try {
+                                        Thread.sleep(2500);
+                                } catch (Exception e) {
+                                }
+                                ringProgressDialog.dismiss();
+                        }
+                }).start();
+                ringProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                                new InsertMemberInformation(PhoneNumberVerification.this).execute("insertMember",name,userName,email,phoneNumber,address,password,getDate());
+                        }
+                });
         }
 }

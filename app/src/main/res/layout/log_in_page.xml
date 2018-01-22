@@ -85,7 +85,8 @@
                 android:layout_toStartOf="@+id/appLogo"
                 android:text=" Remember me"
                 android:textColor="#BDBDBD"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:onClick="onClickCheckBox"/>
         </LinearLayout>
 
         <LinearLayout

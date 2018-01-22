@@ -30,18 +30,27 @@ import java.net.URLEncoder;
 
 public class UserLogIn extends AsyncTask<String,Void,String>
 {
+        private final static String USER_LOGIN = "userLogIn";
+        private final static String USER_INFO = "currentInfo";
+
         private Context context;
-         ProgressDialog ringProgressDialog;
+        ProgressDialog ringProgressDialog;
+
+        private SharedPreferenceData sharedPreferenceData;
+
+        private String userName,password;
+
 
         public UserLogIn(Context context)
         {
                 this.context = context;
+                sharedPreferenceData = new SharedPreferenceData(context);
         }
 
         @Override
         protected void onPreExecute() {
                 super.onPreExecute();
-                ringProgressDialog = ProgressDialog.show(context, "Please wait", "Authenticating...", true);
+                ringProgressDialog = ProgressDialog.show(context, "Please wait", "Authenticating.....", true);
                 ringProgressDialog.setCancelable(true);
                 new Thread(new Runnable() {
                         @Override
@@ -53,7 +62,6 @@ public class UserLogIn extends AsyncTask<String,Void,String>
                                 ringProgressDialog.dismiss();
                         }
                 }).start();
-
         }
 
         @Override
@@ -62,8 +70,8 @@ public class UserLogIn extends AsyncTask<String,Void,String>
                 String insertMemberUrl = "http://192.168.56.1/user_log_in.php";
 
                 StringBuilder result = new StringBuilder();
-                String userName = params[1];
-                String password = params[2];
+                userName = params[1];
+                password = params[2];
 
                 if(params[0].equals("login"))
                 {
@@ -114,7 +122,6 @@ public class UserLogIn extends AsyncTask<String,Void,String>
                 return null;
         }
 
-
         @Override
         protected void onPostExecute(String result) {
                 super.onPostExecute(result);
@@ -124,6 +131,8 @@ public class UserLogIn extends AsyncTask<String,Void,String>
                                 @Override
                                 public void onDismiss(DialogInterface dialog) {
                                         closeActivity((Activity)context,HomePageActivity.class);
+                                        sharedPreferenceData.ifUserLogIn(USER_LOGIN,true);
+                                        sharedPreferenceData.saveUserInformation(USER_INFO,userName,password);
                                 }
                         });
                 }else Toast.makeText(context,result,Toast.LENGTH_SHORT).show();

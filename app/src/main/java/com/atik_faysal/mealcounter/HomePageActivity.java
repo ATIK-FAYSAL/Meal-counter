@@ -1,6 +1,7 @@
 package com.atik_faysal.mealcounter;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,12 +17,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.atik_faysal.backend.SharedPreferenceData;
+
 public class HomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
 
+        //component variable
         private Toolbar toolbar;
         private DrawerLayout drawer;
         private ActionBarDrawerToggle toggle;
+
+
+        private SharedPreferenceData sharedPreferenceData;
+
+
+        private final static String USER_LOGIN = "userLogIn";
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +53,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                 NavigationView navigationView =  findViewById(R.id.nav_view);
                 navigationView.setNavigationItemSelectedListener(this);
+
+                sharedPreferenceData = new SharedPreferenceData(this);
         }
 
         @Override
@@ -77,11 +89,64 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 // Handle navigation view item clicks here.
                 int id = item.getItemId();
 
+                if(id==R.id.makeGroup)
+                {
+                        startActivity(new Intent(HomePageActivity.this,MakeMyGroup.class));
+                }else if(id==R.id.editProfile)
+                {
+
+                }else if(id==R.id.acceptRequest)
+                {
+
+                }else if(id==R.id.makeAdmin)
+                {
+
+                }else if(id==R.id.member)
+                {
+
+                }else if(id==R.id.setAlarm)
+                {
+
+                }else if(id==R.id.setting)
+                {
+
+                }else if(id==R.id.feedback)
+                {
+
+                }else if(id==R.id.aboutUs)
+                {
+
+                }else if(id==R.id.logout)
+                        userLogOut();
+
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
         }
 
+
+        protected void userLogOut()
+        {
+                final ProgressDialog progressDialog = ProgressDialog.show(HomePageActivity.this, "Please wait", "User Log out...", true);
+                progressDialog.setCancelable(true);
+                new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                                try {
+                                        Thread.sleep(2500);
+                                } catch (Exception e) {
+                                }
+                                progressDialog.dismiss();
+                        }
+                }).start();
+                progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                                sharedPreferenceData.ifUserLogIn(USER_LOGIN,false);
+                                finish();
+                        }
+                });
+        }
 
         private void clossApp()
         {

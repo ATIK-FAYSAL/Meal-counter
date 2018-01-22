@@ -35,36 +35,20 @@ public class InsertMemberInformation extends AsyncTask<String,Void,String>
 {
 
         private Context context;
-        private String name,phone,userName,address,email,password;
+        private String name,phone,userName,address,email,password,date;
         String memberType = "member";
         String taka = "0",groupId = "null";
 
 
         ProgressDialog ringProgressDialog;
+        Activity activity;
 
         public InsertMemberInformation(Context context)
         {
                 this.context = context;
+                activity = (Activity)context;
         }
 
-
-        @Override
-        protected void onPreExecute() {
-                super.onPreExecute();
-                ringProgressDialog = ProgressDialog.show(context, "Please wait", "Saving your Information...", true);
-                ringProgressDialog.setCancelable(true);
-                new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                                try {
-                                        Thread.sleep(2500);
-                                } catch (Exception e) {
-                                }
-                                ringProgressDialog.dismiss();
-                        }
-                }).start();
-
-        }
 
         @Override
         protected String doInBackground(String... params)
@@ -75,6 +59,7 @@ public class InsertMemberInformation extends AsyncTask<String,Void,String>
                 StringBuilder result= new StringBuilder();
 
                 name = params[1];userName = params[2];email = params[3];phone = params[4];address = params[5];password = params[6];
+                date = params[7];
 
                 if(params[0].equals("insertMember"))
                 {
@@ -95,7 +80,8 @@ public class InsertMemberInformation extends AsyncTask<String,Void,String>
                                         +URLEncoder.encode("taka","UTF-8")+"="+URLEncoder.encode(taka,"UTF-8")+"&"
                                         +URLEncoder.encode("memberType","UTF-8")+"="+URLEncoder.encode(memberType,"UTF-8")+"&"
                                         +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8")+"&"
-                                        +URLEncoder.encode("groupId","UTF-8")+"="+URLEncoder.encode(groupId,"UTF-8");
+                                        +URLEncoder.encode("groupId","UTF-8")+"="+URLEncoder.encode(groupId,"UTF-8")+"&"
+                                        +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(date,"UTF-8");
 
 
                                 bufferedWriter.write(postInfo);
@@ -139,12 +125,7 @@ public class InsertMemberInformation extends AsyncTask<String,Void,String>
         protected void onPostExecute(String result) {
                 if(result.equals("Information saving complete"))
                 {
-                        ringProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                @Override
-                                public void onDismiss(DialogInterface dialog) {
-                                        closeActivity((Activity) context,HomePageActivity.class);
-                                }
-                        });
+                        closeActivity((Activity) context,HomePageActivity.class);
                 }else Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
         }
 

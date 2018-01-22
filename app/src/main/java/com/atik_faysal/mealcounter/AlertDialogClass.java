@@ -9,9 +9,10 @@ import android.content.DialogInterface;
 
 /**
  * Created by USER on 1/21/2018.
+ * ifNoInternet-->if user is in offline ,it show a message
  */
 
-public class AlertDialogClass extends Activity
+public class AlertDialogClass
 {
         Context context;
         AlertDialog.Builder builder;

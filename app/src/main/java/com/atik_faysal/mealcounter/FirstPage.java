@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.atik_faysal.backend.SharedPreferenceData;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 public class FirstPage extends AppCompatActivity {
 
@@ -26,6 +28,7 @@ public class FirstPage extends AppCompatActivity {
         @Override
         protected void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
+                Fabric.with(this, new Crashlytics());
                 setContentView(R.layout.first_page);
                 initComponent();
                 startActivity();

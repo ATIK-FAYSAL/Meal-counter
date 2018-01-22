@@ -68,7 +68,7 @@ public class ThirdPage extends AppCompatActivity
                                 else
                                 {
                                         sharedPreferenceData.saveMealInputType(MEAL_INPUT_TYPE,mInputType);
-                                        sharedPreferenceData.saveMealInputType(COST_INPUT_TYPE,cInputType);
+                                        sharedPreferenceData.saveCostInputType(COST_INPUT_TYPE,cInputType);
                                         sharedPreferenceData.inputTaskComplete(INPUT_TASK_COMPLETE,true);
                                         intent = new Intent(ThirdPage.this,LogInActivity.class);
                                         startActivity(intent);
