@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/relativeLayout"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="Group name"
@@ -91,23 +91,6 @@
         android:backgroundTint="#E0E0E0"
         android:layout_marginBottom="5dp"/>
 
-    <EditText
-        android:id="@+id/gDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/gAddress"
-        android:layout_marginLeft="45dp"
-        android:layout_marginRight="45dp"
-        android:layout_marginTop="14dp"
-        android:backgroundTint="#E0E0E0"
-        android:ems="10"
-        android:gravity="center"
-        android:inputType="textPersonName"
-        android:hint="Description"
-        android:textColor="#EEEEEE"
-        android:textColorHint="#EEEEEE"
-        android:textSize="18dp" />
-
     <Button
         android:id="@+id/bCreate"
         style="@style/Base.Widget.AppCompat.Button.Borderless"
@@ -123,6 +106,22 @@
         android:textStyle="bold"
         android:textColor="#000"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <EditText
+        android:id="@+id/gDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gAddress"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:ems="10"
+        android:layout_marginRight="45dp"
+        android:layout_marginLeft="45dp"
+        android:inputType="textMultiLine"
+        android:backgroundTint="#E0E0E0"
+        android:hint="Description"
+        android:gravity="center"
+        android:textColorHint="#E0E0E0"/>
 
 
 </RelativeLayout>

@@ -31,6 +31,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
@@ -46,6 +47,8 @@ dependencies {
     compile 'com.facebook.android:facebook-login:4.28.0'
     compile 'com.facebook.android:account-kit-sdk:4.28.0'
     compile 'com.facebook.android:facebook-android-sdk:4.28.0'
+    compile 'com.miguelcatalan:materialsearchview:1.4.0'
+    compile 'com.github.mirrajabi:search-dialog:1.1'
     compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
         transitive = true;
     }

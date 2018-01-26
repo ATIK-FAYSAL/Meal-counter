@@ -132,7 +132,7 @@ public class UserLogIn extends AsyncTask<String,Void,String>
                                 public void onDismiss(DialogInterface dialog) {
                                         closeActivity((Activity)context,HomePageActivity.class);
                                         sharedPreferenceData.ifUserLogIn(USER_LOGIN,true);
-                                        sharedPreferenceData.saveUserInformation(USER_INFO,userName,password);
+                                        sharedPreferenceData.saveCurrentUserInfo(USER_INFO,userName,password);
                                 }
                         });
                 }else Toast.makeText(context,result,Toast.LENGTH_SHORT).show();

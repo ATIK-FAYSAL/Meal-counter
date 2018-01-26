@@ -32,7 +32,6 @@ public class LogInActivity extends AppCompatActivity
         private CheckBox checkBox;
         private EditText txtUserName,txtUserPassword;
 
-        private UserLogIn userLogIn;
         private CheckInternetIsOn checkInternet;
         private AlertDialogClass dialogClass;
         private SharedPreferenceData sharedPreferenceData;
@@ -86,7 +85,6 @@ public class LogInActivity extends AppCompatActivity
                 txtUserName = findViewById(R.id.eUserName);
                 txtUserPassword = findViewById(R.id.ePassword);
 
-                userLogIn = new UserLogIn(this);
                 checkInternet = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
                 sharedPreferenceData = new SharedPreferenceData(this);
@@ -100,26 +98,28 @@ public class LogInActivity extends AppCompatActivity
                                 startActivity(new Intent(LogInActivity.this,CreateNewAccount.class));
                         }
                 });
+
+
                 bSignIn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                                //Fabric.with(LogInActivity.this, new Crashlytics());
-                                //forceCrash();
                                 if(checkInternet.isOnline())
                                 {
                                         if(txtUserName.getText().toString().isEmpty()||txtUserPassword.getText().toString().isEmpty())
                                         {
                                                 if(txtUserName.getText().toString().isEmpty())txtUserName.setError("Input valid userName");
                                                 else if(txtUserPassword.getText().toString().isEmpty())txtUserPassword.setError("Input valid password");
-                                        }else
-                                        {
-                                                if(checkInternet.isOnline())new UserLogIn(LogInActivity.this).execute("login",txtUserName.getText().toString(),txtUserPassword.getText().toString());
-                                                else dialogClass.ifNoInternet();
-                                        }
-                                }else
-                                {
-                                        dialogClass.ifNoInternet();
-                                }
+                                        }else new UserLogIn(LogInActivity.this).execute("login",txtUserName.getText().toString(),txtUserPassword.getText().toString());
+
+                                }else dialogClass.noInternetConnection();
+                        }
+                });
+
+
+                txtForgotPass.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                                startActivity(new Intent(LogInActivity.this,ForgetPassword.class));
                         }
                 });
         }
@@ -135,12 +135,6 @@ public class LogInActivity extends AppCompatActivity
                         sharedPreferenceData.saveUserNamePassword(REMEMBER_ME,txtUserName.getText().toString(),txtUserPassword.getText().toString(),true);
                 else
                         sharedPreferenceData.saveUserNamePassword(REMEMBER_ME,txtUserName.getText().toString(),txtUserPassword.getText().toString(),false);
-        }
-
-
-
-        public void forceCrash() {
-                throw new RuntimeException("This is a crash");
         }
 
 }

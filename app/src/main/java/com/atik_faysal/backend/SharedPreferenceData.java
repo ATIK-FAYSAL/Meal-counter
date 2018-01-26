@@ -104,7 +104,7 @@ public class SharedPreferenceData
                 return value;
         }
 
-        public void saveUserInformation(String prefName,String userName,String password)
+        public void saveCurrentUserInfo(String prefName, String userName, String password)
         {
                 sharedPreferences = context.getSharedPreferences(prefName,Context.MODE_PRIVATE);
                 editor = sharedPreferences.edit();

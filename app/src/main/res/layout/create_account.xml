@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="30dp"
         android:layout_marginLeft="40dp">
 
@@ -31,14 +31,15 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/textView1"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="5dp"
+
             android:backgroundTint="#90A4AE"
             android:gravity="center"
             android:hint="John0125"
             android:inputType="textPersonName"
             android:textColor="#90A4AE"
             android:textColorHint="#BDBDBD"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:drawableLeft="@drawable/icon_name"/>
     </RelativeLayout>
 
 
@@ -67,14 +68,14 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/textView3"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="5dp"
             android:gravity="center"
             android:hint="John Cena"
             android:inputType="textPersonName"
             android:textColor="#90A4AE"
             android:textSize="18dp"
             android:backgroundTint="#90A4AE"
-            android:textColorHint="#BDBDBD"/>
+            android:textColorHint="#BDBDBD"
+            android:drawableLeft="@drawable/icon_name"/>
     </RelativeLayout>
 
 
@@ -103,14 +104,14 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/textView4"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="5dp"
             android:gravity="center"
             android:hint="John@example.com"
             android:inputType="textPersonName"
             android:textColor="#90A4AE"
             android:textSize="18dp"
             android:backgroundTint="#90A4AE"
-            android:textColorHint="#BDBDBD"/>
+            android:textColorHint="#BDBDBD"
+            android:drawableLeft="@drawable/icon_email"/>
     </RelativeLayout>
 
 
@@ -139,14 +140,14 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/textView5"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="5dp"
             android:gravity="center"
             android:hint="Dhaka"
             android:inputType="textPersonName"
             android:textColor="#90A4AE"
             android:textSize="18dp"
             android:backgroundTint="#90A4AE"
-            android:textColorHint="#BDBDBD"/>
+            android:textColorHint="#BDBDBD"
+            android:drawableLeft="@drawable/icon_address"/>
     </RelativeLayout>
 
 
@@ -175,28 +176,46 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/textView6"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="5dp"
+
             android:gravity="center"
             android:hint="Password"
             android:inputType="textPassword"
             android:textColor="#fff"
             android:textSize="18dp"
             android:backgroundTint="#90A4AE"
-            android:textColorHint="#BDBDBD"/>
+            android:textColorHint="#BDBDBD"
+            android:drawableLeft="@drawable/icon_pass"/>
     </RelativeLayout>
+
+
+    <EditText
+        android:id="@+id/txtFavourite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/layout5"
+        android:layout_below="@+id/layout5"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="11dp"
+        android:gravity="center"
+        android:hint="Favourite word"
+        android:textColor="#06EDF5"
+        android:textSize="20dp"
+        android:backgroundTint="#90A4AE"
+        android:textColorHint="#BDBDBD"/>
+
 
     <TextView
         android:id="@+id/txtProceed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/txtSignIn"
-        android:layout_below="@+id/layout5"
-        android:layout_marginTop="11dp"
+        android:layout_above="@+id/txtSignIn"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="12dp"
         android:drawableRight="@drawable/right_icon"
         android:gravity="center"
         android:text="PROCEED"
         android:textColor="#06EDF5"
-        android:textSize="20dp" />
+        android:textSize="17dp" />
 
     <TextView
         android:id="@+id/txtSignIn"
@@ -204,9 +223,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="14dp"
+        android:layout_marginBottom="8dp"
         android:textColor="#9AB6B7"
-        android:text="Have account ?Sign In" />
+        android:text="Have account ?Sign In"
+        android:layout_marginTop="10dp"/>
 
 
 </RelativeLayout>

@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.atik_faysal.mealcounter.HomePageActivity;
+
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -25,7 +25,7 @@ import java.net.URLEncoder;
  * Created by USER on 1/22/2018.
  */
 
-public class SaveGroupInformation extends AsyncTask<String,Void,String>
+public class CreateGroupBackgroundTask extends AsyncTask<String,Void,String>
 {
 
         String groupName,groupId,groupDescription,groupAddress,groupAdmin,date;
@@ -35,7 +35,7 @@ public class SaveGroupInformation extends AsyncTask<String,Void,String>
 
         Activity activity;
 
-        public SaveGroupInformation(Context context)
+        public CreateGroupBackgroundTask(Context context)
         {
                 this.context = context;
                 activity = (Activity)context;
@@ -58,15 +58,14 @@ public class SaveGroupInformation extends AsyncTask<String,Void,String>
                 }).start();
         }
 
-
         @Override
         protected String doInBackground(String... params) {
 
                 groupName = params[0];groupId = params[1];groupAddress = params[2];groupDescription=params[3];date = params[4];
+                groupAdmin = params[5];
 
                 result = new StringBuilder();
-                String groupUrl = "http://192.168.56.1/group_information.php";
-                HttpURLConnection httpURLConnection;
+                String groupUrl = "http://192.168.56.1/createGroup.php";
                 URL url;
                 OutputStream outputStream;
                 OutputStreamWriter outputStreamWriter;
@@ -87,7 +86,7 @@ public class SaveGroupInformation extends AsyncTask<String,Void,String>
                                 +URLEncoder.encode("groupId","UTF-8")+"="+URLEncoder.encode(groupId,"UTF-8")+"&"
                                 +URLEncoder.encode("groupAddress","UTF-8")+"="+URLEncoder.encode(groupAddress,"UTF-8")+"&"
                                 +URLEncoder.encode("groupDescription","UTF-8")+"="+URLEncoder.encode(groupDescription,"UTF-8")+"&"
-                                +URLEncoder.encode("groupAdmin","UTF-8")+"="+URLEncoder.encode("atik faysal","UTF-8")+"&"
+                                +URLEncoder.encode("groupAdmin","UTF-8")+"="+URLEncoder.encode(groupAdmin,"UTF-8")+"&"
                                 +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(date,"UTF-8");
 
                         bufferedWriter.write(postInfo);
@@ -106,19 +105,14 @@ public class SaveGroupInformation extends AsyncTask<String,Void,String>
                         inputStream.close();
                         httpsURLConnection.disconnect();
 
-
-
                         return result.toString();
                 } catch (MalformedURLException e) {
                         e.printStackTrace();
-                        //Log.d(TAG,"Error is 1: "+e.toString());
                 } catch (IOException e) {
                         e.printStackTrace();
-                        //Log.d(TAG,"Error is 2: "+e.toString());
                 }catch (Exception e)
                 {
                         e.printStackTrace();
-                        //Log.d(TAG,"Error is 3: "+e.toString());
                 }
 
                 return null;
@@ -138,5 +132,4 @@ public class SaveGroupInformation extends AsyncTask<String,Void,String>
                         });
                 }else Toast.makeText(context,result,Toast.LENGTH_LONG).show();
         }
-
 }

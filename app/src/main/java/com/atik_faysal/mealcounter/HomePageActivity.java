@@ -5,9 +5,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+import android.util.Log;
+import android.view.MenuInflater;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,7 +16,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.atik_faysal.backend.GetSearchableGroup;
 import com.atik_faysal.backend.SharedPreferenceData;
+import com.atik_faysal.model.SearchableModel;
+import com.facebook.accountkit.ui.LoginType;
+
+import java.util.ArrayList;
+
+import interfaces.SearchInterfaces;
+import ir.mirrajabi.searchdialog.SimpleSearchDialogCompat;
+import ir.mirrajabi.searchdialog.core.BaseSearchDialogCompat;
+import ir.mirrajabi.searchdialog.core.SearchResultListener;
+import ir.mirrajabi.searchdialog.core.Searchable;
+import static android.content.ContentValues.TAG;
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 public class HomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
@@ -27,18 +39,22 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         private DrawerLayout drawer;
         private ActionBarDrawerToggle toggle;
 
-
         private SharedPreferenceData sharedPreferenceData;
+        private CheckInternetIsOn internetIsOn;
+        private AlertDialogClass dialogClass;
 
 
         private final static String USER_LOGIN = "userLogIn";
+
+
+        private ArrayList<SearchableModel>groupList ;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.home_page);
                 initComponent();
-                clossApp();
+                closeApp();
         }
 
         private void initComponent()
@@ -55,6 +71,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 navigationView.setNavigationItemSelectedListener(this);
 
                 sharedPreferenceData = new SharedPreferenceData(this);
+                internetIsOn = new CheckInternetIsOn(this);
+                dialogClass = new AlertDialogClass(this);
         }
 
         @Override
@@ -78,10 +96,51 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
         @Override
         public boolean onCreateOptionsMenu(Menu menu) {
-                // Inflate the menu; this adds items to the action bar if it is present.
-                getMenuInflater().inflate(R.menu.home_page, menu);
+                MenuInflater menuInflater = getMenuInflater();
+                menuInflater.inflate(R.menu.search, menu);
                 return true;
         }
+
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+                int res_id;
+                res_id = item.getItemId();
+                if(res_id==R.id.search)
+                {
+                        if(internetIsOn.isOnline())
+                        {
+                                groupList = new ArrayList<>();
+                                GetSearchableGroup searchableGroup = new GetSearchableGroup(HomePageActivity.this);
+                                searchableGroup.setOnResultListener(searchInterfaces);
+                                searchableGroup.execute();
+
+                                new SimpleSearchDialogCompat(this, "Search", "enter name", null, groupList, new SearchResultListener<Searchable>() {
+                                        @Override
+                                        public void onSelected(BaseSearchDialogCompat baseSearchDialogCompat, Searchable searchable, int i) {
+
+
+                                                baseSearchDialogCompat.dismiss();
+                                        }
+                                }).show();
+                        }else dialogClass.noInternetConnection();
+                }
+                return true;
+        }
+
+        SearchInterfaces searchInterfaces = new SearchInterfaces() {
+                @Override
+                public void onResultSuccess(final ArrayList<String> list) {
+                        runOnUiThread(new Runnable() {
+                                public void run() {
+                                        for(int i =0;i<list.size();i++)
+                                                groupList.add(new SearchableModel(list.get(i)));
+
+                                }
+                        });
+                }
+        };
+
 
         @SuppressWarnings("StatementWithEmptyBody")
         @Override
@@ -124,7 +183,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 return true;
         }
 
-
         protected void userLogOut()
         {
                 final ProgressDialog progressDialog = ProgressDialog.show(HomePageActivity.this, "Please wait", "User Log out...", true);
@@ -148,7 +206,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 });
         }
 
-        private void clossApp()
+        private void closeApp()
         {
                 if(getIntent().getBooleanExtra("flag",false))finish();
         }
