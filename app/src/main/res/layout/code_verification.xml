@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar1"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:background="@color/color1"
+        android:elevation="4dp">
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:text="Meal Counter"
+        android:textSize="25dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView12"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Verify your phone number"
+        android:textSize="15dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView13"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:text="Enter verification code"
+        android:textSize="16dp"/>
+
+    <EditText
+        android:id="@+id/eCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:inputType="number"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:layout_below="@id/textView14"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/bVerify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/eCode"
+        android:layout_alignStart="@+id/eCode"
+        android:layout_below="@+id/eCode"
+        android:layout_marginTop="86dp"
+        android:text="Verify"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:textStyle="bold"
+        android:textSize="23dp"
+        android:background="#B2EBF2"/>
+
+    <Button
+        android:id="@+id/bResend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bVerify"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp"
+        android:text="Resend code"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"/>
+
+    <TextView
+        android:id="@+id/tTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/eCode"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp"
+        android:text="TextView" />
+
+</RelativeLayout>

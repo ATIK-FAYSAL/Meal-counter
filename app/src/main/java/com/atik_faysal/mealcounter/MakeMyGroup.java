@@ -58,7 +58,7 @@ public class MakeMyGroup extends AppCompatActivity
 
                 sharedPreferenceData = new SharedPreferenceData(this);
                 currentUserName = sharedPreferenceData.getCurrentUserName(USER_INFO);
-                someMethod = new NeedSomeMethod();
+                someMethod = new NeedSomeMethod(this);
                 internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
 

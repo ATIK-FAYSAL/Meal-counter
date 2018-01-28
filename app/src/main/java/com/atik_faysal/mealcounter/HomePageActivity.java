@@ -171,7 +171,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                 }else if(id==R.id.feedback)
                 {
-
+                        startActivity(new Intent(HomePageActivity.this,Feedback.class));
                 }else if(id==R.id.aboutUs)
                 {
 

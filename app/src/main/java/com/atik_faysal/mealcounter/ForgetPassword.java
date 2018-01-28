@@ -1,34 +1,22 @@
 package com.atik_faysal.mealcounter;
 
-import android.Manifest;
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.content.Context;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.atik_faysal.backend.ChangeYourPassword;
 import com.atik_faysal.backend.InformationCheckBackgroundTask;
 import com.atik_faysal.backend.InformationCheckBackgroundTask.OnAsyncTaskInterface;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 /**
@@ -98,6 +86,35 @@ public class ForgetPassword extends AppCompatActivity
                 if(phone.length()==11)phone = "+88"+phone;
         }
 
+        private boolean checkUserInfo(String phone,String userName)
+        {
+                boolean flag = true;
+
+
+                if(eFaWord.getText().toString().isEmpty())
+                {
+                        flag = false;
+                        eFaWord.setError("Invalid");
+                        eFaWord.requestFocus();
+                }
+
+                if(phone.length()!=11&&phone.length()!=14)
+                {
+                        if(ePhone.getText().toString().isEmpty())ePhone.requestFocus();
+                        flag = false;
+                        ePhone.setError("Invalid number");
+                }
+
+                if(userName.length()<3)
+                {
+                        if(eUserName.getText().toString().isEmpty())eUserName.requestFocus();
+                        flag = false;
+                        eUserName.setError("Invalid userName");
+                }
+
+                return flag;
+        }
+
         private void onButtonClick()
         {
                 bContinue.setOnClickListener(new View.OnClickListener() {
@@ -107,17 +124,20 @@ public class ForgetPassword extends AppCompatActivity
 
                                 if(internetIsOn.isOnline())
                                 {
-                                        try {
-                                                POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
-                                                        +URLEncoder.encode("fWord","UTF-8")+"="+URLEncoder.encode(fWord,"UTF-8")+"&"
-                                                        +URLEncoder.encode("phoneNumber","UTF-8")+"="+URLEncoder.encode(phone,"UTF-8");
-                                        } catch (UnsupportedEncodingException e) {
-                                                e.printStackTrace();
-                                        }
+                                        if(checkUserInfo(phone,userName))
+                                        {
+                                                try {
+                                                        POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
+                                                                +URLEncoder.encode("fWord","UTF-8")+"="+URLEncoder.encode(fWord,"UTF-8")+"&"
+                                                                +URLEncoder.encode("phoneNumber","UTF-8")+"="+URLEncoder.encode(phone,"UTF-8");
+                                                } catch (UnsupportedEncodingException e) {
+                                                        e.printStackTrace();
+                                                }
 
-                                        InformationCheckBackgroundTask checkBackgroundTask = new InformationCheckBackgroundTask(ForgetPassword.this);
-                                        checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                        checkBackgroundTask.execute(FILE_URL,POST_DATA);
+                                                InformationCheckBackgroundTask checkBackgroundTask = new InformationCheckBackgroundTask(ForgetPassword.this);
+                                                checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                                checkBackgroundTask.execute(FILE_URL,POST_DATA);
+                                        }
                                 }else dialogClass.noInternetConnection();
                         }
                 });
@@ -131,7 +151,13 @@ public class ForgetPassword extends AppCompatActivity
                                 public void run() {
                                         switch (message) {
                                                 case "success":
-                                                        Toast.makeText(ForgetPassword.this,"Success",Toast.LENGTH_LONG).show();
+
+                                                        if(phone.length()==14)phone = phone.substring(3,phone.length());
+
+                                                        Intent page = new Intent(ForgetPassword.this,ChangeYourPassword.class);
+                                                        page.putExtra("phone",phone);
+                                                        page.putExtra("userName",userName);
+                                                        startActivity(page);
                                                         break;
                                                 case "word error":
                                                         eFaWord.setError("Invalid favourite word");
@@ -142,7 +168,9 @@ public class ForgetPassword extends AppCompatActivity
                                                 case "offline":
                                                         dialogClass.noInternetConnection();
                                                         break;
-                                                default:
+                                                case "failed":
+                                                        break;
+                                                case "We can not recognized you":
                                                         eUserName.setError("Invalid UserName");
                                                         Toast.makeText(ForgetPassword.this,message+".Please retry with valid UserName",Toast.LENGTH_LONG).show();
                                                         break;

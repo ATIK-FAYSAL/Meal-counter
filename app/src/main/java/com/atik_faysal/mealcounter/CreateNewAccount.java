@@ -101,7 +101,7 @@ public class CreateNewAccount extends AppCompatActivity
                 informationCheck = new InformationCheckBackgroundTask(this);
                 internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
-                someMethod = new NeedSomeMethod();
+                someMethod = new NeedSomeMethod(this);
                 //calling method
                 onButtonClick();
         }

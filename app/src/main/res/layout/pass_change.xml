@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout1">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="1dp"
+        android:gravity="center"
+        android:background="#E0E0E0"
+        android:id="@+id/relativeLayout2">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="Change password"
+            android:gravity="center"
+            android:textSize="21dp"
+            android:textStyle="bold"
+            android:textColor="#000"/>
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/ePassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView15"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/ePassword"
+        android:layout_below="@+id/relativeLayout2"
+        android:layout_marginTop="19dp"
+        android:text="New password"
+        android:textColor="#000"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/bChange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/ePassword"
+        android:layout_alignStart="@+id/ePassword"
+        android:layout_below="@+id/ePassword"
+        android:layout_marginTop="20dp"
+        android:text="Change"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:textSize="20dp"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:background="#B2EBF2"
+        android:layout_marginBottom="20dp"/>
+
+</RelativeLayout>

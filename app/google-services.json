@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "244115866879",
+    "firebase_url": "https://mealcounter-d5a11.firebaseio.com",
+    "project_id": "mealcounter-d5a11",
+    "storage_bucket": "mealcounter-d5a11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:244115866879:android:6f65632d03cb62c4",
+        "android_client_info": {
+          "package_name": "com.atik_faysal.mealcounter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "244115866879-pum8g3rkq3aj4d0d2jkkgaat7g15ris5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.atik_faysal.mealcounter",
+            "certificate_hash": "43a35c88320d80150770b3c536066fe3ae4e9728"
+          }
+        },
+        {
+          "client_id": "244115866879-2qb7d9nohe3ru0kj5cs5josijl9hfup4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOWH3pGcJD2wXXjLJlfgORkP1yuWy4Y6A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "244115866879-2qb7d9nohe3ru0kj5cs5josijl9hfup4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
