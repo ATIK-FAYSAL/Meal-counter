@@ -5,5 +5,9 @@
     <color name="offWhite">#90A4AE</color>
     <color name="color1">#1C4A6C</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="white">#fff</color>
+    <color name="white">#fafafa</color>
+    <color name="color2">#09c6df</color>
+    <color name="color3">#0bcce6</color>
+    <color name="black">#000000</color>
+    <color name="red">#E8160C</color>
 </resources>

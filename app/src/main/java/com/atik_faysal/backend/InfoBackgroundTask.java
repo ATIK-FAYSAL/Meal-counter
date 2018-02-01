@@ -27,7 +27,7 @@ import static android.content.ContentValues.TAG;
  * Created by USER on 1/25/2018.
  */
 
-public class InformationCheckBackgroundTask extends AsyncTask<String,Void,String>
+public class InfoBackgroundTask extends AsyncTask<String,Void,String>
 {
 
         Context context;
@@ -44,8 +44,7 @@ public class InformationCheckBackgroundTask extends AsyncTask<String,Void,String
         BufferedReader bufferedReader;
 
 
-
-        public InformationCheckBackgroundTask(Context context)
+        public InfoBackgroundTask(Context context)
         {
                 this.context = context;
                 internetIsOn = new CheckInternetIsOn(context);
@@ -93,7 +92,6 @@ public class InformationCheckBackgroundTask extends AsyncTask<String,Void,String
                                 bufferedReader.close();
                                 inputStream.close();
                                 httpURLConnection.disconnect();
-                                Log.d(TAG,"result : "+result);
                                 onAsyncTaskInterface.onResultSuccess(result);
 
                                 return result.toString();

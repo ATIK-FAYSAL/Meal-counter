@@ -34,9 +34,8 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
-import com.atik_faysal.backend.InformationCheckBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
 import static android.content.ContentValues.TAG;
 
 /**
@@ -280,7 +279,7 @@ public class ChangeYourPassword extends AppCompatActivity
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
                                 }
-                                InformationCheckBackgroundTask checkBackgroundTask = new InformationCheckBackgroundTask(ChangeYourPassword.this);
+                                InfoBackgroundTask checkBackgroundTask = new InfoBackgroundTask(ChangeYourPassword.this);
                                 checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 checkBackgroundTask.execute(FILE_URL, POST_DATA);
                         }

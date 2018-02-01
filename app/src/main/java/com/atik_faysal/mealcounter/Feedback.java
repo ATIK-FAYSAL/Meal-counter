@@ -12,8 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.atik_faysal.backend.InformationCheckBackgroundTask;
-import com.atik_faysal.backend.InformationCheckBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.backend.InfoBackgroundTask;
+import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 
 import java.io.UnsupportedEncodingException;
@@ -33,7 +33,7 @@ public class Feedback extends AppCompatActivity
 
         private AlertDialogClass dialogClass;
         private NeedSomeMethod someMethod;
-        private InformationCheckBackgroundTask checkBackgroundTask;
+        private InfoBackgroundTask checkBackgroundTask;
         private SharedPreferenceData sharedPreferenceData;
         private CheckInternetIsOn internetIsOn;
 
@@ -118,7 +118,7 @@ public class Feedback extends AppCompatActivity
                                                 e.printStackTrace();
                                         }
 
-                                        checkBackgroundTask = new InformationCheckBackgroundTask(Feedback.this);
+                                        checkBackgroundTask = new InfoBackgroundTask(Feedback.this);
                                         checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
                                         checkBackgroundTask.execute(FILE_URL,POST_DATA);
                                 }else dialogClass.noInternetConnection();

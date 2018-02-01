@@ -12,13 +12,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.atik_faysal.backend.ChangeYourPassword;
-import com.atik_faysal.backend.InformationCheckBackgroundTask;
-import com.atik_faysal.backend.InformationCheckBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.backend.InfoBackgroundTask;
+import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import static android.content.ContentValues.TAG;
 /**
  * Created by USER on 1/26/2018.
  */
@@ -134,7 +133,7 @@ public class ForgetPassword extends AppCompatActivity
                                                         e.printStackTrace();
                                                 }
 
-                                                InformationCheckBackgroundTask checkBackgroundTask = new InformationCheckBackgroundTask(ForgetPassword.this);
+                                                InfoBackgroundTask checkBackgroundTask = new InfoBackgroundTask(ForgetPassword.this);
                                                 checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
                                                 checkBackgroundTask.execute(FILE_URL,POST_DATA);
                                         }

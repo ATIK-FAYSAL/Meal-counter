@@ -22,34 +22,48 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".SecondPage"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".ThirdPage"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".LogInActivity"
             android:label=""
             android:screenOrientation="portrait"/>
+
         <activity android:name=".CreateNewAccount"
             android:screenOrientation="portrait"/>
+
         <activity
             android:name=".HomePageActivity"
             android:label=""
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
+
         <activity android:name=".MakeMyGroup"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".ForgetPassword"
             android:screenOrientation="portrait"
             android:label="Reset Password"/>
+
         <activity android:name="com.atik_faysal.backend.ChangeYourPassword"/>
 
         <activity android:name=".Feedback"
             android:label="Feedback"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".EditYourProfile"
+            android:label="Profile"
+            android:screenOrientation="portrait"/>
+
+
+
 
         <activity android:name="com.facebook.accountkit.ui.AccountKitEmailRedirectActivity">
             <intent-filter>

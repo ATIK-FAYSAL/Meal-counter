@@ -35,7 +35,7 @@ import com.facebook.accountkit.ui.AccountKitConfiguration;
 import com.facebook.accountkit.ui.LoginType;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.atik_faysal.backend.InformationCheckBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
 
 /**
  * initComponent-->Void.    initialize all component and object,also call some method.
@@ -66,7 +66,7 @@ public class CreateNewAccount extends AppCompatActivity
 
         //class object declaration
         private CreateMemberBackgroundTask createMemberBackgroundTask;
-        private InformationCheckBackgroundTask informationCheck;
+        private InfoBackgroundTask informationCheck;
         private CheckInternetIsOn internetIsOn;
         private AlertDialogClass dialogClass;
         private NeedSomeMethod someMethod;
@@ -98,7 +98,7 @@ public class CreateNewAccount extends AppCompatActivity
                 //object initialize
                 //numberVerification = new PhoneNumberVerification(this);
                 createMemberBackgroundTask = new CreateMemberBackgroundTask(this);
-                informationCheck = new InformationCheckBackgroundTask(this);
+                informationCheck = new InfoBackgroundTask(this);
                 internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
                 someMethod = new NeedSomeMethod(this);
@@ -130,7 +130,7 @@ public class CreateNewAccount extends AppCompatActivity
                         @Override
                         public void onClick(View view) {
 
-                                InformationCheckBackgroundTask informationCheckBackgroundTask = new InformationCheckBackgroundTask(CreateNewAccount.this);
+                                InfoBackgroundTask infoBackgroundTask = new InfoBackgroundTask(CreateNewAccount.this);
 
                                 userInformation();
 
@@ -144,8 +144,8 @@ public class CreateNewAccount extends AppCompatActivity
                                                         e.printStackTrace();
                                                 }
 
-                                                informationCheckBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                informationCheckBackgroundTask.execute(FILE_URL,POST_DATA);
+                                                infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                                infoBackgroundTask.execute(FILE_URL,POST_DATA);
                                         }
                                 }else dialogClass.noInternetConnection();
                         }

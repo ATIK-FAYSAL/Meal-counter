@@ -9,12 +9,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.atik_faysal.backend.CreateGroupBackgroundTask;
-import com.atik_faysal.backend.InformationCheckBackgroundTask;
+import com.atik_faysal.backend.InfoBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import com.atik_faysal.backend.InformationCheckBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
 
 /**
  * Created by USER on 1/22/2018.
@@ -94,7 +94,6 @@ public class MakeMyGroup extends AppCompatActivity
                 return flag;
         }
 
-
         OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
                 public void onResultSuccess(final String message) {
@@ -124,7 +123,7 @@ public class MakeMyGroup extends AppCompatActivity
                         public void onClick(View v) {
                                 getGroupInformation();
 
-                                InformationCheckBackgroundTask backgroundTask = new InformationCheckBackgroundTask(MakeMyGroup.this);
+                                InfoBackgroundTask backgroundTask = new InfoBackgroundTask(MakeMyGroup.this);
 
                                 if(!currentUserName.isEmpty())
                                 {

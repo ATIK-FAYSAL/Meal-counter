@@ -148,35 +148,47 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 // Handle navigation view item clicks here.
                 int id = item.getItemId();
 
-                if(id==R.id.makeGroup)
+                switch (id)
                 {
-                        startActivity(new Intent(HomePageActivity.this,MakeMyGroup.class));
-                }else if(id==R.id.editProfile)
-                {
+                        case R.id.makeGroup:
+                                if(internetIsOn.isOnline())
+                                        startActivity(new Intent(HomePageActivity.this,EditYourProfile.class));
+                                else dialogClass.noInternetConnection();
+                                break;
 
-                }else if(id==R.id.acceptRequest)
-                {
+                        case R.id.editProfile:
+                                if(internetIsOn.isOnline())
+                                        startActivity(new Intent(HomePageActivity.this,EditYourProfile.class));
+                                else dialogClass.noInternetConnection();
+                                break;
 
-                }else if(id==R.id.makeAdmin)
-                {
+                        case R.id.acceptRequest:
+                                break;
 
-                }else if(id==R.id.member)
-                {
+                        case R.id.makeAdmin:
+                                break;
 
-                }else if(id==R.id.setAlarm)
-                {
+                        case R.id.member:
+                                break;
 
-                }else if(id==R.id.setting)
-                {
+                        case R.id.setAlarm:
+                                break;
 
-                }else if(id==R.id.feedback)
-                {
-                        startActivity(new Intent(HomePageActivity.this,Feedback.class));
-                }else if(id==R.id.aboutUs)
-                {
+                        case R.id.setting:
+                                break;
 
-                }else if(id==R.id.logout)
-                        userLogOut();
+                        case R.id.feedback:
+                                startActivity(new Intent(HomePageActivity.this,Feedback.class));
+                                break;
+
+                        case R.id.aboutUs:
+                                break;
+
+                        case R.id.logout:
+                                userLogOut();
+                                break;
+
+                }
 
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
