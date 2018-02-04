@@ -41,9 +41,9 @@
 
         <activity
             android:name=".HomePageActivity"
-            android:label=""
+            android:label="Home"
             android:theme="@style/AppTheme"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <activity android:name=".MakeMyGroup"
             android:screenOrientation="portrait"/>
@@ -62,8 +62,16 @@
             android:label="Profile"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".AllMemberList"
+            android:label="Member's"
+            android:screenOrientation="portrait"/>
 
-
+        <activity android:name=".MemberDetails"
+            android:label="Profile"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AdminPanel"
+            android:label="Admin"
+            android:screenOrientation="portrait"/>
 
         <activity android:name="com.facebook.accountkit.ui.AccountKitEmailRedirectActivity">
             <intent-filter>

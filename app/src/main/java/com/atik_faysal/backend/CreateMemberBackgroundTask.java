@@ -1,13 +1,11 @@
 package com.atik_faysal.backend;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 
@@ -26,8 +24,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-
-import static android.content.ContentValues.TAG;
 /**
  * Created by USER on 1/20/2018.
  */
@@ -43,7 +39,7 @@ public class CreateMemberBackgroundTask extends AsyncTask<String,Void,String>
         private Context context;
         private String name,phone,userName,address,email,password,date,favouriteWord;
         String memberType = "member";
-        String taka = "0",groupId = "null";
+        String taka = "0",groupId = "Null";
 
         ProgressDialog progressDialog;
 
@@ -154,7 +150,8 @@ public class CreateMemberBackgroundTask extends AsyncTask<String,Void,String>
                                 {
                                         closeActivity((Activity) context,HomePageActivity.class);
                                         new SharedPreferenceData(context).ifUserLogIn(USER_LOGIN,true);
-                                        new SharedPreferenceData(context).saveCurrentUserInfo(USER_INFO,userName,password);
+                                        new SharedPreferenceData(context).currentUserInfo(USER_INFO,userName,password);
+                                        new SharedPreferenceData(context).userType("member");
                                 }else Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
                         }
                 });

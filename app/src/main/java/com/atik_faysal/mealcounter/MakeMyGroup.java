@@ -100,14 +100,16 @@ public class MakeMyGroup extends AppCompatActivity
                         runOnUiThread(new Runnable() {
                                 public void run() {
                                         switch (message) {
-                                                case "null":
+                                                case "Null":
                                                         new CreateGroupBackgroundTask(MakeMyGroup.this).execute(gName,gId,gAddress,gDescription,someMethod.getDate(),currentUserName);
+                                                        sharedPreferenceData.userType("admin");
                                                         break;
                                                 case "offline":
                                                         dialogClass.noInternetConnection();
                                                         break;
                                                 default:
-                                                        Toast.makeText(MakeMyGroup.this,"You are already a member of "+message+".First Leave from previous group and retry. ",Toast.LENGTH_LONG).show();
+                                                        dialogClass.alreadyMember(message);
+                                                       // Toast.makeText(MakeMyGroup.this,"You are already a member of "+message+".First Leave from previous group and retry.",Toast.LENGTH_LONG).show();
                                                         break;
                                         }
                                 }

@@ -123,19 +123,20 @@ public class UserLogIn extends AsyncTask<String,Void,String>
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(final String result) {
                 super.onPostExecute(result);
-                if(result.equals("log in success"))
+                if((result.equals("member"))||(result.equals("admin")))
                 {
                         ringProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                                 @Override
                                 public void onDismiss(DialogInterface dialog) {
                                         closeActivity((Activity)context,HomePageActivity.class);
                                         sharedPreferenceData.ifUserLogIn(USER_LOGIN,true);
-                                        sharedPreferenceData.saveCurrentUserInfo(USER_INFO,userName,password);
+                                        sharedPreferenceData.currentUserInfo(USER_INFO,userName,password);
+                                        sharedPreferenceData.userType(result);
                                 }
                         });
-                }else Toast.makeText(context,result,Toast.LENGTH_SHORT).show();
+                }else Toast.makeText(context,"Log in failed",Toast.LENGTH_SHORT).show();
         }
 
         private static void closeActivity(Activity context, Class<?> clazz) {

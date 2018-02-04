@@ -15,12 +15,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.atik_faysal.backend.GetSearchableGroup;
+import com.atik_faysal.backend.InfoBackgroundTask;
+import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.SearchableModel;
 import com.facebook.accountkit.ui.LoginType;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import interfaces.SearchInterfaces;
@@ -38,14 +45,19 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         private Toolbar toolbar;
         private DrawerLayout drawer;
         private ActionBarDrawerToggle toggle;
+        private View view;
+        private TextView textView;
 
         private SharedPreferenceData sharedPreferenceData;
         private CheckInternetIsOn internetIsOn;
         private AlertDialogClass dialogClass;
+        private InfoBackgroundTask backgroundTask;
+        private NeedSomeMethod someMethod;
 
 
         private final static String USER_LOGIN = "userLogIn";
-
+        private final static String USER_INFO = "currentInfo";
+        private String currentUser,userType,type;
 
         private ArrayList<SearchableModel>groupList ;
 
@@ -69,11 +81,62 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                 NavigationView navigationView =  findViewById(R.id.nav_view);
                 navigationView.setNavigationItemSelectedListener(this);
+                view = navigationView.inflateHeaderView(R.layout.nav_header_home_page);
+                textView = view.findViewById(R.id.txtUserName);
 
                 sharedPreferenceData = new SharedPreferenceData(this);
                 internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
+                someMethod = new NeedSomeMethod(this);
+
+                currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
+                userType = sharedPreferenceData.getUserType();
+                textView.setText(currentUser);
+
         }
+
+
+        @Override
+        protected void onStart() {
+                super.onStart();
+
+                String fUrl = "http://192.168.56.1/checkMemType.php";
+                String postData;
+                try {
+                        postData = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
+                        backgroundTask = new InfoBackgroundTask(this);
+                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
+                        backgroundTask.execute(fUrl,postData);
+
+                } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                }
+        }
+
+        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String message) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        if(message.equals("no result"))
+                                        {
+                                                someMethod.closeActivity(HomePageActivity.this,LogInActivity.class);
+                                                sharedPreferenceData.ifUserLogIn(USER_LOGIN,false);
+                                        }
+                                        else
+                                        {
+                                                if(!userType.equals(message))
+                                                {
+                                                        sharedPreferenceData.userType(message);
+                                                        userType = message;
+                                                }
+                                        }
+                                }
+                        });
+                }
+        };
+
 
         @Override
         public void onBackPressed() {
@@ -148,11 +211,13 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 // Handle navigation view item clicks here.
                 int id = item.getItemId();
 
+                userType = sharedPreferenceData.getUserType();
+
                 switch (id)
                 {
                         case R.id.makeGroup:
                                 if(internetIsOn.isOnline())
-                                        startActivity(new Intent(HomePageActivity.this,EditYourProfile.class));
+                                        startActivity(new Intent(HomePageActivity.this,MakeMyGroup.class));
                                 else dialogClass.noInternetConnection();
                                 break;
 
@@ -163,12 +228,23 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 break;
 
                         case R.id.acceptRequest:
+                                if(userType.equals("admin"))
+                                {
+
+                                }else dialogClass.error("Only admin can accept request.You are not an admin.");
                                 break;
 
                         case R.id.makeAdmin:
+                                if(userType.equals("admin"))
+                                {
+                                        startActivity(new Intent(HomePageActivity.this,AdminPanel.class));
+                                }else dialogClass.error("Only admin can make another admin.You are not an admin.");
                                 break;
 
                         case R.id.member:
+                                if(internetIsOn.isOnline())
+                                        startActivity(new Intent(HomePageActivity.this,AllMemberList.class));
+                                else dialogClass.noInternetConnection();
                                 break;
 
                         case R.id.setAlarm:
@@ -190,7 +266,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                 }
 
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                DrawerLayout drawer = findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
         }

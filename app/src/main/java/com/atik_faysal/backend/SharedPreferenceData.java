@@ -20,6 +20,9 @@ public class SharedPreferenceData
         private static final String MEAL_INPUT_TYPE = "mInputType";
         private static final String COST_INPUT_TYPE = "cInputType";
         private static final String INPUT_TASK_COMPLETE = "inputTask";
+        private static final String REMEMBER_ME = "rememberMe";
+        private static final String USER_LOGIN = "userLogIn";
+        private static final String MEMBER_TYPE = "mType";
 
         private Context context;
 
@@ -104,7 +107,7 @@ public class SharedPreferenceData
                 return value;
         }
 
-        public void saveCurrentUserInfo(String prefName, String userName, String password)
+        public void currentUserInfo(String prefName, String userName, String password)
         {
                 sharedPreferences = context.getSharedPreferences(prefName,Context.MODE_PRIVATE);
                 editor = sharedPreferences.edit();
@@ -150,6 +153,24 @@ public class SharedPreferenceData
                 flag = sharedPreferences.getBoolean("remember",false);
 
                 return flag;
+        }
+
+
+        public void userType(String type)
+        {
+                sharedPreferences = context.getSharedPreferences(MEMBER_TYPE,Context.MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putString("type",type);
+                editor.apply();
+        }
+
+
+        public String getUserType()
+        {
+                String value;
+                sharedPreferences = context.getSharedPreferences(MEMBER_TYPE,Context.MODE_PRIVATE);
+                value = sharedPreferences.getString("type","null");
+                return value;
         }
 
 }
