@@ -28,7 +28,7 @@ import java.net.URLEncoder;
 public class CreateGroupBackgroundTask extends AsyncTask<String,Void,String>
 {
 
-        String groupName,groupId,groupDescription,groupAddress,groupAdmin,date;
+        String groupName,groupId,groupDescription,groupAddress,groupAdmin,date,groupType,time;
         Context context;
         StringBuilder result ;
         ProgressDialog ringProgressDialog;
@@ -63,6 +63,8 @@ public class CreateGroupBackgroundTask extends AsyncTask<String,Void,String>
 
                 groupName = params[0];groupId = params[1];groupAddress = params[2];groupDescription=params[3];date = params[4];
                 groupAdmin = params[5];
+                groupType = params[6];
+                time = params[7];
 
                 result = new StringBuilder();
                 String groupUrl = "http://192.168.56.1/createGroup.php";
@@ -87,7 +89,9 @@ public class CreateGroupBackgroundTask extends AsyncTask<String,Void,String>
                                 +URLEncoder.encode("groupAddress","UTF-8")+"="+URLEncoder.encode(groupAddress,"UTF-8")+"&"
                                 +URLEncoder.encode("groupDescription","UTF-8")+"="+URLEncoder.encode(groupDescription,"UTF-8")+"&"
                                 +URLEncoder.encode("groupAdmin","UTF-8")+"="+URLEncoder.encode(groupAdmin,"UTF-8")+"&"
-                                +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(date,"UTF-8");
+                                +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(date,"UTF-8")+"&"
+                                +URLEncoder.encode("groupType","UTF-8")+"="+URLEncoder.encode(groupType,"UTF-8")+"&"
+                                +URLEncoder.encode("time","UTF-8")+"="+URLEncoder.encode(time,"UTF-8");
 
                         bufferedWriter.write(postInfo);
                         bufferedWriter.flush();

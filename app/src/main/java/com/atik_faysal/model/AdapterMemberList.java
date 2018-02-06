@@ -19,7 +19,6 @@ import android.content.Context;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -92,7 +91,7 @@ public class AdapterMemberList extends BaseAdapter
                 txtPhone = view.findViewById(R.id.txtPhone);
                 txtDate = view.findViewById(R.id.txtDate);
                 txtType = view.findViewById(R.id.txtType);
-                txtTaka = view.findViewById(R.id.txtTaka);
+                txtTaka = view.findViewById(R.id.gAdmin);
 
                 bRemove = view.findViewById(R.id.bRemove);
                 bDetails = view.findViewById(R.id.bDetails);

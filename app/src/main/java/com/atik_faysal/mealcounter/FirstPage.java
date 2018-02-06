@@ -76,7 +76,7 @@ public class FirstPage extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
 
-                                startActivity(new Intent(FirstPage.this,SecondPage.class));
+                                startActivity(new Intent(FirstPage.this,LogInActivity.class));
                         }
                 });
         }

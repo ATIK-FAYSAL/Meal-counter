@@ -69,16 +69,16 @@ public class MemberDetails extends AppCompatActivity
         {
                 toolbar = findViewById(R.id.toolbar1);
                 setSupportActionBar(toolbar);
-                txtTaka = findViewById(R.id.txtTaka);
-                txtUserName = findViewById(R.id.eUserName);
+                txtTaka = findViewById(R.id.gAdmin);
+                txtUserName = findViewById(R.id.groupId);
                 txtGroup = findViewById(R.id.txtGroup);
-                txtDate = findViewById(R.id.eDate);
+                txtDate = findViewById(R.id.gDate);
 
-                eName = findViewById(R.id.eName);
-                eEmail = findViewById(R.id.eEmail);
-                eAddress = findViewById(R.id.eAddress);
-                eFaWord = findViewById(R.id.eFaWord);
-                ePhone = findViewById(R.id.ePhone);
+                eName = findViewById(R.id.groupName);
+                eEmail = findViewById(R.id.gAddress);
+                eAddress = findViewById(R.id.gTime);
+                eFaWord = findViewById(R.id.gDescription);
+                ePhone = findViewById(R.id.gType);
 
                 bRemove = findViewById(R.id.bEdit);
                 bRemove.setText("Remove");

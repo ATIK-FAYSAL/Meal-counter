@@ -9,13 +9,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.backend.UserLogIn;
-import com.crashlytics.android.Crashlytics;
-
-import io.fabric.sdk.android.Fabric;
 
 /**
  *initComponent-->Void.    initialize all component and object,also call some method.
@@ -82,7 +78,7 @@ public class LogInActivity extends AppCompatActivity
                 txtForgotPass = findViewById(R.id.txtForgotPass);
                 bSignIn = findViewById(R.id.bSignIn);
                 checkBox = findViewById(R.id.cRemember);
-                txtUserName = findViewById(R.id.eUserName);
+                txtUserName = findViewById(R.id.groupId);
                 txtUserPassword = findViewById(R.id.ePassword);
 
                 checkInternet = new CheckInternetIsOn(this);

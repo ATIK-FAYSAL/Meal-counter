@@ -49,10 +49,10 @@ public class ForgetPassword extends AppCompatActivity
         private void initComponent()
         {
                 eFaWord = findViewById(R.id.eFavourite);
-                eUserName = findViewById(R.id.eUserName);
+                eUserName = findViewById(R.id.groupId);
                 bContinue = findViewById(R.id.bContinue);
                 toolbar = findViewById(R.id.toolbar1);
-                ePhone = findViewById(R.id.ePhone);
+                ePhone = findViewById(R.id.gType);
                 setSupportActionBar(toolbar);
                 setToolbar();
                 onButtonClick();

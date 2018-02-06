@@ -81,7 +81,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="13dp"
-                        android:text="Taka"
+                        android:text="Admin"
                         android:textColor="#000"
                         android:textSize="18dp"
                         android:textStyle="bold" />
@@ -93,9 +93,8 @@
                         android:layout_below="@+id/text1"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="20dp"
-                        android:drawableLeft="@drawable/icon_taka"
                         android:gravity="center"
-                        android:hint=" 2500"
+                        android:hint="Admin"
                         android:textColor="@color/color2"
                         android:textSize="19dp"
                         android:textStyle="bold" />
@@ -115,13 +114,13 @@
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="12dp"
-                        android:text="Group"
+                        android:text="Member"
                         android:textColor="#000"
                         android:textSize="18dp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/txtGroup"
+                        android:id="@+id/gMember"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/text3"
@@ -143,158 +142,192 @@
         <RelativeLayout
             android:id="@+id/relativeLayout4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/layout3"
+            android:layout_marginTop="10dp"
             android:background="@color/white">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/lay1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:text="Name "
+                    android:textColor="@color/color2"
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/groupName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:hint="group name"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    android:backgroundTint="@color/white"/>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/lay1"
+                android:id="@+id/lay4">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:text="Address"
+                    android:textColor="@color/color2"
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/gAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="2"
+                    android:backgroundTint="@color/white"
+                    android:gravity="center"
+                    android:hint="Address"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/lay4"
+                android:id="@+id/lay2">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:text="Fixed Time "
+                    android:textColor="@color/color2"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/gTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:hint="Time"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/lay2"
+                android:id="@+id/lay3">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:text="Group Type "
+                    android:textColor="@color/color2"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/gType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:hint="type"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
+
+
+
             <TextView
-                android:id="@+id/nameText"
+                android:id="@+id/txtDes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/groupName"
-                android:text="Name"
-                android:textColor="#E91E63"
-                android:textSize="18dp" />
-
-
-            <EditText
-                android:id="@+id/groupName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_below="@id/nameText"
-                android:layout_marginLeft="60dp"
-                android:layout_marginRight="60dp"
-                android:layout_marginTop="30dp"
-                android:backgroundTint="#fff"
-                android:clickable="false"
-                android:ems="10"
-                android:focusable="false"
-                android:gravity="center"
-                android:hint="user name"
-                android:inputType="textPersonName"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-
-            <EditText
-                android:id="@+id/gAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/gType"
-                android:layout_alignStart="@+id/gType"
-                android:layout_below="@+id/groupName"
-                android:layout_marginTop="11dp"
-                android:backgroundTint="#fff"
-                android:clickable="false"
-                android:drawableLeft="@drawable/icon_email"
-                android:ems="10"
-                android:focusable="false"
-                android:gravity="center"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-
-            <EditText
-                android:id="@+id/gType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/gAddress"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="60dp"
-                android:layout_marginRight="60dp"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="#fff"
-                android:clickable="false"
-                android:drawableLeft="@drawable/icon_phone"
-                android:ems="10"
-                android:focusable="false"
-                android:gravity="center"
-                android:hint="Phone"
-                android:inputType="phone"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-
-            <EditText
-                android:id="@+id/gTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/gType"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="60dp"
-                android:layout_marginRight="60dp"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="#fff"
-                android:clickable="false"
-                android:drawableLeft="@drawable/icon_address"
-                android:ems="10"
-                android:focusable="false"
-                android:gravity="center"
-                android:hint="Address"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:text="Description"
+                android:textColor="@color/color2"
+                android:layout_below="@id/lay3"
+                android:textSize="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"/>
 
             <EditText
                 android:id="@+id/gDescription"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt1"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="60dp"
-                android:layout_marginRight="60dp"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="#fff"
-                android:clickable="false"
-                android:ems="10"
-                android:focusable="false"
+                android:layout_height="120dp"
+                android:layout_alignStart="@+id/txtDes"
+                android:layout_below="@+id/txtDes"
+                android:layout_marginTop="11dp"
+                android:backgroundTint="@color/white"
+                android:layout_marginRight="20dp"
                 android:gravity="center"
-                android:hint="Favourite word"
-                android:inputType="textPersonName"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-
+                android:hint="Description"
+                android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/txt1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/gDescription"
-                android:layout_below="@+id/gTime"
-                android:layout_marginTop="13dp"
-                android:text="Favourite word "
-                android:textColor="#E91E63"
-                android:textSize="18dp" />
+                android:id="@+id/gDate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_below="@id/gDescription"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/black"
+                android:layout_marginBottom="20dp"
+                android:drawableLeft="@drawable/icon_bold"/>
+
 
         </RelativeLayout>
 
 
-        <TextView
-            android:id="@+id/gDate"
+        <Button
+            android:id="@+id/buEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/relativeLayout4"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="#fff"
-            android:drawableLeft="@drawable/icon_bold"
-            android:ems="10"
-            android:gravity="left"
-            android:textColor="#808B96"
-            android:textSize="16dp" />
-
-        <Button
-            android:id="@+id/bEdit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/gDate"
-            android:layout_alignStart="@+id/gDate"
-            android:layout_below="@+id/gDate"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
             android:layout_marginTop="22dp"
             android:background="@drawable/button1"
             android:text="Edit"

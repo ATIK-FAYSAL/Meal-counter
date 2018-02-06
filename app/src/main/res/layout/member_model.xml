@@ -71,12 +71,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/txtUserName"
-                android:layout_alignEnd="@+id/txtTaka"
-                android:layout_alignStart="@+id/txtTaka"
+                android:layout_alignEnd="@+id/gAdmin"
+                android:layout_alignStart="@+id/gAdmin"
                 android:hint="Type" />
 
             <TextView
-                android:id="@+id/txtTaka"
+                android:id="@+id/gAdmin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/txtDate"

@@ -24,14 +24,6 @@
         </activity>
 
         <activity
-            android:name=".SecondPage"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".ThirdPage"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name=".LogInActivity"
             android:label=""
             android:screenOrientation="portrait"/>
@@ -46,6 +38,7 @@
             android:screenOrientation="portrait" />
 
         <activity android:name=".MakeMyGroup"
+            android:label="New Group"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".ForgetPassword"
@@ -71,6 +64,10 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".AdminPanel"
             android:label="Admin"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".MyGroupInfo"
+            android:label="My Group"
             android:screenOrientation="portrait"/>
 
         <activity android:name="com.facebook.accountkit.ui.AccountKitEmailRedirectActivity">

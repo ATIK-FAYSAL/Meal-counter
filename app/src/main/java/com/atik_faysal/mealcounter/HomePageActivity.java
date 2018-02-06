@@ -221,6 +221,12 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 else dialogClass.noInternetConnection();
                                 break;
 
+                        case R.id.myGroup:
+                                if(internetIsOn.isOnline())
+                                        startActivity(new Intent(HomePageActivity.this,MyGroupInfo.class));
+                                else dialogClass.noInternetConnection();
+                                break;
+
                         case R.id.editProfile:
                                 if(internetIsOn.isOnline())
                                         startActivity(new Intent(HomePageActivity.this,EditYourProfile.class));

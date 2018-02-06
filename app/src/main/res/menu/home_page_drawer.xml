@@ -8,6 +8,12 @@
             android:id="@+id/makeGroup"
             android:icon="@drawable/icon_group"
             android:title="Make group" />
+
+        <item
+            android:id="@+id/myGroup"
+            android:icon="@drawable/icon_member"
+            android:title="My Group" />
+
         <item
             android:id="@+id/editProfile"
             android:icon="@drawable/icon_edit"
@@ -19,7 +25,7 @@
         <item
             android:id="@+id/makeAdmin"
             android:icon="@drawable/icon_admin"
-            android:title="Make admin" />
+            android:title="Admin Panel" />
         <item
             android:id="@+id/member"
             android:icon="@drawable/icon_member"
