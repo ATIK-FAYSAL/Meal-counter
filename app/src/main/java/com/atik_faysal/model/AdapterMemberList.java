@@ -50,6 +50,7 @@ public class AdapterMemberList extends BaseAdapter
         private static String DATA ;
         private String classType;
         private String currentUser;
+        private String removeUserName;
 
 
         public AdapterMemberList(Context context,String classType,List<MemberModel>memberList)
@@ -112,6 +113,8 @@ public class AdapterMemberList extends BaseAdapter
 
         private void onButtonClickListener(final String userName,String type)
         {
+                removeUserName = userName;
+
                 bDetails.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -120,7 +123,6 @@ public class AdapterMemberList extends BaseAdapter
                                 context.startActivity(page);
                         }
                 });
-
 
 
                 switch (classType)
@@ -136,7 +138,10 @@ public class AdapterMemberList extends BaseAdapter
                                                 else
                                                 {
                                                         if(sharedPreferenceData.getUserType().equals("admin"))
-                                                                removeMember(userName);
+                                                        {
+                                                                dialogClass.onSuccessListener(taskInterface);
+                                                                dialogClass.warning("Really want to remove this member ?");
+                                                        }
                                                         else dialogClass.error("Only admin can remove member.You are not an admin.");
                                                 }
                                         }
@@ -251,6 +256,25 @@ public class AdapterMemberList extends BaseAdapter
                                                         context.startActivity(new Intent(context, AllMemberList.class));
                                                         activity.finish();
                                                         break;
+                                        }
+                                }
+                        });
+                }
+        };
+
+
+        private OnAsyncTaskInterface taskInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String result) {
+                        activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        switch (result)
+                                        {
+                                                case "yes":
+                                                        removeMember(removeUserName);
+                                                        break;
+
                                         }
                                 }
                         });

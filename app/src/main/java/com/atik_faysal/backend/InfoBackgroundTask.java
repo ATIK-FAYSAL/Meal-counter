@@ -70,6 +70,7 @@ public class InfoBackgroundTask extends AsyncTask<String,Void,String>
                         try {
                                 url = new URL(fileName);
                                 httpURLConnection = (HttpURLConnection)url.openConnection();
+                                httpURLConnection.setConnectTimeout(10000);
                                 httpURLConnection.setRequestMethod("POST");
                                 httpURLConnection.setDoOutput(true);
                                 httpURLConnection.setDoInput(true);

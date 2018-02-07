@@ -255,6 +255,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                 else
                         format = " AM";
 
+                sHour = String.valueOf(hourFinal);
 
                 if(hourFinal<10)
                         sHour = "0"+String.valueOf(hourFinal);

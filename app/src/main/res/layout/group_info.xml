@@ -92,12 +92,11 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/text1"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="16dp"
                         android:gravity="center"
                         android:hint="Admin"
-                        android:textColor="@color/color2"
-                        android:textSize="19dp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/color1"
+                        android:textSize="18dp"/>
 
                 </RelativeLayout>
 
@@ -128,9 +127,8 @@
                         android:layout_marginTop="16dp"
                         android:gravity="center"
                         android:hint="Toma"
-                        android:textColor="@color/color2"
-                        android:textSize="19dp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/color1"
+                        android:textSize="18dp" />
 
                 </RelativeLayout>
 
@@ -163,7 +161,7 @@
                     android:layout_weight="1"
                     android:text="Name "
                     android:textColor="@color/color2"
-                    android:textSize="20dp" />
+                    android:textSize="18dp" />
 
                 <EditText
                     android:id="@+id/groupName"
@@ -174,7 +172,7 @@
                     android:gravity="center"
                     android:hint="group name"
                     android:textColor="@color/black"
-                    android:textSize="20dp"
+                    android:textSize="16dp"
                     android:backgroundTint="@color/white"/>
 
             </LinearLayout>
@@ -197,7 +195,7 @@
                     android:layout_weight="1"
                     android:text="Address"
                     android:textColor="@color/color2"
-                    android:textSize="20dp" />
+                    android:textSize="18dp" />
 
                 <EditText
                     android:id="@+id/gAddress"
@@ -208,6 +206,7 @@
                     android:backgroundTint="@color/white"
                     android:gravity="center"
                     android:hint="Address"
+                    android:textSize="16dp"
                     android:textColor="@color/black" />
 
             </LinearLayout>
@@ -229,7 +228,7 @@
                     android:layout_weight="1"
                     android:text="Fixed Time "
                     android:textColor="@color/color2"
-                    android:textSize="20dp" />
+                    android:textSize="18dp" />
 
                 <TextView
                     android:id="@+id/gTime"
@@ -240,7 +239,9 @@
                     android:gravity="center"
                     android:hint="Time"
                     android:textColor="@color/black"
-                    android:textSize="20dp" />
+                    android:textSize="16dp"
+                    android:clickable="false"
+                    android:enabled="false"/>
 
             </LinearLayout>
 
@@ -261,7 +262,7 @@
                     android:layout_weight="1"
                     android:text="Group Type "
                     android:textColor="@color/color2"
-                    android:textSize="20dp" />
+                    android:textSize="18dp" />
 
                 <TextView
                     android:id="@+id/gType"
@@ -272,7 +273,9 @@
                     android:gravity="center"
                     android:hint="type"
                     android:textColor="@color/black"
-                    android:textSize="20dp" />
+                    android:textSize="16dp"
+                    android:clickable="false"
+                    android:enabled="false"/>
 
             </LinearLayout>
 
@@ -287,22 +290,23 @@
                 android:text="Description"
                 android:textColor="@color/color2"
                 android:layout_below="@id/lay3"
-                android:textSize="20dp"
+                android:textSize="18dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="15dp"/>
 
             <EditText
                 android:id="@+id/gDescription"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="wrap_content"
                 android:layout_alignStart="@+id/txtDes"
                 android:layout_below="@+id/txtDes"
-                android:layout_marginTop="11dp"
-                android:backgroundTint="@color/white"
+                android:layout_marginTop="13dp"
                 android:layout_marginRight="20dp"
-                android:gravity="center"
+                android:backgroundTint="@color/white"
+                android:gravity="start"
                 android:hint="Description"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/gDate"
@@ -314,6 +318,7 @@
                 android:layout_marginTop="15dp"
                 android:textColor="@color/black"
                 android:layout_marginBottom="20dp"
+                android:textSize="14dp"
                 android:drawableLeft="@drawable/icon_bold"/>
 
 
