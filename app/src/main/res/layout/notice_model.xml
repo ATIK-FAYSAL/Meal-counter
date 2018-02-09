@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/txtUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/txtNotice"
+            android:layout_marginTop="11dp"
+            android:gravity="start"
+            android:hint="UserName"
+            android:textColor="@color/black"
+            android:textSize="17dp" />
+
+        <TextView
+            android:id="@+id/txtDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/txtUserName"
+            android:layout_below="@+id/txtUserName"
+            android:layout_marginTop="11dp"
+            android:hint="date"
+            android:textColor="@color/offWhite"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtDate"
+            android:layout_centerHorizontal="true"
+            android:hint="title"
+            android:layout_marginTop="8dp"
+            android:textColor="#FF5722"/>
+
+        <com.borjabravo.readmoretextview.ReadMoreTextView
+            android:id="@+id/txtNotice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtTitle"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="40dp"
+            android:hint="notice board"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            app:trimCollapsedText="Less"
+            app:trimExpandedText="Read more"
+            app:trimMode="trimModeLine"
+            app:trimLines="2"
+            android:maxLines="50"
+            app:colorClickableText="@color/color2"
+            android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:id="@+id/txtId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/txtDate"
+            android:layout_alignBottom="@+id/txtDate"
+            android:layout_alignEnd="@+id/txtNotice"
+            android:hint="#P1001"
+            android:textColor="@color/colorAccent" />
+
+
+        <Button
+            android:id="@+id/bRemove"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtNotice"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button2"
+            android:text="Remove" />
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

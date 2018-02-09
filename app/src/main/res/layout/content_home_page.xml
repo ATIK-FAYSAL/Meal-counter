@@ -187,370 +187,421 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
+            android:background="@color/color7"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/home_background"
-                android:orientation="vertical">
+                android:layout_height="650dp">
+
 
                 <LinearLayout
-                    android:id="@+id/layout1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/linLay1">
 
-                    <RelativeLayout
+                    <android.support.v7.widget.CardView
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        android:background="@drawable/button_style"
-                        android:clickable="true">
+                        app:cardBackgroundColor="@color/color7"
+                        app:cardCornerRadius="10dp"
+                        android:id="@+id/cardView1"
+                        android:clickable="true"
+                        android:onClick="onButtonClick">
 
-                        <ImageView
-                            android:id="@+id/img1"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="20dp"
-                            android:layout_weight="1"
-                            android:clickable="true"
-                            android:gravity="center"
-                            android:src="@mipmap/ic_launcher"
-                            android:text="Input Meal"
-                            android:textColor="#E0E8EE"
-                            android:textSize="20dp"
-                            android:textStyle="bold" />
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:layout_margin="16dp"
+                            android:orientation="vertical"
+                            android:gravity="center">
 
-                        <TextView
-                            android:id="@+id/text1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/img1"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:text="INPUT MEAL"
-                            android:textColor="#9E9E9E"
-                            android:textSize="16dp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="15dp"/>
+                            <ImageView
+                                android:layout_width="100dp"
+                                android:layout_height="80dp"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@drawable/logo"
+                                android:id="@+id/image1"
+                                android:onClick="onButtonClick"/>
 
-                    </RelativeLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Input meal"
+                                android:textAlignment="center"
+                                android:textColor="@color/color8"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="10dp"/>
 
-                    <RelativeLayout
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="5dp"
                         android:layout_marginLeft="5dp"
-                        android:background="@drawable/button_style"
-                        android:clickable="true">
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="@color/color7"
+                        app:cardCornerRadius="10dp"
+                        android:id="@+id/cardView2"
+                        android:clickable="true"
+                        android:onClick="onButtonClick">
 
-                        <ImageView
-                            android:id="@+id/img2"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="20dp"
-                            android:layout_weight="1"
-                            android:clickable="true"
-                            android:drawableTop="@mipmap/ic_launcher"
-                            android:gravity="center"
-                            android:src="@mipmap/ic_launcher" />
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:layout_margin="16dp"
+                            android:orientation="vertical"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center">
 
-                        <TextView
-                            android:id="@+id/text2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_below="@+id/img2"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:text="MY MEAL"
-                            android:textColor="#9E9E9E"
-                            android:textSize="16dp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="15dp"/>
+                            <ImageView
+                                android:layout_width="100dp"
+                                android:layout_height="80dp"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@drawable/logo"
+                                android:id="@+id/image2"
+                                android:onClick="onButtonClick"/>
 
-                    </RelativeLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="My meal"
+                                android:textAlignment="center"
+                                android:textColor="@color/color8"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/layout2"
-                    android:layout_below="@id/layout1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp">
+                    android:orientation="horizontal"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/linLay2"
+                    android:layout_below="@+id/linLay1">
 
-                    <RelativeLayout
+                    <android.support.v7.widget.CardView
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        android:background="@drawable/button_style"
-                        android:clickable="true">
+                        app:cardBackgroundColor="@color/color7"
+                        app:cardCornerRadius="10dp"
+                        android:id="@+id/cardView3"
+                        android:clickable="true"
+                        android:onClick="onButtonClick">
 
-                        <ImageView
-                            android:id="@+id/img3"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="20dp"
-                            android:layout_weight="1"
-                            android:clickable="true"
-                            android:gravity="center"
-                            android:src="@mipmap/ic_launcher"
-                            android:text="Input Meal"
-                            android:textColor="#E0E8EE"
-                            android:textSize="20dp"
-                            android:textStyle="bold" />
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:layout_margin="16dp"
+                            android:orientation="vertical"
+                            android:gravity="center">
 
-                        <TextView
-                            android:id="@+id/text3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/img3"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:text="INPUT MEAL"
-                            android:textColor="#9E9E9E"
-                            android:textSize="16dp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="15dp"/>
+                            <ImageView
+                                android:layout_width="100dp"
+                                android:layout_height="80dp"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@drawable/logo"
+                                android:id="@+id/image3"
+                                android:onClick="onButtonClick"/>
 
-                    </RelativeLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Add cost"
+                                android:textAlignment="center"
+                                android:textColor="@color/color8"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="10dp"/>
 
-                    <RelativeLayout
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="5dp"
                         android:layout_marginLeft="5dp"
-                        android:background="@drawable/button_style"
-                        android:clickable="true">
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="@color/color7"
+                        app:cardCornerRadius="10dp"
+                        android:id="@+id/cardView4"
+                        android:clickable="true"
+                        android:onClick="onButtonClick">
 
-                        <ImageView
-                            android:id="@+id/img4"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="20dp"
-                            android:layout_weight="1"
-                            android:clickable="true"
-                            android:drawableTop="@mipmap/ic_launcher"
-                            android:gravity="center"
-                            android:src="@mipmap/ic_launcher" />
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:layout_margin="16dp"
+                            android:orientation="vertical"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center">
 
-                        <TextView
-                            android:id="@+id/text4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_below="@+id/img4"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:text="MY MEAL"
-                            android:textColor="#9E9E9E"
-                            android:textSize="16dp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="15dp"/>
+                            <ImageView
+                                android:layout_width="100dp"
+                                android:layout_height="80dp"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@drawable/logo"
+                                android:id="@+id/image4"
+                                android:onClick="onButtonClick"/>
 
-                    </RelativeLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="Shopping list"
+                                android:textAlignment="center"
+                                android:textColor="@color/color8"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/layout3"
-                    android:layout_below="@+id/layout2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp">
+                    android:orientation="horizontal"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/linLay3"
+                    android:layout_below="@+id/linLay2">
 
-                    <RelativeLayout
+                    <android.support.v7.widget.CardView
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        android:background="@drawable/button_style"
-                        android:clickable="true">
+                        app:cardBackgroundColor="@color/color7"
+                        app:cardCornerRadius="10dp"
+                        android:id="@+id/cardView5"
+                        android:clickable="true"
+                        android:onClick="onButtonClick">
 
-                        <ImageView
-                            android:id="@+id/img5"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="20dp"
-                            android:layout_weight="1"
-                            android:clickable="true"
-                            android:gravity="center"
-                            android:src="@mipmap/ic_launcher"
-                            android:text="Input Meal"
-                            android:textColor="#E0E8EE"
-                            android:textSize="20dp"
-                            android:textStyle="bold" />
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:layout_margin="16dp"
+                            android:orientation="vertical"
+                            android:gravity="center">
 
-                        <TextView
-                            android:id="@+id/text5"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/img5"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:text="INPUT MEAL"
-                            android:textColor="#9E9E9E"
-                            android:textSize="16dp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="15dp"/>
+                            <ImageView
+                                android:layout_width="100dp"
+                                android:layout_height="80dp"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@drawable/logo"
+                                android:id="@+id/image5"
+                                android:onClick="onButtonClick"/>
 
-                    </RelativeLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Schedule"
+                                android:textAlignment="center"
+                                android:textColor="@color/color8"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="10dp"/>
 
-                    <RelativeLayout
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="5dp"
                         android:layout_marginLeft="5dp"
-                        android:background="@drawable/button_style"
-                        android:clickable="true">
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="@color/color7"
+                        app:cardCornerRadius="10dp"
+                        android:id="@+id/cardView6"
+                        android:clickable="true"
+                        android:onClick="onButtonClick">
 
-                        <ImageView
-                            android:id="@+id/img6"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="20dp"
-                            android:layout_weight="1"
-                            android:clickable="true"
-                            android:drawableTop="@mipmap/ic_launcher"
-                            android:gravity="center"
-                            android:src="@mipmap/ic_launcher" />
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:layout_margin="16dp"
+                            android:orientation="vertical"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center">
 
-                        <TextView
-                            android:id="@+id/text6"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_below="@+id/img6"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:text="MY MEAL"
-                            android:textColor="#9E9E9E"
-                            android:textSize="16dp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="15dp"/>
+                            <ImageView
+                                android:layout_width="100dp"
+                                android:layout_height="80dp"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@drawable/logo"
+                                android:id="@+id/image6"
+                                android:onClick="onButtonClick"/>
 
-                    </RelativeLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="Report"
+                                android:textAlignment="center"
+                                android:textColor="@color/color8"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/layout4"
-                    android:layout_below="@id/layout3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp">
+                    android:orientation="horizontal"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/linLay4"
+                    android:layout_below="@+id/linLay3">
 
-                    <RelativeLayout
+                    <android.support.v7.widget.CardView
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        android:background="@drawable/button_style"
-                        android:clickable="true">
+                        app:cardBackgroundColor="@color/color7"
+                        app:cardCornerRadius="10dp"
+                        android:id="@+id/cardView7"
+                        android:clickable="true"
+                        android:onClick="onButtonClick">
 
-                        <ImageView
-                            android:id="@+id/img7"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="20dp"
-                            android:layout_weight="1"
-                            android:clickable="true"
-                            android:gravity="center"
-                            android:src="@mipmap/ic_launcher"
-                            android:text="Input Meal"
-                            android:textColor="#E0E8EE"
-                            android:textSize="20dp"
-                            android:textStyle="bold" />
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:layout_margin="16dp"
+                            android:orientation="vertical"
+                            android:gravity="center">
 
-                        <TextView
-                            android:id="@+id/text7"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/img7"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:text="INPUT MEAL"
-                            android:textColor="#9E9E9E"
-                            android:textSize="16dp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="15dp"/>
+                            <ImageView
+                                android:layout_width="100dp"
+                                android:layout_height="80dp"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@drawable/logo"
+                                android:id="@+id/image7"
+                                android:onClick="onButtonClick"/>
 
-                    </RelativeLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Notice"
+                                android:textAlignment="center"
+                                android:textColor="@color/color8"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:layout_marginTop="10dp"/>
 
-                    <RelativeLayout
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="5dp"
                         android:layout_marginLeft="5dp"
-                        android:background="@drawable/button_style"
-                        android:clickable="true">
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="@color/color7"
+                        app:cardCornerRadius="10dp"
+                        android:id="@+id/cardView8"
+                        android:clickable="true"
+                        android:onClick="onButtonClick">
 
-                        <ImageView
-                            android:id="@+id/img8"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="20dp"
-                            android:layout_weight="1"
-                            android:clickable="true"
-                            android:drawableTop="@mipmap/ic_launcher"
-                            android:gravity="center"
-                            android:src="@mipmap/ic_launcher" />
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:layout_margin="16dp"
+                            android:orientation="vertical"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center">
 
-                        <TextView
-                            android:id="@+id/text8"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_below="@+id/img8"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:text="MY MEAL"
-                            android:textColor="#9E9E9E"
-                            android:textSize="16dp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="15dp"/>
+                            <ImageView
+                                android:layout_width="100dp"
+                                android:layout_height="80dp"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@drawable/logo"
+                                android:id="@+id/image8"
+                                android:onClick="onButtonClick"/>
 
-                    </RelativeLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="nothing"
+                                android:textAlignment="center"
+                                android:textColor="@color/color8"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
 
                 </LinearLayout>
 
             </RelativeLayout>
+
+
 
         </android.support.v4.widget.NestedScrollView>
 

@@ -6,10 +6,10 @@ android:color="#130D17">
         <corners android:radius="5dp"/>
         <stroke android:width="0dp"/>
         <gradient
-            android:angle="45"
-            android:startColor="#170920"
-            android:centerColor="#300356"
-            android:endColor="#300356" />
+            android:angle="135"
+            android:startColor="#010121"
+            android:centerColor="#06062E"
+            android:endColor="#010121" />
     </shape>
 </item>
 </ripple>

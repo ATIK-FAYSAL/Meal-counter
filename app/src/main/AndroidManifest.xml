@@ -62,12 +62,17 @@
         <activity android:name=".MemberDetails"
             android:label="Profile"
             android:screenOrientation="portrait"/>
+
         <activity android:name=".AdminPanel"
             android:label="Admin"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".MyGroupInfo"
             android:label="My Group"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".NoticeBoard"
+            android:label="Notice"
             android:screenOrientation="portrait"/>
 
         <activity android:name="com.facebook.accountkit.ui.AccountKitEmailRedirectActivity">

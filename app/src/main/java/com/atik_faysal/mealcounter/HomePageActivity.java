@@ -5,7 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.CardView;
 import android.view.MenuInflater;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +25,6 @@ import com.atik_faysal.backend.InfoBackgroundTask;
 import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.SearchableModel;
-import com.facebook.accountkit.ui.LoginType;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -35,8 +35,6 @@ import ir.mirrajabi.searchdialog.SimpleSearchDialogCompat;
 import ir.mirrajabi.searchdialog.core.BaseSearchDialogCompat;
 import ir.mirrajabi.searchdialog.core.SearchResultListener;
 import ir.mirrajabi.searchdialog.core.Searchable;
-import static android.content.ContentValues.TAG;
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 public class HomePageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
@@ -48,6 +46,13 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         private View view;
         private TextView textView;
 
+        //component array object
+        private CardView[] cardViews = new CardView[8];
+        private int[] cardViewId = {R.id.cardView1,R.id.cardView2,R.id.cardView3,R.id.cardView4,R.id.cardView5,R.id.cardView6,R.id.cardView7,R.id.cardView8};
+        private ImageView[] imageViews = new ImageView[8];
+        private int[] imageViewId = {R.id.image1,R.id.image2,R.id.image3,R.id.image4,R.id.image5,R.id.image6,R.id.image7,R.id.image8};
+
+
         private SharedPreferenceData sharedPreferenceData;
         private CheckInternetIsOn internetIsOn;
         private AlertDialogClass dialogClass;
@@ -57,7 +62,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
         private final static String USER_LOGIN = "userLogIn";
         private final static String USER_INFO = "currentInfo";
-        private String currentUser,userType,type;
+        private String currentUser,userType;
 
         private ArrayList<SearchableModel>groupList ;
 
@@ -71,6 +76,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
         private void initComponent()
         {
+
                 toolbar =  findViewById(R.id.toolbar);
                 setSupportActionBar(toolbar);
 
@@ -83,7 +89,9 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 navigationView.setNavigationItemSelectedListener(this);
                 view = navigationView.inflateHeaderView(R.layout.nav_header_home_page);
                 textView = view.findViewById(R.id.txtUserName);
+                initObject();//initialize cardView and imageView
 
+                //other initialize
                 sharedPreferenceData = new SharedPreferenceData(this);
                 internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
@@ -92,6 +100,66 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
                 userType = sharedPreferenceData.getUserType();
                 textView.setText(currentUser);
+
+        }
+
+
+        private void initObject()
+        {
+                int i=0,j=0;
+
+                while (i< cardViews.length)
+                {
+                        cardViews[i] = findViewById(cardViewId[j]);
+                        i++;
+                        j++;
+                }
+
+                int p=0,q=0;
+
+                while (p<imageViews.length)
+                {
+                        imageViews[p] = findViewById(imageViewId[q]);
+                        p++;
+                        q++;
+                }
+        }
+
+
+        public void onButtonClick(View view)
+        {
+                initObject();
+                int id = view.getId();
+
+                if(id==cardViewId[0]||id==imageViewId[0])
+                {
+                        Toast.makeText(this,"click on button 1",Toast.LENGTH_SHORT).show();
+                }else if(id==cardViewId[1]||id==imageViewId[1])
+                {
+                        Toast.makeText(this,"click on button 2",Toast.LENGTH_SHORT).show();
+                }else if(id==cardViewId[2]||id==imageViewId[2])
+                {
+                        Toast.makeText(this,"click on button 3",Toast.LENGTH_SHORT).show();
+                }else if(id==cardViewId[3]||id==imageViewId[3])
+                {
+                        Toast.makeText(this,"click on button 4",Toast.LENGTH_SHORT).show();
+                }else if(id==cardViewId[4]||id==imageViewId[4])
+                {
+                        Toast.makeText(this,"click on button 5",Toast.LENGTH_SHORT).show();
+                }else if(id==cardViewId[5]||id==imageViewId[5])
+                {
+                        Toast.makeText(this,"click on button 6",Toast.LENGTH_SHORT).show();
+                }else if(id==cardViewId[6]||id==imageViewId[6])
+                {
+                        startActivity(new Intent(HomePageActivity.this,NoticeBoard.class));
+                        Toast.makeText(this,"click on button 7",Toast.LENGTH_SHORT).show();
+                }else if(id==cardViewId[7]||id==imageViewId[7])
+                {
+                        Toast.makeText(this,"click on button 8",Toast.LENGTH_SHORT).show();
+                }else if(id==cardViewId[8]||id==imageViewId[8])
+                {
+                        Toast.makeText(this,"click on button 9",Toast.LENGTH_SHORT).show();
+                }
 
         }
 
@@ -163,7 +231,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 menuInflater.inflate(R.menu.search, menu);
                 return true;
         }
-
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -99,7 +100,10 @@ public class LogInActivity extends AppCompatActivity
                 bSignIn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                                if(checkInternet.isOnline())
+
+                                startActivity(new Intent(LogInActivity.this,HomePageActivity.class));
+
+                                /*if(checkInternet.isOnline())
                                 {
                                         if(txtUserName.getText().toString().isEmpty()||txtUserPassword.getText().toString().isEmpty())
                                         {
@@ -107,7 +111,7 @@ public class LogInActivity extends AppCompatActivity
                                                 else if(txtUserPassword.getText().toString().isEmpty())txtUserPassword.setError("Input valid password");
                                         }else new UserLogIn(LogInActivity.this).execute("login",txtUserName.getText().toString(),txtUserPassword.getText().toString());
 
-                                }else dialogClass.noInternetConnection();
+                                }else dialogClass.noInternetConnection();*/
                         }
                 });
 

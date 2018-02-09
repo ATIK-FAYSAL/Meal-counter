@@ -241,7 +241,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                 minFinal = minute;
 
                 String format;
-                String sHour="";
+                String sHour;
                 if(hourFinal>12)
                 {
                         hourFinal-=12;
