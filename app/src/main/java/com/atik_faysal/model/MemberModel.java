@@ -8,9 +8,9 @@ import java.lang.reflect.Member;
 
 public class MemberModel
 {
-        String name,userName,phone,taka,type,date;
+        String name,userName,phone,taka,type,date,group;
 
-        public MemberModel(String name,String userName,String phone,String taka,String type,String date)
+        public MemberModel(String name,String userName,String phone,String group,String taka,String type,String date)
         {
                 this.name = name;
                 this.userName = userName;
@@ -18,6 +18,7 @@ public class MemberModel
                 this.taka = taka;
                 this.type = type;
                 this.date = date;
+                this.group = group;
         }
 
 
@@ -67,5 +68,13 @@ public class MemberModel
 
         public void setDate(String date) {
                 this.date = date;
+        }
+
+        public String getGroup() {
+                return group;
+        }
+
+        public void setGroup(String group) {
+                this.group = group;
         }
 }

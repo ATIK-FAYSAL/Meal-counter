@@ -187,7 +187,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                                                         dialogClass.noInternetConnection();
                                                         break;
                                                 default:
-                                                        dialogClass.alreadyMember(message);
+                                                        dialogClass.alreadyMember("You are already a member of "+message);
                                                         break;
                                         }
                                 }

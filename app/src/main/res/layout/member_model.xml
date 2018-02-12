@@ -71,18 +71,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/txtUserName"
-                android:layout_alignEnd="@+id/gAdmin"
-                android:layout_alignStart="@+id/gAdmin"
+                android:layout_alignEnd="@+id/txtTaka"
+                android:layout_alignStart="@+id/txtTaka"
                 android:hint="Type" />
 
             <TextView
-                android:id="@+id/gAdmin"
+                android:id="@+id/txtTaka"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/txtDate"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="38dp"
-                android:drawableLeft="@drawable/icon_taka"
                 android:hint="  2250" />
 
 

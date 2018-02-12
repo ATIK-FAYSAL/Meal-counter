@@ -92,7 +92,8 @@ public class AdapterMemberList extends BaseAdapter
                 txtPhone = view.findViewById(R.id.txtPhone);
                 txtDate = view.findViewById(R.id.txtDate);
                 txtType = view.findViewById(R.id.txtType);
-                txtTaka = view.findViewById(R.id.gAdmin);
+                txtTaka = view.findViewById(R.id.txtTaka);
+                txtTaka.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_taka, 0, 0, 0);
 
                 bRemove = view.findViewById(R.id.bRemove);
                 bDetails = view.findViewById(R.id.bDetails);

@@ -23,6 +23,7 @@ public class SharedPreferenceData
         private static final String REMEMBER_ME = "rememberMe";
         private static final String USER_LOGIN = "userLogIn";
         private static final String MEMBER_TYPE = "mType";
+        private static final String BUTTON_ACTION = "action";
 
         private Context context;
 
@@ -164,12 +165,29 @@ public class SharedPreferenceData
                 editor.apply();
         }
 
-
         public String getUserType()
         {
                 String value;
                 sharedPreferences = context.getSharedPreferences(MEMBER_TYPE,Context.MODE_PRIVATE);
                 value = sharedPreferences.getString("type","null");
+                return value;
+        }
+
+        public void buttonAction(String value)
+        {
+                sharedPreferences = context.getSharedPreferences(BUTTON_ACTION,Context.MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putString("action",value);
+                editor.apply();
+        }
+
+        public String getButtonAction()
+        {
+                String value;
+
+                sharedPreferences = context.getSharedPreferences(BUTTON_ACTION,Context.MODE_PRIVATE);
+                value = sharedPreferences.getString("action","none");
+
                 return value;
         }
 

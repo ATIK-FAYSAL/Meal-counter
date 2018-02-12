@@ -71,7 +71,7 @@ public class EditYourProfile extends AppCompatActivity
         {
                 toolbar = findViewById(R.id.toolbar1);
                 setSupportActionBar(toolbar);
-                txtTaka = findViewById(R.id.gAdmin);
+                txtTaka = findViewById(R.id.txtTaka);
                 txtUserName = findViewById(R.id.groupId);
                 txtGroup = findViewById(R.id.txtGroup);
                 txtDate = findViewById(R.id.gDate);

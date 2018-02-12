@@ -6,12 +6,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
 import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
 
 /**
@@ -63,7 +64,6 @@ public class AlertDialogClass
                 });
         }
 
-
         public void notMember()
         {
                 Button bOk;
@@ -94,7 +94,6 @@ public class AlertDialogClass
                 });
         }
 
-
         public void alreadyMember(String value)
         {
                 Button bOk;
@@ -106,8 +105,8 @@ public class AlertDialogClass
                 text1 = view.findViewById(R.id.text1);
                 text2 = view.findViewById(R.id.text2);
 
-                text1.setText("You are already a member of "+value);
-                text2.setText("First Leave from previous group and retry.");
+                text1.setText(value);
+                text2.setText("Please first Leave from previous group and retry.");
 
 
 
@@ -125,7 +124,6 @@ public class AlertDialogClass
                         }
                 });
         }
-
 
         public void error(String value)
         {
@@ -153,7 +151,6 @@ public class AlertDialogClass
                         }
                 });
         }
-
 
         public void warning(String value)
         {
@@ -191,5 +188,34 @@ public class AlertDialogClass
                         }
                 });
 
+        }
+
+        public void success(String value)
+        {
+                Button bOk;
+                ImageView imageView;
+                TextView text1;
+
+                builder = new AlertDialog.Builder(context);
+                View view = LayoutInflater.from(context).inflate(R.layout.dialog_error,null);
+
+                text1 = view.findViewById(R.id.text1);
+                imageView = view.findViewById(R.id.imageSign);
+
+                text1.setText(value);
+                imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.icon_happy));
+
+                bOk = view.findViewById(R.id.bOk);
+                builder.setView(view);
+                builder.setCancelable(false);
+                alertDialog = builder.create();
+                alertDialog.show();
+
+                bOk.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                                alertDialog.dismiss();
+                        }
+                });
         }
 }

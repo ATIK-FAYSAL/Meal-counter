@@ -101,9 +101,9 @@ public class LogInActivity extends AppCompatActivity
                         @Override
                         public void onClick(View view) {
 
-                                startActivity(new Intent(LogInActivity.this,HomePageActivity.class));
+                                //startActivity(new Intent(LogInActivity.this,HomePageActivity.class));
 
-                                /*if(checkInternet.isOnline())
+                                if(checkInternet.isOnline())
                                 {
                                         if(txtUserName.getText().toString().isEmpty()||txtUserPassword.getText().toString().isEmpty())
                                         {
@@ -111,7 +111,7 @@ public class LogInActivity extends AppCompatActivity
                                                 else if(txtUserPassword.getText().toString().isEmpty())txtUserPassword.setError("Input valid password");
                                         }else new UserLogIn(LogInActivity.this).execute("login",txtUserName.getText().toString(),txtUserPassword.getText().toString());
 
-                                }else dialogClass.noInternetConnection();*/
+                                }else dialogClass.noInternetConnection();
                         }
                 });
 

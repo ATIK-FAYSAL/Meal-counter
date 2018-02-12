@@ -1,62 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E0E0E0">
-
-    <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/toolbar2"
-        android:background="@color/color1">
-    </android.support.v7.widget.Toolbar>
-
-    <RelativeLayout
-        android:id="@+id/layout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/toolbar2">
-
-        <TextView
-            android:id="@+id/textView16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginStart="19dp"
-            android:layout_marginTop="11dp"
-            android:text="Total Member : "
-            android:textColor="#FF4081"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/txtPerson"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView16"
-            android:layout_alignTop="@+id/textView16"
-            android:layout_marginStart="11dp"
-            android:layout_toEndOf="@+id/textView16"
-            android:hint="person"
-            android:textColor="@color/black"
-            android:textSize="18dp" />
-    </RelativeLayout>
-
-    <ListView
-        android:id="@+id/memberList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/layout1"
-        android:layout_marginTop="14dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:dividerHeight="7dp"
-        android:layout_marginBottom="10dp"
-        android:divider="#E0E0E0"/>
+    android:background="#E0E0E0"
+    android:id="@+id/refreshLayout">
 
 
-</RelativeLayout>
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+      <android.support.v7.widget.Toolbar
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/toolbar2"
+          android:background="@color/color1">
+      </android.support.v7.widget.Toolbar>
+
+      <RelativeLayout
+          android:id="@+id/layout1"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_alignParentStart="true"
+          android:layout_below="@+id/toolbar2">
+
+          <TextView
+              android:id="@+id/textView16"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentStart="true"
+              android:layout_marginLeft="15dp"
+              android:layout_marginRight="15dp"
+              android:layout_marginStart="19dp"
+              android:layout_marginTop="11dp"
+              android:text="Total Member : "
+              android:textColor="#FF4081"
+              android:textSize="18dp"
+              android:textStyle="bold" />
+
+          <TextView
+              android:id="@+id/txtPerson"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignBottom="@+id/textView16"
+              android:layout_alignTop="@+id/textView16"
+              android:layout_marginStart="11dp"
+              android:layout_toEndOf="@+id/textView16"
+              android:hint="person"
+              android:textColor="@color/black"
+              android:textSize="18dp" />
+      </RelativeLayout>
+
+      <ListView
+          android:id="@+id/memberList"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_alignParentStart="true"
+          android:layout_below="@+id/layout1"
+          android:layout_marginTop="14dp"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:dividerHeight="7dp"
+          android:layout_marginBottom="10dp"
+          android:divider="#E0E0E0"/>
+
+  </RelativeLayout>
+
+
+
+</android.support.v4.widget.SwipeRefreshLayout>

@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -85,7 +84,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
         private void initComponent()
         {
                 groupId = findViewById(R.id.groupId);
-                gAdmin = findViewById(R.id.gAdmin);
+                gAdmin = findViewById(R.id.txtTaka);
                 gAddress = findViewById(R.id.gAddress);
                 gMember = findViewById(R.id.gMember);
                 gTime = findViewById(R.id.gTime);

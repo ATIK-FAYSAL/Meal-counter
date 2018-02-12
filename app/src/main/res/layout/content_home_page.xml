@@ -61,7 +61,7 @@
                            android:layout_marginBottom="5dp"
                            android:textColor="#9E9E9E"/>
                        <TextView
-                           android:id="@+id/gAdmin"
+                           android:id="@+id/txtTaka"
                            android:layout_width="0dp"
                            android:layout_height="wrap_content"
                            android:layout_weight="1"

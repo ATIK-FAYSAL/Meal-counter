@@ -20,11 +20,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.atik_faysal.backend.GetSearchableGroup;
 import com.atik_faysal.backend.InfoBackgroundTask;
 import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.SearchableModel;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -63,8 +66,12 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         private final static String USER_LOGIN = "userLogIn";
         private final static String USER_INFO = "currentInfo";
         private String currentUser,userType;
+        private final static String FILE = "http://192.168.56.1/getGroupName.php";
+        private static String POST_DATA ;
 
-        private ArrayList<SearchableModel>groupList ;
+        private ArrayList<SearchableModel>groupList;
+        private JSONObject jsonObject;
+        private JSONArray jsonArray;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +108,16 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 userType = sharedPreferenceData.getUserType();
                 textView.setText(currentUser);
 
+
+                try {
+                        POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode("","UTF-8");
+                        groupList = new ArrayList<>();
+                        InfoBackgroundTask backgroundTask = new InfoBackgroundTask(HomePageActivity.this);
+                        backgroundTask.setOnResultListener(taskInterface);
+                        backgroundTask.execute(FILE,POST_DATA);
+                } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                }
         }
 
 
@@ -240,16 +257,13 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 {
                         if(internetIsOn.isOnline())
                         {
-                                groupList = new ArrayList<>();
-                                GetSearchableGroup searchableGroup = new GetSearchableGroup(HomePageActivity.this);
-                                searchableGroup.setOnResultListener(searchInterfaces);
-                                searchableGroup.execute();
-
                                 new SimpleSearchDialogCompat(this, "Search", "enter name", null, groupList, new SearchResultListener<Searchable>() {
                                         @Override
                                         public void onSelected(BaseSearchDialogCompat baseSearchDialogCompat, Searchable searchable, int i) {
 
-
+                                                Intent intent = new Intent(HomePageActivity.this,JoinRequestToGroup.class);
+                                                intent.putExtra("group",searchable.getTitle());
+                                                startActivity(intent);
                                                 baseSearchDialogCompat.dismiss();
                                         }
                                 }).show();
@@ -258,19 +272,40 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 return true;
         }
 
-        SearchInterfaces searchInterfaces = new SearchInterfaces() {
-                @Override
-                public void onResultSuccess(final ArrayList<String> list) {
-                        runOnUiThread(new Runnable() {
-                                public void run() {
-                                        for(int i =0;i<list.size();i++)
-                                                groupList.add(new SearchableModel(list.get(i)));
+        OnAsyncTaskInterface taskInterface = new OnAsyncTaskInterface() {
 
+                @Override
+                public void onResultSuccess(final String result) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        if(result!=null)
+                                                processJsonData(result);
                                 }
                         });
                 }
         };
 
+
+        private void processJsonData(String jsonData)
+        {
+                try {
+                        jsonObject = new JSONObject(jsonData);
+                        jsonArray = jsonObject.optJSONArray("groupName");
+
+                        int count=0;
+
+                        while (count<jsonArray.length())
+                        {
+                                JSONObject jObject = jsonArray.getJSONObject(count);
+                                groupList.add(new SearchableModel(jObject.getString("groupName")));
+                                count++;
+                        }
+
+                } catch (JSONException e) {
+                        e.printStackTrace();
+                }
+        }
 
         @SuppressWarnings("StatementWithEmptyBody")
         @Override
@@ -303,7 +338,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                         case R.id.acceptRequest:
                                 if(userType.equals("admin"))
                                 {
-
+                                        startActivity(new Intent(HomePageActivity.this,MemberJoinRequest.class));
                                 }else dialogClass.error("Only admin can accept request.You are not an admin.");
                                 break;
 

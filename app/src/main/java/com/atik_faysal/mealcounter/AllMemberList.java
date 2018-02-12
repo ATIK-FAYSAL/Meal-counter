@@ -149,7 +149,7 @@ public class AllMemberList extends AppCompatActivity
                                         date = jObject.getString("date");
                                         taka = jObject.getString("taka");
 
-                                        memberList.add(new MemberModel(name,userName,phone,taka,type,date));
+                                        memberList.add(new MemberModel(name,userName,phone,"",taka,type,date));
                                         count++;
                                 }
 

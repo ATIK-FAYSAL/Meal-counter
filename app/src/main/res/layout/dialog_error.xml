@@ -11,7 +11,7 @@
 
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/imageSign"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_alignParentTop="true"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_below="@+id/imageView2"
+            android:layout_below="@+id/imageSign"
             android:layout_marginTop="20dp"
             android:textSize="18dp"
             android:layout_marginRight="20dp"
@@ -37,7 +37,7 @@
             android:id="@+id/bOk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/imageView2"
+            android:layout_alignEnd="@+id/imageSign"
             android:layout_below="@+id/text1"
             android:layout_marginTop="33dp"
             android:background="@drawable/button2"
