@@ -2,23 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/sign_up_background">
+    android:background="@color/color2">
 
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/toolbar1"
         android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:background="@color/color1"
+        android:background="@color/color2"
         android:elevation="4dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/toolbar1"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:id="@+id/relativeLayout3">
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:id="@+id/relativeLayout3"
+        android:background="@drawable/text_style4">
 
         <TextView
             android:id="@+id/txtName"
@@ -30,7 +32,8 @@
             android:hint="name"
             android:textColor="#000"
             android:textSize="24dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"/>
 
 
         <EditText
@@ -40,23 +43,31 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/txtName"
             android:layout_marginTop="17dp"
-            android:background="#E0E0E0"
-            android:gravity="left"
-            android:hint="your feedback" />
+            android:background="@drawable/button2"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
+            android:hint=" your feedback"
+            android:inputType="textMultiLine"
+            android:lines="15"
+            android:gravity="start"
+            android:scrollbars="vertical"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/black"/>
+
+        <Button
+            android:id="@+id/bFeedback"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/eFeedback"
+            android:layout_alignStart="@+id/eFeedback"
+            android:layout_below="@+id/eFeedback"
+            android:layout_marginTop="45dp"
+            android:text="Feedback"
+            android:background="@drawable/button1"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"/>
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/bFeedback"
-        style="@style/Base.Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/relativeLayout3"
-        android:layout_alignStart="@+id/relativeLayout3"
-        android:layout_below="@+id/relativeLayout3"
-        android:layout_marginTop="45dp"
-        android:text="Feedback"
-        android:background="@drawable/button1"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"/>
 
 </RelativeLayout>

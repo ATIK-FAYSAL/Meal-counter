@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.atik_faysal.backend.InfoBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
@@ -37,7 +38,7 @@ public class JoinRequestToGroup extends AppCompatActivity
         private String currentUser;
         private static final String USER_INFO = "currentInfo";
         private String group;
-        private final static String FILE = "http://192.168.56.1/joiningRequest.php";
+        private final static String FILE = "http://192.168.56.1/RequestGroupInfo.php";
         private final static String FILE_URL = "http://192.168.56.1/joinRequestAction.php";
         private static String DATA;
         private String name,id,address,description,type,member,time,date,admin,status;

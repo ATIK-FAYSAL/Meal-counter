@@ -132,6 +132,7 @@ public class AcceptRequestAdapter extends BaseAdapter
                         activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                        Toast.makeText(context,"result : "+result,Toast.LENGTH_SHORT).show();
                                         switch(result)
                                         {
                                                 case "accepted":
@@ -139,6 +140,9 @@ public class AcceptRequestAdapter extends BaseAdapter
                                                         break;
                                                 case "deleted":
                                                         Toast.makeText(context,"Request canceled.Please reload your current page.",Toast.LENGTH_SHORT).show();
+                                                        break;
+                                                case "member":
+                                                        dialogClass.alreadyMember("You are already member.");
                                                         break;
                                                 default:
                                                         dialogClass.error("Execution failed.Please try again.");

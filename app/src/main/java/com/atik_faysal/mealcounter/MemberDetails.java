@@ -1,8 +1,11 @@
 package com.atik_faysal.mealcounter;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -42,6 +45,8 @@ public class MemberDetails extends AppCompatActivity
         private Toolbar toolbar;
         private TextView txtTaka,txtGroup,txtUserName,txtDate;
         private EditText eName,eEmail,eAddress,eFaWord,ePhone;
+        private SwipeRefreshLayout refreshLayout;
+
         private JSONArray jsonArray;
         private JSONObject jsonObject;
 
@@ -62,6 +67,7 @@ public class MemberDetails extends AppCompatActivity
                 initComponent();
                 setToolbar();
                 onButtonClick();
+                reloadPage();
         }
 
         @SuppressLint("SetTextI18n")
@@ -82,6 +88,9 @@ public class MemberDetails extends AppCompatActivity
 
                 bRemove = findViewById(R.id.bEdit);
                 bRemove.setText("Remove");
+                refreshLayout = findViewById(R.id.layout1);
+                refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
+
 
                 sharedPreferenceData = new SharedPreferenceData(this);
                 internetIsOn = new CheckInternetIsOn(this);
@@ -119,6 +128,25 @@ public class MemberDetails extends AppCompatActivity
                 });
         }
 
+
+        private void reloadPage()
+        {
+                refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                                refreshLayout.setRefreshing(true);
+
+                                (new Handler()).postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                                refreshLayout.setRefreshing(false);
+                                                startActivity(new Intent(MemberDetails.this,MemberDetails.class));
+                                                finish();
+                                        }
+                                },3000);
+                        }
+                });
+        }
 
         private void onButtonClick()
         {

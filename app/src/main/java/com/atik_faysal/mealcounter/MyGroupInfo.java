@@ -5,7 +5,9 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
@@ -45,13 +47,14 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
         private EditText gName,gAddress,gDescription;
         private Button bEdit;
         private Toolbar toolbar;
+        private SwipeRefreshLayout refreshLayout;
 
 
         private static final String FILE_URL = "http://192.168.56.1/groupInfo.php";
         private final static String EDIT_URL = "http://192.168.56.1/editGroupInfo.php";
         private static String POST_DATA ;
         private static String DATA;
-        private String currentUser;
+        private String currentUser,userType;
         private final static String USER_INFO = "currentInfo";
         private String name,id,address,description,type,member,time,date,admin;
 
@@ -78,6 +81,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                 setToolbar();
                 onButtonClickListener();
                 initializeGroupInfo();
+                reloadPage();
         }
 
 
@@ -92,6 +96,8 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                 gName = findViewById(R.id.groupName);
                 gType = findViewById(R.id.gType);
                 gDescription = findViewById(R.id.gDescription);
+                refreshLayout = findViewById(R.id.layout1);
+                refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
 
                 bEdit = findViewById(R.id.buEdit);
 
@@ -111,6 +117,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
 
 
                 currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
+                userType = sharedPreferenceData.getUserType();
         }
 
         private void setToolbar()
@@ -123,6 +130,26 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                         @Override
                         public void onClick(View v) {
                                 finish();
+                        }
+                });
+        }
+
+
+        private void reloadPage()
+        {
+                refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                                refreshLayout.setRefreshing(true);
+
+                                (new Handler()).postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                                refreshLayout.setRefreshing(false);
+                                                startActivity(new Intent(MyGroupInfo.this,MyGroupInfo.class));
+                                                finish();
+                                        }
+                                },3000);
                         }
                 });
         }
@@ -166,13 +193,16 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                 switch (item.getItemId())
                 {
                         case R.id.edit:
-                                gName.setEnabled(true);
-                                gDescription.setEnabled(true);
-                                gAddress.setEnabled(true);
-                                gTime.setEnabled(true);
-                                gType.setEnabled(true);
+                                if(userType.equals("admin"))
+                                {
+                                        gName.setEnabled(true);
+                                        gDescription.setEnabled(true);
+                                        gAddress.setEnabled(true);
+                                        gTime.setEnabled(true);
+                                        gType.setEnabled(true);
 
-                                bEdit.setEnabled(true);
+                                        bEdit.setEnabled(true);
+                                }else dialogClass.error("Only admin can edit group info.You are not admin.");
                                 break;
                 }
 
@@ -329,7 +359,6 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
 
                 }else Log.d(TAG,"Json object error");
         }
-
 
         //Edit group information
 

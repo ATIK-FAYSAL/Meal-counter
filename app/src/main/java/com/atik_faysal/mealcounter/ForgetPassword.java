@@ -56,15 +56,13 @@ public class ForgetPassword extends AppCompatActivity
                 setSupportActionBar(toolbar);
                 setToolbar();
                 onButtonClick();
-                //someMethod = new NeedSomeMethod();
-                //someMethod.setToolbar(toolbar,ForgetPassword.this);
                 dialogClass = new AlertDialogClass(this);
                 internetIsOn = new CheckInternetIsOn(this);
         }
 
         private void setToolbar()
         {
-                toolbar.setTitleTextColor(getResources().getColor(R.color.offWhite));
+                toolbar.setTitleTextColor(getResources().getColor(R.color.white));
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setDisplayShowHomeEnabled(true);
                 toolbar.setNavigationIcon(R.drawable.icon_back);

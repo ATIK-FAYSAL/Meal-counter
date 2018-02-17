@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity"
-        android:background="@drawable/bac1"
+        android:background="@drawable/log_in_page_background"
         android:id="@+id/layout0">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -36,12 +36,12 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="45dp"
-                android:background="@drawable/textstyle1"
-                android:drawableLeft="@drawable/icon_username"
+                android:background="@drawable/log_in_textstyle"
+                android:drawableLeft="@drawable/icon_name"
                 android:gravity="center"
                 android:hint="Username"
                 android:inputType="textPersonName"
-                android:textColor="#fff"
+                android:textColor="@color/black"
                 android:textColorHint="#9E9E9E" />
         </LinearLayout>
 
@@ -58,12 +58,12 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="45dp"
-                android:background="@drawable/textstyle1"
-                android:drawableLeft="@drawable/icon_password"
+                android:background="@drawable/log_in_textstyle"
+                android:drawableLeft="@drawable/icon_pass"
                 android:gravity="center"
                 android:hint="Password"
                 android:inputType="textPassword"
-                android:textColor="#fff"
+                android:textColor="@color/black"
                 android:textColorHint="#9E9E9E" />
         </LinearLayout>
 
@@ -80,11 +80,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout2"
                 android:layout_marginEnd="30dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="30dp"
                 android:layout_toLeftOf="@+id/appLogo"
                 android:layout_toStartOf="@+id/appLogo"
                 android:text=" Remember me"
-                android:textColor="#BDBDBD"
+                android:textColor="@color/black"
                 android:gravity="center"
                 android:onClick="onClickCheckBox"/>
         </LinearLayout>
@@ -108,7 +109,7 @@
                 android:gravity="center"
                 android:text="Sign In"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#BDBDBD"
+                android:textColor="@color/black"
                 android:textStyle="bold"/>
         </LinearLayout>
 
@@ -120,7 +121,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="19dp"
             android:text="Forgot Password"
-            android:textColor="#BDBDBD" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/txtSignUp"
@@ -130,7 +131,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="15dp"
             android:text="Don't have an account?Sign Up"
-            android:textColor="#BDBDBD" />
+            android:textColor="@color/black" />
 
     </RelativeLayout>
 

@@ -2,7 +2,9 @@ package com.atik_faysal.mealcounter;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -42,6 +44,7 @@ public class NoticeBoard extends AppCompatActivity
         private Button bPublish;
         private ListView listView;
         private Toolbar toolbar;
+        private SwipeRefreshLayout refreshLayout;
 
 
         private final static String FILE_URL = "http://192.168.56.1/notice.php";
@@ -71,6 +74,7 @@ public class NoticeBoard extends AppCompatActivity
                 initComponent();
                 onButtonClick();
                 setToolbar();
+                reloadPage();
         }
 
 
@@ -81,6 +85,8 @@ public class NoticeBoard extends AppCompatActivity
                 txtNotice = findViewById(R.id.txtNotice);
                 bPublish = findViewById(R.id.bPublish);
                 listView = findViewById(R.id.list);
+                refreshLayout = findViewById(R.id.refreshLayout);
+                refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
                 toolbar = findViewById(R.id.toolbar);
                 setSupportActionBar(toolbar);
 
@@ -123,6 +129,24 @@ public class NoticeBoard extends AppCompatActivity
                 });
         }
 
+        private void reloadPage()
+        {
+                refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                                refreshLayout.setRefreshing(true);
+
+                                (new Handler()).postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                                refreshLayout.setRefreshing(false);
+                                                startActivity(new Intent(NoticeBoard.this,NoticeBoard.class));
+                                                finish();
+                                        }
+                                },3000);
+                        }
+                });
+        }
 
         private boolean checkNotice()
         {

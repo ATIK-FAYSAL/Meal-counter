@@ -39,7 +39,8 @@ public class FirstPage extends AppCompatActivity {
                 Fabric.with(this, new Crashlytics());
                 setContentView(R.layout.first_page);
                 initComponent();
-                startActivity();
+                //startActivity();
+                threadStart();
         }
 
 
@@ -52,25 +53,40 @@ public class FirstPage extends AppCompatActivity {
         private void initComponent()
         {
                 //component initialize
-                bStart = findViewById(R.id.bStart);
                 layout1 = findViewById(R.id.relative1);
-                layout2 = findViewById(R.id.relative2);
 
 
                 //circleImageView = findViewById(R.id.imageView);
                 //TransitionDrawable drawable =(TransitionDrawable) circleImageView.getDrawable();
                 //drawable.startTransition(2000);
-
-                animation1 = AnimationUtils.loadAnimation(this,R.anim.animation1);
                 animation2 = AnimationUtils.loadAnimation(this,R.anim.animation2);
-                layout2.setAnimation(animation1);
                 layout1.setAnimation(animation2);
 
                 //object initialize
                 sharedPreferenceData = new SharedPreferenceData(this);
         }
 
-        private void startActivity()
+        protected void threadStart()
+        {
+                Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                                try
+                                {
+                                        Thread.sleep(2000);
+                                        startActivity(new Intent(FirstPage.this,LogInActivity.class));
+                                        finish();
+                                }catch (InterruptedException e)
+                                {
+                                        e.printStackTrace();
+                                }
+                        }
+                });
+
+                thread.start();
+        }
+
+       /* private void startActivity()
         {
                 bStart.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -79,5 +95,5 @@ public class FirstPage extends AppCompatActivity {
                                 startActivity(new Intent(FirstPage.this,LogInActivity.class));
                         }
                 });
-        }
+        }*/
 }

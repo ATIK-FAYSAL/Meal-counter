@@ -69,8 +69,10 @@ dependencies {
     compile 'com.google.firebase:firebase-crash:11.8.0'
     compile 'com.firebase:firebase-client-android:2.5.0'
     compile 'com.borjabravo:readmoretextview:2.0.1'
+    compile 'com.google.firebase:firebase-messaging:11.8.0'
+    compile 'com.squareup.okhttp3:okhttp:3.7.0'
     compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
-        transitive = true;
+        transitive = true
     }
 }
 apply plugin: 'com.google.gms.google-services'

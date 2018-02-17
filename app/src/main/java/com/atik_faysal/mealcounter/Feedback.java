@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,6 +61,22 @@ public class Feedback extends AppCompatActivity
                 toolbar = findViewById(R.id.toolbar1);
                 setSupportActionBar(toolbar);
 
+                eFeedback.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                                if(v.getId() == R.id.txtNotice){
+                                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                                        switch (event.getAction() & MotionEvent.ACTION_MASK){
+                                                case MotionEvent.ACTION_UP:
+                                                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                                                        break;
+                                        }
+                                }
+                                return false;
+                        }
+                });
+
+
                 dialogClass = new AlertDialogClass(this);
                 someMethod = new NeedSomeMethod(this);
                 sharedPreferenceData = new SharedPreferenceData(this);
@@ -91,7 +108,7 @@ public class Feedback extends AppCompatActivity
 
         private void setToolbar()
         {
-                toolbar.setTitleTextColor(getResources().getColor(R.color.offWhite));
+                toolbar.setTitleTextColor(getResources().getColor(R.color.white));
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setDisplayShowHomeEnabled(true);
                 toolbar.setNavigationIcon(R.drawable.icon_back);

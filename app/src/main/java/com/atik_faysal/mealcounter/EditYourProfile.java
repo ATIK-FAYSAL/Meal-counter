@@ -1,7 +1,10 @@
 package com.atik_faysal.mealcounter;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -42,6 +45,7 @@ public class EditYourProfile extends AppCompatActivity
         private SharedPreferenceData sharedPreferenceData;
 
         //component variable
+        private SwipeRefreshLayout refreshLayout;
         private Button bEdit;
         private Toolbar toolbar;
         private TextView txtTaka,txtGroup,txtUserName,txtDate;
@@ -65,6 +69,7 @@ public class EditYourProfile extends AppCompatActivity
                 initComponent();
                 setToolbar();
                 onButtonClick();
+                reloadPage();
         }
 
         private void initComponent()
@@ -82,6 +87,8 @@ public class EditYourProfile extends AppCompatActivity
                 eFaWord = findViewById(R.id.gDescription);
                 ePhone = findViewById(R.id.gType);
 
+                refreshLayout = findViewById(R.id.layout1);
+                refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
                 bEdit = findViewById(R.id.bEdit);
                 bEdit.setEnabled(false);
 
@@ -117,6 +124,25 @@ public class EditYourProfile extends AppCompatActivity
                 });
         }
 
+
+        private void reloadPage()
+        {
+                refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                                refreshLayout.setRefreshing(true);
+
+                                (new Handler()).postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                                refreshLayout.setRefreshing(false);
+                                                startActivity(new Intent(EditYourProfile.this,EditYourProfile.class));
+                                                finish();
+                                        }
+                                },3000);
+                        }
+                });
+        }
 
         private void onButtonClick()
         {

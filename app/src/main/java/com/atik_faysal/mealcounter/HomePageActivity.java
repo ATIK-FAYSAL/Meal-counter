@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.view.MenuInflater;
 import android.support.design.widget.NavigationView;
@@ -22,8 +24,11 @@ import android.widget.Toast;
 
 import com.atik_faysal.backend.InfoBackgroundTask;
 import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.backend.RegisterDeviceToken;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.SearchableModel;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +53,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         private ActionBarDrawerToggle toggle;
         private View view;
         private TextView textView;
+        private SwipeRefreshLayout refreshLayout;
 
         //component array object
         private CardView[] cardViews = new CardView[8];
@@ -65,7 +71,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
         private final static String USER_LOGIN = "userLogIn";
         private final static String USER_INFO = "currentInfo";
-        private String currentUser,userType;
+        private String currentUser,userType,date;
         private final static String FILE = "http://192.168.56.1/getGroupName.php";
         private static String POST_DATA ;
 
@@ -79,6 +85,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 setContentView(R.layout.home_page);
                 initComponent();
                 closeApp();
+                reloadPage();
         }
 
         private void initComponent()
@@ -94,6 +101,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                 NavigationView navigationView =  findViewById(R.id.nav_view);
                 navigationView.setNavigationItemSelectedListener(this);
+                refreshLayout = findViewById(R.id.refreshLayout);
+                refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
                 view = navigationView.inflateHeaderView(R.layout.nav_header_home_page);
                 textView = view.findViewById(R.id.txtUserName);
                 initObject();//initialize cardView and imageView
@@ -104,9 +113,14 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 dialogClass = new AlertDialogClass(this);
                 someMethod = new NeedSomeMethod(this);
 
+                FirebaseMessaging.getInstance().subscribeToTopic("test");
+                String token = FirebaseInstanceId.getInstance().getToken();
+
                 currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
                 userType = sharedPreferenceData.getUserType();
+                date = someMethod.getDate();
                 textView.setText(currentUser);
+                RegisterDeviceToken.registerToken(token,currentUser,date);
 
 
                 try {
@@ -120,6 +134,25 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 }
         }
 
+
+        private void reloadPage()
+        {
+                refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                                refreshLayout.setRefreshing(true);
+
+                                (new Handler()).postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                                refreshLayout.setRefreshing(false);
+                                                startActivity(new Intent(HomePageActivity.this,HomePageActivity.class));
+                                                finish();
+                                        }
+                                },3000);
+                        }
+                });
+        }
 
         private void initObject()
         {
@@ -169,7 +202,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 }else if(id==cardViewId[6]||id==imageViewId[6])
                 {
                         startActivity(new Intent(HomePageActivity.this,NoticeBoard.class));
-                        Toast.makeText(this,"click on button 7",Toast.LENGTH_SHORT).show();
                 }else if(id==cardViewId[7]||id==imageViewId[7])
                 {
                         Toast.makeText(this,"click on button 8",Toast.LENGTH_SHORT).show();

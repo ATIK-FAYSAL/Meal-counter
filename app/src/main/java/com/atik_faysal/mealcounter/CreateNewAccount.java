@@ -3,6 +3,7 @@ package com.atik_faysal.mealcounter;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +44,7 @@ import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
  * userInformation-->Void.  get userInformation from component.
  * onButtonClick-->Void.    start action by clicking on button.
  * checkUserInformation-->Boolean.  check user information,if  information follow condition then return true ,otherwise return false
- * getDate-->String ,get current date from system and return
+ *
  */
 
 
@@ -58,11 +60,20 @@ public class CreateNewAccount extends AppCompatActivity
         //component variable
         private EditText eName,eUserName,ePassword,eAddress,eEmail,eFavourite;
         private TextView txtSign,txtProceed;
+        private ProgressBar progressBar;
 
         //String variable declaration
         private String name,userName,address,password,email,favouriteWord;
+        String memberType = "member";
+        String taka = "0",groupId = "Null";
+
+
         private final static String FILE_URL = "http://192.168.56.1/userNameExist.php";
+        private final static String FILE = "http://192.168.56.1/insert_member_info.php";
         private static String POST_DATA ;
+        private final static String USER_LOGIN = "userLogIn";
+        private final static String USER_INFO = "currentInfo";
+
 
         //class object declaration
         private CreateMemberBackgroundTask createMemberBackgroundTask;
@@ -78,8 +89,6 @@ public class CreateNewAccount extends AppCompatActivity
                 initComponent();//initialize all component and variable
         }
 
-
-
         private interface OnCompleteListener {
                 void onComplete();
         }
@@ -89,12 +98,14 @@ public class CreateNewAccount extends AppCompatActivity
                 //component initialize
                 eName = findViewById(R.id.txtName);
                 eUserName = findViewById(R.id.txtUserName);
+                eUserName.requestFocus();
                 eEmail = findViewById(R.id.txtEmail);
                 eAddress = findViewById(R.id.txtAddress);
                 ePassword = findViewById(R.id.txtPassword);
                 txtSign = findViewById(R.id.txtSignIn);
                 txtProceed = findViewById(R.id.txtProceed);
                 eFavourite = findViewById(R.id.txtFavourite);
+                progressBar = findViewById(R.id.progress);
                 //object initialize
                 //numberVerification = new PhoneNumberVerification(this);
                 createMemberBackgroundTask = new CreateMemberBackgroundTask(this);
@@ -232,7 +243,6 @@ public class CreateNewAccount extends AppCompatActivity
                 return flag;
         }
 
-
         OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
 
                 @Override
@@ -256,6 +266,71 @@ public class CreateNewAccount extends AppCompatActivity
         };
 
 
+        //new user registration process
+        private void newUserRegistration(String phoneNumber)
+        {
+                try {
+                        POST_DATA = URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(name,"UTF-8")+"&"
+                                +URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
+                                +URLEncoder.encode("email","UTF-8")+"="+URLEncoder.encode(email,"UTF-8")+"&"
+                                +URLEncoder.encode("phone","UTF-8")+"="+URLEncoder.encode(phoneNumber,"UTF-8")+"&"
+                                +URLEncoder.encode("address","UTF-8")+"="+URLEncoder.encode(address,"UTF-8")+"&"
+                                +URLEncoder.encode("taka","UTF-8")+"="+URLEncoder.encode(taka,"UTF-8")+"&"
+                                +URLEncoder.encode("memberType","UTF-8")+"="+URLEncoder.encode(memberType,"UTF-8")+"&"
+                                +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8")+"&"
+                                +URLEncoder.encode("groupId","UTF-8")+"="+URLEncoder.encode(groupId,"UTF-8")+"&"
+                                +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDate(),"UTF-8")+"&"
+                                +URLEncoder.encode("favouriteWord","UTF-8")+"="+URLEncoder.encode(favouriteWord,"UTF-8");
+
+                        informationCheck = new InfoBackgroundTask(this);
+                        informationCheck.setOnResultListener(taskInterface);
+                        informationCheck.execute(FILE,POST_DATA);
+                } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                }
+        }
+
+
+        OnAsyncTaskInterface taskInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String result) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        switch (result)
+                                        {
+                                                case "success":
+                                                        Thread thread = new Thread(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                        try
+                                                                        {
+                                                                                Thread.sleep(2500);
+                                                                                new SharedPreferenceData(CreateNewAccount.this).ifUserLogIn(USER_LOGIN,true);
+                                                                                new SharedPreferenceData(CreateNewAccount.this).currentUserInfo(USER_INFO,userName,password);
+                                                                                new SharedPreferenceData(CreateNewAccount.this).userType("member");
+                                                                                someMethod.closeActivity(CreateNewAccount.this,HomePageActivity.class);
+                                                                                finish();
+                                                                        }catch (InterruptedException e)
+                                                                        {
+                                                                                e.printStackTrace();
+                                                                        }
+                                                                }
+                                                        });
+
+                                                        thread.start();
+                                                        break;
+                                                default:
+                                                        dialogClass.error("Execution failed.please try again after sometimes.");
+                                                        break;
+                                        }
+                                }
+                        });
+                }
+        };
+
+
+        //phone number verification with facebook kid
         @Override
         protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
         {
@@ -283,7 +358,9 @@ public class CreateNewAccount extends AppCompatActivity
                                         public void onSuccess(final Account account) {
                                                 //Toast.makeText(CreateNewAccount.this,account.getPhoneNumber().toString()+" phone number verified",Toast.LENGTH_SHORT).show();
 
-                                                new CreateMemberBackgroundTask(CreateNewAccount.this).execute("insertMember",name,userName,email,account.getPhoneNumber().toString(),address,password,someMethod.getDate(),favouriteWord);
+                                               // new CreateMemberBackgroundTask(CreateNewAccount.this).execute("insertMember",name,userName,email,account.getPhoneNumber().toString(),address,password,someMethod.getDate(),favouriteWord);
+                                                newUserRegistration(account.getPhoneNumber().toString());
+                                                progressBar.setVisibility(View.VISIBLE);
                                         }
 
                                         @Override

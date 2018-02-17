@@ -1,7 +1,10 @@
 package com.atik_faysal.mealcounter;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -32,6 +35,7 @@ public class AdminPanel extends AppCompatActivity
         private ListView listView;
         private TextView txtPerson;
         private Toolbar toolbar;
+        private SwipeRefreshLayout refreshLayout;
 
         private List<MemberModel> memberList = new ArrayList<>();
         private JSONArray jsonArray;
@@ -54,6 +58,7 @@ public class AdminPanel extends AppCompatActivity
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.member_list);
                 initComponent();
+                reloadPage();
         }
 
         private void initComponent()
@@ -61,6 +66,8 @@ public class AdminPanel extends AppCompatActivity
                 listView = findViewById(R.id.memberList);
                 txtPerson = findViewById(R.id.txtPerson);
                 toolbar = findViewById(R.id.toolbar2);
+                refreshLayout = findViewById(R.id.refreshLayout);
+                refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
                 setSupportActionBar(toolbar);
                 setToolbar();
 
@@ -87,7 +94,7 @@ public class AdminPanel extends AppCompatActivity
 
         private void setToolbar()
         {
-                toolbar.setTitleTextColor(getResources().getColor(R.color.offWhite));
+                toolbar.setTitleTextColor(getResources().getColor(R.color.white));
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setDisplayShowHomeEnabled(true);
                 toolbar.setNavigationIcon(R.drawable.icon_back);
@@ -99,6 +106,25 @@ public class AdminPanel extends AppCompatActivity
                 });
         }
 
+
+        private void reloadPage()
+        {
+                refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                                refreshLayout.setRefreshing(true);
+
+                                (new Handler()).postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                                refreshLayout.setRefreshing(false);
+                                                startActivity(new Intent(AdminPanel.this,AdminPanel.class));
+                                                finish();
+                                        }
+                                },3000);
+                        }
+                });
+        }
 
         InfoBackgroundTask.OnAsyncTaskInterface onAsyncTaskInterface = new InfoBackgroundTask.OnAsyncTaskInterface() {
                 @Override

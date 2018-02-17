@@ -1,232 +1,254 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/sign_up_background">
 
     <RelativeLayout
-        android:id="@+id/layout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="40dp">
+        android:layout_height="650dp"
+        android:layout_marginBottom="20dp">
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="User Name"
-            android:textColor="#17C89A"
-            android:textSize="20dp"
-            android:textStyle="bold" />
-
-
-        <EditText
-            android:id="@+id/txtUserName"
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView1"
-            android:layout_marginBottom="10dp"
-
-            android:backgroundTint="#90A4AE"
-            android:gravity="center"
-            android:hint="John0125"
-            android:inputType="textPersonName"
-            android:textColor="#90A4AE"
-            android:textColorHint="#BDBDBD"
-            android:textSize="18dp"
-            android:drawableLeft="@drawable/icon_name"/>
-    </RelativeLayout>
+            android:layout_alignParentTop="true"
+            android:indeterminate="true"
+            android:visibility="invisible" />
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/layout2"
-        android:layout_below="@+id/layout1"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="40dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Full Name"
-            android:textColor="#17C89A"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:id="@+id/textView3" />
-
-
-        <EditText
-            android:id="@+id/txtName"
+        <RelativeLayout
+            android:id="@+id/layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView3"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:hint="John Cena"
-            android:inputType="textPersonName"
-            android:textColor="#90A4AE"
-            android:textSize="18dp"
-            android:backgroundTint="#90A4AE"
-            android:textColorHint="#BDBDBD"
-            android:drawableLeft="@drawable/icon_name"/>
+            android:layout_centerVertical="true">
+
+            <RelativeLayout
+                android:id="@+id/layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User Name"
+                    android:textColor="#17C89A"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+
+                <EditText
+                    android:id="@+id/txtUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textView1"
+                    android:layout_marginBottom="10dp"
+
+                    android:backgroundTint="#90A4AE"
+                    android:drawableLeft="@drawable/icon_name"
+                    android:gravity="center"
+                    android:hint="John0125"
+                    android:inputType="textPersonName"
+                    android:textColor="#90A4AE"
+                    android:textColorHint="#BDBDBD"
+                    android:textSize="18dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout1"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="30dp">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Full Name"
+                    android:textColor="#17C89A"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+
+                <EditText
+                    android:id="@+id/txtName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textView3"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="#90A4AE"
+                    android:drawableLeft="@drawable/icon_name"
+                    android:gravity="center"
+                    android:hint="John Cena"
+                    android:inputType="textPersonName"
+                    android:textColor="#90A4AE"
+                    android:textColorHint="#BDBDBD"
+                    android:textSize="18dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout2"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="30dp">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textColor="#17C89A"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+
+                <EditText
+                    android:id="@+id/txtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textView4"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="#90A4AE"
+                    android:drawableLeft="@drawable/icon_email"
+                    android:gravity="center"
+                    android:hint="John@example.com"
+                    android:inputType="textPersonName"
+                    android:textColor="#90A4AE"
+                    android:textColorHint="#BDBDBD"
+                    android:textSize="18dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout3"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="30dp">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Address"
+                    android:textColor="#17C89A"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+
+                <EditText
+                    android:id="@+id/txtAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textView5"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="#90A4AE"
+                    android:drawableLeft="@drawable/icon_address"
+                    android:gravity="center"
+                    android:hint="Dhaka"
+                    android:inputType="textPersonName"
+                    android:textColor="#90A4AE"
+                    android:textColorHint="#BDBDBD"
+                    android:textSize="18dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout4"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="30dp">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Password"
+                    android:textColor="#17C89A"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+
+                <EditText
+                    android:id="@+id/txtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textView6"
+                    android:layout_marginBottom="10dp"
+
+                    android:backgroundTint="#90A4AE"
+                    android:drawableLeft="@drawable/icon_pass"
+                    android:gravity="center"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:textColor="#fff"
+                    android:textColorHint="#BDBDBD"
+                    android:textSize="18dp" />
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/txtFavourite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/layout5"
+                android:layout_below="@+id/layout5"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="11dp"
+                android:backgroundTint="#90A4AE"
+                android:gravity="center"
+                android:hint="Favourite word"
+                android:textColor="#06EDF5"
+                android:textColorHint="#BDBDBD"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/txtProceed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/txtFavourite"
+                android:layout_below="@+id/txtFavourite"
+                android:layout_marginTop="26dp"
+                android:drawableRight="@drawable/right_icon"
+                android:gravity="center"
+                android:text="PROCEED"
+                android:textColor="#06EDF5"
+                android:textSize="17dp" />
+
+            <TextView
+                android:id="@+id/txtSignIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_below="@+id/txtProceed"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="28dp"
+                android:text="Have account ?Sign In"
+                android:textColor="#9AB6B7" />
+
+        </RelativeLayout>
+
+
+
     </RelativeLayout>
 
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/layout3"
-        android:layout_below="@+id/layout2"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="40dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Email"
-            android:textColor="#17C89A"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:id="@+id/textView4" />
-
-
-        <EditText
-            android:id="@+id/txtEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView4"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:hint="John@example.com"
-            android:inputType="textPersonName"
-            android:textColor="#90A4AE"
-            android:textSize="18dp"
-            android:backgroundTint="#90A4AE"
-            android:textColorHint="#BDBDBD"
-            android:drawableLeft="@drawable/icon_email"/>
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/layout4"
-        android:layout_below="@+id/layout3"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="40dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Address"
-            android:textColor="#17C89A"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:id="@+id/textView5" />
-
-
-        <EditText
-            android:id="@+id/txtAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView5"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:hint="Dhaka"
-            android:inputType="textPersonName"
-            android:textColor="#90A4AE"
-            android:textSize="18dp"
-            android:backgroundTint="#90A4AE"
-            android:textColorHint="#BDBDBD"
-            android:drawableLeft="@drawable/icon_address"/>
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/layout5"
-        android:layout_below="@+id/layout4"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="40dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Password"
-            android:textColor="#17C89A"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:id="@+id/textView6" />
-
-
-        <EditText
-            android:id="@+id/txtPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textView6"
-            android:layout_marginBottom="10dp"
-
-            android:gravity="center"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:textColor="#fff"
-            android:textSize="18dp"
-            android:backgroundTint="#90A4AE"
-            android:textColorHint="#BDBDBD"
-            android:drawableLeft="@drawable/icon_pass"/>
-    </RelativeLayout>
-
-
-    <EditText
-        android:id="@+id/txtFavourite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/layout5"
-        android:layout_below="@+id/layout5"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="11dp"
-        android:gravity="center"
-        android:hint="Favourite word"
-        android:textColor="#06EDF5"
-        android:textSize="20dp"
-        android:backgroundTint="#90A4AE"
-        android:textColorHint="#BDBDBD"/>
-
-
-    <TextView
-        android:id="@+id/txtProceed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/txtSignIn"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="12dp"
-        android:drawableRight="@drawable/right_icon"
-        android:gravity="center"
-        android:text="PROCEED"
-        android:textColor="#06EDF5"
-        android:textSize="17dp" />
-
-    <TextView
-        android:id="@+id/txtSignIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="8dp"
-        android:textColor="#9AB6B7"
-        android:text="Have account ?Sign In"
-        android:layout_marginTop="10dp"/>
-
-
-</RelativeLayout>
+</ScrollView>

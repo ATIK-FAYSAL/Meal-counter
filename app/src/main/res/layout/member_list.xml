@@ -2,9 +2,8 @@
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E0E0E0"
+    android:background="@color/white"
     android:id="@+id/refreshLayout">
-
 
   <RelativeLayout
       android:layout_width="match_parent"
@@ -14,7 +13,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:id="@+id/toolbar2"
-          android:background="@color/color1">
+          android:background="@color/color2">
       </android.support.v7.widget.Toolbar>
 
       <RelativeLayout
@@ -65,7 +64,5 @@
           android:divider="#E0E0E0"/>
 
   </RelativeLayout>
-
-
 
 </android.support.v4.widget.SwipeRefreshLayout>
