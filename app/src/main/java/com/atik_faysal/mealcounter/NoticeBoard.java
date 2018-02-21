@@ -46,7 +46,6 @@ public class NoticeBoard extends AppCompatActivity
         private Toolbar toolbar;
         private SwipeRefreshLayout refreshLayout;
 
-
         private final static String FILE_URL = "http://192.168.56.1/notice.php";
         private static String POST_DATA;
         private final static String USER_INFO = "currentInfo";
@@ -72,12 +71,9 @@ public class NoticeBoard extends AppCompatActivity
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.notice);
                 initComponent();
-                onButtonClick();
-                setToolbar();
-                reloadPage();
         }
 
-
+        //initialize all user information related variable by getText from textView or editText
         private void initComponent()
         {
                 txtTitle  = findViewById(R.id.txtTitle);
@@ -90,6 +86,7 @@ public class NoticeBoard extends AppCompatActivity
                 toolbar = findViewById(R.id.toolbar);
                 setSupportActionBar(toolbar);
 
+                //set scrollview in notice editText
                 txtNotice.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {
@@ -111,10 +108,16 @@ public class NoticeBoard extends AppCompatActivity
                 internetIsOn = new CheckInternetIsOn(this);
                 sharedPreferenceData = new SharedPreferenceData(this);
 
+                //calling method
+                onButtonClick();
+                setToolbar();
+                someMethod.reloadPage(refreshLayout,NoticeBoard.class);
+
                 currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
                 readyToConnect();
         }
 
+        //set a toolbar,above the page
         private void setToolbar()
         {
                 toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -129,25 +132,7 @@ public class NoticeBoard extends AppCompatActivity
                 });
         }
 
-        private void reloadPage()
-        {
-                refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override
-                        public void onRefresh() {
-                                refreshLayout.setRefreshing(true);
-
-                                (new Handler()).postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                                refreshLayout.setRefreshing(false);
-                                                startActivity(new Intent(NoticeBoard.this,NoticeBoard.class));
-                                                finish();
-                                        }
-                                },3000);
-                        }
-                });
-        }
-
+        //check notice and title for that they follow the input condition
         private boolean checkNotice()
         {
                 boolean flag = true;
@@ -179,80 +164,56 @@ public class NoticeBoard extends AppCompatActivity
                 return flag;
         }
 
+        //button click
         private void onButtonClick()
         {
                 bPublish.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                              if(internetIsOn.isOnline())
-                              {
-                                      if(checkNotice())
-                                      {
-                                              title = txtTitle.getText().toString();
-                                              notice = txtNotice.getText().toString();
-                                              try {
-                                                      POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8")+"&"
-                                                                 +URLEncoder.encode("title","UTF-8")+"="+URLEncoder.encode(title,"UTF-8")+"&"
-                                                                 +URLEncoder.encode("notice","UTF-8")+"="+URLEncoder.encode(notice,"UTF-8")+"&"
-                                                                 +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDate(),"UTF-8");
+                                if(checkNotice())
+                                {
+                                        title = txtTitle.getText().toString();
+                                        notice = txtNotice.getText().toString();
 
-                                                      backgroundTask = new InfoBackgroundTask(NoticeBoard.this);
-                                                      backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                      backgroundTask.execute(FILE_URL,POST_DATA);
+                                        if(internetIsOn.isOnline())
+                                        {
+                                                try {
+                                                        POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8")+"&"
+                                                                +URLEncoder.encode("title","UTF-8")+"="+URLEncoder.encode(title,"UTF-8")+"&"
+                                                                +URLEncoder.encode("notice","UTF-8")+"="+URLEncoder.encode(notice,"UTF-8")+"&"
+                                                                +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDate(),"UTF-8");
 
-                                              } catch (UnsupportedEncodingException e) {
-                                                      e.printStackTrace();
-                                              }
-                                      }
-                              }else dialogClass.noInternetConnection();
+                                                        backgroundTask = new InfoBackgroundTask(NoticeBoard.this);
+                                                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                                        backgroundTask.execute(FILE_URL,POST_DATA);
+
+                                                } catch (UnsupportedEncodingException e) {
+                                                        e.printStackTrace();
+                                                }
+                                        }else dialogClass.noInternetConnection();
+                                }
                         }
                 });
         }
 
-        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
-                @Override
-                public void onResultSuccess(final String result) {
-                        runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                        if(result!=null)
-                                        {
-                                                switch (result)
-                                                {
-                                                        case "success":
-                                                                readyToConnect();
-                                                                Toast.makeText(NoticeBoard.this,"Notice published",Toast.LENGTH_SHORT).show();
-                                                                break;
-
-                                                        case "not member":
-                                                                dialogClass.notMember();
-                                                                break;
-
-                                                        default:
-                                                                Toast.makeText(NoticeBoard.this,"Notice not published.please try again.",Toast.LENGTH_SHORT).show();
-                                                                break;
-                                                }
-                                        }
-                                }
-                        });
-                }
-        };
-
-
+        //ready to connect online
         private void readyToConnect()
         {
                 try {
-                        POST = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
-
-                        backgroundTask = new InfoBackgroundTask(this);
-                        backgroundTask.setOnResultListener(asyncTaskInterface);
-                        backgroundTask.execute(FILE,POST);
+                       if(internetIsOn.isOnline())
+                       {
+                               POST = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
+                               backgroundTask = new InfoBackgroundTask(this);
+                               backgroundTask.setOnResultListener(asyncTaskInterface);
+                               backgroundTask.execute(FILE,POST);
+                       }else dialogClass.noInternetConnection();
 
                 } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                 }
         }
 
+        //get all notice and set into list view
         private void initializeNoticeInListView(String jsonData)
         {
                 try {
@@ -283,6 +244,35 @@ public class NoticeBoard extends AppCompatActivity
                 }
         }
 
+        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String result) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        if(result!=null)
+                                        {
+                                                switch (result)
+                                                {
+                                                        case "success":
+                                                                readyToConnect();
+                                                                Toast.makeText(NoticeBoard.this,"Notice published",Toast.LENGTH_SHORT).show();
+                                                                break;
+
+                                                        case "not member":
+                                                                dialogClass.notMember();
+                                                                break;
+
+                                                        default:
+                                                                Toast.makeText(NoticeBoard.this,"Notice is not published.please try again.",Toast.LENGTH_SHORT).show();
+                                                                break;
+                                                }
+                                        }
+                                }
+                        });
+                }
+        };
+
 
         OnAsyncTaskInterface asyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
@@ -292,7 +282,6 @@ public class NoticeBoard extends AppCompatActivity
                                 public void run() {
                                         if(result!=null)
                                                 initializeNoticeInListView(result);
-                                        else Toast.makeText(NoticeBoard.this,"Error",Toast.LENGTH_SHORT).show();
                                 }
                         });
                 }

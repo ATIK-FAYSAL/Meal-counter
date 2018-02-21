@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.atik_faysal.backend.InfoBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.mealcounter.AlertDialogClass;
+import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.NoticeBoard;
 import com.atik_faysal.mealcounter.R;
@@ -38,6 +39,7 @@ public class NoticeAdapter extends BaseAdapter
         SharedPreferenceData sharedPreferenceData;
         String userType;
         AlertDialogClass dialogClass;
+        CheckInternetIsOn internetIsOn;
 
         public NoticeAdapter(Context context,List<NoticeModel>noticeModels)
         {
@@ -47,6 +49,7 @@ public class NoticeAdapter extends BaseAdapter
                 someMethod = new NeedSomeMethod(context);
                 sharedPreferenceData = new SharedPreferenceData(context);
                 dialogClass = new AlertDialogClass(context);
+                internetIsOn = new CheckInternetIsOn(context);
         }
 
         @Override
@@ -92,10 +95,13 @@ public class NoticeAdapter extends BaseAdapter
                 bRemove.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                                if(userType.equals("admin"))
-                                        removeNotice(noticeModels.get(position).getId());
-                                else
-                                        dialogClass.error("Only admin can remove notice.You are not an admin.");
+                              if(internetIsOn.isOnline())
+                              {
+                                      if(userType.equals("admin"))
+                                              removeNotice(noticeModels.get(position).getId());
+                                      else
+                                              dialogClass.error("Only admin can remove notice.You are not an admin.");
+                              }else dialogClass.noInternetConnection();
                         }
                 });
 
@@ -103,6 +109,7 @@ public class NoticeAdapter extends BaseAdapter
         }
 
 
+        //remove notice,only admin can remove notice
         private void removeNotice(final String noticeId)
         {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -165,7 +172,8 @@ public class NoticeAdapter extends BaseAdapter
                                         {
                                                 context.startActivity(new Intent(context,NoticeBoard.class));
                                                 activity.finish();
-                                        }
+                                        }else
+                                                dialogClass.error("Execution failed,please try again.");
                                 }
                         });
                 }

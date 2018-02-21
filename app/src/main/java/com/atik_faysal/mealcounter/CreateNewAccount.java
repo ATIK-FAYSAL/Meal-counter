@@ -3,7 +3,6 @@ package com.atik_faysal.mealcounter;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,12 +12,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -44,13 +45,11 @@ import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
  * userInformation-->Void.  get userInformation from component.
  * onButtonClick-->Void.    start action by clicking on button.
  * checkUserInformation-->Boolean.  check user information,if  information follow condition then return true ,otherwise return false
- *
  */
 
 
 public class CreateNewAccount extends AppCompatActivity
 {
-
         //phone number verification variable
         private static final int FRAMEWORK_REQUEST_CODE = 1;
         private int nextPermissionsRequestCode = 4000;
@@ -61,12 +60,12 @@ public class CreateNewAccount extends AppCompatActivity
         private EditText eName,eUserName,ePassword,eAddress,eEmail,eFavourite;
         private TextView txtSign,txtProceed;
         private ProgressBar progressBar;
+        private Toolbar toolbar;
 
         //String variable declaration
         private String name,userName,address,password,email,favouriteWord;
-        String memberType = "member";
-        String taka = "0",groupId = "Null";
-
+        private final String memberType = "member";
+        private final String taka = "0",groupId = "Null";
 
         private final static String FILE_URL = "http://192.168.56.1/userNameExist.php";
         private final static String FILE = "http://192.168.56.1/insert_member_info.php";
@@ -74,25 +73,27 @@ public class CreateNewAccount extends AppCompatActivity
         private final static String USER_LOGIN = "userLogIn";
         private final static String USER_INFO = "currentInfo";
 
-
         //class object declaration
-        private CreateMemberBackgroundTask createMemberBackgroundTask;
         private InfoBackgroundTask informationCheck;
         private CheckInternetIsOn internetIsOn;
         private AlertDialogClass dialogClass;
         private NeedSomeMethod someMethod;
+        private SharedPreferenceData sharedPreferenceData;
+        InfoBackgroundTask infoBackgroundTask;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.create_account);
                 initComponent();//initialize all component and variable
+                setToolbar();
         }
 
         private interface OnCompleteListener {
                 void onComplete();
         }
 
+        // //initialize all user information related variable by getText from textView or editText
         private void initComponent()
         {
                 //component initialize
@@ -106,17 +107,35 @@ public class CreateNewAccount extends AppCompatActivity
                 txtProceed = findViewById(R.id.txtProceed);
                 eFavourite = findViewById(R.id.txtFavourite);
                 progressBar = findViewById(R.id.progress);
+                toolbar = findViewById(R.id.toolbar);
+                setSupportActionBar(toolbar);
+
                 //object initialize
-                //numberVerification = new PhoneNumberVerification(this);
-                createMemberBackgroundTask = new CreateMemberBackgroundTask(this);
                 informationCheck = new InfoBackgroundTask(this);
                 internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
                 someMethod = new NeedSomeMethod(this);
+                sharedPreferenceData = new SharedPreferenceData(CreateNewAccount.this);
                 //calling method
                 onButtonClick();
         }
 
+        //set a toolbar,above the page
+        private void setToolbar()
+        {
+                toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayShowHomeEnabled(true);
+                toolbar.setNavigationIcon(R.drawable.icon_back);
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                                finish();
+                        }
+                });
+        }
+
+        //initialize all user information related variable by getText from textView or editText
         private void userInformation()
         {
                 name = eName.getText().toString();
@@ -127,6 +146,7 @@ public class CreateNewAccount extends AppCompatActivity
                 favouriteWord = eFavourite.getText().toString();
         }
 
+        //when user click on button,this method action will start,
         private void onButtonClick()
         {
                 txtSign.setOnClickListener(new View.OnClickListener() {
@@ -141,9 +161,8 @@ public class CreateNewAccount extends AppCompatActivity
                         @Override
                         public void onClick(View view) {
 
-                                InfoBackgroundTask infoBackgroundTask = new InfoBackgroundTask(CreateNewAccount.this);
-
-                                userInformation();
+                                infoBackgroundTask = new InfoBackgroundTask(CreateNewAccount.this);
+                                userInformation();//method
 
                                 if(internetIsOn.isOnline())
                                 {
@@ -151,18 +170,20 @@ public class CreateNewAccount extends AppCompatActivity
                                         {
                                                 try {
                                                         POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8");
+                                                        infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                                        infoBackgroundTask.execute(FILE_URL,POST_DATA);
                                                 }catch(UnsupportedEncodingException e) {
                                                         e.printStackTrace();
                                                 }
-
-                                                infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                infoBackgroundTask.execute(FILE_URL,POST_DATA);
                                         }
                                 }else dialogClass.noInternetConnection();
                         }
                 });
         }
-
+        /*
+               check all user information.
+               return boolean type value.when user input value to follow all input condition then it will return true,otherwise return false.
+         */
         private boolean checkUserInformation(String name,String userName,String email,String password)
         {
                 boolean flag = true;
@@ -243,29 +264,6 @@ public class CreateNewAccount extends AppCompatActivity
                 return flag;
         }
 
-        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
-
-                @Override
-                public void onResultSuccess(final String message) {
-                        runOnUiThread(new Runnable() {
-                                public void run() {
-                                        switch (message) {
-                                                case "not exist":
-                                                        onLogin(LoginType.PHONE);
-                                                        break;
-                                                case "offline":
-                                                        dialogClass.noInternetConnection();
-                                                        break;
-                                                default:
-                                                        eUserName.setError("already exist");
-                                                        break;
-                                        }
-                                }
-                        });
-                }
-        };
-
-
         //new user registration process
         private void newUserRegistration(String phoneNumber)
         {
@@ -291,24 +289,52 @@ public class CreateNewAccount extends AppCompatActivity
         }
 
 
+        //interface,use for check if username is already exist or not ...
+        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
+
+                @Override
+                public void onResultSuccess(final String result) {
+                        runOnUiThread(new Runnable() {
+                                public void run() {
+                                        Toast.makeText(CreateNewAccount.this,"result1 :"+result,Toast.LENGTH_SHORT).show();
+                                        switch (result) {
+                                                case "success":
+                                                        onLogin(LoginType.PHONE);
+                                                        break;
+                                                case "offline":
+                                                        dialogClass.noInternetConnection();
+                                                        break;
+                                                default:
+                                                        dialogClass.error("Execution failed.Please try again with another username.");
+                                                        break;
+                                        }
+                                }
+                        });
+                }
+        };
+
+        //interface,use for if user information successfully insert or not.....
         OnAsyncTaskInterface taskInterface = new OnAsyncTaskInterface() {
                 @Override
                 public void onResultSuccess(final String result) {
                         runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                        Toast.makeText(CreateNewAccount.this,"result2 :"+result,Toast.LENGTH_SHORT).show();
                                         switch (result)
                                         {
-                                                case "success":
+                                                case "success"://insert_member_info.php file return success
                                                         Thread thread = new Thread(new Runnable() {
                                                                 @Override
                                                                 public void run() {
                                                                         try
                                                                         {
                                                                                 Thread.sleep(2500);
-                                                                                new SharedPreferenceData(CreateNewAccount.this).ifUserLogIn(USER_LOGIN,true);
-                                                                                new SharedPreferenceData(CreateNewAccount.this).currentUserInfo(USER_INFO,userName,password);
-                                                                                new SharedPreferenceData(CreateNewAccount.this).userType("member");
+
+                                                                                //current user info,user log in status,user type save in shared preference
+                                                                                sharedPreferenceData.ifUserLogIn(USER_LOGIN,true);
+                                                                                sharedPreferenceData.currentUserInfo(USER_INFO,userName,password);
+                                                                                sharedPreferenceData.userType("member");
                                                                                 someMethod.closeActivity(CreateNewAccount.this,HomePageActivity.class);
                                                                                 finish();
                                                                         }catch (InterruptedException e)
@@ -317,7 +343,6 @@ public class CreateNewAccount extends AppCompatActivity
                                                                         }
                                                                 }
                                                         });
-
                                                         thread.start();
                                                         break;
                                                 default:
@@ -330,7 +355,9 @@ public class CreateNewAccount extends AppCompatActivity
         };
 
 
+
         //phone number verification with facebook kid
+
         @Override
         protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
         {
@@ -356,11 +383,16 @@ public class CreateNewAccount extends AppCompatActivity
                                 AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
                                         @Override
                                         public void onSuccess(final Account account) {
-                                                //Toast.makeText(CreateNewAccount.this,account.getPhoneNumber().toString()+" phone number verified",Toast.LENGTH_SHORT).show();
+                                                String phoneNumber = account.getPhoneNumber().toString();
 
-                                               // new CreateMemberBackgroundTask(CreateNewAccount.this).execute("insertMember",name,userName,email,account.getPhoneNumber().toString(),address,password,someMethod.getDate(),favouriteWord);
-                                                newUserRegistration(account.getPhoneNumber().toString());
-                                                progressBar.setVisibility(View.VISIBLE);
+                                                if(phoneNumber!=null)
+                                                {
+                                                        if(phoneNumber.length()==14)
+                                                                phoneNumber = phoneNumber.substring(3);
+
+                                                        newUserRegistration(phoneNumber);
+                                                        progressBar.setVisibility(View.VISIBLE);
+                                                }
                                         }
 
                                         @Override
@@ -483,6 +515,4 @@ public class CreateNewAccount extends AppCompatActivity
                         permissionsListener.onComplete();
                 }
         }
-
-
 }

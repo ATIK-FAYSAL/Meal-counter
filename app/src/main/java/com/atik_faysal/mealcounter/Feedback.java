@@ -49,10 +49,9 @@ public class Feedback extends AppCompatActivity
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.feedback);
                 initComponent();
-                onButtonClick();
-                setToolbar();
         }
 
+        //initialize all user information related variable by getText from textView or editText
         private void initComponent()
         {
                 eFeedback = findViewById(R.id.eFeedback);
@@ -61,6 +60,7 @@ public class Feedback extends AppCompatActivity
                 toolbar = findViewById(R.id.toolbar1);
                 setSupportActionBar(toolbar);
 
+                //add scrollview in editText
                 eFeedback.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {
@@ -86,16 +86,13 @@ public class Feedback extends AppCompatActivity
                 txtName.setText(currentUser);
                 if(eFeedback.getText().toString().isEmpty())bFeedback.setEnabled(false);
 
+                //on text changed listener and take action
                 eFeedback.addTextChangedListener(new TextWatcher() {
                         @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                        }
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
                         @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        }
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
                         @Override
                         public void afterTextChanged(Editable s) {
@@ -103,9 +100,13 @@ public class Feedback extends AppCompatActivity
                                 else bFeedback.setEnabled(true);
                         }
                 });
+
+                //calling method
+                onButtonClick();
+                setToolbar();
         }
 
-
+        //set a toolbar,above the page
         private void setToolbar()
         {
                 toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -120,6 +121,7 @@ public class Feedback extends AppCompatActivity
                 });
         }
 
+        //button click
         private void onButtonClick()
         {
                 bFeedback.setOnClickListener(new View.OnClickListener() {
@@ -144,6 +146,7 @@ public class Feedback extends AppCompatActivity
                 });
         }
 
+
         OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
                 public void onResultSuccess(final String message) {
@@ -152,15 +155,14 @@ public class Feedback extends AppCompatActivity
                                 public void run() {
                                         switch (message)
                                         {
+                                                case "success":
+                                                        dialogClass.success("Feedback added.Thank you ,for your feedback.");
+                                                        break;
                                                 case "offline":
                                                         dialogClass.noInternetConnection();
                                                         break;
-                                                case "failed":
-                                                        Toast.makeText(Feedback.this,"Sorry ! please try again latter.",Toast.LENGTH_SHORT).show();
-                                                        break;
                                                 default:
-                                                        Toast.makeText(Feedback.this,message,Toast.LENGTH_SHORT).show();
-                                                        finish();
+                                                        dialogClass.error("Execution failed! please try again.");
                                                         break;
                                         }
                                 }

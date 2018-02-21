@@ -46,6 +46,7 @@ public class AdminPanel extends AppCompatActivity
         private CheckInternetIsOn internetIsOn;
         private AdapterMemberList adapter;
         private SharedPreferenceData sharedPreferenceData;
+        private NeedSomeMethod someMethod;
 
         private static final String FILE_URL = "http://192.168.56.1/json_mem_info.php";
         private static String POST_DATA;
@@ -58,9 +59,9 @@ public class AdminPanel extends AppCompatActivity
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.member_list);
                 initComponent();
-                reloadPage();
         }
 
+        //initialize all user information related variable by getText from textView or editText
         private void initComponent()
         {
                 listView = findViewById(R.id.memberList);
@@ -74,6 +75,10 @@ public class AdminPanel extends AppCompatActivity
                 internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
                 sharedPreferenceData = new SharedPreferenceData(this);
+                someMethod = new NeedSomeMethod(this);
+
+                //calling method
+                someMethod.reloadPage(refreshLayout,AdminPanel.class);
 
                 currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
                 if(internetIsOn.isOnline())
@@ -82,16 +87,17 @@ public class AdminPanel extends AppCompatActivity
                         {
                                 try {
                                         POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
+                                        backgroundTask = new InfoBackgroundTask(this);
+                                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                        backgroundTask.execute(FILE_URL,POST_DATA);
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
                                 }
-                                backgroundTask = new InfoBackgroundTask(this);
-                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(FILE_URL,POST_DATA);
                         }else Toast.makeText(this,"under construction",Toast.LENGTH_SHORT).show();
-                }
+                }else dialogClass.noInternetConnection();
         }
 
+        //set a toolbar,above the page
         private void setToolbar()
         {
                 toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -106,51 +112,7 @@ public class AdminPanel extends AppCompatActivity
                 });
         }
 
-
-        private void reloadPage()
-        {
-                refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override
-                        public void onRefresh() {
-                                refreshLayout.setRefreshing(true);
-
-                                (new Handler()).postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                                refreshLayout.setRefreshing(false);
-                                                startActivity(new Intent(AdminPanel.this,AdminPanel.class));
-                                                finish();
-                                        }
-                                },3000);
-                        }
-                });
-        }
-
-        InfoBackgroundTask.OnAsyncTaskInterface onAsyncTaskInterface = new InfoBackgroundTask.OnAsyncTaskInterface() {
-                @Override
-                public void onResultSuccess(final String userInfo) {
-                        runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                        switch (userInfo)
-                                        {
-                                                case "no result":
-                                                        break;
-
-                                                case "not member":
-                                                        dialogClass.notMember();
-                                                        break;
-
-                                                default:
-                                                        addMemberInListView(userInfo);
-                                                        break;
-                                        }
-                                }
-                        });
-                }
-        };
-
-
+        //get all member and set into list view
         private void addMemberInListView(String jsonData)
         {
                 if(jsonData!=null)
@@ -186,4 +148,29 @@ public class AdminPanel extends AppCompatActivity
                         }
                 }
         }
+
+        InfoBackgroundTask.OnAsyncTaskInterface onAsyncTaskInterface = new InfoBackgroundTask.OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String userInfo) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        switch (userInfo)
+                                        {
+                                                case "no result":
+                                                        break;
+
+                                                case "not member":
+                                                        dialogClass.notMember();
+                                                        break;
+
+                                                default:
+                                                        addMemberInListView(userInfo);
+                                                        break;
+                                        }
+                                }
+                        });
+                }
+        };
+
 }

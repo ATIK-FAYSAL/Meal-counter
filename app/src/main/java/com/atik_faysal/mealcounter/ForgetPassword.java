@@ -34,7 +34,6 @@ public class ForgetPassword extends AppCompatActivity
         private static final String FILE_URL = "http://192.168.56.1/checkInformation.php";
         private static String POST_DATA;
 
-
         private AlertDialogClass dialogClass;
         private CheckInternetIsOn internetIsOn;
 
@@ -46,6 +45,7 @@ public class ForgetPassword extends AppCompatActivity
                 initComponent();
         }
 
+        //initialize all object and UI component
         private void initComponent()
         {
                 eFaWord = findViewById(R.id.eFavourite);
@@ -60,6 +60,7 @@ public class ForgetPassword extends AppCompatActivity
                 internetIsOn = new CheckInternetIsOn(this);
         }
 
+        //set toolbar above the page
         private void setToolbar()
         {
                 toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -74,15 +75,17 @@ public class ForgetPassword extends AppCompatActivity
                 });
         }
 
+        //get user information from UI
         private void getInformation()
         {
                 userName = eUserName.getText().toString();
                 fWord = eFaWord.getText().toString();
                 phone = ePhone.getText().toString();
 
-                if(phone.length()==11)phone = "+88"+phone;
+                if(phone.length()==14)phone = phone.substring(3);
         }
 
+        //check user information,here check all user input condition.
         private boolean checkUserInfo(String phone,String userName)
         {
                 boolean flag = true;
@@ -112,6 +115,7 @@ public class ForgetPassword extends AppCompatActivity
                 return flag;
         }
 
+        //button click to take action
         private void onButtonClick()
         {
                 bContinue.setOnClickListener(new View.OnClickListener() {
@@ -140,17 +144,14 @@ public class ForgetPassword extends AppCompatActivity
                 });
         }
 
-
+        //interface check user information for change your password
         OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
                 public void onResultSuccess(final String message) {
                         runOnUiThread(new Runnable() {
                                 public void run() {
-                                        switch (message) {
+                                        switch (message) {//checkInformation.php file
                                                 case "success":
-
-                                                        if(phone.length()==14)phone = phone.substring(3,phone.length());
-
                                                         Intent page = new Intent(ForgetPassword.this,ChangeYourPassword.class);
                                                         page.putExtra("phone",phone);
                                                         page.putExtra("userName",userName);
@@ -160,16 +161,13 @@ public class ForgetPassword extends AppCompatActivity
                                                         eFaWord.setError("Invalid favourite word");
                                                         break;
                                                 case "phone error":
-                                                        ePhone.setError("Invalid phone");
+                                                        ePhone.setError("Invalid phone number");
                                                         break;
                                                 case "offline":
                                                         dialogClass.noInternetConnection();
                                                         break;
-                                                case "failed":
-                                                        break;
-                                                case "We can not recognized you":
-                                                        eUserName.setError("Invalid UserName");
-                                                        Toast.makeText(ForgetPassword.this,message+".Please retry with valid UserName",Toast.LENGTH_LONG).show();
+                                                default:
+                                                        dialogClass.error("Execution failed.We can not recognized you.");
                                                         break;
                                         }
                                 }

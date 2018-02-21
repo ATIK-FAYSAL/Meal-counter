@@ -53,14 +53,12 @@ public class MemberJoinRequest extends AppCompatActivity
         private AlertDialogClass dialogClass;
         private InfoBackgroundTask backgroundTask;
         private SharedPreferenceData sharedPreferenceData;
+        private NeedSomeMethod someMethod;
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.member_list);
                 initComponent();
-                setToolbar();
-                initializeAllRequest();
-                reloadPage();
         }
 
         private void initComponent()
@@ -75,8 +73,14 @@ public class MemberJoinRequest extends AppCompatActivity
                 internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
                 sharedPreferenceData = new SharedPreferenceData(this);
+                someMethod = new NeedSomeMethod(this);
 
                 currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
+
+                //calling method
+                setToolbar();
+                initializeAllRequest();
+                someMethod.reloadPage(refreshLayout,MemberJoinRequest.class);
         }
 
         private void setToolbar()
@@ -89,25 +93,6 @@ public class MemberJoinRequest extends AppCompatActivity
                         @Override
                         public void onClick(View v) {
                                 finish();
-                        }
-                });
-        }
-
-        private void reloadPage()
-        {
-                refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override
-                        public void onRefresh() {
-                                refreshLayout.setRefreshing(true);
-
-                                (new Handler()).postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                                refreshLayout.setRefreshing(false);
-                                                startActivity(new Intent(MemberJoinRequest.this,MemberJoinRequest.class));
-                                                finish();
-                                        }
-                                },3000);
                         }
                 });
         }
@@ -126,19 +111,6 @@ public class MemberJoinRequest extends AppCompatActivity
                         }
                 }else dialogClass.noInternetConnection();
         }
-
-        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
-                @Override
-                public void onResultSuccess(final String result) {
-                        runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                        if(result!=null)
-                                                processJsonData(result);
-                                }
-                        });
-                }
-        };
 
         private void processJsonData(String jsonData)
         {
@@ -175,4 +147,17 @@ public class MemberJoinRequest extends AppCompatActivity
                         e.printStackTrace();
                 }
         }
+
+        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String result) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        if(result!=null)
+                                                processJsonData(result);
+                                }
+                        });
+                }
+        };
 }

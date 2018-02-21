@@ -43,6 +43,7 @@ public class EditYourProfile extends AppCompatActivity
         private CheckInternetIsOn internetIsOn;
         private InfoBackgroundTask infoBackgroundTask;
         private SharedPreferenceData sharedPreferenceData;
+        private NeedSomeMethod someMethod;
 
         //component variable
         private SwipeRefreshLayout refreshLayout;
@@ -67,11 +68,9 @@ public class EditYourProfile extends AppCompatActivity
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.profile);
                 initComponent();
-                setToolbar();
-                onButtonClick();
-                reloadPage();
         }
 
+        //initialize all user information related variable by getText from textView or editText
         private void initComponent()
         {
                 toolbar = findViewById(R.id.toolbar1);
@@ -94,22 +93,34 @@ public class EditYourProfile extends AppCompatActivity
 
                 sharedPreferenceData = new SharedPreferenceData(this);
                 internetIsOn = new CheckInternetIsOn(this);
+                dialogClass = new AlertDialogClass(this);
+                someMethod = new NeedSomeMethod(this);
+
+                //calling method
+                someMethod.reloadPage(refreshLayout,EditYourProfile.class);
+                setToolbar();
+                onButtonClick();
 
                 currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
 
-                try {
-                        if(currentUser!=null)
-                                POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
-                        else Toast.makeText(this,"under construction",Toast.LENGTH_SHORT).show();
-                } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                }
-                infoBackgroundTask = new InfoBackgroundTask(this);
-                infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                infoBackgroundTask.execute(FILE_URL,POST_DATA);
+               if(internetIsOn.isOnline())
+               {
+                       try {
+                               if(currentUser!=null)
+                                       POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
+                               else Toast.makeText(this,"under construction",Toast.LENGTH_SHORT).show();
+
+                               infoBackgroundTask = new InfoBackgroundTask(this);
+                               infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
+                               infoBackgroundTask.execute(FILE_URL,POST_DATA);
+                       } catch (UnsupportedEncodingException e) {
+                               e.printStackTrace();
+                       }
+               }else dialogClass.noInternetConnection();
 
         }
 
+        //set a toolbar,above the page
         private void setToolbar()
         {
                 toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -120,26 +131,6 @@ public class EditYourProfile extends AppCompatActivity
                         @Override
                         public void onClick(View v) {
                                 finish();
-                        }
-                });
-        }
-
-
-        private void reloadPage()
-        {
-                refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override
-                        public void onRefresh() {
-                                refreshLayout.setRefreshing(true);
-
-                                (new Handler()).postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                                refreshLayout.setRefreshing(false);
-                                                startActivity(new Intent(EditYourProfile.this,EditYourProfile.class));
-                                                finish();
-                                        }
-                                },3000);
                         }
                 });
         }
@@ -178,102 +169,7 @@ public class EditYourProfile extends AppCompatActivity
                 });
         }
 
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
-                MenuInflater menuInflater = getMenuInflater();
-                menuInflater.inflate(R.menu.edit,menu);
-                return true;
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-                int id;
-                id = item.getItemId();
-                switch (id)
-                {
-                        case R.id.edit:
-                                eName.setFocusableInTouchMode(true);
-                                eEmail.setFocusableInTouchMode(true);
-                                eFaWord.setFocusableInTouchMode(true);
-                                eAddress.setFocusableInTouchMode(true);
-                                bEdit.setEnabled(true);
-                                break;
-                }
-                return true;
-        }
-
-        //retrieve value
-        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
-                @Override
-                public void onResultSuccess(final String userInfo) {
-                        runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                       switch (userInfo)
-                                       {
-                                               case "failed":
-                                                       Toast.makeText(EditYourProfile.this,"Error occurred to information update",Toast.LENGTH_SHORT).show();
-                                                       break;
-                                               case "updated":
-                                                       Toast.makeText(EditYourProfile.this,"Information updated successfully.",Toast.LENGTH_SHORT).show();
-                                                       try {
-                                                               if(currentUser!=null)
-                                                                       POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
-                                                               else Toast.makeText(EditYourProfile.this,"under construction",Toast.LENGTH_SHORT).show();
-                                                       } catch (UnsupportedEncodingException e) {
-                                                               e.printStackTrace();
-                                                       }
-                                                       infoBackgroundTask = new InfoBackgroundTask(EditYourProfile.this);
-                                                       infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                       infoBackgroundTask.execute(FILE_URL,POST_DATA);
-                                                       finish();
-                                                       break;
-                                               default:
-                                                       if(userInfo!=null)
-                                                       {
-                                                               try {
-                                                                       jsonObject = new JSONObject(userInfo);
-                                                                       jsonArray = jsonObject.optJSONArray("information");
-
-                                                                       int count = 0;
-                                                                       while(count<jsonArray.length())
-                                                                       {
-                                                                               JSONObject jObject = jsonArray.getJSONObject(count);
-                                                                               name = jObject.getString("name");
-                                                                               userName = jObject.getString("userName");
-                                                                               email = jObject.getString("email");
-                                                                               phone = jObject.getString("phone");
-                                                                               address = jObject.getString("address");
-                                                                               taka = jObject.getString("taka");
-                                                                               fWord = jObject.getString("fWord");
-                                                                               group = jObject.getString("group");
-                                                                               date = jObject.getString("date");
-                                                                               count++;
-                                                                       }
-                                                               } catch (JSONException e) {
-                                                                       e.printStackTrace();
-                                                               }
-
-
-                                                               eName.setText("  "+name);
-                                                               txtUserName.setText("  "+userName);
-                                                               ePhone.setText("  "+phone);
-                                                               eAddress.setText("  "+address);
-                                                               eFaWord.setText("  "+fWord);
-                                                               txtDate.setText("  "+"Join  "+date);
-                                                               eEmail.setText("  "+email);
-                                                               txtTaka.setText(taka);
-                                                               txtGroup.setText(group);
-                                                       }else Log.d(TAG,"Json object error");
-                                                       break;
-                                       }
-                                }
-                        });
-                }
-        };
-
-
-
+        //check user info for that they follow the input condition
         private boolean checkUserInfo(String name,String email)
         {
                 boolean flag = true;
@@ -329,6 +225,105 @@ public class EditYourProfile extends AppCompatActivity
 
                 return flag;
         }
+
+        //process json data to string
+        private void processJsonData(String jsonData)
+        {
+                try {
+                        jsonObject = new JSONObject(jsonData);
+                        jsonArray = jsonObject.optJSONArray("information");
+
+                        int count = 0;
+                        while(count<jsonArray.length())
+                        {
+                                JSONObject jObject = jsonArray.getJSONObject(count);
+                                name = jObject.getString("name");
+                                userName = jObject.getString("userName");
+                                email = jObject.getString("email");
+                                phone = jObject.getString("phone");
+                                address = jObject.getString("address");
+                                taka = jObject.getString("taka");
+                                fWord = jObject.getString("fWord");
+                                group = jObject.getString("group");
+                                date = jObject.getString("date");
+                                count++;
+                        }
+                } catch (JSONException e) {
+                        e.printStackTrace();
+                }
+
+
+                eName.setText("  "+name);
+                txtUserName.setText("  "+userName);
+                ePhone.setText("  "+phone);
+                eAddress.setText("  "+address);
+                eFaWord.setText("  "+fWord);
+                txtDate.setText("  "+"Join  "+date);
+                eEmail.setText("  "+email);
+                txtTaka.setText(taka);
+                txtGroup.setText(group);
+        }
+
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+                MenuInflater menuInflater = getMenuInflater();
+                menuInflater.inflate(R.menu.edit,menu);
+                return true;
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+                int id;
+                id = item.getItemId();
+                switch (id)
+                {
+                        case R.id.edit:
+                                eName.setFocusableInTouchMode(true);
+                                eEmail.setFocusableInTouchMode(true);
+                                eFaWord.setFocusableInTouchMode(true);
+                                eAddress.setFocusableInTouchMode(true);
+                                bEdit.setEnabled(true);
+                                break;
+                }
+                return true;
+        }
+
+        //interface,get all information about user from database
+        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String userInfo) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                       switch (userInfo)
+                                       {
+                                               case "failed":
+                                                       Toast.makeText(EditYourProfile.this,"Error occurred to information update",Toast.LENGTH_SHORT).show();
+                                                       break;
+                                               case "updated":
+                                                       Toast.makeText(EditYourProfile.this,"Information updated successfully.",Toast.LENGTH_SHORT).show();
+                                                       try {
+                                                               if(currentUser!=null)
+                                                                       POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
+                                                               else Toast.makeText(EditYourProfile.this,"under construction",Toast.LENGTH_SHORT).show();
+                                                       } catch (UnsupportedEncodingException e) {
+                                                               e.printStackTrace();
+                                                       }
+                                                       infoBackgroundTask = new InfoBackgroundTask(EditYourProfile.this);
+                                                       infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                                       infoBackgroundTask.execute(FILE_URL,POST_DATA);
+                                                       finish();
+                                                       break;
+                                               default:
+                                                       if(userInfo!=null)
+                                                               processJsonData(userInfo);
+                                                       else Log.d(TAG,"Json object error");
+                                                       break;
+                                       }
+                                }
+                        });
+                }
+        };
 
 
 }

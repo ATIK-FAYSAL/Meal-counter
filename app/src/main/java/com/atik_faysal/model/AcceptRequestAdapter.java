@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.atik_faysal.backend.InfoBackgroundTask;
 import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
+import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.R;
 
 import java.io.UnsupportedEncodingException;
@@ -37,6 +38,7 @@ public class AcceptRequestAdapter extends BaseAdapter
 
         private InfoBackgroundTask backgroundTask;
         private AlertDialogClass dialogClass;
+        private CheckInternetIsOn internetIsOn;
 
         static final String FILE_URL = "http://192.168.56.1/requestsAction.php";
         static String POST;
@@ -47,6 +49,7 @@ public class AcceptRequestAdapter extends BaseAdapter
                 activity = (Activity)context;
                 this.memberModelList = memberModels;
                 dialogClass = new AlertDialogClass(context);
+                internetIsOn = new CheckInternetIsOn(context);
         }
 
 
@@ -96,14 +99,18 @@ public class AcceptRequestAdapter extends BaseAdapter
                 bAccept.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                                requestAction(memberModelList.get(position).getUserName(),"accept",memberModelList.get(position).getGroup());
+                                if(internetIsOn.isOnline())
+                                        requestAction(memberModelList.get(position).getUserName(),"accept",memberModelList.get(position).getGroup());
+                                else dialogClass.noInternetConnection();
                         }
                 });
 
                 bCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                                requestAction(memberModelList.get(position).getUserName(),"cancel",memberModelList.get(position).getGroup());
+                                if(internetIsOn.isOnline())
+                                        requestAction(memberModelList.get(position).getUserName(),"cancel",memberModelList.get(position).getGroup());
+                                else dialogClass.noInternetConnection();
                         }
                 });
 
@@ -111,6 +118,7 @@ public class AcceptRequestAdapter extends BaseAdapter
         }
 
 
+        //admin take action about join request.accept or cancel request
         private void requestAction(String userName,String action,String group)
         {
                 try {

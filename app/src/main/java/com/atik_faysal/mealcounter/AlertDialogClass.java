@@ -30,6 +30,7 @@ public class AlertDialogClass
 
         private OnAsyncTaskInterface onAsyncTaskInterface;
 
+        //constructor
         public AlertDialogClass(Context context)
         {
                 this.context = context;
@@ -43,6 +44,7 @@ public class AlertDialogClass
                         this.onAsyncTaskInterface = onAsyncTaskInterface;
         }
 
+        //if you are not connected with internet
         public void noInternetConnection()
         {
                 Button bSetting;
@@ -64,6 +66,7 @@ public class AlertDialogClass
                 });
         }
 
+        //if you are not a member of group
         public void notMember()
         {
                 Button bOk;
@@ -94,6 +97,7 @@ public class AlertDialogClass
                 });
         }
 
+        //if you are already member
         public void alreadyMember(String value)
         {
                 Button bOk;
@@ -125,6 +129,7 @@ public class AlertDialogClass
                 });
         }
 
+        //execution failed
         public void error(String value)
         {
                 Button bOk;
@@ -152,6 +157,7 @@ public class AlertDialogClass
                 });
         }
 
+        //warning
         public void warning(String value)
         {
                 builder = new AlertDialog.Builder(context);
@@ -190,6 +196,7 @@ public class AlertDialogClass
 
         }
 
+        //if execution success
         public void success(String value)
         {
                 Button bOk;

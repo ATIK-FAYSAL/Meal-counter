@@ -3,6 +3,8 @@ package com.atik_faysal.mealcounter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -20,10 +22,12 @@ public class NeedSomeMethod
 {
 
         Context context;
+        Activity activity;
 
         public NeedSomeMethod(Context context)
         {
                 this.context = context;
+                activity = (Activity)context;
         }
 
 
@@ -41,6 +45,26 @@ public class NeedSomeMethod
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
                 context.finish();
+        }
+
+
+        public void reloadPage(final SwipeRefreshLayout refreshLayout, final Class<?>nameOfClass)
+        {
+                refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                                refreshLayout.setRefreshing(true);
+
+                                (new Handler()).postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                                refreshLayout.setRefreshing(false);
+                                                context.startActivity(new Intent(context,nameOfClass));
+                                                activity.finish();
+                                        }
+                                },3000);
+                        }
+                });
         }
 
 }

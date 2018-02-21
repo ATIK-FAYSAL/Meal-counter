@@ -23,6 +23,10 @@ import static android.content.ContentValues.TAG;
 
 public class RegisterDeviceToken
 {
+        /**when user successfully log in ,it will take device token for send notification
+          *only first time take this token.
+        */
+
         public static void registerToken(final String token,String userName,String date)
         {
 

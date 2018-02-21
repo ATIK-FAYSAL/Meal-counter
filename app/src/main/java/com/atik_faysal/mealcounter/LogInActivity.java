@@ -32,6 +32,7 @@ public class LogInActivity extends AppCompatActivity
         private CheckInternetIsOn checkInternet;
         private AlertDialogClass dialogClass;
         private SharedPreferenceData sharedPreferenceData;
+        private String userName,password;
 
 
         private static final String REMEMBER_ME = "rememberMe";
@@ -73,6 +74,7 @@ public class LogInActivity extends AppCompatActivity
                 startActivity(intent);
         }
 
+        //initialize all object and UI component
         private void initComponent()
         {
                 txtSingUp = findViewById(R.id.txtSignUp);
@@ -87,6 +89,7 @@ public class LogInActivity extends AppCompatActivity
                 sharedPreferenceData = new SharedPreferenceData(this);
         }
 
+        //button click to take action
         private void actionComponent()
         {
                 txtSingUp.setOnClickListener(new View.OnClickListener() {
@@ -96,25 +99,25 @@ public class LogInActivity extends AppCompatActivity
                         }
                 });
 
-
                 bSignIn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-
                                 //startActivity(new Intent(LogInActivity.this,HomePageActivity.class));
+
+                                userName = txtUserName.getText().toString();
+                                password = txtUserPassword.getText().toString();
 
                                 if(checkInternet.isOnline())
                                 {
                                         if(txtUserName.getText().toString().isEmpty()||txtUserPassword.getText().toString().isEmpty())
                                         {
-                                                if(txtUserName.getText().toString().isEmpty())txtUserName.setError("Input valid userName");
-                                                else if(txtUserPassword.getText().toString().isEmpty())txtUserPassword.setError("Input valid password");
-                                        }else new UserLogIn(LogInActivity.this).execute("login",txtUserName.getText().toString(),txtUserPassword.getText().toString());
+                                                if(userName.isEmpty())txtUserName.setError("Input valid userName");
+                                                else if(password.isEmpty())txtUserPassword.setError("Input valid password");
+                                        }else new UserLogIn(LogInActivity.this).execute("login",userName,password);
 
                                 }else dialogClass.noInternetConnection();
                         }
                 });
-
 
                 txtForgotPass.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -124,11 +127,13 @@ public class LogInActivity extends AppCompatActivity
                 });
         }
 
+        //exit from app
         private void closeApp()
         {
                 if(getIntent().getBooleanExtra("flag",false))finish();
         }
 
+        //check checkBox status
         public void onClickCheckBox(View view)
         {
                 if(checkBox.isChecked())

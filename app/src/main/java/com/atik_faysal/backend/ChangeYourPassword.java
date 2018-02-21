@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -48,6 +49,7 @@ public class ChangeYourPassword extends AppCompatActivity
         private Button bVerify;
         private Button bResend;
         private TextView tTimer;
+        private Toolbar toolbar;
 
 
         private String phoneVerificationId;
@@ -55,14 +57,12 @@ public class ChangeYourPassword extends AppCompatActivity
                 verificationCallbacks;
         private PhoneAuthProvider.ForceResendingToken resendToken;
         private FirebaseAuth fbAuth;
-        private Timer timer;
         private AlertDialogClass dialogClass;
         private NeedSomeMethod someMethod;
         private CountDownTimer countDownTimer;
         private AlertDialog alertDialog;
 
         private String phoneNumber,userName;
-        private String password;
 
         private static final String FILE_URL = "http://192.168.56.1/changePassword.php";
         private static String POST_DATA ;
@@ -73,33 +73,46 @@ public class ChangeYourPassword extends AppCompatActivity
                 setContentView(R.layout.code_verification);
                 fbAuth = FirebaseAuth.getInstance();
                 initComponent();
+                setToolbar();
         }
 
+        //initialize all object and UI component
         private void initComponent()
         {
                 eCode = findViewById(R.id.eCode);
                 bVerify = findViewById(R.id.bVerify);
                 bResend = findViewById(R.id.bResend);
                 tTimer = findViewById(R.id.tTimer);
-
+                toolbar = findViewById(R.id.toolbar1);
+                setSupportActionBar(toolbar);
 
                 dialogClass = new AlertDialogClass(this);
                 someMethod = new NeedSomeMethod(this);
 
-                userName = getIntent().getExtras().getString("userName");
+                try {
+                        if(getIntent().hasExtra("userName"))
+                                userName = getIntent().getExtras().getString("userName");
+                        else userName = "null";
+
+                        if(getIntent().hasExtra("phone"))
+                                phoneNumber = getIntent().getExtras().getString("phone");
+                        else phoneNumber = "null";
+                }catch (NullPointerException e)
+                {
+                        dialogClass.error("Execution failed.Please try again after sometimes.");
+                }
+
+                if(eCode.getText().toString().isEmpty())bVerify.setEnabled(false);
                 sendCode();
                 startTimeCount();
 
-                if(eCode.getText().toString().isEmpty())bVerify.setEnabled(false);
-
+                //check if user input valid code
                 eCode.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
                         @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        }
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
                         @Override
                         public void afterTextChanged(Editable s) {
@@ -112,7 +125,6 @@ public class ChangeYourPassword extends AppCompatActivity
                         @Override
                         public void onClick(View v) {
                                 verifyCode();
-                                //changYourPassword();
                         }
                 });
                 bResend.setOnClickListener(new View.OnClickListener() {
@@ -123,9 +135,25 @@ public class ChangeYourPassword extends AppCompatActivity
                 });
         }
 
+        //set toolbar above the page
+        private void setToolbar()
+        {
+                toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayShowHomeEnabled(true);
+                toolbar.setNavigationIcon(R.drawable.icon_back);
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                                finish();
+                        }
+                });
+        }
+
+        //count one minute time
         private void startTimeCount()
         {
-                countDownTimer = new CountDownTimer(30000, 1000){
+                countDownTimer = new CountDownTimer(60000, 1000){
                         int tCounter=59;
                         public void onTick(long millisUntilFinished){
                                 tTimer.setText(String.valueOf(tCounter)+" Sec");
@@ -137,9 +165,9 @@ public class ChangeYourPassword extends AppCompatActivity
                 }.start();
         }
 
+        //send a verification code to user phone number
         private void sendCode() {
 
-                phoneNumber = "01835897172";
                 setUpVerificationCallbacks();
 
                 PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -183,6 +211,7 @@ public class ChangeYourPassword extends AppCompatActivity
                         };
         }
 
+        //verify phone number with valid code
         private void verifyCode() {
 
                 String code = eCode.getText().toString();
@@ -209,6 +238,8 @@ public class ChangeYourPassword extends AppCompatActivity
                                 }
                         });
         }
+
+        //if something is wrong user can resend verification code.
         private void resendCode() {
 
                 if(countDownTimer!=null)
@@ -216,7 +247,7 @@ public class ChangeYourPassword extends AppCompatActivity
                         countDownTimer.cancel();
                         tTimer.setText("");
                 }
-                phoneNumber = "01835897172"; //getIntent().getExtras().getString("phone");
+
                 startTimeCount();
                 setUpVerificationCallbacks();
 
@@ -230,6 +261,7 @@ public class ChangeYourPassword extends AppCompatActivity
         }
 
 
+        //change password,show an alert dialog,user can change password here.
         private void changYourPassword() {
                 if(countDownTimer!=null)countDownTimer.cancel();
 
@@ -241,7 +273,6 @@ public class ChangeYourPassword extends AppCompatActivity
                 final EditText ePassword;
                 final Button bChange;
 
-
                 ePassword = view.findViewById(R.id.ePassword);
                 bChange = view.findViewById(R.id.bChange);
 
@@ -250,14 +281,10 @@ public class ChangeYourPassword extends AppCompatActivity
 
                 ePassword.addTextChangedListener(new TextWatcher() {
                         @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                        }
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
                         @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        }
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
                         @Override
                         public void afterTextChanged(Editable s) {
@@ -276,36 +303,38 @@ public class ChangeYourPassword extends AppCompatActivity
                                 try {
                                         POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
                                                 +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(ePassword.getText().toString(),"UTF-8");
+
+                                        InfoBackgroundTask checkBackgroundTask = new InfoBackgroundTask(ChangeYourPassword.this);
+                                        checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                        checkBackgroundTask.execute(FILE_URL, POST_DATA);
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
                                 }
-                                InfoBackgroundTask checkBackgroundTask = new InfoBackgroundTask(ChangeYourPassword.this);
-                                checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                checkBackgroundTask.execute(FILE_URL, POST_DATA);
                         }
                 });
 
         }
 
+        //interface.changing password is success,
         OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
                 public void onResultSuccess(final String message) {
                         runOnUiThread(new Runnable() {
                                 public void run() {
                                         switch (message) {
-                                                case "failed":
-                                                        Toast.makeText(ChangeYourPassword.this,"Error updating password,check your username",Toast.LENGTH_SHORT).show();
-                                                        alertDialog.dismiss();
-                                                        someMethod.closeActivity(ChangeYourPassword.this, ForgetPassword.class);
-                                                        break;
                                                 case "offline":
                                                         dialogClass.noInternetConnection();
                                                         alertDialog.dismiss();
                                                         break;
-                                                default:
-                                                        Toast.makeText(ChangeYourPassword.this,message,Toast.LENGTH_SHORT).show();
+                                                case "success":
+                                                        Toast.makeText(ChangeYourPassword.this,"password changed successfully.",Toast.LENGTH_SHORT).show();
                                                         someMethod.closeActivity(ChangeYourPassword.this, LogInActivity.class);
                                                         alertDialog.dismiss();
+                                                        break;
+                                                default:
+                                                        Toast.makeText(ChangeYourPassword.this,"Error updating password,please try again.",Toast.LENGTH_SHORT).show();
+                                                        alertDialog.dismiss();
+                                                        someMethod.closeActivity(ChangeYourPassword.this, ForgetPassword.class);
                                                         break;
                                         }
                                 }

@@ -30,9 +30,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="14dp"
             android:hint="name"
-            android:textColor="#000"
+            android:textColor="@color/colorAccent"
             android:textSize="24dp"
-            android:textStyle="bold"
             android:layout_marginLeft="10dp"/>
 
 
@@ -49,10 +48,13 @@
             android:hint=" your feedback"
             android:inputType="textMultiLine"
             android:lines="15"
+            android:textSize="14dp"
             android:gravity="start"
             android:scrollbars="vertical"
             android:layout_marginBottom="10dp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:paddingRight="7dp"
+            android:paddingLeft="7dp"/>
 
         <Button
             android:id="@+id/bFeedback"

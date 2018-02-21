@@ -5,15 +5,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.atik_faysal.backend.CreateGroupBackgroundTask;
 import com.atik_faysal.backend.InfoBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
 
@@ -37,13 +38,16 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
         protected RadioButton rPublic;
         protected Toolbar toolbar;
         protected TextView fTime;
+        protected ProgressBar progressBar;
 
 
         private String gName,gId,gAddress,gDescription;
         private String currentUserName;
         private final static String USER_INFO = "currentInfo";
         private final static String FILE_URL  = "http://192.168.56.1/alreadyMember.php";
+        private final static String URL = "http://192.168.56.1/createGroup.php";
         private String POST_DATA;
+        private static String DATA;
         private String groupType="";
         private String time;
 
@@ -55,7 +59,8 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
         private CheckInternetIsOn internetIsOn;
         private AlertDialogClass dialogClass;
         private Calendar calendar;
-        protected TimePickerDialog timePickerDialog;
+        private TimePickerDialog timePickerDialog;
+        private InfoBackgroundTask backgroundTask;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,7 +71,8 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                 setToolbar();
         }
 
-        protected void initComponent()
+        // //initialize all user information related variable by getText from textView or editText
+        private void initComponent()
         {
                 groupName = findViewById(R.id.groupName);
                 groupName.requestFocus();
@@ -76,9 +82,26 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                 bCreate = findViewById(R.id.bCreate);
                 rPublic = findViewById(R.id.rPublic);
                 fTime = findViewById(R.id.fTime);
-                toolbar = findViewById(R.id.tool);
+                toolbar = findViewById(R.id.toolbar);
                 setSupportActionBar(toolbar);
                 calendar = Calendar.getInstance();
+                progressBar = findViewById(R.id.progress);
+
+                //set scrollview in description editText
+                groupDescription.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                                if(v.getId() == R.id.txtNotice){
+                                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                                        switch (event.getAction() & MotionEvent.ACTION_MASK){
+                                                case MotionEvent.ACTION_UP:
+                                                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                                                        break;
+                                        }
+                                }
+                                return false;
+                        }
+                });
 
 
                 sharedPreferenceData = new SharedPreferenceData(this);
@@ -89,6 +112,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
 
         }
 
+        //set toolbar
         private void setToolbar()
         {
                 toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -103,6 +127,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                 });
         }
 
+        //get all group information
         private void getGroupInformation()
         {
                 gName = groupName.getText().toString();
@@ -112,7 +137,8 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                 time = fTime.getText().toString();
         }
 
-        protected boolean checkInfo()
+        //check group information,to follow the input policy
+        private boolean checkInfo()
         {
                 boolean flag = true;
                 if(gName.isEmpty())
@@ -151,6 +177,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                 return flag;
         }
 
+        //select group type.public,close,secret,
         public void chooseGroupType(View view)
         {
                 boolean checked = ((RadioButton)view).isChecked();
@@ -172,7 +199,98 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                 }
         }
 
+        //button action
+        private void onButtonClick()
+        {
+                bCreate.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                                getGroupInformation();
 
+                                InfoBackgroundTask backgroundTask = new InfoBackgroundTask(MakeMyGroup.this);
+
+                                if(!currentUserName.isEmpty())
+                                {
+                                        try {
+                                                POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUserName,"UTF-8");
+                                                if(checkInfo())
+                                                {
+                                                        if(internetIsOn.isOnline())
+                                                        {
+                                                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                                                backgroundTask.execute(FILE_URL,POST_DATA);
+                                                        }else dialogClass.noInternetConnection();
+                                                }
+                                        } catch (UnsupportedEncodingException e) {
+                                                e.printStackTrace();
+                                        }
+                                }else Toast.makeText(MakeMyGroup.this,"Under construction",Toast.LENGTH_SHORT).show();
+                        }
+                });
+
+                fTime.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                                hour = calendar.get(Calendar.HOUR_OF_DAY);
+                                minute = calendar.get(Calendar.MINUTE);
+                                timePickerDialog = new TimePickerDialog(MakeMyGroup.this,MakeMyGroup.this,hour,minute,
+                                        DateFormat.is24HourFormat(MakeMyGroup.this));
+                                timePickerDialog.show();
+                        }
+                });
+        }
+
+        //process group info and ready to upload
+        private void createNewGroup()
+        {
+                try {
+                       DATA =  URLEncoder.encode("groupName","UTF-8")+"="+URLEncoder.encode(gName,"UTF-8")+"&"
+                                +URLEncoder.encode("groupId","UTF-8")+"="+URLEncoder.encode(gId,"UTF-8")+"&"
+                                +URLEncoder.encode("groupAddress","UTF-8")+"="+URLEncoder.encode(gAddress,"UTF-8")+"&"
+                                +URLEncoder.encode("groupDescription","UTF-8")+"="+URLEncoder.encode(gDescription,"UTF-8")+"&"
+                                +URLEncoder.encode("groupAdmin","UTF-8")+"="+URLEncoder.encode(currentUserName,"UTF-8")+"&"
+                                +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDate(),"UTF-8")+"&"
+                                +URLEncoder.encode("groupType","UTF-8")+"="+URLEncoder.encode(groupType,"UTF-8")+"&"
+                                +URLEncoder.encode("time","UTF-8")+"="+URLEncoder.encode(time,"UTF-8");
+
+                       backgroundTask = new InfoBackgroundTask(this);
+                       backgroundTask.setOnResultListener(taskInterface);
+                       backgroundTask.execute(URL,DATA);
+
+                } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                }
+        }
+
+        //interface,insert new group information
+        OnAsyncTaskInterface taskInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String result) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        switch (result)
+                                        {
+                                                case "success":
+                                                        sharedPreferenceData.userType("admin");
+                                                        Toast.makeText(MakeMyGroup.this,"New group created successfully.",Toast.LENGTH_SHORT).show();
+                                                        finish();
+                                                        break;
+                                                case "exist":
+                                                        progressBar.setVisibility(View.INVISIBLE);
+                                                        dialogClass.error("Error : This group id already exist.please try again with another group id.");
+                                                        break;
+                                                default:
+                                                        progressBar.setVisibility(View.INVISIBLE);
+                                                        dialogClass.error("Error : Execution failed.please try again.");
+                                                        break;
+                                        }
+                                }
+                        });
+                }
+        };
+
+        //interface,check if user already a group member or not,php file alreadyMember.php
         OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
                 public void onResultSuccess(final String message) {
@@ -180,8 +298,24 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                                 public void run() {
                                         switch (message) {
                                                 case "Null":
-                                                        new CreateGroupBackgroundTask(MakeMyGroup.this).execute(gName,gId,gAddress,gDescription,someMethod.getDate(),currentUserName,groupType,time);
-                                                        sharedPreferenceData.userType("admin");
+                                                        if(internetIsOn.isOnline())
+                                                        {
+                                                                progressBar.setVisibility(View.VISIBLE);
+                                                                Thread thread = new Thread(new Runnable() {
+                                                                        @Override
+                                                                        public void run() {
+                                                                                try
+                                                                                {
+                                                                                        Thread.sleep(2500);
+                                                                                        createNewGroup();
+                                                                                }catch (InterruptedException e)
+                                                                                {
+                                                                                        e.printStackTrace();
+                                                                                }
+                                                                        }
+                                                                });
+                                                                thread.start();
+                                                        }else dialogClass.noInternetConnection();
                                                         break;
                                                 case "offline":
                                                         dialogClass.noInternetConnection();
@@ -195,46 +329,9 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                 }
         };
 
-        protected void onButtonClick()
-        {
-                bCreate.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                                getGroupInformation();
 
-                                InfoBackgroundTask backgroundTask = new InfoBackgroundTask(MakeMyGroup.this);
 
-                                if(!currentUserName.isEmpty())
-                                {
-                                        try {
-                                                POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUserName,"UTF-8");
-                                        } catch (UnsupportedEncodingException e) {
-                                                e.printStackTrace();
-                                        }
-                                        if(checkInfo())
-                                        {
-                                                if(internetIsOn.isOnline())
-                                                {
-                                                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                        backgroundTask.execute(FILE_URL,POST_DATA);
-                                                }else dialogClass.noInternetConnection();
-                                        }
-                                }else Toast.makeText(MakeMyGroup.this,"Under construction",Toast.LENGTH_SHORT).show();
-                        }
-                });
-
-                fTime.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                                hour = calendar.get(Calendar.HOUR_OF_DAY);
-                                minute = calendar.get(Calendar.MINUTE);
-                                timePickerDialog = new TimePickerDialog(MakeMyGroup.this,MakeMyGroup.this,hour,minute,
-                                       DateFormat.is24HourFormat(MakeMyGroup.this));
-                                timePickerDialog.show();
-                        }
-                });
-        }
-
+        //user can fixed time for last meal input or shopping cost input.
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 hourFinal = hourOfDay;

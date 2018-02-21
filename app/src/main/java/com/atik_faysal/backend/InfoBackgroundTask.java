@@ -43,20 +43,21 @@ public class InfoBackgroundTask extends AsyncTask<String,Void,String>
         InputStream inputStream;
         BufferedReader bufferedReader;
 
-
+        //constructor
         public InfoBackgroundTask(Context context)
         {
                 this.context = context;
                 internetIsOn = new CheckInternetIsOn(context);
         }
 
-
+        //success result
         public void setOnResultListener(OnAsyncTaskInterface onAsyncResult) {
                 if (onAsyncResult != null) {
                         this.onAsyncTaskInterface = onAsyncResult;
                 }
         }
 
+        //background method .data inserting to database.
         @Override
         public String doInBackground(String... params) {
 
@@ -111,6 +112,7 @@ public class InfoBackgroundTask extends AsyncTask<String,Void,String>
         }
 
 
+        //interface,
         public interface OnAsyncTaskInterface {
                 void onResultSuccess(String message);
         }

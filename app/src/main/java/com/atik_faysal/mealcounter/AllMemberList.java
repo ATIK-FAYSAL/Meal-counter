@@ -49,6 +49,7 @@ public class AllMemberList extends AppCompatActivity
         private CheckInternetIsOn internetIsOn;
         private AdapterMemberList adapter;
         private SharedPreferenceData sharedPreferenceData;
+        private NeedSomeMethod someMethod;
 
         private static final String FILE_URL = "http://192.168.56.1/json_mem_info.php";
         private static String POST_DATA;
@@ -61,9 +62,9 @@ public class AllMemberList extends AppCompatActivity
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.member_list);
                 initComponent();
-                reloadPage();
         }
 
+        //initialize all user information related variable by getText from textView or editText
         private void initComponent()
         {
                 listView = findViewById(R.id.memberList);
@@ -72,11 +73,15 @@ public class AllMemberList extends AppCompatActivity
                 refreshLayout = findViewById(R.id.refreshLayout);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
                 setSupportActionBar(toolbar);
-                setToolbar();
 
                 internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
                 sharedPreferenceData = new SharedPreferenceData(this);
+                someMethod = new NeedSomeMethod(this);
+
+                //calling method
+                someMethod.reloadPage(refreshLayout,AllMemberList.class);
+                setToolbar();
 
                 currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
                 if(internetIsOn.isOnline())
@@ -95,6 +100,7 @@ public class AllMemberList extends AppCompatActivity
                 }
         }
 
+        //set a toolbar,above the page
         private void setToolbar()
         {
                 toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -109,51 +115,7 @@ public class AllMemberList extends AppCompatActivity
                 });
         }
 
-        private void reloadPage()
-        {
-                refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override
-                        public void onRefresh() {
-                                refreshLayout.setRefreshing(true);
-
-                                (new Handler()).postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                                refreshLayout.setRefreshing(false);
-                                                startActivity(new Intent(AllMemberList.this,AllMemberList.class));
-                                                finish();
-                                        }
-                                },3000);
-                        }
-                });
-        }
-
-
-        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
-                @Override
-                public void onResultSuccess(final String userInfo) {
-                        runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                        switch (userInfo)
-                                        {
-                                                case "no result":
-                                                        break;
-
-                                                case "not member":
-                                                        dialogClass.notMember();
-                                                        break;
-
-                                                default:
-                                                        addMemberInListView(userInfo);
-                                                        break;
-                                        }
-                                }
-                        });
-                }
-        };
-
-
+        //process json data,get all member from database and show in listview
         private void addMemberInListView(String jsonData)
         {
                 if(jsonData!=null)
@@ -190,5 +152,28 @@ public class AllMemberList extends AppCompatActivity
                 }
         }
 
+        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String userInfo) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        switch (userInfo)
+                                        {
+                                                case "no result":
+                                                        break;
+
+                                                case "not member":
+                                                        dialogClass.notMember();
+                                                        break;
+
+                                                default:
+                                                        addMemberInListView(userInfo);
+                                                        break;
+                                        }
+                                }
+                        });
+                }
+        };
 
 }

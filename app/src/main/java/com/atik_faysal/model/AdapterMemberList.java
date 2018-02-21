@@ -13,6 +13,7 @@ import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.mealcounter.AdminPanel;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.AllMemberList;
+import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.MemberDetails;
 import com.atik_faysal.mealcounter.R;
 import android.content.Context;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
+import java.net.ContentHandler;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -37,6 +39,7 @@ public class AdapterMemberList extends BaseAdapter
         private SharedPreferenceData sharedPreferenceData;
         private AlertDialogClass dialogClass;
         private InfoBackgroundTask backgroundTask;
+        private CheckInternetIsOn internetIsOn;
 
 
         private View view;
@@ -60,6 +63,8 @@ public class AdapterMemberList extends BaseAdapter
                 this.memberList = memberList;
                 sharedPreferenceData = new SharedPreferenceData(context);
                 dialogClass = new AlertDialogClass(context);
+                internetIsOn = new CheckInternetIsOn(context);
+
                 this.classType = classType;
                 if(sharedPreferenceData.getCurrentUserName(USER_INFO)!=null)
                         currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
@@ -112,10 +117,12 @@ public class AdapterMemberList extends BaseAdapter
         }
 
 
+        //on button click
         private void onButtonClickListener(final String userName,String type)
         {
                 removeUserName = userName;
 
+                //show all information about this user
                 bDetails.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -128,6 +135,7 @@ public class AdapterMemberList extends BaseAdapter
 
                 switch (classType)
                 {
+                        //for member remove
                         case "memClass":
 
                                 bRemove.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +158,7 @@ public class AdapterMemberList extends BaseAdapter
 
                                 break;
 
+                                //for make or remove admin
                         case "adminClass":
 
                                 if(type.equals("member"))
@@ -188,34 +197,43 @@ public class AdapterMemberList extends BaseAdapter
         }
 
 
+        //remove user
         private void removeMember(String user)
         {
-                try {
-                        DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
-                        backgroundTask = new InfoBackgroundTask(context);
-                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                        backgroundTask.execute(URL,DATA);
-                } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                }
+                if (internetIsOn.isOnline())
+                {
+                        try {
+                                DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
+                                backgroundTask = new InfoBackgroundTask(context);
+                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                backgroundTask.execute(URL,DATA);
+                        } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                        }
+                }else dialogClass.noInternetConnection();
         }
 
+        //make new admin
         private void makeNewAdmin(String userName)
         {
 
                 String postData;
-                try {
-                        postData = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
-                                +URLEncoder.encode("type","UTF-8")+"="+URLEncoder.encode("make","UTF-8");
+                if (internetIsOn.isOnline())
+                {
+                        try {
+                                postData = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
+                                        +URLEncoder.encode("type","UTF-8")+"="+URLEncoder.encode("make","UTF-8");
 
-                        backgroundTask = new InfoBackgroundTask(context);
-                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                        backgroundTask.execute(FILE_URL,postData);
-                } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                }
+                                backgroundTask = new InfoBackgroundTask(context);
+                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                backgroundTask.execute(FILE_URL,postData);
+                        } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                        }
+                }else dialogClass.noInternetConnection();
         }
 
+        //remove admin
         private void removeAdmin(String userName)
         {
 

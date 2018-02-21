@@ -49,7 +49,6 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
         private Toolbar toolbar;
         private SwipeRefreshLayout refreshLayout;
 
-
         private static final String FILE_URL = "http://192.168.56.1/groupInfo.php";
         private final static String EDIT_URL = "http://192.168.56.1/editGroupInfo.php";
         private static String POST_DATA ;
@@ -78,13 +77,9 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.group_info);
                 initComponent();
-                setToolbar();
-                onButtonClickListener();
-                initializeGroupInfo();
-                reloadPage();
         }
 
-
+        //initialize all user information related variable by getText from textView or editText
         private void initComponent()
         {
                 groupId = findViewById(R.id.groupId);
@@ -98,28 +93,35 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                 gDescription = findViewById(R.id.gDescription);
                 refreshLayout = findViewById(R.id.layout1);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
-
                 bEdit = findViewById(R.id.buEdit);
-
                 toolbar = findViewById(R.id.toolbar1);
                 setSupportActionBar(toolbar);
 
+                //editable false
                 bEdit.setEnabled(false);
                 gName.setEnabled(false);
                 gAddress.setEnabled(false);
                 gDescription.setEnabled(false);
 
+                //object initialize
                 dialogClass = new AlertDialogClass(this);
                 someMethod = new NeedSomeMethod(this);
                 internetIsOn = new CheckInternetIsOn(this);
                 sharedPreferenceData = new SharedPreferenceData(this);
                 calendar = Calendar.getInstance();
 
-
+                //get current user info
                 currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
                 userType = sharedPreferenceData.getUserType();
+
+                //calling method
+                setToolbar();
+                onButtonClickListener();
+                initializeGroupInfo();
+                someMethod.reloadPage(refreshLayout,MyGroupInfo.class);
         }
 
+        //set a toolbar,above the page
         private void setToolbar()
         {
                 toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -134,37 +136,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                 });
         }
 
-
-        private void reloadPage()
-        {
-                refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override
-                        public void onRefresh() {
-                                refreshLayout.setRefreshing(true);
-
-                                (new Handler()).postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                                refreshLayout.setRefreshing(false);
-                                                startActivity(new Intent(MyGroupInfo.this,MyGroupInfo.class));
-                                                finish();
-                                        }
-                                },3000);
-                        }
-                });
-        }
-
-
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
-
-                MenuInflater menuInflater = getMenuInflater();
-                menuInflater.inflate(R.menu.edit,menu);
-
-                return super.onCreateOptionsMenu(menu);
-        }
-
-
+        //group info to check that they follow the input condition
         private boolean checkGroupInfo(String name,String address,String desc)
         {
                 boolean flag = true;
@@ -186,34 +158,14 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                 return flag;
         }
 
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-
-                switch (item.getItemId())
-                {
-                        case R.id.edit:
-                                if(userType.equals("admin"))
-                                {
-                                        gName.setEnabled(true);
-                                        gDescription.setEnabled(true);
-                                        gAddress.setEnabled(true);
-                                        gTime.setEnabled(true);
-                                        gType.setEnabled(true);
-
-                                        bEdit.setEnabled(true);
-                                }else dialogClass.error("Only admin can edit group info.You are not admin.");
-                                break;
-                }
-
-                return super.onOptionsItemSelected(item);
-        }
-
+        //on button click
         private void onButtonClickListener()
         {
+                //connect to online and ready to show gorup info
                 bEdit.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+
                                 String name,address,time,type,desc;
 
                                 name = gName.getText().toString();
@@ -222,29 +174,30 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                                 type = gType.getText().toString();
                                 desc = gDescription.getText().toString();
 
-                                if(internetIsOn.isOnline())
+                                if(checkGroupInfo(name,address,desc))
                                 {
-                                        if(checkGroupInfo(name,address,desc))
-                                        {
-                                                try {
-                                                        DATA = URLEncoder.encode("groupID","UTF-8")+"="+URLEncoder.encode(groupId.getText().toString(),"UTF-8")+"&"
-                                                                +URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(name,"UTF-8")+"&"
-                                                                +URLEncoder.encode("address","UTF-8")+"="+URLEncoder.encode(address,"UTF-8")+"&"
-                                                                +URLEncoder.encode("fixedTime","UTF-8")+"="+URLEncoder.encode(time,"UTF-8")+"&"
-                                                                +URLEncoder.encode("groupType","UTF-8")+"="+URLEncoder.encode(type,"UTF-8")+"&"
-                                                                +URLEncoder.encode("description","UTF-8")+"="+URLEncoder.encode(description,"UTF-8");
-                                                } catch (UnsupportedEncodingException e) {
-                                                        e.printStackTrace();
-                                                }
+                                       if(internetIsOn.isOnline())
+                                       {
+                                               try {
+                                                       DATA = URLEncoder.encode("groupID","UTF-8")+"="+URLEncoder.encode(groupId.getText().toString(),"UTF-8")+"&"
+                                                               +URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(name,"UTF-8")+"&"
+                                                               +URLEncoder.encode("address","UTF-8")+"="+URLEncoder.encode(address,"UTF-8")+"&"
+                                                               +URLEncoder.encode("fixedTime","UTF-8")+"="+URLEncoder.encode(time,"UTF-8")+"&"
+                                                               +URLEncoder.encode("groupType","UTF-8")+"="+URLEncoder.encode(type,"UTF-8")+"&"
+                                                               +URLEncoder.encode("description","UTF-8")+"="+URLEncoder.encode(description,"UTF-8");
 
-                                                backgroundTask = new InfoBackgroundTask(MyGroupInfo.this);
-                                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                backgroundTask.execute(EDIT_URL,DATA);
-                                        }
-                                }else dialogClass.noInternetConnection();
+                                                       backgroundTask = new InfoBackgroundTask(MyGroupInfo.this);
+                                                       backgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                                       backgroundTask.execute(EDIT_URL,DATA);
+                                               } catch (UnsupportedEncodingException e) {
+                                                       e.printStackTrace();
+                                               }
+                                       }else dialogClass.noInternetConnection();
+                                }
                         }
                 });
 
+                //change fixed time
                 gTime.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -258,6 +211,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                         }
                 });
 
+                //change group type
                 gType.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -266,6 +220,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                 });
         }
 
+        //get all information about group from online and show on this page
         private void initializeGroupInfo()
         {
                 try {
@@ -280,43 +235,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                 }
         }
 
-        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
-                @Override
-                public void onResultSuccess(final String result) {
-                        runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                        switch (result)
-                                        {
-                                                case "no result"://get group info,if no result found
-                                                        dialogClass.error("No result found.Please retry.");
-                                                        break;
-
-                                                case "not member"://get group info,if not a member
-                                                        dialogClass.notMember();
-                                                        break;
-
-                                                case "failed"://update info failed
-                                                        dialogClass.error("Group information update failed.Please retry after sometimes");
-                                                        break;
-
-                                                case "success"://update info success
-                                                        startActivity(new Intent(MyGroupInfo.this,MyGroupInfo.class));
-                                                        Toast.makeText(MyGroupInfo.this,"Update successfully",Toast.LENGTH_SHORT).show();
-                                                        finish();
-                                                        break;
-
-                                                default:
-                                                        groupInformation(result);//json data group info
-                                                        break;
-                                        }
-                                }
-                        });
-                }
-        };
-
-
+        //process json data to string
         private void groupInformation(String userInfo)
         {
                 if(userInfo!=null)
@@ -360,7 +279,58 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                 }else Log.d(TAG,"Json object error");
         }
 
-        //Edit group information
+        //edit your group type
+        private void editGroupType()
+        {
+
+                CharSequence[] values = {"Public group","Close group","Secret group"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                builder.setSingleChoiceItems(values, -1, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int item) {
+
+                                switch(item)
+                                {
+                                        case 0:
+                                                gType.setText("public");
+                                                break;
+                                        case 1:
+                                                gType.setText("close");
+                                                break;
+                                        case 2:
+                                                gType.setText("secret");
+                                                break;
+                                }
+                                alertDialog.dismiss();
+                        }
+                });
+                alertDialog = builder.create();
+                alertDialog.show();
+
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+
+                switch (item.getItemId())
+                {
+                        case R.id.edit:
+                                if(userType.equals("admin"))
+                                {
+                                        gName.setEnabled(true);
+                                        gDescription.setEnabled(true);
+                                        gAddress.setEnabled(true);
+                                        gTime.setEnabled(true);
+                                        gType.setEnabled(true);
+
+                                        bEdit.setEnabled(true);
+                                }else dialogClass.error("Only admin can edit group info.You are not admin.");
+                                break;
+                }
+
+                return super.onOptionsItemSelected(item);
+        }
 
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -394,33 +364,49 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                         gTime.setText(sHour+" : "+String.valueOf(minuteFinal)+format);
         }
 
-        private void editGroupType()
-        {
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
 
-                CharSequence[] values = {"Public group","Close group","Secret group"};
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                MenuInflater menuInflater = getMenuInflater();
+                menuInflater.inflate(R.menu.edit,menu);
 
-                builder.setSingleChoiceItems(values, -1, new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface dialog, int item) {
-
-                                switch(item)
-                                {
-                                        case 0:
-                                                gType.setText("public");
-                                                break;
-                                        case 1:
-                                                gType.setText("close");
-                                                break;
-                                        case 2:
-                                                gType.setText("secret");
-                                                break;
-                                }
-                                alertDialog.dismiss();
-                        }
-                });
-                alertDialog = builder.create();
-                alertDialog.show();
-
+                return super.onCreateOptionsMenu(menu);
         }
+
+
+        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String result) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                        switch (result)
+                                        {
+                                                case "no result"://get group info,if no result found
+                                                        dialogClass.error("No result found.Please retry.");
+                                                        break;
+
+                                                case "not member"://get group info,if not a member
+                                                        dialogClass.notMember();
+                                                        break;
+
+                                                case "failed"://update info failed
+                                                        dialogClass.error("Group information update failed.Please retry after sometimes");
+                                                        break;
+
+                                                case "success"://update info success
+                                                        startActivity(new Intent(MyGroupInfo.this,MyGroupInfo.class));
+                                                        Toast.makeText(MyGroupInfo.this,"Update successfully",Toast.LENGTH_SHORT).show();
+                                                        finish();
+                                                        break;
+
+                                                default:
+                                                        groupInformation(result);//json data group info
+                                                        break;
+                                        }
+                                }
+                        });
+                }
+        };
 }

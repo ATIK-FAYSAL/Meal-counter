@@ -65,11 +65,9 @@ public class MemberDetails extends AppCompatActivity
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.profile);
                 initComponent();
-                setToolbar();
-                onButtonClick();
-                reloadPage();
         }
 
+        //initialize all user information related variable by getText from textView or editText
         @SuppressLint("SetTextI18n")
         private void initComponent()
         {
@@ -100,20 +98,29 @@ public class MemberDetails extends AppCompatActivity
                 user = getIntent().getExtras().getString("userName");
                 currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
 
-                try {
-                        if(user!=null)
-                                POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
-                        else Toast.makeText(this,"under construction",Toast.LENGTH_SHORT).show();
-                } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                }
-                infoBackgroundTask = new InfoBackgroundTask(this);
-                infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                infoBackgroundTask.execute(FILE_URL,POST_DATA);
+                if(internetIsOn.isOnline())
+                {
+                        try {
+                                if(user!=null)
+                                        POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
+                                else Toast.makeText(this,"under construction",Toast.LENGTH_SHORT).show();
+
+                                infoBackgroundTask = new InfoBackgroundTask(this);
+                                infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                infoBackgroundTask.execute(FILE_URL,POST_DATA);
+                        } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                        }
+                }else dialogClass.noInternetConnection();
+
+                //calling method
+                setToolbar();
+                onButtonClick();
+                someMethod.reloadPage(refreshLayout,MemberDetails.class);
 
         }
 
-
+        //set a toolbar,above the page
         private void setToolbar()
         {
                 toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -124,26 +131,6 @@ public class MemberDetails extends AppCompatActivity
                         @Override
                         public void onClick(View v) {
                                 finish();
-                        }
-                });
-        }
-
-
-        private void reloadPage()
-        {
-                refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override
-                        public void onRefresh() {
-                                refreshLayout.setRefreshing(true);
-
-                                (new Handler()).postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                                refreshLayout.setRefreshing(false);
-                                                startActivity(new Intent(MemberDetails.this,MemberDetails.class));
-                                                finish();
-                                        }
-                                },3000);
                         }
                 });
         }
@@ -169,30 +156,7 @@ public class MemberDetails extends AppCompatActivity
                 });
         }
 
-        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
-                @Override
-                public void onResultSuccess(final String userInfo) {
-                        runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                        switch (userInfo)
-                                        {
-                                                case "failed":
-                                                        Toast.makeText(MemberDetails.this,"Error occurred to information update",Toast.LENGTH_SHORT).show();
-                                                        break;
-                                                case "updated":
-                                                        updateUserInfo();
-                                                        break;
-                                                default:
-                                                        initializeUserInfo(userInfo);
-                                                        break;
-                                        }
-                                }
-                        });
-                }
-        };
-
-
+        //initialize all information about user and show on this page
         private void initializeUserInfo(String userInfo)
         {
                 if(userInfo!=null)
@@ -233,20 +197,41 @@ public class MemberDetails extends AppCompatActivity
                 }else Log.d(TAG,"Json object error");
         }
 
+        //update user information
         private void updateUserInfo()
         {
-                try {
-                        if(user!=null)
-                                POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
-                        else Toast.makeText(MemberDetails.this,"under construction",Toast.LENGTH_SHORT).show();
-                } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                }
-                infoBackgroundTask = new InfoBackgroundTask(MemberDetails.this);
-                infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                infoBackgroundTask.execute(FILE_URL,POST_DATA);
-                Toast.makeText(MemberDetails.this,"Information updated successfully.",Toast.LENGTH_SHORT).show();
-                finish();
+                if(internetIsOn.isOnline())
+                {
+                        try {
+                                if(user!=null)
+                                        POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
+                                else Toast.makeText(MemberDetails.this,"under construction",Toast.LENGTH_SHORT).show();
+                        } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                        }
+                        infoBackgroundTask = new InfoBackgroundTask(MemberDetails.this);
+                        infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
+                        infoBackgroundTask.execute(FILE_URL,POST_DATA);
+                        Toast.makeText(MemberDetails.this,"Information updated successfully.",Toast.LENGTH_SHORT).show();
+                        finish();
+                }else dialogClass.noInternetConnection();
+        }
+
+        //remove an user.only admin can do this
+        private void removeMember(String user)
+        {
+                if(internetIsOn.isOnline())
+                {
+                        try {
+                                DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                        }
+
+                        InfoBackgroundTask backgroundTask = new InfoBackgroundTask(MemberDetails.this);
+                        backgroundTask.setOnResultListener(asyncTaskInterface);
+                        backgroundTask.execute(URL,DATA);
+                }else dialogClass.noInternetConnection();
         }
 
         OnAsyncTaskInterface asyncTaskInterface = new OnAsyncTaskInterface() {
@@ -269,17 +254,28 @@ public class MemberDetails extends AppCompatActivity
                 }
         };
 
-        private void removeMember(String user)
-        {
-                try {
-                        DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
+        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String userInfo) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        switch (userInfo)
+                                        {
+                                                case "failed":
+                                                        Toast.makeText(MemberDetails.this,"Error occurred to information update",Toast.LENGTH_SHORT).show();
+                                                        break;
+                                                case "updated":
+                                                        updateUserInfo();
+                                                        break;
+                                                default:
+                                                        initializeUserInfo(userInfo);
+                                                        break;
+                                        }
+                                }
+                        });
                 }
+        };
 
-                InfoBackgroundTask backgroundTask = new InfoBackgroundTask(MemberDetails.this);
-                backgroundTask.setOnResultListener(asyncTaskInterface);
-                backgroundTask.execute(URL,DATA);
-        }
 
 }

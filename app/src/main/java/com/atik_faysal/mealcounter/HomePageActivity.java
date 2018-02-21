@@ -84,134 +84,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.home_page);
                 initComponent();
-                closeApp();
-                reloadPage();
         }
-
-        private void initComponent()
-        {
-
-                toolbar =  findViewById(R.id.toolbar);
-                setSupportActionBar(toolbar);
-
-                drawer =  findViewById(R.id.drawer_layout);
-                toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-                drawer.addDrawerListener(toggle);
-                toggle.syncState();
-
-                NavigationView navigationView =  findViewById(R.id.nav_view);
-                navigationView.setNavigationItemSelectedListener(this);
-                refreshLayout = findViewById(R.id.refreshLayout);
-                refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
-                view = navigationView.inflateHeaderView(R.layout.nav_header_home_page);
-                textView = view.findViewById(R.id.txtUserName);
-                initObject();//initialize cardView and imageView
-
-                //other initialize
-                sharedPreferenceData = new SharedPreferenceData(this);
-                internetIsOn = new CheckInternetIsOn(this);
-                dialogClass = new AlertDialogClass(this);
-                someMethod = new NeedSomeMethod(this);
-
-                FirebaseMessaging.getInstance().subscribeToTopic("test");
-                String token = FirebaseInstanceId.getInstance().getToken();
-
-                currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
-                userType = sharedPreferenceData.getUserType();
-                date = someMethod.getDate();
-                textView.setText(currentUser);
-                RegisterDeviceToken.registerToken(token,currentUser,date);
-
-
-                try {
-                        POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode("","UTF-8");
-                        groupList = new ArrayList<>();
-                        InfoBackgroundTask backgroundTask = new InfoBackgroundTask(HomePageActivity.this);
-                        backgroundTask.setOnResultListener(taskInterface);
-                        backgroundTask.execute(FILE,POST_DATA);
-                } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                }
-        }
-
-
-        private void reloadPage()
-        {
-                refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override
-                        public void onRefresh() {
-                                refreshLayout.setRefreshing(true);
-
-                                (new Handler()).postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                                refreshLayout.setRefreshing(false);
-                                                startActivity(new Intent(HomePageActivity.this,HomePageActivity.class));
-                                                finish();
-                                        }
-                                },3000);
-                        }
-                });
-        }
-
-        private void initObject()
-        {
-                int i=0,j=0;
-
-                while (i< cardViews.length)
-                {
-                        cardViews[i] = findViewById(cardViewId[j]);
-                        i++;
-                        j++;
-                }
-
-                int p=0,q=0;
-
-                while (p<imageViews.length)
-                {
-                        imageViews[p] = findViewById(imageViewId[q]);
-                        p++;
-                        q++;
-                }
-        }
-
-
-        public void onButtonClick(View view)
-        {
-                initObject();
-                int id = view.getId();
-
-                if(id==cardViewId[0]||id==imageViewId[0])
-                {
-                        Toast.makeText(this,"click on button 1",Toast.LENGTH_SHORT).show();
-                }else if(id==cardViewId[1]||id==imageViewId[1])
-                {
-                        Toast.makeText(this,"click on button 2",Toast.LENGTH_SHORT).show();
-                }else if(id==cardViewId[2]||id==imageViewId[2])
-                {
-                        Toast.makeText(this,"click on button 3",Toast.LENGTH_SHORT).show();
-                }else if(id==cardViewId[3]||id==imageViewId[3])
-                {
-                        Toast.makeText(this,"click on button 4",Toast.LENGTH_SHORT).show();
-                }else if(id==cardViewId[4]||id==imageViewId[4])
-                {
-                        Toast.makeText(this,"click on button 5",Toast.LENGTH_SHORT).show();
-                }else if(id==cardViewId[5]||id==imageViewId[5])
-                {
-                        Toast.makeText(this,"click on button 6",Toast.LENGTH_SHORT).show();
-                }else if(id==cardViewId[6]||id==imageViewId[6])
-                {
-                        startActivity(new Intent(HomePageActivity.this,NoticeBoard.class));
-                }else if(id==cardViewId[7]||id==imageViewId[7])
-                {
-                        Toast.makeText(this,"click on button 8",Toast.LENGTH_SHORT).show();
-                }else if(id==cardViewId[8]||id==imageViewId[8])
-                {
-                        Toast.makeText(this,"click on button 9",Toast.LENGTH_SHORT).show();
-                }
-
-        }
-
 
         @Override
         protected void onStart() {
@@ -229,31 +102,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                         e.printStackTrace();
                 }
         }
-
-        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
-                @Override
-                public void onResultSuccess(final String message) {
-                        runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                        if(message.equals("no result"))
-                                        {
-                                                someMethod.closeActivity(HomePageActivity.this,LogInActivity.class);
-                                                sharedPreferenceData.ifUserLogIn(USER_LOGIN,false);
-                                        }
-                                        else
-                                        {
-                                                if(!userType.equals(message))
-                                                {
-                                                        sharedPreferenceData.userType(message);
-                                                        userType = message;
-                                                }
-                                        }
-                                }
-                        });
-                }
-        };
-
 
         @Override
         public void onBackPressed() {
@@ -302,41 +150,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                         }else dialogClass.noInternetConnection();
                 }
                 return true;
-        }
-
-        OnAsyncTaskInterface taskInterface = new OnAsyncTaskInterface() {
-
-                @Override
-                public void onResultSuccess(final String result) {
-                        runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                        if(result!=null)
-                                                processJsonData(result);
-                                }
-                        });
-                }
-        };
-
-
-        private void processJsonData(String jsonData)
-        {
-                try {
-                        jsonObject = new JSONObject(jsonData);
-                        jsonArray = jsonObject.optJSONArray("groupName");
-
-                        int count=0;
-
-                        while (count<jsonArray.length())
-                        {
-                                JSONObject jObject = jsonArray.getJSONObject(count);
-                                groupList.add(new SearchableModel(jObject.getString("groupName")));
-                                count++;
-                        }
-
-                } catch (JSONException e) {
-                        e.printStackTrace();
-                }
         }
 
         @SuppressWarnings("StatementWithEmptyBody")
@@ -409,6 +222,173 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 DrawerLayout drawer = findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
+        }
+
+        OnAsyncTaskInterface taskInterface = new OnAsyncTaskInterface() {
+
+                @Override
+                public void onResultSuccess(final String result) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        if(result!=null)
+                                                processJsonData(result);
+                                }
+                        });
+                }
+        };
+
+
+        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String message) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        if(message.equals("no result"))
+                                        {
+                                                someMethod.closeActivity(HomePageActivity.this,LogInActivity.class);
+                                                sharedPreferenceData.ifUserLogIn(USER_LOGIN,false);
+                                        }
+                                        else
+                                        {
+                                                if(!userType.equals(message))
+                                                {
+                                                        sharedPreferenceData.userType(message);
+                                                        userType = message;
+                                                }
+                                        }
+                                }
+                        });
+                }
+        };
+
+        private void initComponent()
+        {
+
+                toolbar =  findViewById(R.id.toolbar);
+                setSupportActionBar(toolbar);
+
+                drawer =  findViewById(R.id.drawer_layout);
+                toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                drawer.addDrawerListener(toggle);
+                toggle.syncState();
+
+                NavigationView navigationView =  findViewById(R.id.nav_view);
+                navigationView.setNavigationItemSelectedListener(this);
+                refreshLayout = findViewById(R.id.refreshLayout);
+                refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
+                view = navigationView.inflateHeaderView(R.layout.nav_header_home_page);
+                textView = view.findViewById(R.id.txtUserName);
+
+                initObject();//initialize cardView and imageView
+                //other initialize
+                sharedPreferenceData = new SharedPreferenceData(this);
+                internetIsOn = new CheckInternetIsOn(this);
+                dialogClass = new AlertDialogClass(this);
+                someMethod = new NeedSomeMethod(this);
+
+                FirebaseMessaging.getInstance().subscribeToTopic("test");
+                String token = FirebaseInstanceId.getInstance().getToken();
+
+                currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
+                userType = sharedPreferenceData.getUserType();
+                date = someMethod.getDate();
+                textView.setText(currentUser);
+
+                //calling method
+                RegisterDeviceToken.registerToken(token,currentUser,date);
+                someMethod.reloadPage(refreshLayout,HomePageActivity.class);
+                closeApp();
+
+
+                try {
+                        POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode("","UTF-8");
+                        groupList = new ArrayList<>();
+                        InfoBackgroundTask backgroundTask = new InfoBackgroundTask(HomePageActivity.this);
+                        backgroundTask.setOnResultListener(taskInterface);
+                        backgroundTask.execute(FILE,POST_DATA);
+                } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                }
+        }
+
+        private void initObject()
+        {
+                int i=0,j=0;
+
+                while (i< cardViews.length)
+                {
+                        cardViews[i] = findViewById(cardViewId[j]);
+                        i++;
+                        j++;
+                }
+
+                int p=0,q=0;
+
+                while (p<imageViews.length)
+                {
+                        imageViews[p] = findViewById(imageViewId[q]);
+                        p++;
+                        q++;
+                }
+        }
+
+        public void onButtonClick(View view)
+        {
+                initObject();
+                int id = view.getId();
+
+                if(id==cardViewId[0]||id==imageViewId[0])
+                {
+                        Toast.makeText(this,"click on button 1",Toast.LENGTH_SHORT).show();
+                }else if(id==cardViewId[1]||id==imageViewId[1])
+                {
+                        Toast.makeText(this,"click on button 2",Toast.LENGTH_SHORT).show();
+                }else if(id==cardViewId[2]||id==imageViewId[2])
+                {
+                        Toast.makeText(this,"click on button 3",Toast.LENGTH_SHORT).show();
+                }else if(id==cardViewId[3]||id==imageViewId[3])
+                {
+                        Toast.makeText(this,"click on button 4",Toast.LENGTH_SHORT).show();
+                }else if(id==cardViewId[4]||id==imageViewId[4])
+                {
+                        Toast.makeText(this,"click on button 5",Toast.LENGTH_SHORT).show();
+                }else if(id==cardViewId[5]||id==imageViewId[5])
+                {
+                        startActivity(new Intent(HomePageActivity.this,NoticeBoard.class));
+
+                }else if(id==cardViewId[6]||id==imageViewId[6])
+                {
+                        Toast.makeText(this,"click on button 7",Toast.LENGTH_SHORT).show();
+                }else if(id==cardViewId[7]||id==imageViewId[7])
+                {
+                        Toast.makeText(this,"click on button 8",Toast.LENGTH_SHORT).show();
+                }else if(id==cardViewId[8]||id==imageViewId[8])
+                {
+                        Toast.makeText(this,"click on button 9",Toast.LENGTH_SHORT).show();
+                }
+
+        }
+
+        private void processJsonData(String jsonData)
+        {
+                try {
+                        jsonObject = new JSONObject(jsonData);
+                        jsonArray = jsonObject.optJSONArray("groupName");
+
+                        int count=0;
+
+                        while (count<jsonArray.length())
+                        {
+                                JSONObject jObject = jsonArray.getJSONObject(count);
+                                groupList.add(new SearchableModel(jObject.getString("groupName")));
+                                count++;
+                        }
+
+                } catch (JSONException e) {
+                        e.printStackTrace();
+                }
         }
 
         protected void userLogOut()

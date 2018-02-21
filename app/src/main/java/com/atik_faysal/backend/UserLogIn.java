@@ -136,7 +136,7 @@ public class UserLogIn extends AsyncTask<String,Void,String>
                                         sharedPreferenceData.userType(result);
                                 }
                         });
-                }else Toast.makeText(context,"Log in failed",Toast.LENGTH_SHORT).show();
+                }else Toast.makeText(context,"Log in failed.",Toast.LENGTH_SHORT).show();
         }
 
         private static void closeActivity(Activity context, Class<?> clazz) {

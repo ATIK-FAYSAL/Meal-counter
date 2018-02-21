@@ -60,7 +60,7 @@ public class JoinRequestToGroup extends AppCompatActivity
                 setToolbar();
         }
 
-
+        //initialize all user information related variable by getText from textView or editText
         private void initComponent()
         {
                 groupId = findViewById(R.id.groupId);
@@ -72,9 +72,7 @@ public class JoinRequestToGroup extends AppCompatActivity
                 gName = findViewById(R.id.groupName);
                 gType = findViewById(R.id.gType);
                 gDescription = findViewById(R.id.gDescription);
-
                 bEdit = findViewById(R.id.buEdit);
-
                 toolbar = findViewById(R.id.toolbar1);
                 setSupportActionBar(toolbar);
 
@@ -90,13 +88,17 @@ public class JoinRequestToGroup extends AppCompatActivity
                 sharedPreferenceData = new SharedPreferenceData(this);
 
                 currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
-                group = getIntent().getExtras().getString("group");
+                if(getIntent().hasExtra("group"))
+                        group = getIntent().getExtras().getString("group");
+                else group = "null";
+
                 if(internetIsOn.isOnline())
                         initializeGroupInfo();
                 else dialogClass.noInternetConnection();
 
         }
 
+        //set a toolbar,above the page
         private void setToolbar()
         {
                 toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -111,19 +113,24 @@ public class JoinRequestToGroup extends AppCompatActivity
                 });
         }
 
+        //button click
         private void onButtonClick(final String value)
         {
                 bEdit.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 
-                                backgroundTask = new InfoBackgroundTask(JoinRequestToGroup.this);
-                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(FILE_URL,value);
+                               if(internetIsOn.isOnline())
+                               {
+                                       backgroundTask = new InfoBackgroundTask(JoinRequestToGroup.this);
+                                       backgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                       backgroundTask.execute(FILE_URL,value);
+                               }else dialogClass.noInternetConnection();
                         }
                 });
         }
 
+        //get all group information from database
         private void initializeGroupInfo()
         {
                 try {
@@ -139,12 +146,13 @@ public class JoinRequestToGroup extends AppCompatActivity
                 }
         }
 
-        private void groupInformation(String userInfo)
+        //process json data and show in page
+        private void groupInformation(String groupInfo)
         {
-                if(userInfo!=null)
+                if(groupInfo!=null)
                 {
                         try {
-                                jsonObject = new JSONObject(userInfo);
+                                jsonObject = new JSONObject(groupInfo);
                                 jsonArray = jsonObject.optJSONArray("groupInfo");
 
                                 int count = 0;
