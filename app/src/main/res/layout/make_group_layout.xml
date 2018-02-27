@@ -2,20 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/color8">
 
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/color8">
-
-        <include
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
+            android:background="@color/color2">
+
+        </android.support.v7.widget.Toolbar>
 
         <ProgressBar
             android:id="@+id/progress"
@@ -28,16 +23,25 @@
             android:indeterminate="true"
             android:visibility="invisible" />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/progress"
-            android:layout_centerHorizontal="true">
 
-            <RelativeLayout
+    <ScrollView
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/progress"
+        android:background="@color/color8">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
+                android:layout_height="wrap_content"
+                android:id="@+id/layout1"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:orientation="vertical">
                 <EditText
                     android:id="@+id/groupName"
                     android:layout_width="match_parent"
@@ -53,9 +57,27 @@
                     android:hint="Group name"
                     android:inputType="textPersonName"
                     android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
 
+                <TextView
+                    android:id="@+id/txtNameErr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginTop="3dp"
+                    android:textColor="@color/red"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/layout2"
+                android:layout_below="@id/layout1"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:orientation="vertical">
                 <EditText
                     android:id="@+id/gId"
                     android:layout_width="match_parent"
@@ -65,16 +87,33 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginLeft="45dp"
                     android:layout_marginRight="45dp"
-                    android:layout_marginTop="12dp"
                     android:background="@drawable/log_in_textstyle"
                     android:ems="10"
                     android:gravity="center_vertical"
                     android:hint="Group Id"
                     android:inputType="textPersonName"
                     android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
 
+                <TextView
+                    android:id="@+id/txtIdErr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginTop="3dp"
+                    android:textColor="@color/red"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/layout3"
+                android:layout_below="@+id/layout2"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:orientation="vertical">
                 <EditText
                     android:id="@+id/gAddress"
                     android:layout_width="match_parent"
@@ -84,33 +123,33 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginLeft="45dp"
                     android:layout_marginRight="45dp"
-                    android:layout_marginTop="12dp"
                     android:background="@drawable/log_in_textstyle"
                     android:ems="10"
                     android:gravity="center_vertical"
                     android:hint="Address"
                     android:inputType="textPersonName"
                     android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
 
-                <Button
-                    android:id="@+id/bCreate"
-                    style="@style/Base.Widget.AppCompat.Button.Borderless"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/txtAddErr"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/fTime"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="45dp"
-                    android:layout_marginRight="45dp"
-                    android:layout_marginTop="40dp"
-                    android:background="@drawable/button2"
-                    android:text="Create Now"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="#000"
-                    android:textStyle="bold" />
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginTop="3dp"
+                    android:textColor="@color/red"/>
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/layout4"
+                android:layout_below="@id/layout3"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:orientation="vertical">
                 <EditText
                     android:id="@+id/gDescription"
                     android:layout_width="match_parent"
@@ -119,21 +158,35 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="45dp"
                     android:layout_marginRight="45dp"
-                    android:layout_marginTop="12dp"
                     android:background="@drawable/text_style4"
                     android:ems="10"
                     android:gravity="left"
                     android:paddingLeft="10dp"
+                    android:paddingRight="7dp"
+                    android:textSize="14dp"
                     android:hint="Short Description"
                     android:inputType="textMultiLine"
                     android:lines="15"/>
 
+                <TextView
+                    android:id="@+id/txtDecErr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginTop="3dp"
+                    android:textColor="@color/red"/>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout4">
 
                 <TextView
                     android:id="@+id/text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignStart="@+id/gDescription"
+                    android:layout_alignStart="@+id/textView2"
                     android:layout_alignTop="@+id/radio"
                     android:layout_marginTop="50dp"
                     android:text="Group Type"
@@ -144,9 +197,9 @@
                     android:id="@+id/radio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/gDescription"
-                    android:layout_marginStart="27dp"
-                    android:layout_marginTop="11dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="13dp"
                     android:layout_toEndOf="@+id/text">
 
                     <RadioButton
@@ -188,7 +241,6 @@
 
                 </RadioGroup>
 
-
                 <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
@@ -216,12 +268,27 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/color2" />
 
+                <Button
+                    android:id="@+id/bCreate"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/fTime"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="45dp"
+                    android:layout_marginRight="45dp"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/button2"
+                    android:text="Create Now"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#000"
+                    android:textStyle="bold" />
+
             </RelativeLayout>
 
-        </ScrollView>
-
-    </RelativeLayout>
-
+        </RelativeLayout>
+    </ScrollView>
 
 
 </RelativeLayout>

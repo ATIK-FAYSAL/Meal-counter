@@ -29,7 +29,8 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".CreateNewAccount"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:label="Registration"/>
 
         <activity
             android:name=".HomePageActivity"
@@ -83,6 +84,12 @@
             android:label="Requests"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".SetTabLayout"/>
+
+        <activity android:name="com.atik_faysal.others.SelectMember"
+            android:screenOrientation="portrait"
+            android:label="Select"/>
+        <activity android:name="com.atik_faysal.others.EmptyActivity"/>
 
         <service android:name="com.atik_faysal.services.FirebaseMessagingService">
             <intent-filter>

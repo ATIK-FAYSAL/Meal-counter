@@ -12,4 +12,13 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="CustomDialog" parent="android:Theme.Dialog">
+        <item name="android:windowBackground">@drawable/shap_round</item>
+        <item name="android:color">@color/white</item>
+    </style>
+
+    <style name="dialog">
+        <item name="android:background">@drawable/shap_round</item>
+    </style>
+
 </resources>

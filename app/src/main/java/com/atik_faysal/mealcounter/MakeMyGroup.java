@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -39,7 +41,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
         protected Toolbar toolbar;
         protected TextView fTime;
         protected ProgressBar progressBar;
-
+        private TextView txtNameErr,txtIdErr,txtAddEr,txtDecErr;
 
         private String gName,gId,gAddress,gDescription;
         private String currentUserName;
@@ -67,6 +69,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.make_group_layout);
                 initComponent();
+                addTextChangeListener();
                 onButtonClick();
                 setToolbar();
         }
@@ -86,6 +89,11 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                 setSupportActionBar(toolbar);
                 calendar = Calendar.getInstance();
                 progressBar = findViewById(R.id.progress);
+
+                txtNameErr = findViewById(R.id.txtNameErr);
+                txtIdErr = findViewById(R.id.txtIdErr);
+                txtAddEr = findViewById(R.id.txtAddErr);
+                txtDecErr = findViewById(R.id.txtDecErr);
 
                 //set scrollview in description editText
                 groupDescription.setOnTouchListener(new View.OnTouchListener() {
@@ -109,8 +117,74 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                 someMethod = new NeedSomeMethod(this);
                 internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
-
         }
+
+
+        private void addTextChangeListener()
+        {
+                groupName.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                                if(groupName.getText().toString().length()<3||groupName.getText().toString().length()>20)
+                                        txtNameErr.setText("Invalid group name");
+                                else
+                                        txtNameErr.setText("");
+
+                        }
+                });
+
+                groupId.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                                if(groupId.getText().toString().length()<5||groupId.getText().toString().length()>15)
+                                        txtIdErr.setText("Invalid group id");
+                                else
+                                        txtIdErr.setText("");
+                        }
+                });
+
+                groupDescription.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                               if(groupDescription.getText().toString().length()<20||groupDescription.getText().toString().length()>200)
+                                       txtDecErr.setText("Must be in 20-200");
+                               else txtDecErr.setText("");
+                        }
+                });
+
+
+                groupAddress.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                                if(groupAddress.getText().toString().length()<10||groupAddress.getText().toString().length()>30)
+                                        txtAddEr.setText("Must be in 10-30 characters");
+                                else txtAddEr.setText("");
+                        }
+                });
+        }
+
 
         //set toolbar
         private void setToolbar()

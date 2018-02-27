@@ -328,6 +328,7 @@ public class ChangeYourPassword extends AppCompatActivity
                                                         break;
                                                 case "success":
                                                         Toast.makeText(ChangeYourPassword.this,"password changed successfully.",Toast.LENGTH_SHORT).show();
+                                                        someMethod.userCurrentStatus(userName,"open");
                                                         someMethod.closeActivity(ChangeYourPassword.this, LogInActivity.class);
                                                         alertDialog.dismiss();
                                                         break;

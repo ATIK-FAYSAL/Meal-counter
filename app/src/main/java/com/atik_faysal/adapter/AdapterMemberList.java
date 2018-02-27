@@ -1,28 +1,27 @@
-package com.atik_faysal.model;
+package com.atik_faysal.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.atik_faysal.backend.InfoBackgroundTask;
 import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
-import com.atik_faysal.mealcounter.AdminPanel;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.AllMemberList;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.MemberDetails;
 import com.atik_faysal.mealcounter.R;
-import android.content.Context;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+import com.atik_faysal.model.MemberModel;
 
 import java.io.UnsupportedEncodingException;
-import java.net.ContentHandler;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -56,7 +55,7 @@ public class AdapterMemberList extends BaseAdapter
         private String removeUserName;
 
 
-        public AdapterMemberList(Context context,String classType,List<MemberModel>memberList)
+        public AdapterMemberList(Context context,List<MemberModel>memberList)
         {
                 this.context = context;
                 activity = (Activity)context;
@@ -111,91 +110,44 @@ public class AdapterMemberList extends BaseAdapter
                 txtType.setText(memberList.get(position).getType());
                 txtDate.setText(memberList.get(position).getDate());
 
-                onButtonClickListener(memberList.get(position).getUserName(),memberList.get(position).getType());
-
-                return view;
-        }
-
-
-        //on button click
-        private void onButtonClickListener(final String userName,String type)
-        {
-                removeUserName = userName;
+                //onButtonClickListener(memberList.get(position).getUserName(),memberList.get(position).getType());
 
                 //show all information about this user
                 bDetails.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                                 Intent page = new Intent(context,MemberDetails.class);
-                                page.putExtra("userName",userName);
+                                page.putExtra("userName",memberList.get(position).getUserName());
                                 context.startActivity(page);
                         }
                 });
 
+                bRemove.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                                removeUserName = memberList.get(position).getUserName();
+                                readyToRemove(memberList.get(position).getUserName());
+                        }
+                });
 
-                switch (classType)
-                {
-                        //for member remove
-                        case "memClass":
-
-                                bRemove.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-
-                                                if(currentUser.equals(userName))
-                                                        dialogClass.error("You can not remove your own membership.");
-                                                else
-                                                {
-                                                        if(sharedPreferenceData.getUserType().equals("admin"))
-                                                        {
-                                                                dialogClass.onSuccessListener(taskInterface);
-                                                                dialogClass.warning("Really want to remove this member ?");
-                                                        }
-                                                        else dialogClass.error("Only admin can remove member.You are not an admin.");
-                                                }
-                                        }
-                                });
-
-                                break;
-
-                                //for make or remove admin
-                        case "adminClass":
-
-                                if(type.equals("member"))
-                                {
-                                        bRemove.setText("Make Admin");
-
-                                        bRemove.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-
-                                                        if(currentUser.equals(userName))
-                                                                dialogClass.error("You can not remove your own membership.");
-                                                        else
-                                                                makeNewAdmin(userName);
-                                                }
-                                        });
-
-                                }else if(type.equals("admin"))
-                                {
-                                        bRemove.setText("Remove Admin");
-
-                                        bRemove.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                        if(currentUser.equals(userName))
-                                                                dialogClass.error("You can not remove your own membership.");
-                                                        else
-                                                                removeAdmin(userName);
-                                                }
-                                        });
-                                }
-
-                                break;
-                }
-
+                return view;
         }
 
+        //member remove warning
+        private void readyToRemove(String userName)
+        {
+                if(currentUser.equals(userName))
+                        dialogClass.error("You can not remove your own membership.");
+                else
+                {
+                        if(sharedPreferenceData.getUserType().equals("admin"))
+                        {
+                                dialogClass.onSuccessListener(taskInterface);
+                                dialogClass.warning("Really want to remove this member ?");
+                        }
+                        else dialogClass.error("Only admin can remove member.You are not an admin.");
+                }
+        }
 
         //remove user
         private void removeMember(String user)
@@ -213,42 +165,6 @@ public class AdapterMemberList extends BaseAdapter
                 }else dialogClass.noInternetConnection();
         }
 
-        //make new admin
-        private void makeNewAdmin(String userName)
-        {
-
-                String postData;
-                if (internetIsOn.isOnline())
-                {
-                        try {
-                                postData = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
-                                        +URLEncoder.encode("type","UTF-8")+"="+URLEncoder.encode("make","UTF-8");
-
-                                backgroundTask = new InfoBackgroundTask(context);
-                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(FILE_URL,postData);
-                        } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                        }
-                }else dialogClass.noInternetConnection();
-        }
-
-        //remove admin
-        private void removeAdmin(String userName)
-        {
-
-                String postData;
-                try {
-                        postData = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
-                                +URLEncoder.encode("type","UTF-8")+"="+URLEncoder.encode("remove","UTF-8");
-
-                        backgroundTask = new InfoBackgroundTask(context);
-                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                        backgroundTask.execute(FILE_URL,postData);
-                } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                }
-        }
 
         private OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
@@ -258,15 +174,6 @@ public class AdapterMemberList extends BaseAdapter
                                 public void run() {
                                         switch (message)
                                         {
-                                                case "success"://remove or make admin
-                                                        context.startActivity(new Intent(context, AdminPanel.class));
-                                                        activity.finish();
-                                                        break;
-
-                                                case "failed"://remove or make admin
-                                                        dialogClass.error("Failed to execute operation.Please retry after sometimes");
-                                                        break;
-
                                                 case "error":
                                                         dialogClass.error("Failed to execute operation.Please retry after sometimes");
                                                         break;

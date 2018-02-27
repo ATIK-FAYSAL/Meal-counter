@@ -1,8 +1,6 @@
 package com.atik_faysal.mealcounter;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,9 +14,9 @@ import android.widget.Toast;
 
 import com.atik_faysal.backend.InfoBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
-import com.atik_faysal.model.AdapterMemberList;
 import com.atik_faysal.model.MemberModel;
 import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.adapter.AdapterMemberList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -144,7 +142,7 @@ public class AllMemberList extends AppCompatActivity
                                 if(memberList.size()==1)txtPerson.setText(String.valueOf(memberList.size())+"  person");
                                 else txtPerson.setText(String.valueOf(memberList.size())+"  persons");
 
-                                adapter = new AdapterMemberList(this,"memClass",memberList);
+                                adapter = new AdapterMemberList(this,memberList);
                                 listView.setAdapter(adapter);
                         } catch (JSONException e) {
                                 e.printStackTrace();

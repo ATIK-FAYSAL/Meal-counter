@@ -1,8 +1,6 @@
 package com.atik_faysal.mealcounter;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -76,7 +74,7 @@ public class EditYourProfile extends AppCompatActivity
                 toolbar = findViewById(R.id.toolbar1);
                 setSupportActionBar(toolbar);
                 txtTaka = findViewById(R.id.txtTaka);
-                txtUserName = findViewById(R.id.groupId);
+                txtUserName = findViewById(R.id.txtUserName);
                 txtGroup = findViewById(R.id.txtGroup);
                 txtDate = findViewById(R.id.gDate);
 
@@ -84,7 +82,7 @@ public class EditYourProfile extends AppCompatActivity
                 eEmail = findViewById(R.id.gAddress);
                 eAddress = findViewById(R.id.gTime);
                 eFaWord = findViewById(R.id.gDescription);
-                ePhone = findViewById(R.id.gType);
+                ePhone = findViewById(R.id.txtPhoneNumber);
 
                 refreshLayout = findViewById(R.id.layout1);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
@@ -301,18 +299,20 @@ public class EditYourProfile extends AppCompatActivity
                                                        Toast.makeText(EditYourProfile.this,"Error occurred to information update",Toast.LENGTH_SHORT).show();
                                                        break;
                                                case "updated":
-                                                       Toast.makeText(EditYourProfile.this,"Information updated successfully.",Toast.LENGTH_SHORT).show();
-                                                       try {
-                                                               if(currentUser!=null)
-                                                                       POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
-                                                               else Toast.makeText(EditYourProfile.this,"under construction",Toast.LENGTH_SHORT).show();
-                                                       } catch (UnsupportedEncodingException e) {
-                                                               e.printStackTrace();
-                                                       }
-                                                       infoBackgroundTask = new InfoBackgroundTask(EditYourProfile.this);
-                                                       infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                       infoBackgroundTask.execute(FILE_URL,POST_DATA);
-                                                       finish();
+                                                       if(internetIsOn.isOnline())
+                                                       {
+                                                               try {
+                                                                       if(currentUser!=null)
+                                                                               POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
+                                                                       else Toast.makeText(EditYourProfile.this,"under construction",Toast.LENGTH_SHORT).show();
+                                                               } catch (UnsupportedEncodingException e) {
+                                                                       e.printStackTrace();
+                                                               }
+                                                               infoBackgroundTask = new InfoBackgroundTask(EditYourProfile.this);
+                                                               infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                                               infoBackgroundTask.execute(FILE_URL,POST_DATA);
+                                                               Toast.makeText(EditYourProfile.this,"Information updated successfully.",Toast.LENGTH_SHORT).show();
+                                                       }else dialogClass.noInternetConnection();
                                                        break;
                                                default:
                                                        if(userInfo!=null)

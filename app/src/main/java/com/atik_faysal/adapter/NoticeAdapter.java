@@ -1,30 +1,31 @@
-package com.atik_faysal.model;
+package com.atik_faysal.adapter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.List;
-import android.content.Context;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.atik_faysal.backend.InfoBackgroundTask;
+import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.NoticeBoard;
 import com.atik_faysal.mealcounter.R;
+import com.atik_faysal.model.NoticeModel;
 import com.borjabravo.readmoretextview.ReadMoreTextView;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.List;
+
 /**
  * Created by USER on 2/9/2018.
  */

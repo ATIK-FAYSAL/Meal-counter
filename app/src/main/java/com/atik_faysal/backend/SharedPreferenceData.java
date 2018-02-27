@@ -21,6 +21,7 @@ public class SharedPreferenceData
         private static final String REMEMBER_ME = "rememberMe";
         private static final String USER_LOGIN = "userLogIn";
         private static final String MEMBER_TYPE = "mType";
+        private static final String GROUP_NAME = "groupName";
 
         private Context context;
 
@@ -128,4 +129,19 @@ public class SharedPreferenceData
                 return value;
         }
 
+        public void myGroup(String name)
+        {
+                sharedPreferences = context.getSharedPreferences(GROUP_NAME,Context.MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putString("group",name);
+                editor.apply();
+        }
+
+        public String getMyGroupName()
+        {
+                String value;
+                sharedPreferences = context.getSharedPreferences(GROUP_NAME,Context.MODE_PRIVATE);
+                value = sharedPreferences.getString("group","null");
+                return value;
+        }
 }

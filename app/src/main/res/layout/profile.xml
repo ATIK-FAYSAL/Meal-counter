@@ -40,7 +40,7 @@
                     app:civ_border_color="#000" />
 
                 <TextView
-                    android:id="@+id/groupId"
+                    android:id="@+id/txtUserName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/appLogo"
@@ -187,8 +187,8 @@
                     android:id="@+id/gAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/gType"
-                    android:layout_alignStart="@+id/gType"
+                    android:layout_alignEnd="@+id/txtPhoneNumber"
+                    android:layout_alignStart="@+id/txtPhoneNumber"
                     android:layout_below="@+id/groupName"
                     android:layout_marginTop="11dp"
                     android:backgroundTint="#fff"
@@ -203,7 +203,7 @@
                     android:textSize="18dp" />
 
                 <EditText
-                    android:id="@+id/gType"
+                    android:id="@+id/txtPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/gAddress"
@@ -226,7 +226,7 @@
                     android:id="@+id/gTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/gType"
+                    android:layout_below="@+id/txtPhoneNumber"
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="60dp"
                     android:layout_marginRight="60dp"

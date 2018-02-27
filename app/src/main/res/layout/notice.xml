@@ -79,8 +79,8 @@
                         android:gravity="center"
                         android:hint="Your beautiful Title"
                         android:inputType="textPersonName"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black" />
+                        android:textColor="@color/colorAccent"
+                        android:textColorHint="@color/black"/>
 
                     <ListView
                         android:id="@+id/list"

@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.atik_faysal.backend.ChangeYourPassword;
 import com.atik_faysal.backend.InfoBackgroundTask;
@@ -29,6 +31,7 @@ public class ForgetPassword extends AppCompatActivity
         private EditText eUserName,eFaWord,ePhone;
         private Toolbar toolbar;
         private Button bContinue;
+        private TextView userNameErr,fWordErr,phoneErr;
 
         private String userName,fWord,phone;
         private static final String FILE_URL = "http://192.168.56.1/checkInformation.php";
@@ -43,21 +46,95 @@ public class ForgetPassword extends AppCompatActivity
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.foget_password);
                 initComponent();
+                addTextChangeListener();
         }
 
         //initialize all object and UI component
         private void initComponent()
         {
                 eFaWord = findViewById(R.id.eFavourite);
-                eUserName = findViewById(R.id.groupId);
+                eUserName = findViewById(R.id.txtUserName);
                 bContinue = findViewById(R.id.bContinue);
                 toolbar = findViewById(R.id.toolbar1);
-                ePhone = findViewById(R.id.gType);
+                ePhone = findViewById(R.id.txtPhoneNumber);
+
+                userNameErr = findViewById(R.id.userNameErr);
+                fWordErr = findViewById(R.id.fWordErr);
+                phoneErr = findViewById(R.id.phoneErr);
+
                 setSupportActionBar(toolbar);
                 setToolbar();
                 onButtonClick();
                 dialogClass = new AlertDialogClass(this);
                 internetIsOn = new CheckInternetIsOn(this);
+        }
+
+        private void addTextChangeListener()
+        {
+                eUserName.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                                if(eUserName.getText().toString().length()<5||eUserName.getText().toString().length()>15)
+                                        userNameErr.setText("Invalid username");
+                                else
+                                        userNameErr.setText("");
+
+                        }
+                });
+
+                eFaWord.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                                if(eFaWord.getText().toString().length()<4||eFaWord.getText().toString().length()>15)
+                                        fWordErr.setText("Must be in 4 to 15 characters");
+                                else
+                                        fWordErr.setText("");
+                        }
+                });
+
+                ePhone.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                                if(ePhone.getText().toString().length()!=11&&ePhone.getText().toString().length()!=14)
+                                        phoneErr.setText("Invalid phone");
+                                else
+                                {
+                                        switch (ePhone.getText().toString().length())
+                                        {
+                                                case 11:
+                                                        if(ePhone.getText().toString().charAt(0)=='0'&&ePhone.getText().toString().charAt(1)=='1')
+                                                                phoneErr.setText("");
+                                                        else
+                                                                phoneErr.setText("Invalid phone");
+                                                        break;
+                                                case 14:
+                                                        if(ePhone.getText().toString().charAt(0)=='+'&&ePhone.getText().toString().charAt(1)=='8'
+                                                                && ePhone.getText().toString().charAt(2)=='8'&&ePhone.getText().toString().charAt(3)=='0'
+                                                                &&ePhone.getText().toString().charAt(4)=='1')
+                                                                phoneErr.setText("");
+                                                        else
+                                                                phoneErr.setText("Invalid phone");
+                                                        break;
+                                        }
+                                }
+                        }
+                });
         }
 
         //set toolbar above the page

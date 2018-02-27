@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
  * noInternetConnection-->if user is in offline ,it show a message
  */
 
-public class AlertDialogClass
+public class AlertDialogClass extends AlertDialog
 {
         Context context;
         AlertDialog.Builder builder;
@@ -33,6 +34,7 @@ public class AlertDialogClass
         //constructor
         public AlertDialogClass(Context context)
         {
+                super(context);
                 this.context = context;
                 builder = new AlertDialog.Builder(context);
                 activity = (Activity) context;
@@ -53,6 +55,7 @@ public class AlertDialogClass
 
                 bSetting = view.findViewById(R.id.bSetting);
                 builder.setView(view);
+                builder.setCancelable(false);
 
                 alertDialog = builder.create();
                 alertDialog.show();
@@ -92,7 +95,7 @@ public class AlertDialogClass
                         @Override
                         public void onClick(View v) {
                                 alertDialog.dismiss();
-                                activity.finish();
+                                //activity.finish();
                         }
                 });
         }
@@ -141,7 +144,6 @@ public class AlertDialogClass
                 text1 = view.findViewById(R.id.text1);
 
                 text1.setText(value);
-
 
                 bOk = view.findViewById(R.id.bOk);
                 builder.setView(view);

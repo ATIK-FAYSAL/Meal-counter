@@ -1,19 +1,12 @@
 package com.atik_faysal.mealcounter;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.Html;
-import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -22,8 +15,8 @@ import android.widget.Toast;
 import com.atik_faysal.backend.InfoBackgroundTask;
 import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
-import com.atik_faysal.model.NoticeAdapter;
 import com.atik_faysal.model.NoticeModel;
+import com.atik_faysal.adapter.NoticeAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;

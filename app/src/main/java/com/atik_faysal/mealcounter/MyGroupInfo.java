@@ -5,7 +5,6 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -82,14 +81,14 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
         //initialize all user information related variable by getText from textView or editText
         private void initComponent()
         {
-                groupId = findViewById(R.id.groupId);
+                groupId = findViewById(R.id.txtUserName);
                 gAdmin = findViewById(R.id.txtTaka);
                 gAddress = findViewById(R.id.gAddress);
                 gMember = findViewById(R.id.gMember);
                 gTime = findViewById(R.id.gTime);
                 gDate = findViewById(R.id.gDate);
                 gName = findViewById(R.id.groupName);
-                gType = findViewById(R.id.gType);
+                gType = findViewById(R.id.txtPhoneNumber);
                 gDescription = findViewById(R.id.gDescription);
                 refreshLayout = findViewById(R.id.layout1);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
@@ -223,16 +222,19 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
         //get all information about group from online and show on this page
         private void initializeGroupInfo()
         {
-                try {
-                        POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
+               if(internetIsOn.isOnline())
+               {
+                       try {
+                               POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
 
-                        backgroundTask = new InfoBackgroundTask(MyGroupInfo.this);
-                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                        backgroundTask.execute(FILE_URL,POST_DATA);
+                               backgroundTask = new InfoBackgroundTask(MyGroupInfo.this);
+                               backgroundTask.setOnResultListener(onAsyncTaskInterface);
+                               backgroundTask.execute(FILE_URL,POST_DATA);
 
-                }catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                }
+                       }catch (UnsupportedEncodingException e) {
+                               e.printStackTrace();
+                       }
+               }else dialogClass.noInternetConnection();
         }
 
         //process json data to string

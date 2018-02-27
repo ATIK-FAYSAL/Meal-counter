@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.atik_faysal.backend.InfoBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
@@ -63,14 +62,14 @@ public class JoinRequestToGroup extends AppCompatActivity
         //initialize all user information related variable by getText from textView or editText
         private void initComponent()
         {
-                groupId = findViewById(R.id.groupId);
+                groupId = findViewById(R.id.txtUserName);
                 gAdmin = findViewById(R.id.txtTaka);
                 gAddress = findViewById(R.id.gAddress);
                 gMember = findViewById(R.id.gMember);
                 gTime = findViewById(R.id.gTime);
                 gDate = findViewById(R.id.gDate);
                 gName = findViewById(R.id.groupName);
-                gType = findViewById(R.id.gType);
+                gType = findViewById(R.id.txtPhoneNumber);
                 gDescription = findViewById(R.id.gDescription);
                 bEdit = findViewById(R.id.buEdit);
                 toolbar = findViewById(R.id.toolbar1);

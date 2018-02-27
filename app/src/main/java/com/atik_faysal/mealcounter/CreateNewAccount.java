@@ -7,12 +7,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 
 import android.widget.EditText;
@@ -36,6 +39,7 @@ import com.facebook.accountkit.AccountKitLoginResult;
 import com.facebook.accountkit.ui.AccountKitActivity;
 import com.facebook.accountkit.ui.AccountKitConfiguration;
 import com.facebook.accountkit.ui.LoginType;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
@@ -61,17 +65,18 @@ public class CreateNewAccount extends AppCompatActivity
         private TextView txtSign,txtProceed;
         private ProgressBar progressBar;
         private Toolbar toolbar;
+        private TextView txtNameErr,txtUserNameErr,txtEmailErr,txtAddressErr,txtPassErr,txtFaWErr;
 
         //String variable declaration
         private String name,userName,address,password,email,favouriteWord;
-        private final String memberType = "member";
-        private final String taka = "0",groupId = "Null";
+        private StringBuilder encryptPass;
 
         private final static String FILE_URL = "http://192.168.56.1/userNameExist.php";
         private final static String FILE = "http://192.168.56.1/insert_member_info.php";
         private static String POST_DATA ;
         private final static String USER_LOGIN = "userLogIn";
         private final static String USER_INFO = "currentInfo";
+
 
         //class object declaration
         private InfoBackgroundTask informationCheck;
@@ -86,6 +91,7 @@ public class CreateNewAccount extends AppCompatActivity
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.create_account);
                 initComponent();//initialize all component and variable
+                onTextChangeListener();
                 setToolbar();
         }
 
@@ -99,7 +105,6 @@ public class CreateNewAccount extends AppCompatActivity
                 //component initialize
                 eName = findViewById(R.id.txtName);
                 eUserName = findViewById(R.id.txtUserName);
-                eUserName.requestFocus();
                 eEmail = findViewById(R.id.txtEmail);
                 eAddress = findViewById(R.id.txtAddress);
                 ePassword = findViewById(R.id.txtPassword);
@@ -110,6 +115,13 @@ public class CreateNewAccount extends AppCompatActivity
                 toolbar = findViewById(R.id.toolbar);
                 setSupportActionBar(toolbar);
 
+                txtNameErr = findViewById(R.id.txtNameErr);
+                txtEmailErr = findViewById(R.id.txtEmailErr);
+                txtUserNameErr = findViewById(R.id.txtUserNameErr);
+                txtAddressErr = findViewById(R.id.txtAddressErr);
+                txtPassErr = findViewById(R.id.txtPasswordErr);
+                txtFaWErr = findViewById(R.id.txtFavouriteErr);
+
                 //object initialize
                 informationCheck = new InfoBackgroundTask(this);
                 internetIsOn = new CheckInternetIsOn(this);
@@ -118,6 +130,135 @@ public class CreateNewAccount extends AppCompatActivity
                 sharedPreferenceData = new SharedPreferenceData(CreateNewAccount.this);
                 //calling method
                 onButtonClick();
+        }
+
+        //onText change listener,action will be change on text change
+        private void onTextChangeListener()
+        {
+                eName.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                                boolean flag = true;
+                                if(eName.getText().toString().length()<3||eName.getText().toString().length()>20)
+                                        txtNameErr.setText("Invalid name");
+                                else
+                                {
+                                        for(int i=0;i<eName.length();i++)
+                                        {
+                                                if(((eName.getText().toString().charAt(i)>='a')&&(eName.getText().toString().charAt(i)<='z'))||
+                                                        ((eName.getText().toString().charAt(i)>='A')&&(eName.getText().toString().charAt(i)<='Z'))||
+                                                        eName.getText().toString().charAt(i)==' '||eName.getText().toString().charAt(i)==':'||eName.getText().toString().charAt(i)=='.'||eName.getText().toString().charAt(i)=='_')
+                                                        txtNameErr.setText("");
+                                                else flag = false;
+                                        }
+                                        if(!flag)txtNameErr.setText("Invalid name");
+                                }
+                        }
+                });
+
+                eUserName.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                                if(eUserName.getText().toString().length()<5||eUserName.getText().toString().length()>15)
+                                        txtUserNameErr.setText("Invalid username");
+                                else
+                                        txtUserNameErr.setText("");
+                        }
+                });
+
+                eEmail.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                                boolean flag = true;
+                                if(!eEmail.getText().toString().contains("@"))
+                                        flag = false;
+                                else
+                                {
+                                        String[] email = eEmail.getText().toString().split("@");
+                                        if(email[0].length()<3||email[0].length()>30)
+                                                flag = false;
+                                }
+
+                                if(flag)
+                                        txtEmailErr.setText("");
+                                else
+                                        txtEmailErr.setText("Invalid email");
+                        }
+                });
+
+
+                eAddress.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                                if(eAddress.getText().toString().length()<10||eAddress.getText().toString().length()>30)
+                                        txtAddressErr.setText("Must be in 10-30 characters");
+                                else txtAddressErr.setText("");
+                        }
+                });
+
+                ePassword.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                                if(ePassword.getText().toString().length()<6||eAddress.getText().toString().length()>15)
+                                        txtPassErr.setText("Must be in 6-15 characters");
+                                else if(ePassword.getText().toString().length()>=6&&ePassword.getText().toString().length()<=9)
+                                        txtPassErr.setText("Too short");
+                                else if(ePassword.getText().toString().length()>=10&&ePassword.getText().toString().length()<=13)
+                                {
+                                        txtPassErr.setText("Medium");
+                                        txtPassErr.setTextColor(Color.parseColor("#00E676"));
+                                }
+                                else if(ePassword.getText().toString().length()>=14&&ePassword.getText().toString().length()<=15)
+                                {
+                                        txtPassErr.setText("Strong");
+                                        txtPassErr.setTextColor(Color.parseColor("#00E676"));
+                                }
+                        }
+                });
+
+                eFavourite.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                                if(eFavourite.getText().toString().length()<4||eFavourite.getText().toString().length()>15)
+                                        txtFaWErr.setText("Must be in 4 to 15 characters");
+                                else
+                                        txtFaWErr.setText("");
+                        }
+                });
         }
 
         //set a toolbar,above the page
@@ -142,9 +283,11 @@ public class CreateNewAccount extends AppCompatActivity
                 userName = eUserName.getText().toString();
                 email = eEmail.getText().toString();
                 password = ePassword.getText().toString();
+                password = someMethod.encryptPassword(password);//initialize new encrypt password
                 address = eAddress.getText().toString();
                 favouriteWord = eFavourite.getText().toString();
         }
+
 
         //when user click on button,this method action will start,
         private void onButtonClick()
@@ -214,9 +357,15 @@ public class CreateNewAccount extends AppCompatActivity
 
                 if(password.length()<6)
                 {
-                        ePassword.setError("Too short");
+                        ePassword.setError("Invalid password");
                         ePassword.requestFocus();
                         flag = false;
+                }
+                if(password.length()>15)
+                {
+                        ePassword.setError("Invalid password");
+                        ePassword.requestFocus();
+                        flag =false;
                 }
 
                 if(eAddress.getText().toString().isEmpty())
@@ -261,6 +410,13 @@ public class CreateNewAccount extends AppCompatActivity
                         eUserName.requestFocus();
                         flag = false;
                 }
+
+                if(eAddress.getText().toString().length()<10||eAddress.getText().toString().length()>30)
+                {
+                        flag = false;
+                        eAddress.setError("Must be in 10-30 characters");
+                        eAddress.requestFocus();
+                }
                 return flag;
         }
 
@@ -268,6 +424,10 @@ public class CreateNewAccount extends AppCompatActivity
         private void newUserRegistration(String phoneNumber)
         {
                 try {
+                        String memberType = "nope";
+                        String taka = "0";
+                        String groupId = "Null";
+
                         POST_DATA = URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(name,"UTF-8")+"&"
                                 +URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
                                 +URLEncoder.encode("email","UTF-8")+"="+URLEncoder.encode(email,"UTF-8")+"&"
@@ -296,7 +456,6 @@ public class CreateNewAccount extends AppCompatActivity
                 public void onResultSuccess(final String result) {
                         runOnUiThread(new Runnable() {
                                 public void run() {
-                                        Toast.makeText(CreateNewAccount.this,"result1 :"+result,Toast.LENGTH_SHORT).show();
                                         switch (result) {
                                                 case "success":
                                                         onLogin(LoginType.PHONE);
@@ -320,7 +479,6 @@ public class CreateNewAccount extends AppCompatActivity
                         runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                        Toast.makeText(CreateNewAccount.this,"result2 :"+result,Toast.LENGTH_SHORT).show();
                                         switch (result)
                                         {
                                                 case "success"://insert_member_info.php file return success
@@ -372,7 +530,6 @@ public class CreateNewAccount extends AppCompatActivity
                 final AccountKitLoginResult loginResult = AccountKit.loginResultWithIntent(data);
                 if (loginResult == null || loginResult.wasCancelled()) {
                         toastMessage = "Cancelled";
-                        finish();
                         Toast.makeText(CreateNewAccount.this, toastMessage, Toast.LENGTH_SHORT).show();
                 } else if (loginResult.getError() != null) {
                         Toast.makeText(CreateNewAccount.this, "Error", Toast.LENGTH_SHORT).show();

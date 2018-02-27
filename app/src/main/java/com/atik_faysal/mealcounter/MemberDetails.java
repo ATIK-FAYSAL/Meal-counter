@@ -1,9 +1,7 @@
 package com.atik_faysal.mealcounter;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -74,7 +72,7 @@ public class MemberDetails extends AppCompatActivity
                 toolbar = findViewById(R.id.toolbar1);
                 setSupportActionBar(toolbar);
                 txtTaka = findViewById(R.id.txtTaka);
-                txtUserName = findViewById(R.id.groupId);
+                txtUserName = findViewById(R.id.txtUserName);
                 txtGroup = findViewById(R.id.txtGroup);
                 txtDate = findViewById(R.id.gDate);
 
@@ -82,7 +80,7 @@ public class MemberDetails extends AppCompatActivity
                 eEmail = findViewById(R.id.gAddress);
                 eAddress = findViewById(R.id.gTime);
                 eFaWord = findViewById(R.id.gDescription);
-                ePhone = findViewById(R.id.gType);
+                ePhone = findViewById(R.id.txtPhoneNumber);
 
                 bRemove = findViewById(R.id.bEdit);
                 bRemove.setText("Remove");
@@ -140,18 +138,8 @@ public class MemberDetails extends AppCompatActivity
                 bRemove.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                                if(internetIsOn.isOnline())
-                                {
-                                        if(sharedPreferenceData.getUserType().equals("admin"))
-                                        {
-
-                                                if(currentUser.equals(user))
-                                                        dialogClass.error("You can not remove your own membership.");
-                                                else
-                                                        removeMember(user);
-                                        }
-                                        else dialogClass.error("Only admin can remove member.You are not an admin.");
-                                }else dialogClass.noInternetConnection();
+                                dialogClass.onSuccessListener(asyncTaskInterface);
+                                dialogClass.warning("Really want to remove this member ?");
                         }
                 });
         }
@@ -224,13 +212,13 @@ public class MemberDetails extends AppCompatActivity
                 {
                         try {
                                 DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
+                                InfoBackgroundTask backgroundTask = new InfoBackgroundTask(MemberDetails.this);
+                                backgroundTask.setOnResultListener(asyncTaskInterface);
+                                backgroundTask.execute(URL,DATA);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                         }
 
-                        InfoBackgroundTask backgroundTask = new InfoBackgroundTask(MemberDetails.this);
-                        backgroundTask.setOnResultListener(asyncTaskInterface);
-                        backgroundTask.execute(URL,DATA);
                 }else dialogClass.noInternetConnection();
         }
 
@@ -246,7 +234,21 @@ public class MemberDetails extends AppCompatActivity
                                                         dialogClass.error("Failed to execute operation.Please retry after sometimes");
                                                         break;
                                                 case "successful":
-                                                        someMethod.closeActivity(MemberDetails.this,HomePageActivity.class);
+                                                        Toast.makeText(MemberDetails.this,"one member removed",Toast.LENGTH_SHORT).show();
+                                                        finish();
+                                                        break;
+                                                case "yes":
+                                                        if(internetIsOn.isOnline())
+                                                        {
+                                                                if(sharedPreferenceData.getUserType().equals("admin"))
+                                                                {
+                                                                        if(currentUser.equals(user))
+                                                                                dialogClass.error("You can not remove your own membership.");
+                                                                        else
+                                                                                removeMember(user);
+                                                                }
+                                                                else dialogClass.error("Only admin can remove member.You are not an admin.");
+                                                        }else dialogClass.noInternetConnection();
                                                         break;
                                         }
                                 }

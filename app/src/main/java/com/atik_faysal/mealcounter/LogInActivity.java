@@ -1,18 +1,24 @@
 package com.atik_faysal.mealcounter;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.atik_faysal.backend.InfoBackgroundTask;
+import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
-import com.atik_faysal.backend.UserLogIn;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 /**
  *initComponent-->Void.    initialize all component and object,also call some method.
@@ -32,11 +38,17 @@ public class LogInActivity extends AppCompatActivity
         private CheckInternetIsOn checkInternet;
         private AlertDialogClass dialogClass;
         private SharedPreferenceData sharedPreferenceData;
+        private InfoBackgroundTask backgroundTask;
+        private NeedSomeMethod someMethod;
+
         private String userName,password;
-
-
         private static final String REMEMBER_ME = "rememberMe";
         private static final String USER_LOGIN = "userLogIn";
+        private static final String URL = "http://192.168.56.1/user_log_in.php";
+        private static String DATA;
+        private final static String USER_INFO = "currentInfo";
+
+        private int errorCount=0;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,12 +93,13 @@ public class LogInActivity extends AppCompatActivity
                 txtForgotPass = findViewById(R.id.txtForgotPass);
                 bSignIn = findViewById(R.id.bSignIn);
                 checkBox = findViewById(R.id.cRemember);
-                txtUserName = findViewById(R.id.groupId);
+                txtUserName = findViewById(R.id.txtUserName);
                 txtUserPassword = findViewById(R.id.ePassword);
 
                 checkInternet = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
                 sharedPreferenceData = new SharedPreferenceData(this);
+                someMethod = new NeedSomeMethod(this);
         }
 
         //button click to take action
@@ -106,6 +119,10 @@ public class LogInActivity extends AppCompatActivity
 
                                 userName = txtUserName.getText().toString();
                                 password = txtUserPassword.getText().toString();
+                                password = someMethod.encryptPassword(password);//get new encrypt password
+                                Toast.makeText(LogInActivity.this,"pass : "+password,Toast.LENGTH_SHORT).show();
+
+                                backgroundTask = new InfoBackgroundTask(LogInActivity.this);
 
                                 if(checkInternet.isOnline())
                                 {
@@ -113,7 +130,18 @@ public class LogInActivity extends AppCompatActivity
                                         {
                                                 if(userName.isEmpty())txtUserName.setError("Input valid userName");
                                                 else if(password.isEmpty())txtUserPassword.setError("Input valid password");
-                                        }else new UserLogIn(LogInActivity.this).execute("login",userName,password);
+                                        }else
+                                        {
+                                                try {
+                                                        DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
+                                                                +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8");
+
+                                                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                                        backgroundTask.execute(URL,DATA);
+                                                } catch (UnsupportedEncodingException e) {
+                                                        e.printStackTrace();
+                                                }
+                                        }
 
                                 }else dialogClass.noInternetConnection();
                         }
@@ -142,4 +170,65 @@ public class LogInActivity extends AppCompatActivity
                         sharedPreferenceData.saveUserNamePassword(REMEMBER_ME,txtUserName.getText().toString(),txtUserPassword.getText().toString(),false);
         }
 
+        //after successfully login next activity will start.
+        private void successfullyLogin(final String result)
+        {
+                final ProgressDialog ringProgressDialog = ProgressDialog.show(this, "Please wait", "Authenticating.....", true);
+                ringProgressDialog.setCancelable(true);
+                new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                                try {
+                                        Thread.sleep(2500);
+                                } catch (Exception e) {
+                                }
+                                ringProgressDialog.dismiss();
+                        }
+                }).start();
+                ringProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                                sharedPreferenceData.ifUserLogIn(USER_LOGIN,true);
+                                sharedPreferenceData.currentUserInfo(USER_INFO,userName,password);
+                                sharedPreferenceData.userType(result);
+                                startActivity(new Intent(LogInActivity.this,HomePageActivity.class));
+                        }
+                });
+        }
+
+        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String result) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        switch (result)
+                                        {
+                                                case "member":
+                                                case "nope":
+                                                case "admin":
+                                                       successfullyLogin(result);
+                                                        break;
+                                                case "failed":
+                                                        if(errorCount>=5)
+                                                        {
+                                                                dialogClass.error("your account is locked,please contact with admin or change your password.");
+                                                                someMethod.userCurrentStatus(userName,"locked");
+                                                        }else
+                                                        {
+                                                                dialogClass.error("Failed to login.please retry with valid username and password.");
+                                                                errorCount++;
+                                                        }
+                                                        break;
+                                                case "locked":
+                                                        dialogClass.error("your account is locked,please contact with admin or change your password.");
+                                                        break;
+                                                default:
+                                                        dialogClass.error("Execution failed.please try again.");
+                                                        break;
+                                        }
+                                }
+                        });
+                }
+        };
 }

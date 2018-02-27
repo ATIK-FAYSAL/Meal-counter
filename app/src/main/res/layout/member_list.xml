@@ -7,7 +7,8 @@
 
   <RelativeLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="match_parent"
+      android:background="@color/color8">
 
       <android.support.v7.widget.Toolbar
           android:layout_width="match_parent"
@@ -21,7 +22,8 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_alignParentStart="true"
-          android:layout_below="@+id/toolbar2">
+          android:layout_below="@+id/toolbar2"
+          android:background="@color/white">
 
           <TextView
               android:id="@+id/textView16"
@@ -56,11 +58,11 @@
           android:layout_height="match_parent"
           android:layout_alignParentStart="true"
           android:layout_below="@+id/layout1"
-          android:layout_marginTop="14dp"
-          android:layout_marginLeft="10dp"
-          android:layout_marginRight="10dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginLeft="8dp"
+          android:layout_marginRight="8dp"
           android:dividerHeight="7dp"
-          android:layout_marginBottom="10dp"
+          android:layout_marginBottom="8dp"
           android:divider="#E0E0E0"/>
 
   </RelativeLayout>

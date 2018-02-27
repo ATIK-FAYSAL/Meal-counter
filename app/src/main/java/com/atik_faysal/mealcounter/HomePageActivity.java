@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.view.MenuInflater;
@@ -18,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +27,10 @@ import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
 import com.atik_faysal.backend.RegisterDeviceToken;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.SearchableModel;
+import com.atik_faysal.others.NoResultFound;
+import com.gdacciaro.iOSDialog.iOSDialog;
+import com.gdacciaro.iOSDialog.iOSDialogBuilder;
+import com.gdacciaro.iOSDialog.iOSDialogClickListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -38,7 +42,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-import interfaces.SearchInterfaces;
 import ir.mirrajabi.searchdialog.SimpleSearchDialogCompat;
 import ir.mirrajabi.searchdialog.core.BaseSearchDialogCompat;
 import ir.mirrajabi.searchdialog.core.SearchResultListener;
@@ -67,6 +70,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         private AlertDialogClass dialogClass;
         private InfoBackgroundTask backgroundTask;
         private NeedSomeMethod someMethod;
+        private NoResultFound noResultFound;
 
 
         private final static String USER_LOGIN = "userLogIn";
@@ -92,34 +96,47 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                 String fUrl = "http://192.168.56.1/checkMemType.php";
                 String postData;
-                try {
-                        postData = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
-                        backgroundTask = new InfoBackgroundTask(this);
-                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                        backgroundTask.execute(fUrl,postData);
+                if(internetIsOn.isOnline())
+                {
+                        try {
+                                postData = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
+                                backgroundTask = new InfoBackgroundTask(this);
+                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                backgroundTask.execute(fUrl,postData);
 
-                } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                }
+                        } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                        }
+                }else dialogClass.noInternetConnection();
         }
 
         @Override
         public void onBackPressed() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Exit");
-                builder.setMessage("Want to exit ?");
-                builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                intent.putExtra("flag",true);
-                                startActivity(intent);
-                        }
-                });
-                builder.setNegativeButton("no",null);
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                iOSDialogBuilder builder = new iOSDialogBuilder(HomePageActivity.this);
+
+                builder.setTitle("App termination")
+                        .setSubtitle("Do you want to close app?")
+                        .setBoldPositiveLabel(true)
+                        .setCancelable(false)
+                        .setPositiveListener("ok",new iOSDialogClickListener() {
+                                @Override
+                                public void onClick(iOSDialog dialog) {
+                                        Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        intent.putExtra("flag",true);
+                                        startActivity(intent);
+                                        dialog.dismiss();
+
+                                }
+                        })
+                        .setNegativeListener("cancel", new iOSDialogClickListener() {
+                                @Override
+                                public void onClick(iOSDialog dialog) {
+                                        dialog.dismiss();
+                                }
+                        })
+                        .build().show();
         }
 
         @Override
@@ -183,7 +200,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                         case R.id.acceptRequest:
                                 if(userType.equals("admin"))
                                 {
-                                        startActivity(new Intent(HomePageActivity.this,MemberJoinRequest.class));
+                                        //startActivity(new Intent(HomePageActivity.this,MemberJoinRequest.class));
+                                        noResultFound.checkJoinRequest(currentUser,MemberJoinRequest.class,"request");
                                 }else dialogClass.error("Only admin can accept request.You are not an admin.");
                                 break;
 
@@ -196,7 +214,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                         case R.id.member:
                                 if(internetIsOn.isOnline())
-                                        startActivity(new Intent(HomePageActivity.this,AllMemberList.class));
+                                        noResultFound.checkJoinRequest(currentUser,AllMemberList.class,"member");
+                                        //startActivity(new Intent(HomePageActivity.this,AllMemberList.class));
                                 else dialogClass.noInternetConnection();
                                 break;
 
@@ -237,7 +256,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                         });
                 }
         };
-
 
         OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
@@ -287,6 +305,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
                 someMethod = new NeedSomeMethod(this);
+                noResultFound = new NoResultFound(this);
 
                 FirebaseMessaging.getInstance().subscribeToTopic("test");
                 String token = FirebaseInstanceId.getInstance().getToken();
@@ -299,6 +318,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 //calling method
                 RegisterDeviceToken.registerToken(token,currentUser,date);
                 someMethod.reloadPage(refreshLayout,HomePageActivity.class);
+                someMethod.userCurrentStatus(currentUser,"active");
+                someMethod.myGroupName(currentUser);
                 closeApp();
 
 
@@ -341,32 +362,51 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                 if(id==cardViewId[0]||id==imageViewId[0])
                 {
-                        Toast.makeText(this,"click on button 1",Toast.LENGTH_SHORT).show();
+                        if(sharedPreferenceData.getMyGroupName().equals(String.valueOf(R.string.memberType)))
+                                dialogClass.notMember();
+                        else Toast.makeText(this,"click on button 1",Toast.LENGTH_SHORT).show();
                 }else if(id==cardViewId[1]||id==imageViewId[1])
                 {
-                        Toast.makeText(this,"click on button 2",Toast.LENGTH_SHORT).show();
+                        if(sharedPreferenceData.getMyGroupName().equals(String.valueOf(R.string.memberType)))
+                                dialogClass.notMember();
+                        else Toast.makeText(this,"click on button 2",Toast.LENGTH_SHORT).show();
                 }else if(id==cardViewId[2]||id==imageViewId[2])
                 {
-                        Toast.makeText(this,"click on button 3",Toast.LENGTH_SHORT).show();
+                        if(sharedPreferenceData.getMyGroupName().equals(String.valueOf(R.string.memberType)))
+                                dialogClass.notMember();
+                        else Toast.makeText(this,"click on button 3",Toast.LENGTH_SHORT).show();
                 }else if(id==cardViewId[3]||id==imageViewId[3])
                 {
-                        Toast.makeText(this,"click on button 4",Toast.LENGTH_SHORT).show();
+                        if(sharedPreferenceData.getMyGroupName().equals("nope"))
+                                dialogClass.notMember();
+                        else startActivity(new Intent(HomePageActivity.this,SetTabLayout.class));
+                        //startActivity(new Intent(HomePageActivity.this,MakeShoppingList.class));
                 }else if(id==cardViewId[4]||id==imageViewId[4])
                 {
-                        Toast.makeText(this,"click on button 5",Toast.LENGTH_SHORT).show();
+                        if(sharedPreferenceData.getMyGroupName().equals(String.valueOf(R.string.memberType)))
+                                dialogClass.notMember();
+                        else Toast.makeText(this,"click on button 5",Toast.LENGTH_SHORT).show();
                 }else if(id==cardViewId[5]||id==imageViewId[5])
                 {
-                        startActivity(new Intent(HomePageActivity.this,NoticeBoard.class));
+                        if(sharedPreferenceData.getMyGroupName().equals(String.valueOf(R.string.memberType)))
+                                dialogClass.notMember();
+                        else startActivity(new Intent(HomePageActivity.this,NoticeBoard.class));
 
                 }else if(id==cardViewId[6]||id==imageViewId[6])
                 {
-                        Toast.makeText(this,"click on button 7",Toast.LENGTH_SHORT).show();
+                        if(sharedPreferenceData.getMyGroupName().equals(String.valueOf(R.string.memberType)))
+                                dialogClass.notMember();
+                        else Toast.makeText(this,"click on button 7",Toast.LENGTH_SHORT).show();
                 }else if(id==cardViewId[7]||id==imageViewId[7])
                 {
-                        Toast.makeText(this,"click on button 8",Toast.LENGTH_SHORT).show();
+                        if(sharedPreferenceData.getMyGroupName().equals(String.valueOf(R.string.memberType)))
+                                dialogClass.notMember();
+                        else Toast.makeText(this,"click on button 8",Toast.LENGTH_SHORT).show();
                 }else if(id==cardViewId[8]||id==imageViewId[8])
                 {
-                        Toast.makeText(this,"click on button 9",Toast.LENGTH_SHORT).show();
+                        if(sharedPreferenceData.getMyGroupName().equals(String.valueOf(R.string.memberType)))
+                                dialogClass.notMember();
+                        else Toast.makeText(this,"click on button 9",Toast.LENGTH_SHORT).show();
                 }
 
         }
@@ -400,6 +440,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                         public void run() {
                                 try {
                                         Thread.sleep(2500);
+                                        someMethod.userCurrentStatus(currentUser,"inactive");
                                 } catch (Exception e) {
                                 }
                                 progressDialog.dismiss();
