@@ -3,21 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/Base.Widget.AppCompat.Button.Borderless"
-    android:background="@drawable/shap_round">
+    android:background="@drawable/round_dialog">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_height="wrap_content">
 
 
         <ImageView
             android:id="@+id/imageSign"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
@@ -32,10 +28,9 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="8dp"
             android:gravity="center"
             android:hint="error"
-            android:text="atik faysal"
             android:textSize="18dp" />
 
         <Button
@@ -43,14 +38,14 @@
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/imageSign"
             android:layout_below="@+id/text1"
-            android:layout_marginTop="25dp"
+            android:layout_centerHorizontal="true"
             android:background="@drawable/button2"
             android:text="ok"
             android:textSize="18dp"
             android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"/>
     </RelativeLayout>
 
 </RelativeLayout>

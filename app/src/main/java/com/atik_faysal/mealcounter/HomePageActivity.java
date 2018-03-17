@@ -1,6 +1,5 @@
 package com.atik_faysal.mealcounter;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,8 +21,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
+import com.atik_faysal.backend.GetImportantData;
 import com.atik_faysal.backend.RegisterDeviceToken;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.SearchableModel;
@@ -68,9 +68,9 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         private SharedPreferenceData sharedPreferenceData;
         private CheckInternetIsOn internetIsOn;
         private AlertDialogClass dialogClass;
-        private InfoBackgroundTask backgroundTask;
         private NeedSomeMethod someMethod;
         private NoResultFound noResultFound;
+        private GetImportantData importantData;
 
 
         private final static String USER_LOGIN = "userLogIn";
@@ -80,8 +80,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         private static String POST_DATA ;
 
         private ArrayList<SearchableModel>groupList;
-        private JSONObject jsonObject;
-        private JSONArray jsonArray;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +98,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 {
                         try {
                                 postData = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
-                                backgroundTask = new InfoBackgroundTask(this);
+                                DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(this);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 backgroundTask.execute(fUrl,postData);
 
@@ -306,11 +304,12 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 dialogClass = new AlertDialogClass(this);
                 someMethod = new NeedSomeMethod(this);
                 noResultFound = new NoResultFound(this);
+                importantData = new GetImportantData(this);
 
                 FirebaseMessaging.getInstance().subscribeToTopic("test");
                 String token = FirebaseInstanceId.getInstance().getToken();
 
-                currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
+                currentUser = sharedPreferenceData.getCurrentUserName();
                 userType = sharedPreferenceData.getUserType();
                 date = someMethod.getDate();
                 textView.setText(currentUser);
@@ -320,13 +319,14 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 someMethod.reloadPage(refreshLayout,HomePageActivity.class);
                 someMethod.userCurrentStatus(currentUser,"active");
                 someMethod.myGroupName(currentUser);
+                importantData.myGroupType(currentUser);
                 closeApp();
 
 
                 try {
                         POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode("","UTF-8");
                         groupList = new ArrayList<>();
-                        InfoBackgroundTask backgroundTask = new InfoBackgroundTask(HomePageActivity.this);
+                        DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(HomePageActivity.this);
                         backgroundTask.setOnResultListener(taskInterface);
                         backgroundTask.execute(FILE,POST_DATA);
                 } catch (UnsupportedEncodingException e) {
@@ -362,49 +362,58 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                 if(id==cardViewId[0]||id==imageViewId[0])
                 {
-                        if(sharedPreferenceData.getMyGroupName().equals(String.valueOf(R.string.memberType)))
+                        if(sharedPreferenceData.getUserType().equals("nope"))
                                 dialogClass.notMember();
-                        else Toast.makeText(this,"click on button 1",Toast.LENGTH_SHORT).show();
+                        else
+                        {
+                                if(!sharedPreferenceData.getMyGroupType().equals("secret"))
+                                        Toast.makeText(this,"click on button 1",Toast.LENGTH_SHORT).show();
+                                else
+                                        dialogClass.error("This is a secret group.Only admin can input meal.");
+                        }
                 }else if(id==cardViewId[1]||id==imageViewId[1])
                 {
-                        if(sharedPreferenceData.getMyGroupName().equals(String.valueOf(R.string.memberType)))
+                        if(sharedPreferenceData.getUserType().equals("nope"))
                                 dialogClass.notMember();
                         else Toast.makeText(this,"click on button 2",Toast.LENGTH_SHORT).show();
                 }else if(id==cardViewId[2]||id==imageViewId[2])
                 {
-                        if(sharedPreferenceData.getMyGroupName().equals(String.valueOf(R.string.memberType)))
+                        if(sharedPreferenceData.getUserType().equals("nope"))
                                 dialogClass.notMember();
-                        else Toast.makeText(this,"click on button 3",Toast.LENGTH_SHORT).show();
+                        else
+                        {
+                                startActivity(new Intent(HomePageActivity.this,AddCost.class));
+                        }
                 }else if(id==cardViewId[3]||id==imageViewId[3])
                 {
-                        if(sharedPreferenceData.getMyGroupName().equals("nope"))
+                        if(sharedPreferenceData.getUserType().equals("nope"))
                                 dialogClass.notMember();
                         else startActivity(new Intent(HomePageActivity.this,SetTabLayout.class));
                         //startActivity(new Intent(HomePageActivity.this,MakeShoppingList.class));
                 }else if(id==cardViewId[4]||id==imageViewId[4])
                 {
-                        if(sharedPreferenceData.getMyGroupName().equals(String.valueOf(R.string.memberType)))
+                        if(sharedPreferenceData.getUserType().equals("nope"))
                                 dialogClass.notMember();
                         else Toast.makeText(this,"click on button 5",Toast.LENGTH_SHORT).show();
                 }else if(id==cardViewId[5]||id==imageViewId[5])
                 {
-                        if(sharedPreferenceData.getMyGroupName().equals(String.valueOf(R.string.memberType)))
+                        if(sharedPreferenceData.getUserType().equals("nope"))
                                 dialogClass.notMember();
                         else startActivity(new Intent(HomePageActivity.this,NoticeBoard.class));
 
                 }else if(id==cardViewId[6]||id==imageViewId[6])
                 {
-                        if(sharedPreferenceData.getMyGroupName().equals(String.valueOf(R.string.memberType)))
+                        if(sharedPreferenceData.getUserType().equals("nope"))
                                 dialogClass.notMember();
                         else Toast.makeText(this,"click on button 7",Toast.LENGTH_SHORT).show();
                 }else if(id==cardViewId[7]||id==imageViewId[7])
                 {
-                        if(sharedPreferenceData.getMyGroupName().equals(String.valueOf(R.string.memberType)))
+                        if(sharedPreferenceData.getUserType().equals("nope"))
                                 dialogClass.notMember();
                         else Toast.makeText(this,"click on button 8",Toast.LENGTH_SHORT).show();
                 }else if(id==cardViewId[8]||id==imageViewId[8])
                 {
-                        if(sharedPreferenceData.getMyGroupName().equals(String.valueOf(R.string.memberType)))
+                        if(sharedPreferenceData.getUserType().equals("nope"))
                                 dialogClass.notMember();
                         else Toast.makeText(this,"click on button 9",Toast.LENGTH_SHORT).show();
                 }
@@ -414,12 +423,12 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         private void processJsonData(String jsonData)
         {
                 try {
-                        jsonObject = new JSONObject(jsonData);
-                        jsonArray = jsonObject.optJSONArray("groupName");
+                        JSONObject jsonObject = new JSONObject(jsonData);
+                        JSONArray jsonArray = jsonObject.optJSONArray("groupName");
 
                         int count=0;
 
-                        while (count<jsonArray.length())
+                        while (count< jsonArray.length())
                         {
                                 JSONObject jObject = jsonArray.getJSONObject(count);
                                 groupList.add(new SearchableModel(jObject.getString("groupName")));

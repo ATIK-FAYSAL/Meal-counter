@@ -10,10 +10,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.MemberModel;
 import com.atik_faysal.adapter.AdminAdapter;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +40,7 @@ public class AdminPanel extends AppCompatActivity
         private JSONArray jsonArray;
         private JSONObject jsonObject;
 
-        private InfoBackgroundTask backgroundTask;
+        private DatabaseBackgroundTask backgroundTask;
         private AlertDialogClass dialogClass;
         private CheckInternetIsOn internetIsOn;
         private AdminAdapter adapter;
@@ -78,14 +79,14 @@ public class AdminPanel extends AppCompatActivity
                 //calling method
                 someMethod.reloadPage(refreshLayout,AdminPanel.class);
 
-                currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
+                currentUser = sharedPreferenceData.getCurrentUserName();
                 if(internetIsOn.isOnline())
                 {
                         if(currentUser!=null)
                         {
                                 try {
                                         POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
-                                        backgroundTask = new InfoBackgroundTask(this);
+                                        backgroundTask = new DatabaseBackgroundTask(this);
                                         backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                         backgroundTask.execute(FILE_URL,POST_DATA);
                                 } catch (UnsupportedEncodingException e) {
@@ -147,7 +148,7 @@ public class AdminPanel extends AppCompatActivity
                 }
         }
 
-        InfoBackgroundTask.OnAsyncTaskInterface onAsyncTaskInterface = new InfoBackgroundTask.OnAsyncTaskInterface() {
+        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
                 public void onResultSuccess(final String userInfo) {
                         runOnUiThread(new Runnable() {

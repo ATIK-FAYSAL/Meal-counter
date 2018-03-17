@@ -15,8 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 
 import org.json.JSONArray;
@@ -39,7 +39,7 @@ public class EditYourProfile extends AppCompatActivity
         //class object declaration
         private AlertDialogClass dialogClass;
         private CheckInternetIsOn internetIsOn;
-        private InfoBackgroundTask infoBackgroundTask;
+        private DatabaseBackgroundTask databaseBackgroundTask;
         private SharedPreferenceData sharedPreferenceData;
         private NeedSomeMethod someMethod;
 
@@ -99,7 +99,7 @@ public class EditYourProfile extends AppCompatActivity
                 setToolbar();
                 onButtonClick();
 
-                currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
+                currentUser = sharedPreferenceData.getCurrentUserName();
 
                if(internetIsOn.isOnline())
                {
@@ -108,9 +108,9 @@ public class EditYourProfile extends AppCompatActivity
                                        POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
                                else Toast.makeText(this,"under construction",Toast.LENGTH_SHORT).show();
 
-                               infoBackgroundTask = new InfoBackgroundTask(this);
-                               infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                               infoBackgroundTask.execute(FILE_URL,POST_DATA);
+                               databaseBackgroundTask = new DatabaseBackgroundTask(this);
+                               databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
+                               databaseBackgroundTask.execute(FILE_URL,POST_DATA);
                        } catch (UnsupportedEncodingException e) {
                                e.printStackTrace();
                        }
@@ -157,7 +157,7 @@ public class EditYourProfile extends AppCompatActivity
                                                 } catch (UnsupportedEncodingException e) {
                                                         e.printStackTrace();
                                                 }
-                                                InfoBackgroundTask checkBackgroundTask = new InfoBackgroundTask(EditYourProfile.this);
+                                                DatabaseBackgroundTask checkBackgroundTask = new DatabaseBackgroundTask(EditYourProfile.this);
                                                 checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
                                                 checkBackgroundTask.execute(FILE_URL1,POST_DATA1);
 
@@ -308,9 +308,9 @@ public class EditYourProfile extends AppCompatActivity
                                                                } catch (UnsupportedEncodingException e) {
                                                                        e.printStackTrace();
                                                                }
-                                                               infoBackgroundTask = new InfoBackgroundTask(EditYourProfile.this);
-                                                               infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                               infoBackgroundTask.execute(FILE_URL,POST_DATA);
+                                                               databaseBackgroundTask = new DatabaseBackgroundTask(EditYourProfile.this);
+                                                               databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                                               databaseBackgroundTask.execute(FILE_URL,POST_DATA);
                                                                Toast.makeText(EditYourProfile.this,"Information updated successfully.",Toast.LENGTH_SHORT).show();
                                                        }else dialogClass.noInternetConnection();
                                                        break;

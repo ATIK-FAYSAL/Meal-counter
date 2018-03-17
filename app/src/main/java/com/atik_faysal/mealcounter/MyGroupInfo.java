@@ -21,8 +21,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 
 import org.json.JSONArray;
@@ -56,7 +56,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
         private final static String USER_INFO = "currentInfo";
         private String name,id,address,description,type,member,time,date,admin;
 
-        private InfoBackgroundTask backgroundTask;
+        private DatabaseBackgroundTask backgroundTask;
         private AlertDialogClass dialogClass;
         private CheckInternetIsOn internetIsOn;
         private NeedSomeMethod someMethod;
@@ -110,7 +110,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                 calendar = Calendar.getInstance();
 
                 //get current user info
-                currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
+                currentUser = sharedPreferenceData.getCurrentUserName();
                 userType = sharedPreferenceData.getUserType();
 
                 //calling method
@@ -185,7 +185,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                                                                +URLEncoder.encode("groupType","UTF-8")+"="+URLEncoder.encode(type,"UTF-8")+"&"
                                                                +URLEncoder.encode("description","UTF-8")+"="+URLEncoder.encode(description,"UTF-8");
 
-                                                       backgroundTask = new InfoBackgroundTask(MyGroupInfo.this);
+                                                       backgroundTask = new DatabaseBackgroundTask(MyGroupInfo.this);
                                                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                                        backgroundTask.execute(EDIT_URL,DATA);
                                                } catch (UnsupportedEncodingException e) {
@@ -227,7 +227,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                        try {
                                POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
 
-                               backgroundTask = new InfoBackgroundTask(MyGroupInfo.this);
+                               backgroundTask = new DatabaseBackgroundTask(MyGroupInfo.this);
                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                backgroundTask.execute(FILE_URL,POST_DATA);
 

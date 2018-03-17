@@ -9,10 +9,10 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.MemberModel;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.adapter.AcceptRequestAdapter;
 
 import org.json.JSONArray;
@@ -47,7 +47,7 @@ public class MemberJoinRequest extends AppCompatActivity
 
         private CheckInternetIsOn internetIsOn;
         private AlertDialogClass dialogClass;
-        private InfoBackgroundTask backgroundTask;
+        private DatabaseBackgroundTask backgroundTask;
         private SharedPreferenceData sharedPreferenceData;
         private NeedSomeMethod someMethod;
         @Override
@@ -71,7 +71,7 @@ public class MemberJoinRequest extends AppCompatActivity
                 sharedPreferenceData = new SharedPreferenceData(this);
                 someMethod = new NeedSomeMethod(this);
 
-                currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
+                currentUser = sharedPreferenceData.getCurrentUserName();
 
                 //calling method
                 setToolbar();
@@ -99,7 +99,7 @@ public class MemberJoinRequest extends AppCompatActivity
                 {
                         try {
                                 POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
-                                backgroundTask = new InfoBackgroundTask(this);
+                                backgroundTask = new DatabaseBackgroundTask(this);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 backgroundTask.execute(FILE_URL,POST_DATA);
                         } catch (UnsupportedEncodingException e) {

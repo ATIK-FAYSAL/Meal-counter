@@ -11,10 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 
 import java.io.UnsupportedEncodingException;
@@ -34,7 +33,7 @@ public class Feedback extends AppCompatActivity
 
         private AlertDialogClass dialogClass;
         private NeedSomeMethod someMethod;
-        private InfoBackgroundTask checkBackgroundTask;
+        private DatabaseBackgroundTask checkBackgroundTask;
         private SharedPreferenceData sharedPreferenceData;
         private CheckInternetIsOn internetIsOn;
 
@@ -81,7 +80,7 @@ public class Feedback extends AppCompatActivity
                 someMethod = new NeedSomeMethod(this);
                 sharedPreferenceData = new SharedPreferenceData(this);
                 internetIsOn = new CheckInternetIsOn(this);
-                currentUser = sharedPreferenceData.getCurrentUserName(PREF_NAME);
+                currentUser = sharedPreferenceData.getCurrentUserName();
 
                 txtName.setText(currentUser);
                 if(eFeedback.getText().toString().isEmpty())bFeedback.setEnabled(false);
@@ -137,7 +136,7 @@ public class Feedback extends AppCompatActivity
                                                 e.printStackTrace();
                                         }
 
-                                        checkBackgroundTask = new InfoBackgroundTask(Feedback.this);
+                                        checkBackgroundTask = new DatabaseBackgroundTask(Feedback.this);
                                         checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
                                         checkBackgroundTask.execute(FILE_URL,POST_DATA);
                                 }else dialogClass.noInternetConnection();

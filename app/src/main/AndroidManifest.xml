@@ -84,7 +84,12 @@
             android:label="Requests"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".SetTabLayout"/>
+        <activity android:name=".SetTabLayout"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".AddCost"
+            android:screenOrientation="portrait"
+            android:label="Today's Cost"/>
 
         <activity android:name="com.atik_faysal.others.SelectMember"
             android:screenOrientation="portrait"

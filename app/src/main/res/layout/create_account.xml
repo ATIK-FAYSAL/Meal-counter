@@ -36,6 +36,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/progress">
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,19 +57,13 @@
                     android:background="@drawable/log_in_textstyle"
                     android:textColor="@color/black"
                     android:textSize="18dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
                     android:gravity="center_vertical"
                     android:hint="Username"
                     android:paddingLeft="20dp"/>
-
-
-                <TextView
-                    android:id="@+id/txtUserNameErr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="3dp"
-                    android:textColor="@color/red"/>
 
             </LinearLayout>
 
@@ -78,7 +74,8 @@
                 android:layout_below="@id/layout2"
                 android:layout_marginRight="30dp"
                 android:layout_marginLeft="30dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="10dp">
 
                 <EditText
                     android:id="@+id/txtName"
@@ -91,19 +88,14 @@
                     android:background="@drawable/log_in_textstyle"
                     android:textColor="@color/black"
                     android:textSize="18dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
                     android:gravity="center_vertical"
                     android:hint="Name"
                     android:paddingLeft="20dp"/>
 
-
-                <TextView
-                    android:id="@+id/txtNameErr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="3dp"
-                    android:textColor="@color/red"/>
 
             </LinearLayout>
 
@@ -114,7 +106,8 @@
                 android:layout_below="@id/layout3"
                 android:layout_marginRight="30dp"
                 android:layout_marginLeft="30dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="10dp">
 
                 <EditText
                     android:id="@+id/txtEmail"
@@ -126,20 +119,14 @@
                     android:background="@drawable/log_in_textstyle"
                     android:textColor="@color/black"
                     android:textSize="18dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
                     android:gravity="fill_vertical"
                     android:hint="Email"
                     android:inputType="textEmailAddress"
                     android:paddingLeft="20dp"/>
-
-
-                <TextView
-                    android:id="@+id/txtEmailErr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="3dp"
-                    android:textColor="@color/red"/>
 
             </LinearLayout>
 
@@ -150,7 +137,8 @@
                 android:layout_below="@id/layout4"
                 android:layout_marginRight="30dp"
                 android:layout_marginLeft="30dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="10dp">
 
                 <EditText
                     android:id="@+id/txtAddress"
@@ -162,20 +150,15 @@
                     android:background="@drawable/log_in_textstyle"
                     android:textColor="@color/black"
                     android:textSize="18dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
                     android:gravity="fill_vertical"
                     android:hint="Address"
                     android:inputType="text"
                     android:paddingLeft="20dp"/>
 
-
-                <TextView
-                    android:id="@+id/txtAddressErr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="3dp"
-                    android:textColor="@color/red"/>
 
             </LinearLayout>
 
@@ -186,7 +169,8 @@
                 android:layout_below="@id/layout5"
                 android:layout_marginRight="30dp"
                 android:layout_marginLeft="30dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="10dp">
 
                 <EditText
                     android:id="@+id/txtPassword"
@@ -199,19 +183,13 @@
                     android:background="@drawable/log_in_textstyle"
                     android:textColor="@color/black"
                     android:textSize="18dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
                     android:gravity="fill_vertical"
                     android:hint="Password"
                     android:paddingLeft="20dp"/>
-
-
-                <TextView
-                    android:id="@+id/txtPasswordErr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="3dp"
-                    android:textColor="@color/red"/>
 
             </LinearLayout>
 
@@ -219,10 +197,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/layout7"
-                android:layout_below="@id/layout6"
+                android:layout_below="@id/passErr"
                 android:layout_marginRight="30dp"
                 android:layout_marginLeft="30dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="5dp">
 
                 <EditText
                     android:id="@+id/txtFavourite"
@@ -235,22 +214,23 @@
                     android:background="@drawable/log_in_textstyle"
                     android:textColor="@color/black"
                     android:textSize="18dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
                     android:gravity="fill_vertical"
                     android:hint="Favourite word"
                     android:paddingLeft="20dp"
-                    android:layout_marginBottom="10dp"/>
-
-
-                <TextView
-                    android:id="@+id/txtFavouriteErr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="3dp"
-                    android:textColor="@color/red"/>
+                    android:layout_marginBottom="3dp"/>
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/passErr"
+                android:layout_below="@+id/layout6"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="3dp"/>
 
             <TextView
                 android:id="@+id/txtProceed"
@@ -258,7 +238,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/layout2"
                 android:layout_below="@+id/layout7"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="20dp"
                 android:drawableRight="@drawable/right_icon"
                 android:gravity="center"
                 android:text="PROCEED"
@@ -275,6 +255,7 @@
                 android:textColor="@color/black"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"/>
+
 
         </RelativeLayout>
 

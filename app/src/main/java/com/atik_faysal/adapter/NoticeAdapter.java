@@ -11,8 +11,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
@@ -142,7 +142,7 @@ public class NoticeAdapter extends BaseAdapter
                                 try {
                                         post = URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(id,"UTF-8");
 
-                                        InfoBackgroundTask backgroundTask = new InfoBackgroundTask(context);
+                                        DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(context);
                                         backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                         backgroundTask.execute(file,post);
 

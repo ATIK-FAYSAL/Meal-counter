@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
 
 import java.io.UnsupportedEncodingException;
@@ -25,7 +25,7 @@ import java.net.URLEncoder;
 import android.text.format.DateFormat;
 import java.util.Calendar;
 
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 
 /**
  * Created by USER on 1/22/2018.
@@ -62,7 +62,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
         private AlertDialogClass dialogClass;
         private Calendar calendar;
         private TimePickerDialog timePickerDialog;
-        private InfoBackgroundTask backgroundTask;
+        private DatabaseBackgroundTask backgroundTask;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,7 +113,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
 
 
                 sharedPreferenceData = new SharedPreferenceData(this);
-                currentUserName = sharedPreferenceData.getCurrentUserName(USER_INFO);
+                currentUserName = sharedPreferenceData.getCurrentUserName();
                 someMethod = new NeedSomeMethod(this);
                 internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
@@ -281,12 +281,13 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                         public void onClick(View v) {
                                 getGroupInformation();
 
-                                InfoBackgroundTask backgroundTask = new InfoBackgroundTask(MakeMyGroup.this);
+                                DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(MakeMyGroup.this);
 
                                 if(!currentUserName.isEmpty())
                                 {
                                         try {
-                                                POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUserName,"UTF-8");
+                                                POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUserName,"UTF-8")+"&"
+                                                +URLEncoder.encode("action","UTF-8")+"="+URLEncoder.encode("name","UTF-8");
                                                 if(checkInfo())
                                                 {
                                                         if(internetIsOn.isOnline())
@@ -327,7 +328,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                                 +URLEncoder.encode("groupType","UTF-8")+"="+URLEncoder.encode(groupType,"UTF-8")+"&"
                                 +URLEncoder.encode("time","UTF-8")+"="+URLEncoder.encode(time,"UTF-8");
 
-                       backgroundTask = new InfoBackgroundTask(this);
+                       backgroundTask = new DatabaseBackgroundTask(this);
                        backgroundTask.setOnResultListener(taskInterface);
                        backgroundTask.execute(URL,DATA);
 

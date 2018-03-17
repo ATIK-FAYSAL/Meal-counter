@@ -12,8 +12,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.NoticeModel;
 import com.atik_faysal.adapter.NoticeAdapter;
@@ -41,7 +41,6 @@ public class NoticeBoard extends AppCompatActivity
 
         private final static String FILE_URL = "http://192.168.56.1/notice.php";
         private static String POST_DATA;
-        private final static String USER_INFO = "currentInfo";
         private final static String FILE = "http://192.168.56.1/getAllNotice.php";
         private static String POST;
         private static String currentUser;
@@ -57,7 +56,7 @@ public class NoticeBoard extends AppCompatActivity
         private AlertDialogClass dialogClass;
         private NeedSomeMethod someMethod;
         private CheckInternetIsOn internetIsOn;
-        private InfoBackgroundTask backgroundTask;
+        private DatabaseBackgroundTask backgroundTask;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +69,6 @@ public class NoticeBoard extends AppCompatActivity
         private void initComponent()
         {
                 txtTitle  = findViewById(R.id.txtTitle);
-                txtTitle.requestFocus();
                 txtNotice = findViewById(R.id.txtNotice);
                 bPublish = findViewById(R.id.bPublish);
                 listView = findViewById(R.id.list);
@@ -106,7 +104,7 @@ public class NoticeBoard extends AppCompatActivity
                 setToolbar();
                 someMethod.reloadPage(refreshLayout,NoticeBoard.class);
 
-                currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
+                currentUser = sharedPreferenceData.getCurrentUserName();
                 readyToConnect();
         }
 
@@ -176,7 +174,7 @@ public class NoticeBoard extends AppCompatActivity
                                                                 +URLEncoder.encode("notice","UTF-8")+"="+URLEncoder.encode(notice,"UTF-8")+"&"
                                                                 +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDate(),"UTF-8");
 
-                                                        backgroundTask = new InfoBackgroundTask(NoticeBoard.this);
+                                                        backgroundTask = new DatabaseBackgroundTask(NoticeBoard.this);
                                                         backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                                         backgroundTask.execute(FILE_URL,POST_DATA);
 
@@ -196,7 +194,7 @@ public class NoticeBoard extends AppCompatActivity
                        if(internetIsOn.isOnline())
                        {
                                POST = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
-                               backgroundTask = new InfoBackgroundTask(this);
+                               backgroundTask = new DatabaseBackgroundTask(this);
                                backgroundTask.setOnResultListener(asyncTaskInterface);
                                backgroundTask.execute(FILE,POST);
                        }else dialogClass.noInternetConnection();
@@ -257,7 +255,7 @@ public class NoticeBoard extends AppCompatActivity
                                                                 break;
 
                                                         default:
-                                                                Toast.makeText(NoticeBoard.this,"Notice is not published.please try again.",Toast.LENGTH_SHORT).show();
+                                                                dialogClass.error("Notice does not published.please try again.");
                                                                 break;
                                                 }
                                         }

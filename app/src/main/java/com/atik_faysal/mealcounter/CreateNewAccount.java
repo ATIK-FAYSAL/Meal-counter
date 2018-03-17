@@ -19,6 +19,7 @@ import android.text.TextWatcher;
 import android.view.View;
 
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,10 +40,11 @@ import com.facebook.accountkit.AccountKitLoginResult;
 import com.facebook.accountkit.ui.AccountKitActivity;
 import com.facebook.accountkit.ui.AccountKitConfiguration;
 import com.facebook.accountkit.ui.LoginType;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
+
+import io.fabric.sdk.android.services.common.CommonUtils;
 
 /**
  * initComponent-->Void.    initialize all component and object,also call some method.
@@ -65,26 +67,23 @@ public class CreateNewAccount extends AppCompatActivity
         private TextView txtSign,txtProceed;
         private ProgressBar progressBar;
         private Toolbar toolbar;
-        private TextView txtNameErr,txtUserNameErr,txtEmailErr,txtAddressErr,txtPassErr,txtFaWErr;
-
+        private LinearLayout layout2,layout3,layout4,layout5,layout6,layout7;
         //String variable declaration
         private String name,userName,address,password,email,favouriteWord;
-        private StringBuilder encryptPass;
+        private TextView txtPassErr;
 
         private final static String FILE_URL = "http://192.168.56.1/userNameExist.php";
         private final static String FILE = "http://192.168.56.1/insert_member_info.php";
         private static String POST_DATA ;
         private final static String USER_LOGIN = "userLogIn";
-        private final static String USER_INFO = "currentInfo";
-
 
         //class object declaration
-        private InfoBackgroundTask informationCheck;
+        private DatabaseBackgroundTask informationCheck;
         private CheckInternetIsOn internetIsOn;
         private AlertDialogClass dialogClass;
         private NeedSomeMethod someMethod;
         private SharedPreferenceData sharedPreferenceData;
-        InfoBackgroundTask infoBackgroundTask;
+        DatabaseBackgroundTask databaseBackgroundTask;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,15 +114,17 @@ public class CreateNewAccount extends AppCompatActivity
                 toolbar = findViewById(R.id.toolbar);
                 setSupportActionBar(toolbar);
 
-                txtNameErr = findViewById(R.id.txtNameErr);
-                txtEmailErr = findViewById(R.id.txtEmailErr);
-                txtUserNameErr = findViewById(R.id.txtUserNameErr);
-                txtAddressErr = findViewById(R.id.txtAddressErr);
-                txtPassErr = findViewById(R.id.txtPasswordErr);
-                txtFaWErr = findViewById(R.id.txtFavouriteErr);
+
+                layout2 = findViewById(R.id.layout2);
+                layout3 = findViewById(R.id.layout3);
+                layout4 = findViewById(R.id.layout4);
+                layout5 = findViewById(R.id.layout5);
+                layout6 = findViewById(R.id.layout6);
+                layout7 = findViewById(R.id.layout7);
+                txtPassErr = findViewById(R.id.passErr);
 
                 //object initialize
-                informationCheck = new InfoBackgroundTask(this);
+                informationCheck = new DatabaseBackgroundTask(this);
                 internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
                 someMethod = new NeedSomeMethod(this);
@@ -131,6 +132,8 @@ public class CreateNewAccount extends AppCompatActivity
                 //calling method
                 onButtonClick();
         }
+
+        //setBackgroundColor(getResources().getColor(CommonUtils.getNextRandomColor()));
 
         //onText change listener,action will be change on text change
         private void onTextChangeListener()
@@ -145,7 +148,7 @@ public class CreateNewAccount extends AppCompatActivity
                         public void afterTextChanged(Editable s) {
                                 boolean flag = true;
                                 if(eName.getText().toString().length()<3||eName.getText().toString().length()>20)
-                                        txtNameErr.setText("Invalid name");
+                                        layout3.setBackground(getDrawable(R.color.error));
                                 else
                                 {
                                         for(int i=0;i<eName.length();i++)
@@ -153,10 +156,10 @@ public class CreateNewAccount extends AppCompatActivity
                                                 if(((eName.getText().toString().charAt(i)>='a')&&(eName.getText().toString().charAt(i)<='z'))||
                                                         ((eName.getText().toString().charAt(i)>='A')&&(eName.getText().toString().charAt(i)<='Z'))||
                                                         eName.getText().toString().charAt(i)==' '||eName.getText().toString().charAt(i)==':'||eName.getText().toString().charAt(i)=='.'||eName.getText().toString().charAt(i)=='_')
-                                                        txtNameErr.setText("");
+                                                        layout3.setBackground(getDrawable(R.color.green));
                                                 else flag = false;
                                         }
-                                        if(!flag)txtNameErr.setText("Invalid name");
+                                        if(!flag)layout3.setBackground(getDrawable(R.color.error));
                                 }
                         }
                 });
@@ -170,9 +173,9 @@ public class CreateNewAccount extends AppCompatActivity
                         @Override
                         public void afterTextChanged(Editable s) {
                                 if(eUserName.getText().toString().length()<5||eUserName.getText().toString().length()>15)
-                                        txtUserNameErr.setText("Invalid username");
+                                        layout2.setBackground(getDrawable(R.color.error));
                                 else
-                                        txtUserNameErr.setText("");
+                                        layout2.setBackground(getDrawable(R.color.green));
                         }
                 });
 
@@ -196,9 +199,9 @@ public class CreateNewAccount extends AppCompatActivity
                                 }
 
                                 if(flag)
-                                        txtEmailErr.setText("");
+                                        layout4.setBackground(getDrawable(R.color.green));
                                 else
-                                        txtEmailErr.setText("Invalid email");
+                                        layout4.setBackground(getDrawable(R.color.error));
                         }
                 });
 
@@ -213,8 +216,8 @@ public class CreateNewAccount extends AppCompatActivity
                         @Override
                         public void afterTextChanged(Editable s) {
                                 if(eAddress.getText().toString().length()<10||eAddress.getText().toString().length()>30)
-                                        txtAddressErr.setText("Must be in 10-30 characters");
-                                else txtAddressErr.setText("");
+                                        layout5.setBackground(getDrawable(R.color.error));
+                                else layout5.setBackground(getDrawable(R.color.green));
                         }
                 });
 
@@ -228,8 +231,9 @@ public class CreateNewAccount extends AppCompatActivity
                         @Override
                         public void afterTextChanged(Editable s) {
                                 if(ePassword.getText().toString().length()<6||eAddress.getText().toString().length()>15)
-                                        txtPassErr.setText("Must be in 6-15 characters");
-                                else if(ePassword.getText().toString().length()>=6&&ePassword.getText().toString().length()<=9)
+                                        layout6.setBackground(getDrawable(R.color.error));
+                                else layout6.setBackground(getDrawable(R.color.green));
+                                if(ePassword.getText().toString().length()>=6&&ePassword.getText().toString().length()<=9)
                                         txtPassErr.setText("Too short");
                                 else if(ePassword.getText().toString().length()>=10&&ePassword.getText().toString().length()<=13)
                                 {
@@ -254,9 +258,9 @@ public class CreateNewAccount extends AppCompatActivity
                         @Override
                         public void afterTextChanged(Editable s) {
                                 if(eFavourite.getText().toString().length()<4||eFavourite.getText().toString().length()>15)
-                                        txtFaWErr.setText("Must be in 4 to 15 characters");
+                                        layout7.setBackground(getDrawable(R.color.error));
                                 else
-                                        txtFaWErr.setText("");
+                                        layout7.setBackground(getDrawable(R.color.green));
                         }
                 });
         }
@@ -288,7 +292,6 @@ public class CreateNewAccount extends AppCompatActivity
                 favouriteWord = eFavourite.getText().toString();
         }
 
-
         //when user click on button,this method action will start,
         private void onButtonClick()
         {
@@ -304,7 +307,7 @@ public class CreateNewAccount extends AppCompatActivity
                         @Override
                         public void onClick(View view) {
 
-                                infoBackgroundTask = new InfoBackgroundTask(CreateNewAccount.this);
+                                databaseBackgroundTask = new DatabaseBackgroundTask(CreateNewAccount.this);
                                 userInformation();//method
 
                                 if(internetIsOn.isOnline())
@@ -313,8 +316,8 @@ public class CreateNewAccount extends AppCompatActivity
                                         {
                                                 try {
                                                         POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8");
-                                                        infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                        infoBackgroundTask.execute(FILE_URL,POST_DATA);
+                                                        databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                                        databaseBackgroundTask.execute(FILE_URL,POST_DATA);
                                                 }catch(UnsupportedEncodingException e) {
                                                         e.printStackTrace();
                                                 }
@@ -423,29 +426,32 @@ public class CreateNewAccount extends AppCompatActivity
         //new user registration process
         private void newUserRegistration(String phoneNumber)
         {
-                try {
-                        String memberType = "nope";
-                        String taka = "0";
-                        String groupId = "Null";
+               if(internetIsOn.isOnline())
+               {
+                       try {
+                               String memberType = "nope";
+                               String taka = "0";
+                               String groupId = "Null";
 
-                        POST_DATA = URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(name,"UTF-8")+"&"
-                                +URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
-                                +URLEncoder.encode("email","UTF-8")+"="+URLEncoder.encode(email,"UTF-8")+"&"
-                                +URLEncoder.encode("phone","UTF-8")+"="+URLEncoder.encode(phoneNumber,"UTF-8")+"&"
-                                +URLEncoder.encode("address","UTF-8")+"="+URLEncoder.encode(address,"UTF-8")+"&"
-                                +URLEncoder.encode("taka","UTF-8")+"="+URLEncoder.encode(taka,"UTF-8")+"&"
-                                +URLEncoder.encode("memberType","UTF-8")+"="+URLEncoder.encode(memberType,"UTF-8")+"&"
-                                +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8")+"&"
-                                +URLEncoder.encode("groupId","UTF-8")+"="+URLEncoder.encode(groupId,"UTF-8")+"&"
-                                +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDate(),"UTF-8")+"&"
-                                +URLEncoder.encode("favouriteWord","UTF-8")+"="+URLEncoder.encode(favouriteWord,"UTF-8");
+                               POST_DATA = URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(name,"UTF-8")+"&"
+                                       +URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
+                                       +URLEncoder.encode("email","UTF-8")+"="+URLEncoder.encode(email,"UTF-8")+"&"
+                                       +URLEncoder.encode("phone","UTF-8")+"="+URLEncoder.encode(phoneNumber,"UTF-8")+"&"
+                                       +URLEncoder.encode("address","UTF-8")+"="+URLEncoder.encode(address,"UTF-8")+"&"
+                                       +URLEncoder.encode("taka","UTF-8")+"="+URLEncoder.encode(taka,"UTF-8")+"&"
+                                       +URLEncoder.encode("memberType","UTF-8")+"="+URLEncoder.encode(memberType,"UTF-8")+"&"
+                                       +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8")+"&"
+                                       +URLEncoder.encode("groupId","UTF-8")+"="+URLEncoder.encode(groupId,"UTF-8")+"&"
+                                       +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDate(),"UTF-8")+"&"
+                                       +URLEncoder.encode("favouriteWord","UTF-8")+"="+URLEncoder.encode(favouriteWord,"UTF-8");
 
-                        informationCheck = new InfoBackgroundTask(this);
-                        informationCheck.setOnResultListener(taskInterface);
-                        informationCheck.execute(FILE,POST_DATA);
-                } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                }
+                               informationCheck = new DatabaseBackgroundTask(this);
+                               informationCheck.setOnResultListener(taskInterface);
+                               informationCheck.execute(FILE,POST_DATA);
+                       } catch (UnsupportedEncodingException e) {
+                               e.printStackTrace();
+                       }
+               }else dialogClass.noInternetConnection();
         }
 
 
@@ -491,7 +497,7 @@ public class CreateNewAccount extends AppCompatActivity
 
                                                                                 //current user info,user log in status,user type save in shared preference
                                                                                 sharedPreferenceData.ifUserLogIn(USER_LOGIN,true);
-                                                                                sharedPreferenceData.currentUserInfo(USER_INFO,userName,password);
+                                                                                sharedPreferenceData.currentUserInfo(userName,password);
                                                                                 sharedPreferenceData.userType("member");
                                                                                 someMethod.closeActivity(CreateNewAccount.this,HomePageActivity.class);
                                                                                 finish();

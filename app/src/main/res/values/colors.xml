@@ -16,4 +16,5 @@
     <color name="color7">#06062E</color>
     <color name="color8">#E0E0E0</color>
     <color name="green">#76FF03</color>
+    <color name="error">#EC407A</color>
 </resources>

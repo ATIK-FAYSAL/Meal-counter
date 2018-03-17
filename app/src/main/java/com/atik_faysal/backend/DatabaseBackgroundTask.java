@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 
 import java.io.BufferedReader;
@@ -27,7 +28,7 @@ import static android.content.ContentValues.TAG;
  * Created by USER on 1/25/2018.
  */
 
-public class InfoBackgroundTask extends AsyncTask<String,Void,String>
+public class DatabaseBackgroundTask extends AsyncTask<String,Void,String>
 {
 
         Context context;
@@ -44,7 +45,7 @@ public class InfoBackgroundTask extends AsyncTask<String,Void,String>
         BufferedReader bufferedReader;
 
         //constructor
-        public InfoBackgroundTask(Context context)
+        public DatabaseBackgroundTask(Context context)
         {
                 this.context = context;
                 internetIsOn = new CheckInternetIsOn(context);
@@ -107,15 +108,14 @@ public class InfoBackgroundTask extends AsyncTask<String,Void,String>
                         }
                 }else return "offline";
 
-
                 return null;
         }
 
 
         //interface,
-        public interface OnAsyncTaskInterface {
+       /* public interface OnAsyncTaskInterface {
                 void onResultSuccess(String message);
-        }
+        }*/
 
 
 }

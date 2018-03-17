@@ -2,9 +2,6 @@ package com.atik_faysal.backend;
 
 import android.content.SharedPreferences;
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-
-import com.atik_faysal.mealcounter.R;
 
 /**
  * Created by USER on 1/18/2018.
@@ -22,6 +19,8 @@ public class SharedPreferenceData
         private static final String USER_LOGIN = "userLogIn";
         private static final String MEMBER_TYPE = "mType";
         private static final String GROUP_NAME = "groupName";
+        private static final String GROUP_TYPE = "groupType";
+        private final static String USER_INFO = "currentInfo";
 
         private Context context;
 
@@ -64,19 +63,19 @@ public class SharedPreferenceData
                 return value;
         }
 
-        public void currentUserInfo(String prefName, String userName, String password)
+        public void currentUserInfo(String userName, String password)
         {
-                sharedPreferences = context.getSharedPreferences(prefName,Context.MODE_PRIVATE);
+                sharedPreferences = context.getSharedPreferences(USER_INFO,Context.MODE_PRIVATE);
                 editor = sharedPreferences.edit();
                 editor.putString("userName",userName);
                 editor.putString("password",password);
                 editor.apply();
         }
 
-        public String getCurrentUserName(String prefName)
+        public String getCurrentUserName()
         {
                 String value;
-                sharedPreferences = context.getSharedPreferences(prefName,Context.MODE_PRIVATE);
+                sharedPreferences = context.getSharedPreferences(USER_INFO,Context.MODE_PRIVATE);
                 value = sharedPreferences.getString("userName","null");
                 return value;
         }
@@ -142,6 +141,22 @@ public class SharedPreferenceData
                 String value;
                 sharedPreferences = context.getSharedPreferences(GROUP_NAME,Context.MODE_PRIVATE);
                 value = sharedPreferences.getString("group","null");
+                return value;
+        }
+
+        public void myGroupType(String type)
+        {
+                sharedPreferences = context.getSharedPreferences(GROUP_TYPE,Context.MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putString("type",type);
+                editor.apply();
+        }
+
+        public String getMyGroupType()
+        {
+                String value;
+                sharedPreferences = context.getSharedPreferences(GROUP_TYPE,Context.MODE_PRIVATE);
+                value = sharedPreferences.getString("type","null");
                 return value;
         }
 }

@@ -11,8 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.R;
@@ -36,7 +36,7 @@ public class AcceptRequestAdapter extends BaseAdapter
         TextView txtUserName,txtName,txtPhone,txtDate,txtStatus,txtId;
         Button bAccept,bCancel;
 
-        private InfoBackgroundTask backgroundTask;
+        private DatabaseBackgroundTask backgroundTask;
         private AlertDialogClass dialogClass;
         private CheckInternetIsOn internetIsOn;
 
@@ -126,7 +126,7 @@ public class AcceptRequestAdapter extends BaseAdapter
                                +URLEncoder.encode("action","UTF-8")+"="+URLEncoder.encode(action,"UTF-8")+"&"
                                 +URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(group,"UTF-8");
 
-                        backgroundTask = new InfoBackgroundTask(context);
+                        backgroundTask = new DatabaseBackgroundTask(context);
                         backgroundTask.setOnResultListener(onAsyncTaskInterface);
                         backgroundTask.execute(FILE_URL,POST);
                 } catch (UnsupportedEncodingException e) {

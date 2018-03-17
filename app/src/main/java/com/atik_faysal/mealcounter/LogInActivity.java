@@ -13,8 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 
 import java.io.UnsupportedEncodingException;
@@ -38,7 +38,7 @@ public class LogInActivity extends AppCompatActivity
         private CheckInternetIsOn checkInternet;
         private AlertDialogClass dialogClass;
         private SharedPreferenceData sharedPreferenceData;
-        private InfoBackgroundTask backgroundTask;
+        private DatabaseBackgroundTask backgroundTask;
         private NeedSomeMethod someMethod;
 
         private String userName,password;
@@ -46,7 +46,6 @@ public class LogInActivity extends AppCompatActivity
         private static final String USER_LOGIN = "userLogIn";
         private static final String URL = "http://192.168.56.1/user_log_in.php";
         private static String DATA;
-        private final static String USER_INFO = "currentInfo";
 
         private int errorCount=0;
 
@@ -120,9 +119,8 @@ public class LogInActivity extends AppCompatActivity
                                 userName = txtUserName.getText().toString();
                                 password = txtUserPassword.getText().toString();
                                 password = someMethod.encryptPassword(password);//get new encrypt password
-                                Toast.makeText(LogInActivity.this,"pass : "+password,Toast.LENGTH_SHORT).show();
 
-                                backgroundTask = new InfoBackgroundTask(LogInActivity.this);
+                                backgroundTask = new DatabaseBackgroundTask(LogInActivity.this);
 
                                 if(checkInternet.isOnline())
                                 {
@@ -189,7 +187,7 @@ public class LogInActivity extends AppCompatActivity
                         @Override
                         public void onDismiss(DialogInterface dialog) {
                                 sharedPreferenceData.ifUserLogIn(USER_LOGIN,true);
-                                sharedPreferenceData.currentUserInfo(USER_INFO,userName,password);
+                                sharedPreferenceData.currentUserInfo(userName,password);
                                 sharedPreferenceData.userType(result);
                                 startActivity(new Intent(LogInActivity.this,HomePageActivity.class));
                         }

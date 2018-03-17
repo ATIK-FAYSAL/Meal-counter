@@ -9,13 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.atik_faysal.adapter.SelectMemberAdapter;
-import com.atik_faysal.adapter.ShoppingAdapter;
-import com.atik_faysal.backend.InfoBackgroundTask;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.R;
@@ -46,7 +44,7 @@ public class SelectMember extends AppCompatActivity
         private List<String>selectedMemList;
         private JSONObject jsonObject;
         private JSONArray jsonArray;
-        private InfoBackgroundTask backgroundTask;
+        private DatabaseBackgroundTask backgroundTask;
         private SharedPreferenceData sharedPreferenceData;
         private CheckInternetIsOn internetIsOn;
         private AlertDialogClass dialogClass;
@@ -132,7 +130,7 @@ public class SelectMember extends AppCompatActivity
                 {
                         try {
                                 data = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8");
-                                backgroundTask = new InfoBackgroundTask(SelectMember.this);
+                                backgroundTask = new DatabaseBackgroundTask(SelectMember.this);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 backgroundTask.execute(url,data);
                         } catch (UnsupportedEncodingException e) {
@@ -193,7 +191,7 @@ public class SelectMember extends AppCompatActivity
                                {
                                        try {
                                                data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(selectedMemList.get(i),"UTF-8");
-                                               backgroundTask = new InfoBackgroundTask(this);
+                                               backgroundTask = new DatabaseBackgroundTask(this);
                                                backgroundTask.execute(url,data);
                                        } catch (UnsupportedEncodingException e) {
                                                e.printStackTrace();
@@ -204,7 +202,7 @@ public class SelectMember extends AppCompatActivity
         }
 
         //interface get name from database as json
-        InfoBackgroundTask.OnAsyncTaskInterface onAsyncTaskInterface = new InfoBackgroundTask.OnAsyncTaskInterface() {
+        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
                 public void onResultSuccess(final String result) {
                         runOnUiThread(new Runnable() {

@@ -5,13 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.Toast;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 
 import java.io.UnsupportedEncodingException;
@@ -28,7 +24,7 @@ public class NeedSomeMethod
 
         Context context;
         Activity activity;
-        InfoBackgroundTask backgroundTask;
+        DatabaseBackgroundTask backgroundTask;
         SharedPreferenceData sharedPreferenceData;
         CheckInternetIsOn internetIsOn;
         AlertDialogClass dialogClass;
@@ -131,7 +127,7 @@ public class NeedSomeMethod
                 try {
                         data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8")+"&"
                                 +URLEncoder.encode("status","UTF-8")+"="+URLEncoder.encode(status,"UTF-8");
-                        backgroundTask = new InfoBackgroundTask(context);
+                        backgroundTask = new DatabaseBackgroundTask(context);
                         backgroundTask.execute(url,data);
                 } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
@@ -146,8 +142,9 @@ public class NeedSomeMethod
                 if(internetIsOn.isOnline())
                 {
                         try {
-                                data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
-                                backgroundTask = new InfoBackgroundTask(context);
+                                data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8")+"&"
+                                +URLEncoder.encode("action","UTF-8")+"="+URLEncoder.encode("name","UTF-8");
+                                backgroundTask = new DatabaseBackgroundTask(context);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 backgroundTask.execute(url,data);
                         } catch (UnsupportedEncodingException e) {

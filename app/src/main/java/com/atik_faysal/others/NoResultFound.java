@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 
@@ -21,7 +21,7 @@ public class NoResultFound
         Context context;
         Activity activity;
         CheckInternetIsOn internetIsOn;
-        InfoBackgroundTask backgroundTask;
+        DatabaseBackgroundTask backgroundTask;
         AlertDialogClass dialogClass;
         Class<?> nameOfClass;
 
@@ -44,7 +44,7 @@ public class NoResultFound
                         try {
                                 post = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
                                         +URLEncoder.encode("action","UTF-8")+"="+URLEncoder.encode(action,"UTF-8");
-                                backgroundTask = new InfoBackgroundTask(context);
+                                backgroundTask = new DatabaseBackgroundTask(context);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 backgroundTask.execute(url,post);
                         } catch (UnsupportedEncodingException e) {

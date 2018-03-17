@@ -12,10 +12,10 @@ import android.widget.Toast;
 
 
 
-import com.atik_faysal.backend.InfoBackgroundTask;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.MemberModel;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.adapter.AdapterMemberList;
 
 import org.json.JSONArray;
@@ -42,7 +42,7 @@ public class AllMemberList extends AppCompatActivity
         private JSONArray jsonArray;
         private JSONObject jsonObject;
 
-        private InfoBackgroundTask backgroundTask;
+        private DatabaseBackgroundTask backgroundTask;
         private AlertDialogClass dialogClass;
         private CheckInternetIsOn internetIsOn;
         private AdapterMemberList adapter;
@@ -81,7 +81,7 @@ public class AllMemberList extends AppCompatActivity
                 someMethod.reloadPage(refreshLayout,AllMemberList.class);
                 setToolbar();
 
-                currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
+                currentUser = sharedPreferenceData.getCurrentUserName();
                 if(internetIsOn.isOnline())
                 {
                         if(currentUser!=null)
@@ -91,7 +91,7 @@ public class AllMemberList extends AppCompatActivity
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
                                 }
-                                backgroundTask = new InfoBackgroundTask(this);
+                                backgroundTask = new DatabaseBackgroundTask(this);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 backgroundTask.execute(FILE_URL,POST_DATA);
                         }else Toast.makeText(this,"under construction",Toast.LENGTH_SHORT).show();

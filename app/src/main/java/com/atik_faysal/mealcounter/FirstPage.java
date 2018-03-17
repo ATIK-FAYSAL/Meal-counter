@@ -78,7 +78,7 @@ public class FirstPage extends AppCompatActivity {
                         public void run() {
                                 try
                                 {
-                                        Thread.sleep(2000);
+                                        Thread.sleep(1500);
                                         startActivity(new Intent(FirstPage.this,LogInActivity.class));
                                         finish();
                                 }catch (InterruptedException e)

@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
 
 import org.json.JSONArray;
@@ -22,7 +22,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 
 import static android.content.ContentValues.TAG;
 
@@ -34,7 +34,7 @@ public class MemberDetails extends AppCompatActivity
 {
         private AlertDialogClass dialogClass;
         private CheckInternetIsOn internetIsOn;
-        private InfoBackgroundTask infoBackgroundTask;
+        private DatabaseBackgroundTask databaseBackgroundTask;
         private SharedPreferenceData sharedPreferenceData;
         private NeedSomeMethod someMethod;
 
@@ -94,7 +94,7 @@ public class MemberDetails extends AppCompatActivity
                 dialogClass = new AlertDialogClass(this);
 
                 user = getIntent().getExtras().getString("userName");
-                currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
+                currentUser = sharedPreferenceData.getCurrentUserName();
 
                 if(internetIsOn.isOnline())
                 {
@@ -103,9 +103,9 @@ public class MemberDetails extends AppCompatActivity
                                         POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
                                 else Toast.makeText(this,"under construction",Toast.LENGTH_SHORT).show();
 
-                                infoBackgroundTask = new InfoBackgroundTask(this);
-                                infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                infoBackgroundTask.execute(FILE_URL,POST_DATA);
+                                databaseBackgroundTask = new DatabaseBackgroundTask(this);
+                                databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                databaseBackgroundTask.execute(FILE_URL,POST_DATA);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                         }
@@ -197,9 +197,9 @@ public class MemberDetails extends AppCompatActivity
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                         }
-                        infoBackgroundTask = new InfoBackgroundTask(MemberDetails.this);
-                        infoBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                        infoBackgroundTask.execute(FILE_URL,POST_DATA);
+                        databaseBackgroundTask = new DatabaseBackgroundTask(MemberDetails.this);
+                        databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
+                        databaseBackgroundTask.execute(FILE_URL,POST_DATA);
                         Toast.makeText(MemberDetails.this,"Information updated successfully.",Toast.LENGTH_SHORT).show();
                         finish();
                 }else dialogClass.noInternetConnection();
@@ -212,7 +212,7 @@ public class MemberDetails extends AppCompatActivity
                 {
                         try {
                                 DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
-                                InfoBackgroundTask backgroundTask = new InfoBackgroundTask(MemberDetails.this);
+                                DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(MemberDetails.this);
                                 backgroundTask.setOnResultListener(asyncTaskInterface);
                                 backgroundTask.execute(URL,DATA);
                         } catch (UnsupportedEncodingException e) {

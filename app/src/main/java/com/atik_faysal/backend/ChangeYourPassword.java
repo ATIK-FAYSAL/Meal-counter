@@ -34,9 +34,8 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Timer;
 import java.util.concurrent.TimeUnit;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import static android.content.ContentValues.TAG;
 
 /**
@@ -304,7 +303,7 @@ public class ChangeYourPassword extends AppCompatActivity
                                         POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
                                                 +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(ePassword.getText().toString(),"UTF-8");
 
-                                        InfoBackgroundTask checkBackgroundTask = new InfoBackgroundTask(ChangeYourPassword.this);
+                                        DatabaseBackgroundTask checkBackgroundTask = new DatabaseBackgroundTask(ChangeYourPassword.this);
                                         checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
                                         checkBackgroundTask.execute(FILE_URL, POST_DATA);
                                 } catch (UnsupportedEncodingException e) {
@@ -328,7 +327,6 @@ public class ChangeYourPassword extends AppCompatActivity
                                                         break;
                                                 case "success":
                                                         Toast.makeText(ChangeYourPassword.this,"password changed successfully.",Toast.LENGTH_SHORT).show();
-                                                        someMethod.userCurrentStatus(userName,"open");
                                                         someMethod.closeActivity(ChangeYourPassword.this, LogInActivity.class);
                                                         alertDialog.dismiss();
                                                         break;

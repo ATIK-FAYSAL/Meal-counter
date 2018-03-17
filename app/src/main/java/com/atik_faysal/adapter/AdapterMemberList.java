@@ -11,8 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.AllMemberList;
@@ -37,7 +37,7 @@ public class AdapterMemberList extends BaseAdapter
 
         private SharedPreferenceData sharedPreferenceData;
         private AlertDialogClass dialogClass;
-        private InfoBackgroundTask backgroundTask;
+        private DatabaseBackgroundTask backgroundTask;
         private CheckInternetIsOn internetIsOn;
 
 
@@ -48,7 +48,6 @@ public class AdapterMemberList extends BaseAdapter
 
         private final static String URL = "http://192.168.56.1/remove_member.php";
         private final static String FILE_URL = "http://192.168.56.1/adminSetting.php";
-        private final static String USER_INFO = "currentInfo";
         private static String DATA ;
         private String classType;
         private String currentUser;
@@ -65,8 +64,8 @@ public class AdapterMemberList extends BaseAdapter
                 internetIsOn = new CheckInternetIsOn(context);
 
                 this.classType = classType;
-                if(sharedPreferenceData.getCurrentUserName(USER_INFO)!=null)
-                        currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
+                if(sharedPreferenceData.getCurrentUserName()!=null)
+                        currentUser = sharedPreferenceData.getCurrentUserName();
                 else Toast.makeText(context,"under construction",Toast.LENGTH_SHORT).show();
         }
 
@@ -156,7 +155,7 @@ public class AdapterMemberList extends BaseAdapter
                 {
                         try {
                                 DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
-                                backgroundTask = new InfoBackgroundTask(context);
+                                backgroundTask = new DatabaseBackgroundTask(context);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 backgroundTask.execute(URL,DATA);
                         } catch (UnsupportedEncodingException e) {

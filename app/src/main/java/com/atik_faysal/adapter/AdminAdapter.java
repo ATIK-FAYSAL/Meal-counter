@@ -12,7 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.mealcounter.AdminPanel;
 import com.atik_faysal.mealcounter.AlertDialogClass;
@@ -36,7 +37,7 @@ public class AdminAdapter extends BaseAdapter
 
         private SharedPreferenceData sharedPreferenceData;
         private AlertDialogClass dialogClass;
-        private InfoBackgroundTask backgroundTask;
+        private DatabaseBackgroundTask backgroundTask;
         private CheckInternetIsOn internetIsOn;
 
 
@@ -60,8 +61,8 @@ public class AdminAdapter extends BaseAdapter
                 internetIsOn = new CheckInternetIsOn(context);
 
                 this.classType = classType;
-                if(sharedPreferenceData.getCurrentUserName(USER_INFO)!=null)
-                        currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
+                if(sharedPreferenceData.getCurrentUserName()!=null)
+                        currentUser = sharedPreferenceData.getCurrentUserName();
                 else Toast.makeText(context,"under construction",Toast.LENGTH_SHORT).show();
         }
 
@@ -140,7 +141,7 @@ public class AdminAdapter extends BaseAdapter
                                 postData = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
                                         +URLEncoder.encode("type","UTF-8")+"="+URLEncoder.encode("make","UTF-8");
 
-                                backgroundTask = new InfoBackgroundTask(context);
+                                backgroundTask = new DatabaseBackgroundTask(context);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 backgroundTask.execute(FILE_URL,postData);
                         } catch (UnsupportedEncodingException e) {
@@ -160,7 +161,7 @@ public class AdminAdapter extends BaseAdapter
                                 postData = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
                                         +URLEncoder.encode("type","UTF-8")+"="+URLEncoder.encode("remove","UTF-8");
 
-                                backgroundTask = new InfoBackgroundTask(context);
+                                backgroundTask = new DatabaseBackgroundTask(context);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 backgroundTask.execute(FILE_URL,postData);
                         } catch (UnsupportedEncodingException e) {
@@ -218,7 +219,7 @@ public class AdminAdapter extends BaseAdapter
         }
 
 
-        private InfoBackgroundTask.OnAsyncTaskInterface onAsyncTaskInterface = new InfoBackgroundTask.OnAsyncTaskInterface() {
+        private OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
                 public void onResultSuccess(final String message) {
                         activity.runOnUiThread(new Runnable() {

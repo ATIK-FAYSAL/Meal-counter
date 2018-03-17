@@ -10,9 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.atik_faysal.backend.InfoBackgroundTask;
+import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
-import com.atik_faysal.backend.InfoBackgroundTask.OnAsyncTaskInterface;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +45,7 @@ public class JoinRequestToGroup extends AppCompatActivity
         private JSONObject jsonObject;
         private JSONArray jsonArray;
 
-        private InfoBackgroundTask backgroundTask;
+        private DatabaseBackgroundTask backgroundTask;
         private AlertDialogClass dialogClass;
         private CheckInternetIsOn internetIsOn;
         private NeedSomeMethod someMethod;
@@ -86,7 +86,7 @@ public class JoinRequestToGroup extends AppCompatActivity
                 internetIsOn = new CheckInternetIsOn(this);
                 sharedPreferenceData = new SharedPreferenceData(this);
 
-                currentUser = sharedPreferenceData.getCurrentUserName(USER_INFO);
+                currentUser = sharedPreferenceData.getCurrentUserName();
                 if(getIntent().hasExtra("group"))
                         group = getIntent().getExtras().getString("group");
                 else group = "null";
@@ -121,7 +121,7 @@ public class JoinRequestToGroup extends AppCompatActivity
 
                                if(internetIsOn.isOnline())
                                {
-                                       backgroundTask = new InfoBackgroundTask(JoinRequestToGroup.this);
+                                       backgroundTask = new DatabaseBackgroundTask(JoinRequestToGroup.this);
                                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                        backgroundTask.execute(FILE_URL,value);
                                }else dialogClass.noInternetConnection();
@@ -136,7 +136,7 @@ public class JoinRequestToGroup extends AppCompatActivity
                         DATA = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(group,"UTF-8")+"&"
                                 +URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
 
-                        backgroundTask = new InfoBackgroundTask(JoinRequestToGroup.this);
+                        backgroundTask = new DatabaseBackgroundTask(JoinRequestToGroup.this);
                         backgroundTask.setOnResultListener(taskInterface);
                         backgroundTask.execute(FILE,DATA);
 
