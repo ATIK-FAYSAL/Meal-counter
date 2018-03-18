@@ -59,8 +59,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:padding="10dp"
                 android:text="01-03-2018"
                 android:textSize="17dp" />
 
@@ -69,10 +68,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:padding="10dip"
                 android:text="1792"
-                android:textSize="17dp" />
+                android:textSize="17dp"
+                android:drawableLeft="@drawable/icon_taka"
+                android:drawablePadding="8dp"/>
 
         </LinearLayout>
 

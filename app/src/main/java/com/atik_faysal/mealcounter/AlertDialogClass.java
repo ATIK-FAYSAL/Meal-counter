@@ -217,6 +217,7 @@ public class AlertDialogClass extends AlertDialog
                 builder.setView(view);
                 builder.setCancelable(false);
                 alertDialog = builder.create();
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 alertDialog.show();
 
                 bOk.setOnClickListener(new View.OnClickListener() {

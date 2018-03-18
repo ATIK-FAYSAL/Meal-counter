@@ -22,6 +22,6 @@
         app:menu="@menu/home_page_drawer"
         android:background="@drawable/log_in_page_background"
         app:itemTextColor="@color/black"
-        app:itemIconTint="@color/colorAccent"/>
+        app:itemIconTint="@color/offWhite"/>
 
 </android.support.v4.widget.DrawerLayout>

@@ -26,13 +26,13 @@
             android:id="@+id/txtName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="14dp"
             android:hint="name"
-            android:textColor="@color/colorAccent"
-            android:textSize="24dp"
-            android:layout_marginLeft="10dp"/>
+            android:text="atik faysal"
+            android:textColor="@color/color2"
+            android:textSize="20dp" />
 
 
         <EditText
@@ -65,7 +65,7 @@
             android:layout_alignStart="@+id/eFeedback"
             android:layout_below="@+id/eFeedback"
             android:layout_marginTop="45dp"
-            android:text="Feedback"
+            android:text="post"
             android:background="@drawable/button1"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"/>

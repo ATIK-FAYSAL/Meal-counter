@@ -67,6 +67,10 @@ public class AddCost extends AppCompatActivity
         }
 
 
+        /*
+                *if user is not admin and group is not public type then it will start add_cost activity.user can not input shopping cost here.
+                * if user is admin or group type is public then it will start add_cost_public activity,every user can input cost.user can input shopping cost here.
+         */
         protected void onActivityStart()
         {
 
@@ -112,6 +116,7 @@ public class AddCost extends AppCompatActivity
                 }
         }
 
+        //initialize all  component
         private void initComponent()
         {
                 String currentDate;
@@ -147,7 +152,7 @@ public class AddCost extends AppCompatActivity
                 setSupportActionBar(toolbar);
                 currentDate = someMethod.getDate();
                 value = currentDate.split(" ");
-                txtDate.setText(value[0]);
+                txtDate.setText("  "+value[0]);
         }
 
         //set a toolbar,above the page
@@ -165,24 +170,30 @@ public class AddCost extends AppCompatActivity
                 });
         }
 
+        //if everything is ok then today's cost will be added by clicking add button
         private void onButtonClick()
         {
                 bAdd = findViewById(R.id.bAdd);
-                internetIsOn = new CheckInternetIsOn(this);
                 bAdd.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                                 if(internetIsOn.isOnline())
                                 {
                                         String taka = txtTaka.getText().toString();
+                                        String name = txtName.getText().toString();
                                         if(taka.isEmpty())
                                         {
                                                 txtTaka.setError("Invalid amount");
                                                 return;
                                         }
+                                        if(name.equals("Member's name"))
+                                        {
+                                                Toast.makeText(AddCost.this,"Please select a member.",Toast.LENGTH_SHORT).show();
+                                                return;
+                                        }
                                         try {
                                                 String post = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8")+"&"
-                                                        +URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8")+"&"
+                                                        +URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(txtName.getText().toString(),"UTF-8")+"&"
                                                         +URLEncoder.encode("cost","UTF-8")+"="+URLEncoder.encode(taka,"UTF-8")+"&"
                                                         +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(txtDate.getText().toString(),"UTF-8");
                                                 backgroundTask = new DatabaseBackgroundTask(AddCost.this);
@@ -196,6 +207,7 @@ public class AddCost extends AppCompatActivity
                 });
         }
 
+        //here,get all name of this group and add to this spinner.when you select a name this will show in txtName textField.
         private void addMemberNameSpinner(List<String>names)
         {
                 ArrayAdapter<String>memAdapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,names);
@@ -204,8 +216,10 @@ public class AddCost extends AppCompatActivity
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 String name = parent.getItemAtPosition(position).toString();
-                                txtName.setText(name);
-                                }
+                                if(name.equals("Select"))
+                                        txtName.setText("Member's name");
+                                else txtName.setText(name);
+                        }
 
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {}
@@ -254,6 +268,7 @@ public class AddCost extends AppCompatActivity
                 }
         };
 
+        //to add today's cost interface
         OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
                 public void onResultSuccess(final String result) {
@@ -266,10 +281,14 @@ public class AddCost extends AppCompatActivity
                                                         dialogClass.success("Today's cost add successfully.");
                                                         break;
                                                 case "error":
-                                                        dialogClass.error("Execution failed,please try again.");
+                                                        dialogClass.error("Execution failed,Please try again.");
+                                                        break;
+                                                case "exist":
+                                                        dialogClass.error("Execution failed,Today's shopping cost is already added.");
                                                         break;
                                                 default:
                                                         memName = new ArrayList<>();
+                                                        memName.add("Select");
                                                         int count=0;
                                                         String name;
                                                         try {

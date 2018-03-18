@@ -42,7 +42,8 @@
                 android:hint="Username"
                 android:inputType="textPersonName"
                 android:textColor="@color/black"
-                android:textColorHint="#9E9E9E" />
+                android:textColorHint="#9E9E9E"
+                android:padding="10dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -64,7 +65,8 @@
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:textColor="@color/black"
-                android:textColorHint="#9E9E9E" />
+                android:textColorHint="#9E9E9E"
+                android:padding="10dp"/>
         </LinearLayout>
 
         <LinearLayout

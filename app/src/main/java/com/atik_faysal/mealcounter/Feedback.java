@@ -41,7 +41,6 @@ public class Feedback extends AppCompatActivity
         private String currentUser;
         private static final String FILE_URL = "http://192.168.56.1/feedback.php";
         private static String POST_DATA;
-        private static final String PREF_NAME = "currentInfo";
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -155,7 +154,7 @@ public class Feedback extends AppCompatActivity
                                         switch (message)
                                         {
                                                 case "success":
-                                                        dialogClass.success("Feedback added.Thank you ,for your feedback.");
+                                                        dialogClass.success("Success!!Thank you!for your cooperation.");
                                                         break;
                                                 case "offline":
                                                         dialogClass.noInternetConnection();

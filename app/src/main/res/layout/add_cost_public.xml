@@ -51,12 +51,12 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
+                        android:padding="10dp"
                         android:hint="Taka"
                         android:gravity="center"
                         android:textSize="17dp"
-                        android:inputType="number"/>
+                        android:inputType="number"
+                        android:drawableLeft="@drawable/icon_taka"/>
 
                 </LinearLayout>
 

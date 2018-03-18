@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/round_dialog"
+    android:focusableInTouchMode="true">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:id="@+id/linearLayout">
+
+            <TextView
+                android:id="@+id/txtDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:hint="date"
+                android:textColor="@color/colorAccent"
+                android:textSize="19dp"/>
+
+            <TextView
+                android:id="@+id/txtId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="#DXXXX"
+                android:textColor="@color/color2"
+                android:textSize="16dp"/>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/txtTaka"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/linearLayout"
+            android:layout_below="@+id/linearLayout"
+            android:backgroundTint="@color/white"
+            android:drawableLeft="@drawable/icon_taka"
+            android:drawablePadding="8dp"
+            android:ems="10"
+            android:gravity="start"
+            android:inputType="number"
+            android:padding="10dp"
+            android:text="1000"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"/>
+
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/offWhite"
+            android:layout_below="@+id/txtTaka"
+            android:layout_marginTop="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtTaka"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp">
+
+            <Button
+                android:id="@+id/bCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancel"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textSize="20dp"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:textColor="@color/color2"/>
+            <View
+                android:id="@+id/view1"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/offWhite"
+                android:layout_below="@+id/txtTaka"
+                />
+            <Button
+                android:id="@+id/bDone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Done"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textSize="20dp"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:textColor="@color/color2"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
+

@@ -74,7 +74,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
 
         private final static String USER_LOGIN = "userLogIn";
-        private final static String USER_INFO = "currentInfo";
         private String currentUser,userType,date;
         private final static String FILE = "http://192.168.56.1/getGroupName.php";
         private static String POST_DATA ;
