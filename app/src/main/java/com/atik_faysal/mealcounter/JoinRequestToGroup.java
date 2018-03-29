@@ -203,7 +203,7 @@ public class JoinRequestToGroup extends AppCompatActivity
                                                         String postData = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8")+"&"
                                                                 +URLEncoder.encode("action","UTF-8")+"="+URLEncoder.encode("send","UTF-8")+"&"
                                                                 +URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(group,"UTF-8")+"&"
-                                                                +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDate(),"UTF-8");
+                                                                +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDateWithTime(),"UTF-8");
                                                         onButtonClick(postData);
                                                 } catch (UnsupportedEncodingException e) {
                                                         e.printStackTrace();

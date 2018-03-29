@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/refresh">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/txtName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignStart="@+id/linear1"
+                        android:layout_marginTop="13dp"
+                        android:gravity="start"
+                        android:hint="member name"
+                        android:textSize="20dp"
+                        android:textColor="@color/color2"/>
+
+                    <TextView
+                        android:id="@+id/txtDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/linear1"
+                        android:layout_below="@+id/txtName"
+                        android:layout_marginTop="10dp"
+                        android:layout_toStartOf="@+id/bOk"
+                        android:gravity="start"
+                        android:hint="current date"
+                        android:textSize="15dp"
+                        android:textColor="@color/black"/>
+
+                    <LinearLayout
+                        android:id="@+id/linear1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/txtDate"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <EditText
+                            android:id="@+id/eBreakfast"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/txtName"
+                            android:layout_toEndOf="@+id/txtDate"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:hint="Break fast"
+                            android:textSize="17dp"
+                            android:inputType="numberDecimal"/>
+
+                        <EditText
+                            android:id="@+id/eLunch"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/txtName"
+                            android:layout_marginStart="20dp"
+                            android:layout_toEndOf="@+id/txtDate"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:hint="Lunch"
+                            android:textSize="17dp"
+                            android:inputType="numberDecimal"/>
+
+                        <EditText
+                            android:id="@+id/eDinner"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/txtName"
+                            android:layout_marginStart="20dp"
+                            android:layout_toEndOf="@+id/txtDate"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:hint="Dinner"
+                            android:textSize="17dp"
+                            android:inputType="numberDecimal"/>
+
+                    </LinearLayout>
+
+
+                    <Button
+                        android:id="@+id/bOk"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/linear1"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/button2"
+                        android:text="ok"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:id="@+id/txtMonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/txtName"
+                        android:layout_toEndOf="@+id/bOk"
+                        android:hint="month"
+                        android:textSize="17dp"
+                        android:textColor="@color/colorAccent"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/color8">
+
+                    <ListView
+                        android:id="@+id/list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="@color/color8"
+                        android:dividerHeight="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="8dp">
+
+                    </ListView>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
+</RelativeLayout>

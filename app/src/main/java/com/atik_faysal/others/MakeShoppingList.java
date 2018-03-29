@@ -1,4 +1,4 @@
-package com.atik_faysal.model;
+package com.atik_faysal.others;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import com.atik_faysal.adapter.ShoppingAdapter;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
-import com.atik_faysal.others.SelectMember;
+import com.atik_faysal.model.ShoppingItemModel;
 import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
@@ -127,7 +127,7 @@ public class MakeShoppingList extends Fragment {
 
                         if(flag)
                         {
-                                firebase.child(sharedPreferenceData.getMyGroupName()).child("date").setValue(someMethod.getDate());
+                                firebase.child(sharedPreferenceData.getMyGroupName()).child("date").setValue(someMethod.getDateWithTime());
                                 firebase.child(sharedPreferenceData.getMyGroupName()).child("taka").setValue(String.valueOf(totalTaka));
                                 startActivity(new Intent(getActivity(),SelectMember.class));
                         }

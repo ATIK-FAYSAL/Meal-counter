@@ -310,7 +310,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                 currentUser = sharedPreferenceData.getCurrentUserName();
                 userType = sharedPreferenceData.getUserType();
-                date = someMethod.getDate();
+                date = someMethod.getDateWithTime();
                 textView.setText(currentUser);
 
                 //calling method
@@ -361,15 +361,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                 if(id==cardViewId[0]||id==imageViewId[0])
                 {
-                        if(sharedPreferenceData.getUserType().equals("nope"))
-                                dialogClass.notMember();
-                        else
-                        {
-                                if(!sharedPreferenceData.getMyGroupType().equals("secret"))
-                                        Toast.makeText(this,"click on button 1",Toast.LENGTH_SHORT).show();
-                                else
-                                        dialogClass.error("This is a secret group.Only admin can input meal.");
-                        }
+                        startActivity(new Intent(HomePageActivity.this,MealClass.class));
+                        //new MealClass().setTabLayout();
                 }else if(id==cardViewId[1]||id==imageViewId[1])
                 {
                         if(sharedPreferenceData.getUserType().equals("nope"))

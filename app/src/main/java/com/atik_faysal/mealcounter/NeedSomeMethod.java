@@ -49,10 +49,19 @@ public class NeedSomeMethod
         }
 
         //get current time and date
-        public String getDate()
+        public String getDateWithTime()
         {
                 Calendar calendar = Calendar.getInstance();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MMM.dd hh:mm aaa");
+                String date = dateFormat.format(calendar.getTime());
+                return date;
+        }
+
+        //get current time and date
+        public String getDate()
+        {
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMMM-dd");
                 String date = dateFormat.format(calendar.getTime());
                 return date;
         }

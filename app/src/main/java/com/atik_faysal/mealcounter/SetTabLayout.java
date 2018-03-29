@@ -17,10 +17,10 @@ import com.atik_faysal.adapter.ViewPagerAdapter;
 
 public class SetTabLayout extends AppCompatActivity
 {
-        private Toolbar toolbar;
-        private TabLayout tabLayout;
-        private ViewPager pager;
-        private ViewPagerAdapter adapter;
+        protected Toolbar toolbar;
+        protected TabLayout tabLayout;
+        protected ViewPager pager;
+        protected ViewPagerAdapter adapter;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class SetTabLayout extends AppCompatActivity
                 setTabLayout();
         }
 
-        private void initComponent()
+        protected void initComponent()
         {
                 tabLayout = findViewById(R.id.tablayout);
                 pager = findViewById(R.id.pager);
@@ -40,7 +40,7 @@ public class SetTabLayout extends AppCompatActivity
         }
 
         //set a toolbar,above the page
-        private void setToolbar()
+        protected void setToolbar()
         {
                 toolbar.setTitleTextColor(getResources().getColor(R.color.white));
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -55,12 +55,12 @@ public class SetTabLayout extends AppCompatActivity
         }
 
         //initialize tablayout
-        protected void setTabLayout()
+        public void setTabLayout()
         {
                 tabLayout.addTab(tabLayout.newTab().setText("Shopping lists"));
                 tabLayout.addTab(tabLayout.newTab().setText("Make list"));
                 tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-                adapter = new ViewPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+                adapter = new ViewPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount(),"shopping");
                 pager.setAdapter(adapter);
                 pager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
                 tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

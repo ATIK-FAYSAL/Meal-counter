@@ -4,7 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.atik_faysal.model.MakeShoppingList;
+import com.atik_faysal.others.InputMeal;
+import com.atik_faysal.others.MakeShoppingList;
+import com.atik_faysal.others.MyMeal;
 import com.atik_faysal.others.ShoppingList;
 
 /**
@@ -13,20 +15,30 @@ import com.atik_faysal.others.ShoppingList;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter
 {
-        int numberOfPage;
-        public ViewPagerAdapter(FragmentManager fm, int numberOfPage)
+        private int numberOfPage;
+        private String action;
+        public ViewPagerAdapter(FragmentManager fm, int numberOfPage,String action)
         {
                 super(fm);
                 this.numberOfPage = numberOfPage;
+                this.action = action;
         }
 
         @Override
         public Fragment getItem(int position) {
+                Fragment object = null;
                 if(position==0)
-                        return new ShoppingList();
+                {
+                        if(action.equals("shopping"))object = new ShoppingList();
+                        else if(action.equals("schedule"))object = new InputMeal();
+                        return object;
+                }
                 else if(position==1)
-                        return new MakeShoppingList();
-
+                {
+                        if(action.equals("shopping"))object = new MakeShoppingList();
+                        else if(action.equals("schedule"))object = new MyMeal();
+                        return object;
+                }
                 else return null;
         }
 

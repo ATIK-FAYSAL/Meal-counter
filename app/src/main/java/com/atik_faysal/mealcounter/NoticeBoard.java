@@ -172,7 +172,7 @@ public class NoticeBoard extends AppCompatActivity
                                                         POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8")+"&"
                                                                 +URLEncoder.encode("title","UTF-8")+"="+URLEncoder.encode(title,"UTF-8")+"&"
                                                                 +URLEncoder.encode("notice","UTF-8")+"="+URLEncoder.encode(notice,"UTF-8")+"&"
-                                                                +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDate(),"UTF-8");
+                                                                +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDateWithTime(),"UTF-8");
 
                                                         backgroundTask = new DatabaseBackgroundTask(NoticeBoard.this);
                                                         backgroundTask.setOnResultListener(onAsyncTaskInterface);

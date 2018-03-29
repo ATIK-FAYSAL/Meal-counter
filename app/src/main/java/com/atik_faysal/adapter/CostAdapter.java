@@ -196,7 +196,7 @@ public class CostAdapter extends BaseAdapter
                                                         context.startActivity(new Intent(context, AddCost.class));
                                                         activity.finish();
                                                         break;
-                                                case "failed":
+                                                default:
                                                         alertDialog.dismiss();
                                                         dialogClass.error("Execution failed.please try again.");
                                                         break;

@@ -20,5 +20,6 @@
     <string name="permissions_read_phone_state_title">Read Phone Number</string>
     <string name="permissions_receive_sms_message">Grant permission to read your SMS code from your device to pre-fill.</string>
     <string name="permissions_receive_sms_title">Read SMS Code</string>
+    <string name="todo">TODO</string>
 
 </resources>

@@ -324,7 +324,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                                 +URLEncoder.encode("groupAddress","UTF-8")+"="+URLEncoder.encode(gAddress,"UTF-8")+"&"
                                 +URLEncoder.encode("groupDescription","UTF-8")+"="+URLEncoder.encode(gDescription,"UTF-8")+"&"
                                 +URLEncoder.encode("groupAdmin","UTF-8")+"="+URLEncoder.encode(currentUserName,"UTF-8")+"&"
-                                +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDate(),"UTF-8")+"&"
+                                +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDateWithTime(),"UTF-8")+"&"
                                 +URLEncoder.encode("groupType","UTF-8")+"="+URLEncoder.encode(groupType,"UTF-8")+"&"
                                 +URLEncoder.encode("time","UTF-8")+"="+URLEncoder.encode(time,"UTF-8");
 

@@ -174,7 +174,7 @@ public class ShoppingList extends Fragment
 
                         if(flag)
                         {
-                                firebase.child(sharedPreferenceData.getMyGroupName()).child("date").setValue(someMethod.getDate());
+                                firebase.child(sharedPreferenceData.getMyGroupName()).child("date").setValue(someMethod.getDateWithTime());
                                 firebase.child(sharedPreferenceData.getMyGroupName()).child("taka").setValue(String.valueOf(totalTaka));
                                 Toast.makeText(getContext(), "Shopping list published.", Toast.LENGTH_SHORT).show();
                                 getActivity().finish();

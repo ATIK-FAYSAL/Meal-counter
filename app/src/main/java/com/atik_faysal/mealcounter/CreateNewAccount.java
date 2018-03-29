@@ -44,8 +44,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 
-import io.fabric.sdk.android.services.common.CommonUtils;
-
 /**
  * initComponent-->Void.    initialize all component and object,also call some method.
  * userInformation-->Void.  get userInformation from component.
@@ -442,7 +440,7 @@ public class CreateNewAccount extends AppCompatActivity
                                        +URLEncoder.encode("memberType","UTF-8")+"="+URLEncoder.encode(memberType,"UTF-8")+"&"
                                        +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8")+"&"
                                        +URLEncoder.encode("groupId","UTF-8")+"="+URLEncoder.encode(groupId,"UTF-8")+"&"
-                                       +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDate(),"UTF-8")+"&"
+                                       +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDateWithTime(),"UTF-8")+"&"
                                        +URLEncoder.encode("favouriteWord","UTF-8")+"="+URLEncoder.encode(favouriteWord,"UTF-8");
 
                                informationCheck = new DatabaseBackgroundTask(this);

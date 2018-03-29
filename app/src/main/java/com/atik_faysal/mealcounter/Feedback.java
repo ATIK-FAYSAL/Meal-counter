@@ -130,7 +130,7 @@ public class Feedback extends AppCompatActivity
                                         try {
                                                 POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8")+"&"
                                                         +URLEncoder.encode("feedback","UTF-8")+"="+URLEncoder.encode(eFeedback.getText().toString(),"UTF-8")+"&"
-                                                        +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDate(),"UTF-8");
+                                                        +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDateWithTime(),"UTF-8");
                                         } catch (UnsupportedEncodingException e) {
                                                 e.printStackTrace();
                                         }

@@ -91,6 +91,10 @@
             android:screenOrientation="portrait"
             android:label="Today's Cost"/>
 
+        <activity android:name=".MealClass"
+            android:label="Meal Status"
+            android:screenOrientation="portrait"/>
+
         <activity android:name="com.atik_faysal.others.SelectMember"
             android:screenOrientation="portrait"
             android:label="Select"/>

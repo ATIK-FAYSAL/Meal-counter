@@ -28,7 +28,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -120,8 +119,6 @@ public class AddCost extends AppCompatActivity
         private void initComponent()
         {
                 String currentDate;
-                String[] value;
-
                 if(internetIsOn.isOnline())
                 {
                         try {
@@ -151,8 +148,7 @@ public class AddCost extends AppCompatActivity
                 toolbar = findViewById(R.id.toolbar);
                 setSupportActionBar(toolbar);
                 currentDate = someMethod.getDate();
-                value = currentDate.split(" ");
-                txtDate.setText("  "+value[0]);
+                txtDate.setText(" "+currentDate);
         }
 
         //set a toolbar,above the page
