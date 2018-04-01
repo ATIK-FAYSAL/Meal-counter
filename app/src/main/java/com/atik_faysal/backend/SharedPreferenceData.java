@@ -2,6 +2,11 @@ package com.atik_faysal.backend;
 
 import android.content.SharedPreferences;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
+import com.atik_faysal.mealcounter.EditYourProfile;
 
 /**
  * Created by USER on 1/18/2018.
@@ -21,6 +26,7 @@ public class SharedPreferenceData
         private static final String GROUP_NAME = "groupName";
         private static final String GROUP_TYPE = "groupType";
         private final static String USER_INFO = "currentInfo";
+        private final static String USER_IMAGE = "image";
 
         private Context context;
 
@@ -158,5 +164,33 @@ public class SharedPreferenceData
                 sharedPreferences = context.getSharedPreferences(GROUP_TYPE,Context.MODE_PRIVATE);
                 value = sharedPreferences.getString("type","null");
                 return value;
+        }
+
+
+        //save user profile image
+        public void myImage(Bitmap bitmap, boolean flag)
+        {
+                sharedPreferences = context.getSharedPreferences(USER_IMAGE,Context.MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+
+                EditYourProfile yourProfile = new EditYourProfile();
+                String imagePath = yourProfile.convertImageToString(bitmap);
+                editor.putString("path",imagePath);
+                editor.putBoolean("isSave",flag);
+                editor.apply();
+        }
+
+        public Bitmap getMyImage()
+        {
+                sharedPreferences = context.getSharedPreferences(USER_IMAGE,Context.MODE_PRIVATE);
+                String imagePath = sharedPreferences.getString("path","null");
+                byte[] decodedByte = Base64.decode(imagePath, 0);
+                return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+        }
+
+        public boolean myImageIsSave()
+        {
+                sharedPreferences = context.getSharedPreferences(USER_IMAGE,Context.MODE_PRIVATE);
+                return sharedPreferences.getBoolean("isSave",false);
         }
 }

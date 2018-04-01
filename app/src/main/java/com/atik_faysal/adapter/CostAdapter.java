@@ -38,7 +38,7 @@ import android.widget.Toast;
 
 public class CostAdapter extends BaseAdapter
 {
-        private List<CostModel>costList = new ArrayList<>();
+        private List<CostModel>costList;
         private Context context;
         private View view;
         private Activity activity;

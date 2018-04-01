@@ -33,16 +33,8 @@ public class DatabaseBackgroundTask extends AsyncTask<String,Void,String>
 
         Context context;
 
-        OnAsyncTaskInterface onAsyncTaskInterface;
-        CheckInternetIsOn internetIsOn;
-
-        URL url;
-        HttpURLConnection httpURLConnection;
-        OutputStreamWriter outputStreamWriter;
-        OutputStream outputStream;
-        BufferedWriter bufferedWriter;
-        InputStream inputStream;
-        BufferedReader bufferedReader;
+        private OnAsyncTaskInterface onAsyncTaskInterface;
+        private CheckInternetIsOn internetIsOn;
 
         //constructor
         public DatabaseBackgroundTask(Context context)
@@ -70,26 +62,26 @@ public class DatabaseBackgroundTask extends AsyncTask<String,Void,String>
                 if(internetIsOn.isOnline())
                 {
                         try {
-                                url = new URL(fileName);
-                                httpURLConnection = (HttpURLConnection)url.openConnection();
-                                httpURLConnection.setConnectTimeout(10000);
+                                URL url = new URL(fileName);
+                                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                                httpURLConnection.setConnectTimeout(1000*20);
                                 httpURLConnection.setRequestMethod("POST");
                                 httpURLConnection.setDoOutput(true);
                                 httpURLConnection.setDoInput(true);
-                                outputStream = httpURLConnection.getOutputStream();
-                                outputStreamWriter = new OutputStreamWriter(outputStream,"UTF-8");
-                                bufferedWriter = new BufferedWriter(outputStreamWriter);
+                                OutputStream outputStream = httpURLConnection.getOutputStream();
+                                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, "UTF-8");
+                                BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
 
                                 bufferedWriter.write(postData);
                                 bufferedWriter.flush();
                                 bufferedWriter.close();
                                 outputStream.close();
-                                inputStream = httpURLConnection.getInputStream();
-                                bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
+                                InputStream inputStream = httpURLConnection.getInputStream();
+                                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
 
                                 String line;
 
-                                while ((line=bufferedReader.readLine())!=null)
+                                while ((line= bufferedReader.readLine())!=null)
                                         result = line;
 
                                 bufferedReader.close();
@@ -97,7 +89,6 @@ public class DatabaseBackgroundTask extends AsyncTask<String,Void,String>
                                 httpURLConnection.disconnect();
                                 onAsyncTaskInterface.onResultSuccess(result);
 
-                                return result.toString();
                         } catch (MalformedURLException e) {
                                 e.printStackTrace();
                         } catch (IOException e) {
@@ -106,9 +97,8 @@ public class DatabaseBackgroundTask extends AsyncTask<String,Void,String>
                         {
                                 e.printStackTrace();
                         }
+                        return result.toString();
                 }else return "offline";
-
-                return null;
         }
 
 

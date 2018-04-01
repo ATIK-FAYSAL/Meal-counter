@@ -546,14 +546,11 @@ public class CreateNewAccount extends AppCompatActivity
                                         public void onSuccess(final Account account) {
                                                 String phoneNumber = account.getPhoneNumber().toString();
 
-                                                if(phoneNumber!=null)
-                                                {
-                                                        if(phoneNumber.length()==14)
-                                                                phoneNumber = phoneNumber.substring(3);
+                                                if(phoneNumber.length()==14)
+                                                        phoneNumber = phoneNumber.substring(3);
 
-                                                        newUserRegistration(phoneNumber);
-                                                        progressBar.setVisibility(View.VISIBLE);
-                                                }
+                                                newUserRegistration(phoneNumber);
+                                                progressBar.setVisibility(View.VISIBLE);
                                         }
 
                                         @Override

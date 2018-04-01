@@ -1,10 +1,13 @@
 package com.atik_faysal.mealcounter;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
@@ -30,14 +33,12 @@ public class NeedSomeMethod
         AlertDialogClass dialogClass;
 
 
-        StringBuilder encryptPass ;
-
         //alphabet array
-        String[] capitalLatter = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
-        String[] encryptCap = {"F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E"};
+        private String[] capitalLatter = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+        private String[] encryptCap = {"F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E"};
 
-        String[] smallLatter = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
-        String[] encryptSma = {"f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","a","b","c","d","e"};
+        private String[] smallLatter = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
+        private String[] encryptSma = {"f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","a","b","c","d","e"};
 
         public NeedSomeMethod(Context context)
         {
@@ -69,7 +70,7 @@ public class NeedSomeMethod
         //encrypt password key=5 using cisear cipher
         public String encryptPassword(String pass)
         {
-                encryptPass = new StringBuilder();
+                StringBuilder encryptPass = new StringBuilder();
                 int i=0;
                 while(i<pass.length())
                 {
@@ -160,6 +161,29 @@ public class NeedSomeMethod
                                 e.printStackTrace();
                         }
                 }else dialogClass.noInternetConnection();
+        }
+
+
+        public void progresDialog(String message)
+        {
+                final ProgressDialog ringProgressDialog = ProgressDialog.show(context, "Please wait", message, true);
+                ringProgressDialog.setCancelable(true);
+                new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                                try {
+                                        Thread.sleep(2000);
+                                } catch (Exception e) {
+                                }
+                                ringProgressDialog.dismiss();
+                        }
+                }).start();
+                ringProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                                Toast.makeText(context,"Task complete.",Toast.LENGTH_SHORT).show();
+                        }
+                });
         }
 
         OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {

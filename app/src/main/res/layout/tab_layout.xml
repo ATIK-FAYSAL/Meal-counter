@@ -19,7 +19,7 @@
             android:id="@+id/tablayout"
             android:layout_width="400dp"
             android:layout_height="60dp"
-            android:background="@drawable/log_in_page_background"
+            android:background="#F55984"
             android:clickable="true"
             android:minHeight="25dp"
             app:tabGravity="center"
