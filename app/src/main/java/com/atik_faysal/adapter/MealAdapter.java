@@ -159,7 +159,7 @@ public class MealAdapter extends BaseAdapter
                         @Override
                         public void onClick(View v) {
                                 backgroundTask = new DatabaseBackgroundTask(context);
-                                String url = "http://192.168.56.1/editMeal.php";
+                                //String url = "http://192.168.56.1/editMeal.php";
                                 String breakfast = eBreakfast.getText().toString();
                                 String lunch = eLaunch.getText().toString();
                                 String dinner = eDinner.getText().toString();
@@ -200,7 +200,7 @@ public class MealAdapter extends BaseAdapter
                                                         +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(txtDate.getText().toString(),"UTF-8");
 
                                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                backgroundTask.execute(url,data);
+                                                backgroundTask.execute(context.getResources().getString(R.string.mealEdit),data);
                                         } catch (UnsupportedEncodingException e) {
                                                 e.printStackTrace();
                                         }

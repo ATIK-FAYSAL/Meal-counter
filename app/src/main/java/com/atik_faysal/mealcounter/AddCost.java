@@ -52,11 +52,12 @@ public class AddCost extends AppCompatActivity
         private Spinner spinner;
         private Toolbar toolbar;
 
+
         private List<String>memName;
 
-        private final static String FILE = "http://192.168.56.1/shoppingCost.php";
-        private final static String COST_FILE = "http://192.168.56.1/shoppingCostNotify.php";
-        private final static String MEM_NAME = "http://192.168.56.1/groupMemberName.php";
+        //private final static String FILE = "http://192.168.56.1/shoppingCost.php";
+        //private final static String COST_FILE = "http://192.168.56.1/shoppingCostNotify.php";
+        //private final static String MEM_NAME = "http://192.168.56.1/groupMemberName.php";
         private static String DATA;
 
         @Override
@@ -97,7 +98,7 @@ public class AddCost extends AppCompatActivity
                         {
                                 try {
                                         DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8");
-                                        importantData.getAllShoppingCost(FILE,DATA,infoInterfaces);
+                                        importantData.getAllShoppingCost(getResources().getString(R.string.shoppingCost),DATA,infoInterfaces);
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
                                 }
@@ -123,7 +124,7 @@ public class AddCost extends AppCompatActivity
                 {
                         try {
                                 DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8");
-                                importantData.getAllShoppingCost(FILE,DATA,infoInterfaces);
+                                importantData.getAllShoppingCost(getResources().getString(R.string.shoppingCost),DATA,infoInterfaces);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                         }
@@ -133,7 +134,7 @@ public class AddCost extends AppCompatActivity
                                 DATA =  URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8");
                                 backgroundTask = new DatabaseBackgroundTask(this);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(MEM_NAME,DATA);
+                                backgroundTask.execute(getResources().getString(R.string.groupMemberName),DATA);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                         }
@@ -191,10 +192,11 @@ public class AddCost extends AppCompatActivity
                                                 String post = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8")+"&"
                                                         +URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(txtName.getText().toString(),"UTF-8")+"&"
                                                         +URLEncoder.encode("cost","UTF-8")+"="+URLEncoder.encode(taka,"UTF-8")+"&"
-                                                        +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(txtDate.getText().toString(),"UTF-8");
+                                                        +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(txtDate.getText().toString(),"UTF-8")+"&"
+                                                        +URLEncoder.encode("month","UTF-8")+"="+URLEncoder.encode(someMethod.getMonth(),"UTF-8");
                                                 backgroundTask = new DatabaseBackgroundTask(AddCost.this);
                                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                backgroundTask.execute(COST_FILE,post);
+                                                backgroundTask.execute(getResources().getString(R.string.shoppingCostNotify),post);
                                         } catch (UnsupportedEncodingException e) {
                                                 e.printStackTrace();
                                         }
@@ -307,4 +309,5 @@ public class AddCost extends AppCompatActivity
                         });
                 }
         };
+
 }

@@ -68,9 +68,9 @@ public class EditYourProfile extends AppCompatActivity
         private Uri imageUri;
         private String name,userName,phone,email,address,fWord,taka,group,date;
         private String currentUser;
-        private final static String FILE_URL = "http://192.168.56.1/json_read_member_info.php";
+       // private final static String FILE_URL = "http://192.168.56.1/json_read_member_info.php";
         private static String POST_DATA;
-        private final static String FILE_URL1 = "http://192.168.56.1/editProfile.php";
+        //private final static String FILE_URL1 = "http://192.168.56.1/editProfile.php";
         private static String POST_DATA1;
         private static final int PICK_IMAGE_REQUEST = 1;
         private Bitmap bitmap;
@@ -99,7 +99,7 @@ public class EditYourProfile extends AppCompatActivity
                 txtUploadPhoto.setEnabled(false);
 
 
-                eName = findViewById(R.id.groupName);
+                eName = findViewById(R.id.txtName);
                 eEmail = findViewById(R.id.txtEmail);
                 eAddress = findViewById(R.id.gAddress);
                 eFaWord = findViewById(R.id.fWord);
@@ -133,7 +133,7 @@ public class EditYourProfile extends AppCompatActivity
 
                                databaseBackgroundTask = new DatabaseBackgroundTask(this);
                                databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                               databaseBackgroundTask.execute(FILE_URL,POST_DATA);
+                               databaseBackgroundTask.execute(getResources().getString(R.string.getMemberInfo),POST_DATA);
                        } catch (UnsupportedEncodingException e) {
                                e.printStackTrace();
                        }
@@ -184,7 +184,7 @@ public class EditYourProfile extends AppCompatActivity
                                                 }
                                                 DatabaseBackgroundTask checkBackgroundTask = new DatabaseBackgroundTask(EditYourProfile.this);
                                                 checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                checkBackgroundTask.execute(FILE_URL1,POST_DATA1);
+                                                checkBackgroundTask.execute(getResources().getString(R.string.editProfile),POST_DATA1);
 
                                         }
                                 }else dialogClass.noInternetConnection();
@@ -456,7 +456,7 @@ public class EditYourProfile extends AppCompatActivity
                                                                }
                                                                databaseBackgroundTask = new DatabaseBackgroundTask(EditYourProfile.this);
                                                                databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                               databaseBackgroundTask.execute(FILE_URL,POST_DATA);
+                                                               databaseBackgroundTask.execute(getResources().getString(R.string.getMemberInfo),POST_DATA);
                                                                Toast.makeText(EditYourProfile.this,"Information updated successfully.",Toast.LENGTH_SHORT).show();
                                                        }else dialogClass.noInternetConnection();
                                                        break;

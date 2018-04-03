@@ -51,9 +51,9 @@ public class MemberDetails extends AppCompatActivity
         private String name,userName,phone,email,address,fWord,taka,group,date;
         private String user;
         private String currentUser;
-        private final static String FILE_URL = "http://192.168.56.1/json_read_member_info.php";
+        //private final static String FILE_URL = "http://192.168.56.1/json_read_member_info.php";
         private static String POST_DATA;
-        private final static String URL = "http://192.168.56.1/remove_member.php";
+        //private final static String URL = "http://192.168.56.1/remove_member.php";
         private static String DATA ;
         private final static String USER_INFO = "currentInfo";
 
@@ -76,10 +76,10 @@ public class MemberDetails extends AppCompatActivity
                 txtGroup = findViewById(R.id.txtGroup);
                 txtDate = findViewById(R.id.gDate);
 
-                eName = findViewById(R.id.groupName);
-                eEmail = findViewById(R.id.gAddress);
-                eAddress = findViewById(R.id.gTime);
-                eFaWord = findViewById(R.id.gDescription);
+                eName = findViewById(R.id.txtName);
+                eEmail = findViewById(R.id.txtEmail);
+                eAddress = findViewById(R.id.gAddress);
+                eFaWord = findViewById(R.id.fWord);
                 ePhone = findViewById(R.id.txtPhoneNumber);
 
                 bRemove = findViewById(R.id.bEdit);
@@ -105,7 +105,7 @@ public class MemberDetails extends AppCompatActivity
 
                                 databaseBackgroundTask = new DatabaseBackgroundTask(this);
                                 databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                databaseBackgroundTask.execute(FILE_URL,POST_DATA);
+                                databaseBackgroundTask.execute(getResources().getString(R.string.getMemberInfo),POST_DATA);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                         }
@@ -199,7 +199,7 @@ public class MemberDetails extends AppCompatActivity
                         }
                         databaseBackgroundTask = new DatabaseBackgroundTask(MemberDetails.this);
                         databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                        databaseBackgroundTask.execute(FILE_URL,POST_DATA);
+                        databaseBackgroundTask.execute(getResources().getString(R.string.getMemberInfo),POST_DATA);
                         Toast.makeText(MemberDetails.this,"Information updated successfully.",Toast.LENGTH_SHORT).show();
                         finish();
                 }else dialogClass.noInternetConnection();
@@ -214,7 +214,7 @@ public class MemberDetails extends AppCompatActivity
                                 DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
                                 DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(MemberDetails.this);
                                 backgroundTask.setOnResultListener(asyncTaskInterface);
-                                backgroundTask.execute(URL,DATA);
+                                backgroundTask.execute(getResources().getString(R.string.removeMember),DATA);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                         }

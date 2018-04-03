@@ -40,7 +40,7 @@ public class AcceptRequestAdapter extends BaseAdapter
         private AlertDialogClass dialogClass;
         private CheckInternetIsOn internetIsOn;
 
-        static final String FILE_URL = "http://192.168.56.1/requestsAction.php";
+        //static final String FILE_URL = "http://192.168.56.1/requestsAction.php";
         static String POST;
 
         public AcceptRequestAdapter(Context context,List<MemberModel>memberModels)
@@ -128,7 +128,7 @@ public class AcceptRequestAdapter extends BaseAdapter
 
                         backgroundTask = new DatabaseBackgroundTask(context);
                         backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                        backgroundTask.execute(FILE_URL,POST);
+                        backgroundTask.execute(context.getResources().getString(R.string.actionRequest),POST);
                 } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                 }

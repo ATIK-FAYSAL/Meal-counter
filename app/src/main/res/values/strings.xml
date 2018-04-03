@@ -22,4 +22,41 @@
     <string name="permissions_receive_sms_title">Read SMS Code</string>
     <string name="todo">TODO</string>
 
+
+    //php file location
+    <string name="homePageInfo">http://192.168.56.1/homePageInfo.php</string>
+    <string name="allGroupName">http://192.168.56.1/getGroupName.php</string>
+    <string name="memberType">http://192.168.56.1/checkMemType.php</string>
+    <string name="shoppingCost">http://192.168.56.1/shoppingCost.php</string>
+    <string name="shoppingCostNotify">http://192.168.56.1/shoppingCostNotify.php</string>
+    <string name="groupMemberName">http://192.168.56.1/groupMemberName.php</string>
+    <string name="memberInfo">http://192.168.56.1/json_mem_info.php</string>
+    <string name="nameExist">http://192.168.56.1/userNameExist.php</string>
+    <string name="insertMemInfo">http://192.168.56.1/insert_member_info.php</string>
+    <string name="getMemberInfo">http://192.168.56.1/json_read_member_info.php</string>
+    <string name="editProfile">http://192.168.56.1/editProfile.php</string>
+    <string name="feedback">http://192.168.56.1/feedback.php</string>
+    <string name="checkInfo">http://192.168.56.1/checkInformation.php</string>
+    <string name="requestGroupInfo">http://192.168.56.1/RequestGroupInfo.php</string>
+    <string name="requestAction">http://192.168.56.1/joinRequestAction.php</string>
+    <string name="logIn">http://192.168.56.1/user_log_in.php</string>
+    <string name="alreadyMember">http://192.168.56.1/alreadyMember.php</string>
+    <string name="createGroup">http://192.168.56.1/createGroup.php</string>
+    <string name="removeMember">http://192.168.56.1/remove_member.php</string>
+    <string name="allJoinRequest">http://192.168.56.1/allJoinRequests.php</string>
+    <string name="groupInfo">http://192.168.56.1/groupInfo.php</string>
+    <string name="editGroupInfo">http://192.168.56.1/editGroupInfo.php</string>
+    <string name="notice">http://192.168.56.1/notice.php</string>
+    <string name="allNotice">http://192.168.56.1/getAllNotice.php</string>
+    <string name="actionRequest">http://192.168.56.1/requestsAction.php</string>
+    <string name="adminSetting">http://192.168.56.1/adminSetting.php</string>
+    <string name="costEdit">http://192.168.56.1/costEdit.php</string>
+    <string name="mealEdit">http://192.168.56.1/editMeal.php</string>
+    <string name="removeNotice">http://192.168.56.1/removeNotice.php</string>
+    <string name="changePassword">http://192.168.56.1/changePassword.php</string>
+    <string name="inputMeal">http://192.168.56.1/inputMeal.php</string>
+    <string name="allMeal">http://192.168.56.1/allMeal.php</string>
+    <string name="myMeal">http://192.168.56.1/myAllMeal.php</string>
+    <string name="noResultFound">http://192.168.56.1/noResultFound.php</string>
+    <string name="notifyMember">http://192.168.56.1/notifyMember.php</string>
 </resources>

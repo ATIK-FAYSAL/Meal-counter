@@ -54,8 +54,7 @@ public class NeedSomeMethod
         {
                 Calendar calendar = Calendar.getInstance();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MMM.dd hh:mm aaa");
-                String date = dateFormat.format(calendar.getTime());
-                return date;
+                return dateFormat.format(calendar.getTime());
         }
 
         //get current time and date
@@ -63,8 +62,17 @@ public class NeedSomeMethod
         {
                 Calendar calendar = Calendar.getInstance();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMMM-dd");
+                return dateFormat.format(calendar.getTime());
+        }
+
+        //get current time and date
+        public String getMonth()
+        {
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMMM-dd");
                 String date = dateFormat.format(calendar.getTime());
-                return date;
+                String[] value = date.split("-");
+                return value[1];
         }
 
         //encrypt password key=5 using cisear cipher

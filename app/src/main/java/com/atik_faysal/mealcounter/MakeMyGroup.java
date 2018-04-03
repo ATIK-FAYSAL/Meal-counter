@@ -46,8 +46,8 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
         private String gName,gId,gAddress,gDescription;
         private String currentUserName;
         private final static String USER_INFO = "currentInfo";
-        private final static String FILE_URL  = "http://192.168.56.1/alreadyMember.php";
-        private final static String URL = "http://192.168.56.1/createGroup.php";
+        //private final static String FILE_URL  = "http://192.168.56.1/alreadyMember.php";
+        //private final static String URL = "http://192.168.56.1/createGroup.php";
         private String POST_DATA;
         private static String DATA;
         private String groupType="";
@@ -293,7 +293,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                                                         if(internetIsOn.isOnline())
                                                         {
                                                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                                backgroundTask.execute(FILE_URL,POST_DATA);
+                                                                backgroundTask.execute(getResources().getString(R.string.alreadyMember),POST_DATA);
                                                         }else dialogClass.noInternetConnection();
                                                 }
                                         } catch (UnsupportedEncodingException e) {
@@ -330,7 +330,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
 
                        backgroundTask = new DatabaseBackgroundTask(this);
                        backgroundTask.setOnResultListener(taskInterface);
-                       backgroundTask.execute(URL,DATA);
+                       backgroundTask.execute(getResources().getString(R.string.createGroup),DATA);
 
                 } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();

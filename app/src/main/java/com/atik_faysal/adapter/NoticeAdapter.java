@@ -136,7 +136,7 @@ public class NoticeAdapter extends BaseAdapter
                         public void onClick(View v) {
                                 String id = noticeId.substring(0,noticeId.length());
 
-                                String file = "http://192.168.56.1/removeNotice.php";
+                                //String file = "http://192.168.56.1/removeNotice.php";
                                 String post;
 
                                 try {
@@ -144,7 +144,7 @@ public class NoticeAdapter extends BaseAdapter
 
                                         DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(context);
                                         backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                        backgroundTask.execute(file,post);
+                                        backgroundTask.execute(context.getResources().getString(R.string.removeNotice),post);
 
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();

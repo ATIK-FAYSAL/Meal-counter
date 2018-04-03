@@ -48,8 +48,8 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
         private Toolbar toolbar;
         private SwipeRefreshLayout refreshLayout;
 
-        private static final String FILE_URL = "http://192.168.56.1/groupInfo.php";
-        private final static String EDIT_URL = "http://192.168.56.1/editGroupInfo.php";
+        //private static final String FILE_URL = "http://192.168.56.1/groupInfo.php";
+        //private final static String EDIT_URL = "http://192.168.56.1/editGroupInfo.php";
         private static String POST_DATA ;
         private static String DATA;
         private String currentUser,userType;
@@ -187,7 +187,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
 
                                                        backgroundTask = new DatabaseBackgroundTask(MyGroupInfo.this);
                                                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                       backgroundTask.execute(EDIT_URL,DATA);
+                                                       backgroundTask.execute(getResources().getString(R.string.editGroupInfo),DATA);
                                                } catch (UnsupportedEncodingException e) {
                                                        e.printStackTrace();
                                                }
@@ -229,7 +229,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
 
                                backgroundTask = new DatabaseBackgroundTask(MyGroupInfo.this);
                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                               backgroundTask.execute(FILE_URL,POST_DATA);
+                               backgroundTask.execute(getResources().getString(R.string.groupInfo),POST_DATA);
 
                        }catch (UnsupportedEncodingException e) {
                                e.printStackTrace();

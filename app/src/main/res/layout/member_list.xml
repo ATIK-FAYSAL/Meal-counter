@@ -10,12 +10,9 @@
       android:layout_height="match_parent"
       android:background="@color/color8">
 
-      <android.support.v7.widget.Toolbar
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+      <include
           android:id="@+id/toolbar2"
-          android:background="@color/color2">
-      </android.support.v7.widget.Toolbar>
+          layout="@layout/toolbar"/>
 
       <RelativeLayout
           android:id="@+id/layout1"

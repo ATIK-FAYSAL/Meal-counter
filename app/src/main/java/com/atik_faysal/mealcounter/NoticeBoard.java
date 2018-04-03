@@ -39,9 +39,9 @@ public class NoticeBoard extends AppCompatActivity
         private Toolbar toolbar;
         private SwipeRefreshLayout refreshLayout;
 
-        private final static String FILE_URL = "http://192.168.56.1/notice.php";
+        //private final static String FILE_URL = "http://192.168.56.1/notice.php";
         private static String POST_DATA;
-        private final static String FILE = "http://192.168.56.1/getAllNotice.php";
+        //private final static String FILE = "http://192.168.56.1/getAllNotice.php";
         private static String POST;
         private static String currentUser;
         private String notice,title;
@@ -176,7 +176,7 @@ public class NoticeBoard extends AppCompatActivity
 
                                                         backgroundTask = new DatabaseBackgroundTask(NoticeBoard.this);
                                                         backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                        backgroundTask.execute(FILE_URL,POST_DATA);
+                                                        backgroundTask.execute(getResources().getString(R.string.notice),POST_DATA);
 
                                                 } catch (UnsupportedEncodingException e) {
                                                         e.printStackTrace();
@@ -196,7 +196,7 @@ public class NoticeBoard extends AppCompatActivity
                                POST = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
                                backgroundTask = new DatabaseBackgroundTask(this);
                                backgroundTask.setOnResultListener(asyncTaskInterface);
-                               backgroundTask.execute(FILE,POST);
+                               backgroundTask.execute(getResources().getString(R.string.allNotice),POST);
                        }else dialogClass.noInternetConnection();
 
                 } catch (UnsupportedEncodingException e) {

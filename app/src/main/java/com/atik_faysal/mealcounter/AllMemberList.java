@@ -49,7 +49,7 @@ public class AllMemberList extends AppCompatActivity
         private SharedPreferenceData sharedPreferenceData;
         private NeedSomeMethod someMethod;
 
-        private static final String FILE_URL = "http://192.168.56.1/json_mem_info.php";
+        //private static final String FILE_URL = "http://192.168.56.1/json_mem_info.php";
         private static String POST_DATA;
         private static final String USER_INFO = "currentInfo";
 
@@ -93,7 +93,7 @@ public class AllMemberList extends AppCompatActivity
                                 }
                                 backgroundTask = new DatabaseBackgroundTask(this);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(FILE_URL,POST_DATA);
+                                backgroundTask.execute(getResources().getString(R.string.memberInfo),POST_DATA);
                         }else Toast.makeText(this,"under construction",Toast.LENGTH_SHORT).show();
                 }
         }

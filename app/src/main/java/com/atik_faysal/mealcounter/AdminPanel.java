@@ -47,7 +47,7 @@ public class AdminPanel extends AppCompatActivity
         private SharedPreferenceData sharedPreferenceData;
         private NeedSomeMethod someMethod;
 
-        private static final String FILE_URL = "http://192.168.56.1/json_mem_info.php";
+        //private static final String FILE_URL = "http://192.168.56.1/json_mem_info.php";
         private static String POST_DATA;
         private static final String USER_INFO = "currentInfo";
 
@@ -88,7 +88,7 @@ public class AdminPanel extends AppCompatActivity
                                         POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
                                         backgroundTask = new DatabaseBackgroundTask(this);
                                         backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                        backgroundTask.execute(FILE_URL,POST_DATA);
+                                        backgroundTask.execute(getResources().getString(R.string.memberInfo),POST_DATA);
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
                                 }

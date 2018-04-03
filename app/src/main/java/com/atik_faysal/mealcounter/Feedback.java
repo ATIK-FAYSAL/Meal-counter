@@ -39,7 +39,7 @@ public class Feedback extends AppCompatActivity
 
 
         private String currentUser;
-        private static final String FILE_URL = "http://192.168.56.1/feedback.php";
+        //private static final String FILE_URL = "http://192.168.56.1/feedback.php";
         private static String POST_DATA;
 
         @Override
@@ -137,7 +137,7 @@ public class Feedback extends AppCompatActivity
 
                                         checkBackgroundTask = new DatabaseBackgroundTask(Feedback.this);
                                         checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                        checkBackgroundTask.execute(FILE_URL,POST_DATA);
+                                        checkBackgroundTask.execute(getResources().getString(R.string.feedback),POST_DATA);
                                 }else dialogClass.noInternetConnection();
 
                         }

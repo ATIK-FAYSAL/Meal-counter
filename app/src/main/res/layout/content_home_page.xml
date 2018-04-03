@@ -10,7 +10,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
             <include
                 android:id="@+id/toolbar"
                 layout="@layout/toolbar"/>
@@ -27,48 +28,61 @@
                 android:layout_below="@+id/toolbar">
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
+
                     <RelativeLayout
                         android:id="@+id/abc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/log_in_page_background">
+                        android:background="@drawable/background1">
+
+                        <TextView
+                            android:id="@+id/txtDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignStart="@+id/rlayout3"
+                            android:padding="5dp"
+                            android:layout_marginTop="5dp"
+                            android:hint="date"
+                            android:paddingLeft="15dp"/>
 
                         <LinearLayout
+                            android:layout_below="@id/txtDate"
+                            android:id="@+id/rlayout2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/rlayout2"
                             android:orientation="horizontal"
-                            android:layout_marginTop="5dp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp"
-                            android:layout_marginBottom="5dp">
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp">
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:text="Total Cost"
-                                android:textSize="16dp"
-                                android:textStyle="bold"
-                                android:gravity="center"
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginTop="5dp"
-                                android:layout_marginBottom="5dp"
-                                android:textColor="#9E9E9E"/>
+                                android:layout_weight="1"
+                                android:gravity="start"
+                                android:text="Total Cost"
+                                android:textColor="#9E9E9E"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
                             <TextView
                                 android:id="@+id/txtTaka"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:textSize="16dp"
-                                android:textStyle="bold"
-                                android:layout_marginLeft="40dp"
+                                android:layout_marginLeft="15dp"
                                 android:layout_marginRight="30dp"
-                                android:layout_marginBottom="5dp"
                                 android:layout_marginTop="5dp"
+                                android:layout_weight="1"
                                 android:drawableLeft="@drawable/icon_taka"
-                                android:hint="  200"/>
+                                android:drawablePadding="6dp"
+                                android:hint="total taka"
+                                android:textSize="16dp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -85,11 +99,11 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="2"
+                                android:layout_weight="1"
                                 android:text="Total Meal"
                                 android:textSize="16dp"
                                 android:textStyle="bold"
-                                android:gravity="center"
+                                android:gravity="start"
                                 android:layout_marginLeft="20dp"
                                 android:textColor="#9E9E9E"/>
                             <TextView
@@ -99,10 +113,10 @@
                                 android:layout_weight="1"
                                 android:textSize="16dp"
                                 android:textStyle="bold"
-                                android:layout_marginLeft="40dp"
+                                android:layout_marginLeft="10dp"
                                 android:layout_marginRight="30dp"
-
-                                android:hint="  200"/>
+                                android:hint="Total meal"
+                                android:paddingLeft="6dp"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -119,11 +133,11 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="2"
+                                android:layout_weight="1"
                                 android:text="Today's Meal"
                                 android:textSize="16dp"
                                 android:textStyle="bold"
-                                android:gravity="center"
+                                android:gravity="start"
                                 android:layout_marginLeft="20dp"
                                 android:textColor="#9E9E9E"/>
                             <TextView
@@ -133,10 +147,10 @@
                                 android:layout_weight="1"
                                 android:textSize="16dp"
                                 android:textStyle="bold"
-                                android:layout_marginLeft="40dp"
+                                android:layout_marginLeft="10dp"
                                 android:layout_marginRight="30dp"
-
-                                android:hint="  200"/>
+                                android:hint="Total meal"
+                                android:paddingLeft="6dp"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -148,14 +162,14 @@
                             android:layout_marginTop="5dp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp"
-                            android:layout_marginBottom="5dp">
+                            android:layout_marginBottom="25dp">
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
-                                android:layout_weight="2"
-                                android:gravity="center"
+                                android:layout_weight="1"
+                                android:gravity="start"
                                 android:text="My Meal"
                                 android:textColor="#9E9E9E"
                                 android:textSize="16dp"
@@ -167,9 +181,10 @@
                                 android:layout_weight="1"
                                 android:textSize="16dp"
                                 android:textStyle="bold"
-                                android:layout_marginLeft="40dp"
+                                android:layout_marginLeft="10dp"
                                 android:layout_marginRight="30dp"
-                                android:hint="  200"/>
+                                android:hint="My meal"
+                                android:paddingLeft="6dp"/>
                         </LinearLayout>
 
                     </RelativeLayout>
@@ -560,7 +575,9 @@
                         </LinearLayout>
 
                     </RelativeLayout>
+
                 </RelativeLayout>
+
             </ScrollView>
 
         </android.support.v4.widget.SwipeRefreshLayout>

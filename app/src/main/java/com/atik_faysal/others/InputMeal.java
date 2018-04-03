@@ -93,7 +93,7 @@ public class InputMeal extends Fragment
                 bOk.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                                String url = "http://192.168.56.1/inputMeal.php";
+                                //String url = "http://192.168.56.1/inputMeal.php";
 
                                 breakfast = eBreakfast.getText().toString();
                                 lunch = eLaunch.getText().toString();
@@ -129,7 +129,7 @@ public class InputMeal extends Fragment
                                         try {
                                                 String data = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8")+"&"
                                                         +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDate(),"UTF-8")+"&"
-                                                        +URLEncoder.encode("month","UTF-8")+"="+URLEncoder.encode(splitDate[1],"UTF-8")+"&"
+                                                        +URLEncoder.encode("month","UTF-8")+"="+URLEncoder.encode(someMethod.getMonth(),"UTF-8")+"&"
                                                         +URLEncoder.encode("member","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8")+"&"
                                                         +URLEncoder.encode("breakfast","UTF-8")+"="+URLEncoder.encode(breakfast,"UTF-8")+"&"
                                                         +URLEncoder.encode("lunch","UTF-8")+"="+URLEncoder.encode(lunch,"UTF-8")+"&"
@@ -138,7 +138,7 @@ public class InputMeal extends Fragment
 
                                                 backgroundTask = new DatabaseBackgroundTask(getContext());
                                                 backgroundTask.setOnResultListener(anInterface);
-                                                backgroundTask.execute(url,data);
+                                                backgroundTask.execute(getResources().getString(R.string.inputMeal),data);
                                         } catch (UnsupportedEncodingException e) {
                                                 e.printStackTrace();
                                         }
@@ -168,14 +168,14 @@ public class InputMeal extends Fragment
         //when this activity start it get all meal list from database and set on list view
         private void getAllMealListFromDb()
         {
-                String url = "http://192.168.56.1/allMeal.php";
+                //String url = "http://192.168.56.1/allMeal.php";
                 if(internetIsOn.isOnline())
                 {
                         try {
                                 String data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8");
                                 backgroundTask = new DatabaseBackgroundTask(getContext());
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(url,data);
+                                backgroundTask.execute(getResources().getString(R.string.allMeal),data);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                         }
@@ -189,8 +189,7 @@ public class InputMeal extends Fragment
 
                 String date = someMethod.getDate();
                 txtDate.setText(date);
-                splitDate = date.split("-");
-                txtMonth.setText("#"+splitDate[1]);
+                txtMonth.setText("#"+someMethod.getMonth());
         }
 
 

@@ -63,7 +63,7 @@ public class ChangeYourPassword extends AppCompatActivity
 
         private String phoneNumber,userName;
 
-        private static final String FILE_URL = "http://192.168.56.1/changePassword.php";
+        //private static final String FILE_URL = "http://192.168.56.1/changePassword.php";
         private static String POST_DATA ;
 
         @Override
@@ -305,7 +305,7 @@ public class ChangeYourPassword extends AppCompatActivity
 
                                         DatabaseBackgroundTask checkBackgroundTask = new DatabaseBackgroundTask(ChangeYourPassword.this);
                                         checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                        checkBackgroundTask.execute(FILE_URL, POST_DATA);
+                                        checkBackgroundTask.execute(getResources().getString(R.string.changePassword), POST_DATA);
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
                                 }

@@ -152,7 +152,7 @@ public class CostAdapter extends BaseAdapter
                         @Override
                         public void onClick(View v) {
                                 backgroundTask = new DatabaseBackgroundTask(context);
-                                String url = "http://192.168.56.1/costEdit.php";
+                                //String url = "http://192.168.56.1/costEdit.php";
                                 String taka = txtTaka.getText().toString();
                                 if(TextUtils.isEmpty(taka))
                                 {
@@ -166,7 +166,7 @@ public class CostAdapter extends BaseAdapter
                                                         +URLEncoder.encode("taka","UTF-8")+"="+URLEncoder.encode(taka,"UTF-8");
 
                                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                backgroundTask.execute(url,data);
+                                                backgroundTask.execute(context.getResources().getString(R.string.costEdit),data);
                                         }else dialogClass.noInternetConnection();
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();

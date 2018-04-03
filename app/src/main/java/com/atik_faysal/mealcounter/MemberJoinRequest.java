@@ -40,7 +40,7 @@ public class MemberJoinRequest extends AppCompatActivity
         private JSONArray jsonArray;
         private AcceptRequestAdapter adapter;
 
-        private static final String FILE_URL = "http://192.168.56.1/allJoinRequests.php";
+        //private static final String FILE_URL = "http://192.168.56.1/allJoinRequests.php";
         private static String POST_DATA;
         private String currentUser;
         private static final String USER_INFO = "currentInfo";
@@ -101,7 +101,7 @@ public class MemberJoinRequest extends AppCompatActivity
                                 POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
                                 backgroundTask = new DatabaseBackgroundTask(this);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(FILE_URL,POST_DATA);
+                                backgroundTask.execute(getResources().getString(R.string.allJoinRequest),POST_DATA);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                         }

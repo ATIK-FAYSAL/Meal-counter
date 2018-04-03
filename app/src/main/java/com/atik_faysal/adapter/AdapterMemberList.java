@@ -46,7 +46,7 @@ public class AdapterMemberList extends BaseAdapter
         private Button bRemove,bDetails;
         private Activity activity;
 
-        private final static String URL = "http://192.168.56.1/remove_member.php";
+        //private final static String URL = "http://192.168.56.1/remove_member.php";
         private final static String FILE_URL = "http://192.168.56.1/adminSetting.php";
         private static String DATA ;
         private String classType;
@@ -157,7 +157,7 @@ public class AdapterMemberList extends BaseAdapter
                                 DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
                                 backgroundTask = new DatabaseBackgroundTask(context);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(URL,DATA);
+                                backgroundTask.execute(context.getResources().getString(R.string.removeMember),DATA);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                         }

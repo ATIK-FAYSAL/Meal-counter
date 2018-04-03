@@ -44,7 +44,7 @@ public class LogInActivity extends AppCompatActivity
         private String userName,password;
         private static final String REMEMBER_ME = "rememberMe";
         private static final String USER_LOGIN = "userLogIn";
-        private static final String URL = "http://192.168.56.1/user_log_in.php";
+        //private static final String URL = "http://192.168.56.1/user_log_in.php";
         private static String DATA;
 
         private int errorCount=0;
@@ -135,7 +135,7 @@ public class LogInActivity extends AppCompatActivity
                                                                 +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8");
 
                                                         backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                        backgroundTask.execute(URL,DATA);
+                                                        backgroundTask.execute(getResources().getString(R.string.logIn),DATA);
                                                 } catch (UnsupportedEncodingException e) {
                                                         e.printStackTrace();
                                                 }

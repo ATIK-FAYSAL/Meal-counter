@@ -34,7 +34,7 @@ public class ForgetPassword extends AppCompatActivity
         private TextView userNameErr,fWordErr,phoneErr;
 
         private String userName,fWord,phone;
-        private static final String FILE_URL = "http://192.168.56.1/checkInformation.php";
+        //private static final String FILE_URL = "http://192.168.56.1/checkInformation.php";
         private static String POST_DATA;
 
         private AlertDialogClass dialogClass;
@@ -214,7 +214,7 @@ public class ForgetPassword extends AppCompatActivity
 
                                                 DatabaseBackgroundTask checkBackgroundTask = new DatabaseBackgroundTask(ForgetPassword.this);
                                                 checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                checkBackgroundTask.execute(FILE_URL,POST_DATA);
+                                                checkBackgroundTask.execute(getResources().getString(R.string.checkInfo),POST_DATA);
                                         }
                                 }else dialogClass.noInternetConnection();
                         }

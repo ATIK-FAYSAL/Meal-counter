@@ -9,6 +9,7 @@ import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.interfaces.InfoInterfaces;
+import com.atik_faysal.mealcounter.R;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -40,7 +41,7 @@ public class GetImportantData
         //get current user group type
         public void myGroupType(String currentUser)
         {
-                String url = "http://192.168.56.1/alreadyMember.php";
+                //String url = "http://192.168.56.1/alreadyMember.php";
                 String data;
                 if(internetIsOn.isOnline())
                 {
@@ -49,7 +50,7 @@ public class GetImportantData
                                 +URLEncoder.encode("action","UTF-8")+"="+URLEncoder.encode("type","UTF-8");
                                 backgroundTask = new DatabaseBackgroundTask(context);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(url,data);
+                                backgroundTask.execute(context.getResources().getString(R.string.alreadyMember),data);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                         }

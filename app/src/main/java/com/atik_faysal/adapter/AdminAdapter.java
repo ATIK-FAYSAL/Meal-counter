@@ -46,7 +46,7 @@ public class AdminAdapter extends BaseAdapter
         private Button bRemove,bDetails;
         private Activity activity;
 
-        private final static String FILE_URL = "http://192.168.56.1/adminSetting.php";
+        //private final static String FILE_URL = "http://192.168.56.1/adminSetting.php";
         private final static String USER_INFO = "currentInfo";
         private String classType;
         private String currentUser;
@@ -143,7 +143,7 @@ public class AdminAdapter extends BaseAdapter
 
                                 backgroundTask = new DatabaseBackgroundTask(context);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(FILE_URL,postData);
+                                backgroundTask.execute(context.getResources().getString(R.string.adminSetting),postData);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                         }
@@ -163,7 +163,7 @@ public class AdminAdapter extends BaseAdapter
 
                                 backgroundTask = new DatabaseBackgroundTask(context);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(FILE_URL,postData);
+                                backgroundTask.execute(context.getResources().getString(R.string.adminSetting),postData);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                         }

@@ -70,8 +70,8 @@ public class CreateNewAccount extends AppCompatActivity
         private String name,userName,address,password,email,favouriteWord;
         private TextView txtPassErr;
 
-        private final static String FILE_URL = "http://192.168.56.1/userNameExist.php";
-        private final static String FILE = "http://192.168.56.1/insert_member_info.php";
+        //private final static String FILE_URL = "http://192.168.56.1/userNameExist.php";
+        //private final static String FILE = "http://192.168.56.1/insert_member_info.php";
         private static String POST_DATA ;
         private final static String USER_LOGIN = "userLogIn";
 
@@ -315,7 +315,7 @@ public class CreateNewAccount extends AppCompatActivity
                                                 try {
                                                         POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8");
                                                         databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                        databaseBackgroundTask.execute(FILE_URL,POST_DATA);
+                                                        databaseBackgroundTask.execute(getResources().getString(R.string.nameExist),POST_DATA);
                                                 }catch(UnsupportedEncodingException e) {
                                                         e.printStackTrace();
                                                 }
@@ -445,7 +445,7 @@ public class CreateNewAccount extends AppCompatActivity
 
                                informationCheck = new DatabaseBackgroundTask(this);
                                informationCheck.setOnResultListener(taskInterface);
-                               informationCheck.execute(FILE,POST_DATA);
+                               informationCheck.execute(getResources().getString(R.string.insertMemInfo),POST_DATA);
                        } catch (UnsupportedEncodingException e) {
                                e.printStackTrace();
                        }

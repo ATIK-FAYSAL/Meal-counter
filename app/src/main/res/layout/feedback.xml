@@ -5,11 +5,9 @@
     android:background="@color/color2">
 
 
-    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    <include
         android:id="@+id/toolbar1"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:background="@color/color2"
-        android:elevation="4dp" />
+        layout="@layout/toolbar"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

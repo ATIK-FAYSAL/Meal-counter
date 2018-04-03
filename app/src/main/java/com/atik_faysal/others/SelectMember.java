@@ -74,15 +74,6 @@ public class SelectMember extends AppCompatActivity
                 sharedPreferenceData = new SharedPreferenceData(this);
                 internetIsOn = new CheckInternetIsOn(this);
 
-
-                /*memberName.add(new ShoppingItemModel("Atik","",0));
-                memberName.add(new ShoppingItemModel("Tusher","",0));
-                memberName.add(new ShoppingItemModel("Shovon","",0));
-                memberName.add(new ShoppingItemModel("Sajal","",0));
-                memberName.add(new ShoppingItemModel("Siraj","",0));
-                memberName.add(new ShoppingItemModel("Sayeem","",0));
-                memberName.add(new ShoppingItemModel("Fahad","",0));*/
-
                 //calling method
                 if(internetIsOn.isOnline())
                         getGroupMemberName();
@@ -124,7 +115,7 @@ public class SelectMember extends AppCompatActivity
         //get all member name of your group from database
         private void getGroupMemberName()
         {
-                String url = "http://192.168.56.1/groupMemberName.php";
+                //String url = "http://192.168.56.1/groupMemberName.php";
                 String data;
                 if(internetIsOn.isOnline())
                 {
@@ -132,7 +123,7 @@ public class SelectMember extends AppCompatActivity
                                 data = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8");
                                 backgroundTask = new DatabaseBackgroundTask(SelectMember.this);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(url,data);
+                                backgroundTask.execute(getResources().getString(R.string.groupMemberName),data);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                         }
@@ -162,7 +153,7 @@ public class SelectMember extends AppCompatActivity
         //get all selected name to push notification
         private void selectedName()
         {
-                String url = "http://192.168.56.1/notifyMember.php";
+                //String url = "http://192.168.56.1/notifyMember.php";
                 String data;
 
                 selectedMemList = new ArrayList<>();
@@ -192,7 +183,7 @@ public class SelectMember extends AppCompatActivity
                                        try {
                                                data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(selectedMemList.get(i),"UTF-8");
                                                backgroundTask = new DatabaseBackgroundTask(this);
-                                               backgroundTask.execute(url,data);
+                                               backgroundTask.execute(getResources().getString(R.string.notifyMember),data);
                                        } catch (UnsupportedEncodingException e) {
                                                e.printStackTrace();
                                        }

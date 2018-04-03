@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 public class SelectMemberAdapter extends RecyclerView.Adapter<SelectMemberAdapter.ViewHolder>
 {
-        List<ShoppingItemModel>models = new ArrayList<>();
+        List<ShoppingItemModel>models ;
         Context context;
 
         LayoutInflater inflater;

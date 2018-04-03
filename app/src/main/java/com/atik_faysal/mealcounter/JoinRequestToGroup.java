@@ -37,8 +37,8 @@ public class JoinRequestToGroup extends AppCompatActivity
         private String currentUser;
         private static final String USER_INFO = "currentInfo";
         private String group;
-        private final static String FILE = "http://192.168.56.1/RequestGroupInfo.php";
-        private final static String FILE_URL = "http://192.168.56.1/joinRequestAction.php";
+        //private final static String FILE = "http://192.168.56.1/RequestGroupInfo.php";
+       //private final static String FILE_URL = "http://192.168.56.1/joinRequestAction.php";
         private static String DATA;
         private String name,id,address,description,type,member,time,date,admin,status;
 
@@ -123,7 +123,7 @@ public class JoinRequestToGroup extends AppCompatActivity
                                {
                                        backgroundTask = new DatabaseBackgroundTask(JoinRequestToGroup.this);
                                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                       backgroundTask.execute(FILE_URL,value);
+                                       backgroundTask.execute(getResources().getString(R.string.requestAction),value);
                                }else dialogClass.noInternetConnection();
                         }
                 });
@@ -138,7 +138,7 @@ public class JoinRequestToGroup extends AppCompatActivity
 
                         backgroundTask = new DatabaseBackgroundTask(JoinRequestToGroup.this);
                         backgroundTask.setOnResultListener(taskInterface);
-                        backgroundTask.execute(FILE,DATA);
+                        backgroundTask.execute(getResources().getString(R.string.requestGroupInfo),DATA);
 
                 }catch (UnsupportedEncodingException e) {
                         e.printStackTrace();

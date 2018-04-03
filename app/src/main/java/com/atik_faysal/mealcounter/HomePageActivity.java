@@ -70,9 +70,11 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         private final static String USER_LOGIN = "userLogIn";
         private String currentUser;
         private String userType;
-        private final static String FILE = "http://192.168.56.1/getGroupName.php";
+        //private final static String FILE = "http://192.168.56.1/getGroupName.php";
 
         private ArrayList<SearchableModel>groupList;
+
+        private TextView txtTotalCost,txtTotalMeal,txtTodayMeal,txtMyMeal;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +88,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         protected void onStart() {
                 super.onStart();
 
-                String fUrl = "http://192.168.56.1/checkMemType.php";
+                //String fUrl = "http://192.168.56.1/checkMemType.php";
                 String postData;
                 if(internetIsOn.isOnline())
                 {
@@ -94,7 +96,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 postData = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
                                 DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(this);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(fUrl,postData);
+                                backgroundTask.execute(getResources().getString(R.string.memberType),postData);
 
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
@@ -274,6 +276,11 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 View view = navigationView.inflateHeaderView(R.layout.nav_header_home_page);
                 TextView txtUserName = view.findViewById(R.id.txtUserName);
                 userImage = view.findViewById(R.id.userImage);
+                txtTotalCost = findViewById(R.id.txtTaka);
+                txtTotalMeal = findViewById(R.id.txtMeal);
+                txtTodayMeal = findViewById(R.id.txtTmeal);
+                txtMyMeal = findViewById(R.id.txtMmeal);
+                TextView txtDate = findViewById(R.id.txtDate);
 
                 initObject();//initialize cardView and imageView
                 //other initialize
@@ -291,6 +298,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 userType = sharedPreferenceData.getUserType();
                 String date = someMethod.getDateWithTime();
                 txtUserName.setText(currentUser);
+                txtDate.setText(someMethod.getDate());
 
                 //calling method
                 RegisterDeviceToken.registerToken(token,currentUser, date);
@@ -301,15 +309,36 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 closeApp();
 
 
-                try {
-                        String POST_DATA = URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode("", "UTF-8");
-                        groupList = new ArrayList<>();
-                        DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(HomePageActivity.this);
-                        backgroundTask.setOnResultListener(taskInterface);
-                        backgroundTask.execute(FILE, POST_DATA);
-                } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                }
+               if(internetIsOn.isOnline())
+               {
+                       try {
+                               String POST_DATA = URLEncoder.encode("userName", "UTF-8")+"="+URLEncoder.encode("", "UTF-8");
+                               groupList = new ArrayList<>();
+                               DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(HomePageActivity.this);
+                               backgroundTask.setOnResultListener(taskInterface);
+                               backgroundTask.execute(getResources().getString(R.string.allGroupName), POST_DATA);
+                       } catch (UnsupportedEncodingException e) {
+                               e.printStackTrace();
+                       }
+
+
+                       try {
+                               //String url = "http://192.168.56.1/homePageInfo.php";
+                               String POST_DATA = URLEncoder.encode("userName", "UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(), "UTF-8")+"&"
+                                       +URLEncoder.encode("group", "UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(), "UTF-8")+"&"
+                                       +URLEncoder.encode("date", "UTF-8")+"="+URLEncoder.encode(someMethod.getDate(), "UTF-8")+"&"
+                                       +URLEncoder.encode("month", "UTF-8")+"="+URLEncoder.encode(someMethod.getMonth(), "UTF-8");
+                               DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(HomePageActivity.this);
+                               backgroundTask.setOnResultListener(anInterface);
+                               backgroundTask.execute(getResources().getString(R.string.homePageInfo), POST_DATA);
+                       } catch (UnsupportedEncodingException e) {
+                               e.printStackTrace();
+                       }
+
+               }else dialogClass.noInternetConnection();
+
+
+
         }
 
         //initialize card view and image view object
@@ -479,6 +508,46 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                                         sharedPreferenceData.userType(message);
                                                         userType = message;
                                                 }
+                                        }
+                                }
+                        });
+                }
+        };
+
+        //get all home page information
+        OnAsyncTaskInterface anInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String message) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        String totalMeal=null,totalTaka = null,myMeal=null,todayMeal=null;
+                                        if(message!=null)
+                                        {
+                                                Toast.makeText(HomePageActivity.this,"message : "+message,Toast.LENGTH_SHORT).show();
+                                                try {
+                                                        int count=0;
+                                                        JSONObject jsonObject = new JSONObject(message);
+                                                        JSONArray jsonArray = jsonObject.optJSONArray("jsonData");
+                                                        while (count<jsonArray.length())
+                                                        {
+                                                                JSONObject jObject = jsonArray.getJSONObject(count);
+                                                                totalTaka = jObject.getString("cost");
+                                                                totalMeal = jObject.getString("meals");
+                                                                todayMeal = jObject.getString("tmeal");
+                                                                myMeal = jObject.getString("mmeal");
+                                                                count++;
+                                                        }
+
+                                                        txtTotalCost.setText(totalTaka);
+                                                        txtTotalMeal.setText(totalMeal);
+                                                        txtTodayMeal.setText(todayMeal);
+                                                        txtMyMeal.setText(myMeal);
+
+                                                } catch (JSONException e) {
+                                                        Toast.makeText(HomePageActivity.this,"Error : "+e.toString(),Toast.LENGTH_LONG).show();
+                                                }
+
                                         }
                                 }
                         });
