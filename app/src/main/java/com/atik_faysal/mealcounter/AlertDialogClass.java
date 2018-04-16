@@ -24,11 +24,11 @@ import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 
 public class AlertDialogClass extends AlertDialog
 {
-        Context context;
-        AlertDialog.Builder builder;
-        AlertDialog alertDialog;
+        private Context context;
+        private AlertDialog.Builder builder;
+        private AlertDialog alertDialog;
 
-        Activity activity;
+        private Activity activity;
 
         private OnAsyncTaskInterface onAsyncTaskInterface;
 
@@ -160,6 +160,7 @@ public class AlertDialogClass extends AlertDialog
         //warning
         public void warning(String value)
         {
+
                 builder = new AlertDialog.Builder(context);
                 View view = LayoutInflater.from(context).inflate(R.layout.dialog_warning,null);
 

@@ -13,11 +13,9 @@ import android.widget.BaseAdapter;
 import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
-import com.atik_faysal.mealcounter.AddCost;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.MealClass;
-import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.MealModel;
 

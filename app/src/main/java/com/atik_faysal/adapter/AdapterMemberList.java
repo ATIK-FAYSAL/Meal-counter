@@ -47,7 +47,7 @@ public class AdapterMemberList extends BaseAdapter
         private Activity activity;
 
         //private final static String URL = "http://192.168.56.1/remove_member.php";
-        private final static String FILE_URL = "http://192.168.56.1/adminSetting.php";
+        //private final static String FILE_URL = "http://192.168.56.1/adminSetting.php";
         private static String DATA ;
         private String classType;
         private String currentUser;
@@ -91,7 +91,7 @@ public class AdapterMemberList extends BaseAdapter
                 view = inflater.inflate(R.layout.member_model, parent, false);
 
                 txtName = view.findViewById(R.id.txtName);
-                txtUserName = view.findViewById(R.id.txtUserName);
+                txtUserName = view.findViewById(R.id.txtName);
                 txtPhone = view.findViewById(R.id.txtPhone);
                 txtDate = view.findViewById(R.id.txtDate);
                 txtType = view.findViewById(R.id.txtType);

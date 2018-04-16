@@ -79,7 +79,7 @@ public class NoticeAdapter extends BaseAdapter
 
                 userType = sharedPreferenceData.getUserType();
 
-                txtUserName = view.findViewById(R.id.txtUserName);
+                txtUserName = view.findViewById(R.id.txtName);
                 txtDate = view.findViewById(R.id.txtDate);
                 txtTitle = view.findViewById(R.id.txtTitle);
                 txtId = view.findViewById(R.id.txtId);

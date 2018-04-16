@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
@@ -92,7 +91,7 @@ public class LogInActivity extends AppCompatActivity
                 txtForgotPass = findViewById(R.id.txtForgotPass);
                 bSignIn = findViewById(R.id.bSignIn);
                 checkBox = findViewById(R.id.cRemember);
-                txtUserName = findViewById(R.id.txtUserName);
+                txtUserName = findViewById(R.id.txtName);
                 txtUserPassword = findViewById(R.id.ePassword);
 
                 checkInternet = new CheckInternetIsOn(this);

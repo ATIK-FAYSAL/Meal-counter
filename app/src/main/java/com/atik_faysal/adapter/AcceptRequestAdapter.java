@@ -75,7 +75,7 @@ public class AcceptRequestAdapter extends BaseAdapter
                 view = inflater.inflate(R.layout.member_model, parent, false);
 
                 txtName = view.findViewById(R.id.txtName);
-                txtUserName = view.findViewById(R.id.txtUserName);
+                txtUserName = view.findViewById(R.id.txtName);
                 txtPhone = view.findViewById(R.id.txtPhone);
                 txtId = view.findViewById(R.id.txtType);
                 txtStatus = view.findViewById(R.id.txtTaka);

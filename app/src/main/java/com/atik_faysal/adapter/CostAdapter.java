@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,7 @@ import android.widget.BaseAdapter;
 import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
-import com.atik_faysal.mealcounter.AddCost;
+import com.atik_faysal.mealcounter.CostOfSecretCloseGroup;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.R;
@@ -23,14 +22,12 @@ import com.atik_faysal.model.CostModel;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Created by USER on 3/1/2018.
@@ -98,11 +95,14 @@ public class CostAdapter extends BaseAdapter
                 bEdit.setEnabled(false);
                 bEdit.setImageDrawable(null);
 
-                if(sharedPreferenceData.getUserType().equals("admin"))
+                if(sharedPreferenceData.getUserType().equals("admin")&&
+                        (sharedPreferenceData.getMyGroupType().equals("close")||sharedPreferenceData.getMyGroupType().equals("secret")
+                        ||sharedPreferenceData.getMyGroupType().equals("public")))
                 {
                         bEdit.setEnabled(true);
                         bEdit.setBackgroundResource(R.drawable.edit);
-                }else if(sharedPreferenceData.getMyGroupType().equals("public"))
+                }else if((sharedPreferenceData.getMyGroupType().equals("public"))&&
+                        (sharedPreferenceData.getUserType().equals("member")))
                 {
                         if(sharedPreferenceData.getCurrentUserName().equals(costList.get(position).getName())) {
                                 bEdit.setEnabled(true);
@@ -193,7 +193,7 @@ public class CostAdapter extends BaseAdapter
                                         {
                                                 case "success":
                                                         alertDialog.dismiss();
-                                                        context.startActivity(new Intent(context, AddCost.class));
+                                                        context.startActivity(new Intent(context, CostOfSecretCloseGroup.class));
                                                         activity.finish();
                                                         break;
                                                 default:

@@ -1,15 +1,22 @@
 package com.atik_faysal.mealcounter;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,8 +27,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.Objects;
+
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 
 import static android.content.ContentValues.TAG;
@@ -43,20 +56,15 @@ public class MemberDetails extends AppCompatActivity
         private Toolbar toolbar;
         private TextView txtTaka,txtGroup,txtUserName,txtDate;
         private EditText eName,eEmail,eAddress,eFaWord,ePhone;
-        private SwipeRefreshLayout refreshLayout;
-
-        private JSONArray jsonArray;
-        private JSONObject jsonObject;
+        public ImageView imageView;
 
         private String name,userName,phone,email,address,fWord,taka,group,date;
-        private String user;
+        public String user;
         private String currentUser;
         //private final static String FILE_URL = "http://192.168.56.1/json_read_member_info.php";
         private static String POST_DATA;
         //private final static String URL = "http://192.168.56.1/remove_member.php";
         private static String DATA ;
-        private final static String USER_INFO = "currentInfo";
-
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,13 +77,16 @@ public class MemberDetails extends AppCompatActivity
         @SuppressLint("SetTextI18n")
         private void initComponent()
         {
+                //initialize all component
                 toolbar = findViewById(R.id.toolbar1);
                 setSupportActionBar(toolbar);
                 txtTaka = findViewById(R.id.txtTaka);
-                txtUserName = findViewById(R.id.txtUserName);
+                txtUserName = findViewById(R.id.txtName);
                 txtGroup = findViewById(R.id.txtGroup);
                 txtDate = findViewById(R.id.gDate);
+                imageView = findViewById(R.id.image);
 
+                //set initial value in text
                 eName = findViewById(R.id.txtName);
                 eEmail = findViewById(R.id.txtEmail);
                 eAddress = findViewById(R.id.gAddress);
@@ -84,18 +95,42 @@ public class MemberDetails extends AppCompatActivity
 
                 bRemove = findViewById(R.id.bEdit);
                 bRemove.setText("Remove");
-                refreshLayout = findViewById(R.id.layout1);
+                //swaprefresh layout
+                final SwipeRefreshLayout refreshLayout = findViewById(R.id.layout1);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
+                refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                        @Override
+                        public void onRefresh() {
+                                refreshLayout.setRefreshing(true);
 
+                                (new Handler()).postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                                refreshLayout.setRefreshing(false);
+                                        }
+                                },2500);
+                        }
+                });
 
+                //create object
                 sharedPreferenceData = new SharedPreferenceData(this);
                 internetIsOn = new CheckInternetIsOn(this);
                 someMethod = new NeedSomeMethod(this);
                 dialogClass = new AlertDialogClass(this);
 
-                user = getIntent().getExtras().getString("userName");
+                user = Objects.requireNonNull(getIntent().getExtras()).getString("userName");
                 currentUser = sharedPreferenceData.getCurrentUserName();
 
+                if(sharedPreferenceData.getUserType().equals("admin")&&(sharedPreferenceData.getMyGroupType().equals("secret")||sharedPreferenceData.getMyGroupType().equals("close")))
+                {
+                        txtTaka.setClickable(true);
+                        txtTaka.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                        editBalanceByAdmin(txtTaka.getText().toString());
+                                }
+                        });
+                }
                 if(internetIsOn.isOnline())
                 {
                         try {
@@ -106,6 +141,8 @@ public class MemberDetails extends AppCompatActivity
                                 databaseBackgroundTask = new DatabaseBackgroundTask(this);
                                 databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 databaseBackgroundTask.execute(getResources().getString(R.string.getMemberInfo),POST_DATA);
+
+                                new ImageDownLoad().execute();
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                         }
@@ -114,8 +151,60 @@ public class MemberDetails extends AppCompatActivity
                 //calling method
                 setToolbar();
                 onButtonClick();
-                someMethod.reloadPage(refreshLayout,MemberDetails.class);
 
+        }
+
+
+        //edit member balance,only admin can access in it;
+        private void editBalanceByAdmin(String taka)
+        {
+                Button bOk,bCancel;
+                TextView txtDate,txtUserName;
+                final EditText txtTaka;
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                View view = LayoutInflater.from(this).inflate(R.layout.edit_cost,null);
+                builder.setView(view);
+                txtDate = view.findViewById(R.id.txtDate);
+                txtUserName = view.findViewById(R.id.txtId);
+                txtTaka = view.findViewById(R.id.txtTaka);
+                bOk = view.findViewById(R.id.bDone);
+                bCancel = view.findViewById(R.id.bCancel);
+
+                txtUserName.setText(user);
+                txtDate.setText(someMethod.getDate());
+                txtTaka.setText(taka);
+
+                final AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+                bCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                                alertDialog.dismiss();
+                        }
+                });
+
+                bOk.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                                if(internetIsOn.isOnline())
+                                {
+                                        try {
+                                                double balance = Double.parseDouble(txtTaka.getText().toString());
+                                                String data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8")+"&"
+                                                        +URLEncoder.encode("taka","UTF-8")+"="+URLEncoder.encode(String.valueOf(balance),"UTF-8");
+
+                                                databaseBackgroundTask = new DatabaseBackgroundTask(MemberDetails.this);
+                                                databaseBackgroundTask.setOnResultListener(taskInterface);
+                                                databaseBackgroundTask.execute(getResources().getString(R.string.editMemBalance),data);
+                                                alertDialog.dismiss();
+                                        } catch (UnsupportedEncodingException | NumberFormatException e) {
+                                                e.printStackTrace();
+                                        }
+                                }else dialogClass.noInternetConnection();
+                        }
+                });
         }
 
         //set a toolbar,above the page
@@ -133,13 +222,25 @@ public class MemberDetails extends AppCompatActivity
                 });
         }
 
+        //remove button
         private void onButtonClick()
         {
                 bRemove.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                                dialogClass.onSuccessListener(asyncTaskInterface);
-                                dialogClass.warning("Really want to remove this member ?");
+                                if(internetIsOn.isOnline())
+                                {
+                                        if(sharedPreferenceData.getUserType().equals("admin"))
+                                        {
+                                                if(currentUser.equals(user))
+                                                        dialogClass.error("You can not remove your own membership.");
+                                                else
+                                                {
+                                                        dialogClass.onSuccessListener(anInterface);
+                                                        dialogClass.warning("Really want to remove this member ?");
+                                                }
+                                        }else dialogClass.error("Only admin can remove member.You are not an admin.");
+                                }else dialogClass.noInternetConnection();
                         }
                 });
         }
@@ -150,11 +251,11 @@ public class MemberDetails extends AppCompatActivity
                 if(userInfo!=null)
                 {
                         try {
-                                jsonObject = new JSONObject(userInfo);
-                                jsonArray = jsonObject.optJSONArray("information");
+                                JSONObject jsonObject = new JSONObject(userInfo);
+                                JSONArray jsonArray = jsonObject.optJSONArray("information");
 
                                 int count = 0;
-                                while(count<jsonArray.length())
+                                while(count< jsonArray.length())
                                 {
                                         JSONObject jObject = jsonArray.getJSONObject(count);
                                         name = jObject.getString("name");
@@ -222,6 +323,7 @@ public class MemberDetails extends AppCompatActivity
                 }else dialogClass.noInternetConnection();
         }
 
+        //remove member interface
         OnAsyncTaskInterface asyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
                 public void onResultSuccess(final String value) {
@@ -237,25 +339,14 @@ public class MemberDetails extends AppCompatActivity
                                                         Toast.makeText(MemberDetails.this,"one member removed",Toast.LENGTH_SHORT).show();
                                                         finish();
                                                         break;
-                                                case "yes":
-                                                        if(internetIsOn.isOnline())
-                                                        {
-                                                                if(sharedPreferenceData.getUserType().equals("admin"))
-                                                                {
-                                                                        if(currentUser.equals(user))
-                                                                                dialogClass.error("You can not remove your own membership.");
-                                                                        else
-                                                                                removeMember(user);
-                                                                }
-                                                                else dialogClass.error("Only admin can remove member.You are not an admin.");
-                                                        }else dialogClass.noInternetConnection();
-                                                        break;
                                         }
                                 }
                         });
                 }
         };
 
+
+        //member update information interface
         OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
                 public void onResultSuccess(final String userInfo) {
@@ -280,4 +371,65 @@ public class MemberDetails extends AppCompatActivity
         };
 
 
+        //warning interface
+        OnAsyncTaskInterface anInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String message) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                        switch (message)
+                                        {
+                                                case "yes":
+                                                        removeMember(user);
+                                                        break;
+                                        }
+                                }
+                        });
+                }
+        };
+
+
+        //edit member balance
+        OnAsyncTaskInterface taskInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String message) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        switch (message)
+                                        {
+                                                case "success":
+                                                        someMethod.progressDialog("Working on it....");
+                                                        break;
+                                                case "failed":
+                                                        dialogClass.error("Execution failed,please try again..");
+                                                        break;
+                                        }
+                                }
+                        });
+                }
+        };
+
+
+        //download user image from database and set on image view
+        @SuppressLint("StaticFieldLeak")
+        class ImageDownLoad extends AsyncTask<Void,Void,Void>
+        {
+                @Override
+                protected Void doInBackground(Void... voids) {
+                        String imageUrl = "http://192.168.56.1/images/"+user+".png";
+                        try {
+                                URLConnection connection = new URL(imageUrl).openConnection();
+                                connection.setConnectTimeout(1000*20);
+                                connection.setReadTimeout(1000*20);
+                                Bitmap bitmap = BitmapFactory.decodeStream((InputStream)connection.getContent(),null,null);
+                                imageView.setImageBitmap(bitmap);
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                        }
+                        return null;
+                }
+        }
 }

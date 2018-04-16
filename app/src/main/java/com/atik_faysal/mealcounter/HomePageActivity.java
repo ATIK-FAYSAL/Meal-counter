@@ -116,7 +116,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                         .setSubtitle("Do you want to close app?")
                         .setBoldPositiveLabel(true)
                         .setCancelable(false)
-                        .setPositiveListener("ok",new iOSDialogClickListener() {
+                        .setPositiveListener("Close App",new iOSDialogClickListener() {
                                 @Override
                                 public void onClick(iOSDialog dialog) {
                                         Intent intent = new Intent(getApplicationContext(), HomePageActivity.class);
@@ -199,7 +199,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 if(userType.equals("admin"))
                                 {
                                         //startActivity(new Intent(HomePageActivity.this,MemberJoinRequest.class));
-                                        noResultFound.checkJoinRequest(currentUser,MemberJoinRequest.class,"request");
+                                        noResultFound.checkValueIsExist(currentUser,MemberJoinRequest.class,"request");
                                 }else dialogClass.error("Only admin can accept request.You are not an admin.");
                                 break;
 
@@ -212,7 +212,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                         case R.id.member:
                                 if(internetIsOn.isOnline())
-                                        noResultFound.checkJoinRequest(currentUser,AllMemberList.class,"member");
+                                        noResultFound.checkValueIsExist(currentUser,AllMemberList.class,"member");
                                         //startActivity(new Intent(HomePageActivity.this,AllMemberList.class));
                                 else dialogClass.noInternetConnection();
                                 break;
@@ -274,7 +274,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
                 View view = navigationView.inflateHeaderView(R.layout.nav_header_home_page);
-                TextView txtUserName = view.findViewById(R.id.txtUserName);
+                TextView txtUserName = view.findViewById(R.id.txtName);
                 userImage = view.findViewById(R.id.userImage);
                 txtTotalCost = findViewById(R.id.txtTaka);
                 txtTotalMeal = findViewById(R.id.txtMeal);
@@ -377,14 +377,25 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 {
                         if(sharedPreferenceData.getUserType().equals("nope"))
                                 dialogClass.notMember();
-                        else Toast.makeText(this,"click on button 2",Toast.LENGTH_SHORT).show();
+                        else noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),ApproveBalance.class,"approval");
+                               // startActivity(new Intent(HomePageActivity.this,ApproveBalance.class));
                 }else if(id==cardViewId[2]||id==imageViewId[2])
                 {
                         if(sharedPreferenceData.getUserType().equals("nope"))
                                 dialogClass.notMember();
                         else
                         {
-                                startActivity(new Intent(HomePageActivity.this,AddCost.class));
+                                //startActivity(new Intent(HomePageActivity.this,CostForSecretCloseMem.class));
+
+                                if(sharedPreferenceData.getMyGroupType().equals("public"))
+                                        startActivity(new Intent(HomePageActivity.this,CostForPublicGroup.class));
+                                else if((sharedPreferenceData.getMyGroupType().equals("secret")||sharedPreferenceData.getMyGroupType().equals("close"))
+                                        &&sharedPreferenceData.getUserType().equals("admin"))
+                                        startActivity(new Intent(HomePageActivity.this,CostOfSecretCloseGroup.class));
+                                else if((sharedPreferenceData.getMyGroupType().equals("secret")||sharedPreferenceData.getMyGroupType().equals("close"))
+                                        &&sharedPreferenceData.getUserType().equals("member"))
+                                        startActivity(new Intent(HomePageActivity.this,CostForSecretCloseMem.class));
+
                         }
                 }else if(id==cardViewId[3]||id==imageViewId[3])
                 {
@@ -407,7 +418,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 {
                         if(sharedPreferenceData.getUserType().equals("nope"))
                                 dialogClass.notMember();
-                        else Toast.makeText(this,"click on button 7",Toast.LENGTH_SHORT).show();
+                        else startActivity(new Intent(HomePageActivity.this,MonthReport.class));
                 }else if(id==cardViewId[7]||id==imageViewId[7])
                 {
                         if(sharedPreferenceData.getUserType().equals("nope"))
@@ -524,7 +535,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                         String totalMeal=null,totalTaka = null,myMeal=null,todayMeal=null;
                                         if(message!=null)
                                         {
-                                                Toast.makeText(HomePageActivity.this,"message : "+message,Toast.LENGTH_SHORT).show();
                                                 try {
                                                         int count=0;
                                                         JSONObject jsonObject = new JSONObject(message);

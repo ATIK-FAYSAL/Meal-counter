@@ -21,7 +21,7 @@
         <item
             android:id="@+id/acceptRequest"
             android:icon="@drawable/icon_accept"
-            android:title="Accept request" />
+            android:title="Requests" />
         <item
             android:id="@+id/makeAdmin"
             android:icon="@drawable/icon_admin"

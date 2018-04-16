@@ -14,7 +14,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,8 +41,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static android.content.ContentValues.TAG;
 
 
 /**
@@ -483,7 +480,7 @@ public class EditYourProfile extends AppCompatActivity
                                                 case "success":
                                                         imageView.setImageBitmap(bitmap);
                                                         sharedPreferenceData.myImage(bitmap,true);
-                                                        someMethod.progresDialog("Image uploading...");
+                                                        someMethod.progressDialog("Image uploading...");
                                                         alertDialog.dismiss();
                                                         break;
                                                 default:

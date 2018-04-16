@@ -132,7 +132,7 @@ public class NeedSomeMethod
                                                 context.startActivity(new Intent(context,nameOfClass));
                                                 activity.finish();
                                         }
-                                },3000);
+                                },2500);
                         }
                 });
         }
@@ -172,7 +172,7 @@ public class NeedSomeMethod
         }
 
 
-        public void progresDialog(String message)
+        public void progressDialog(String message)
         {
                 final ProgressDialog ringProgressDialog = ProgressDialog.show(context, "Please wait", message, true);
                 ringProgressDialog.setCancelable(true);
@@ -180,7 +180,7 @@ public class NeedSomeMethod
                         @Override
                         public void run() {
                                 try {
-                                        Thread.sleep(2000);
+                                        Thread.sleep(2500);
                                 } catch (Exception e) {
                                 }
                                 ringProgressDialog.dismiss();
@@ -190,6 +190,7 @@ public class NeedSomeMethod
                         @Override
                         public void onDismiss(DialogInterface dialog) {
                                 Toast.makeText(context,"Task complete.",Toast.LENGTH_SHORT).show();
+                                activity.finish();
                         }
                 });
         }

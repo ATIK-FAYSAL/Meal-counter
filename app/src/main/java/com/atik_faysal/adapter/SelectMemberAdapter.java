@@ -4,12 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.ShoppingItemModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
 import android.widget.CheckBox;
@@ -60,7 +58,7 @@ public class SelectMemberAdapter extends RecyclerView.Adapter<SelectMemberAdapte
 
                 public ViewHolder(View itemView) {
                         super(itemView);
-                        this.txtUserName = itemView.findViewById(R.id.txtUserName);
+                        this.txtUserName = itemView.findViewById(R.id.txtName);
                         this.checkBox = itemView.findViewById(R.id.checkBox);
                 }
 

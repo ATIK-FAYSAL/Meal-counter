@@ -51,7 +51,7 @@ public class AllMemberList extends AppCompatActivity
 
         //private static final String FILE_URL = "http://192.168.56.1/json_mem_info.php";
         private static String POST_DATA;
-        private static final String USER_INFO = "currentInfo";
+
 
         private String currentUser;
         private String name,userName,phone,taka,type,date;
@@ -140,7 +140,7 @@ public class AllMemberList extends AppCompatActivity
                                 }
 
                                 if(memberList.size()==1)txtPerson.setText(String.valueOf(memberList.size())+"  person");
-                                else txtPerson.setText(String.valueOf(memberList.size())+"  persons");
+                                else txtPerson.setText("("+String.valueOf(memberList.size())+")");
 
                                 adapter = new AdapterMemberList(this,memberList);
                                 listView.setAdapter(adapter);
@@ -164,7 +164,6 @@ public class AllMemberList extends AppCompatActivity
                                                 case "not member":
                                                         dialogClass.notMember();
                                                         break;
-
                                                 default:
                                                         addMemberInListView(userInfo);
                                                         break;

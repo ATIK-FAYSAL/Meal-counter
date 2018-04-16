@@ -34,7 +34,7 @@ public class NoResultFound
                 dialogClass = new AlertDialogClass(context);
         }
 
-        public void checkJoinRequest(String userName,Class<?>nameOfClass,String action)
+        public void checkValueIsExist(String userName, Class<?>nameOfClass, String action)
         {
                 this.nameOfClass = nameOfClass;
                 String post ;
@@ -53,7 +53,6 @@ public class NoResultFound
                         }
                 }else dialogClass.noInternetConnection();
         }
-
 
         private OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override

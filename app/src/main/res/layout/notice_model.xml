@@ -14,7 +14,7 @@
         android:layout_marginTop="4dp">
 
         <TextView
-            android:id="@+id/txtUserName"
+            android:id="@+id/txtName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -29,8 +29,8 @@
             android:id="@+id/txtDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/txtUserName"
-            android:layout_below="@+id/txtUserName"
+            android:layout_alignStart="@+id/txtName"
+            android:layout_below="@+id/txtName"
             android:layout_marginTop="11dp"
             android:hint="date"
             android:textColor="@color/offWhite"

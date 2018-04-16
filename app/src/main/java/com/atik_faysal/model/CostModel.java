@@ -6,14 +6,15 @@ package com.atik_faysal.model;
 
 public class CostModel
 {
-        String name,taka,date,id;
+        private String name,taka,date,id,status;
 
-        public CostModel(String id,String name,String taka,String date)
+        public CostModel(String id,String name,String taka,String date,String status)
         {
                 this.id = id;
                 this.name = name;
                 this.taka = taka;
                 this.date = date;
+                this.status = status;
         }
 
         public String getId() {
@@ -46,5 +47,13 @@ public class CostModel
 
         public void setDate(String date) {
                 this.date = date;
+        }
+
+        public String getStatus() {
+                return status;
+        }
+
+        public void setStatus(String status) {
+                this.status = status;
         }
 }

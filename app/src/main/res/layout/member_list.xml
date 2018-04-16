@@ -31,20 +31,21 @@
               android:layout_marginRight="15dp"
               android:layout_marginStart="19dp"
               android:layout_marginTop="11dp"
-              android:text="Total Member : "
-              android:textColor="#FF4081"
+              android:text="Members"
+              android:textColor="@color/color2"
               android:textSize="18dp"
-              android:textStyle="bold" />
+              android:textStyle="normal" />
 
           <TextView
               android:id="@+id/txtPerson"
-              android:layout_width="wrap_content"
+              android:layout_width="66dp"
               android:layout_height="wrap_content"
               android:layout_alignBottom="@+id/textView16"
               android:layout_alignTop="@+id/textView16"
-              android:layout_marginStart="11dp"
+              android:layout_marginStart="0dp"
               android:layout_toEndOf="@+id/textView16"
               android:hint="person"
+              android:paddingLeft="5dp"
               android:textColor="@color/black"
               android:textSize="18dp" />
       </RelativeLayout>

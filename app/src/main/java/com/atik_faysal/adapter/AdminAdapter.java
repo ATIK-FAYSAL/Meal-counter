@@ -88,7 +88,7 @@ public class AdminAdapter extends BaseAdapter
                 view = inflater.inflate(R.layout.member_model, parent, false);
 
                 txtName = view.findViewById(R.id.txtName);
-                txtUserName = view.findViewById(R.id.txtUserName);
+                txtUserName = view.findViewById(R.id.txtName);
                 txtPhone = view.findViewById(R.id.txtPhone);
                 txtDate = view.findViewById(R.id.txtDate);
                 txtType = view.findViewById(R.id.txtType);

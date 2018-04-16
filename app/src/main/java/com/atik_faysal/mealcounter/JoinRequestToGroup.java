@@ -62,7 +62,7 @@ public class JoinRequestToGroup extends AppCompatActivity
         //initialize all user information related variable by getText from textView or editText
         private void initComponent()
         {
-                groupId = findViewById(R.id.txtUserName);
+                groupId = findViewById(R.id.txtName);
                 gAdmin = findViewById(R.id.txtTaka);
                 gAddress = findViewById(R.id.gAddress);
                 gMember = findViewById(R.id.gMember);

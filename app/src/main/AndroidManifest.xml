@@ -85,9 +85,10 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".SetTabLayout"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:label="Shopping"/>
 
-        <activity android:name=".AddCost"
+        <activity android:name=".CostOfSecretCloseGroup"
             android:screenOrientation="portrait"
             android:label="Today's Cost"/>
 
@@ -99,6 +100,22 @@
             android:screenOrientation="portrait"
             android:label="Select"/>
         <activity android:name="com.atik_faysal.others.EmptyActivity"/>
+
+        <activity android:name=".CostForPublicGroup"
+            android:screenOrientation="portrait"
+            android:label="Cost"/>
+
+        <activity android:name=".CostForSecretCloseMem"
+            android:screenOrientation="portrait"
+            android:label="Cost List"/>
+
+        <activity android:name=".ApproveBalance"
+            android:label="Approving"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".MonthReport"
+            android:label="Report"
+            android:screenOrientation="portrait"/>
 
         <service android:name="com.atik_faysal.services.FirebaseMessagingService">
             <intent-filter>
@@ -122,6 +139,7 @@
                 <data android:scheme="@string/log_in_protocall" />
             </intent-filter>
         </activity>
+
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

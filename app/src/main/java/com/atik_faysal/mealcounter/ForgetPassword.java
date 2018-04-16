@@ -53,7 +53,7 @@ public class ForgetPassword extends AppCompatActivity
         private void initComponent()
         {
                 eFaWord = findViewById(R.id.eFavourite);
-                eUserName = findViewById(R.id.txtUserName);
+                eUserName = findViewById(R.id.txtName);
                 bContinue = findViewById(R.id.bContinue);
                 toolbar = findViewById(R.id.toolbar1);
                 ePhone = findViewById(R.id.txtPhoneNumber);
