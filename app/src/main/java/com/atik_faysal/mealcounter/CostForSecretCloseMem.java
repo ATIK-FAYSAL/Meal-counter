@@ -70,8 +70,7 @@ public class CostForSecretCloseMem extends AppCompatActivity
                 if(internetIsOn.isOnline())
                 {
                         try {
-                                String DATA = URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(sharedPreferenceData.getCurrentUserName(), "UTF-8") + "&"
-                                        + URLEncoder.encode("month", "UTF-8") + "=" + URLEncoder.encode(someMethod.getMonth(), "UTF-8");
+                                String DATA = URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(sharedPreferenceData.getCurrentUserName(), "UTF-8");
                                 importantData.getAllShoppingCost(getResources().getString(R.string.shoppingCost), DATA,infoInterfaces);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();

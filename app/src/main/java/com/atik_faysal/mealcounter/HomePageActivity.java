@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.view.MenuInflater;
@@ -29,6 +30,7 @@ import com.atik_faysal.backend.GetImportantData;
 import com.atik_faysal.backend.RegisterDeviceToken;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.SearchableModel;
+import com.atik_faysal.others.CreateSession;
 import com.atik_faysal.others.NoResultFound;
 import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
@@ -58,6 +60,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         private ImageView[] imageViews = new ImageView[8];
         private int[] imageViewId = {R.id.image1,R.id.image2,R.id.image3,R.id.image4,R.id.image5,R.id.image6,R.id.image7,R.id.image8};
         private ImageView userImage;
+        private FloatingActionButton fab;
 
 
         private SharedPreferenceData sharedPreferenceData;
@@ -281,6 +284,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 txtTodayMeal = findViewById(R.id.txtTmeal);
                 txtMyMeal = findViewById(R.id.txtMmeal);
                 TextView txtDate = findViewById(R.id.txtDate);
+                fab = findViewById(R.id.fab);
 
                 initObject();//initialize cardView and imageView
                 //other initialize
@@ -326,8 +330,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                //String url = "http://192.168.56.1/homePageInfo.php";
                                String POST_DATA = URLEncoder.encode("userName", "UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(), "UTF-8")+"&"
                                        +URLEncoder.encode("group", "UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(), "UTF-8")+"&"
-                                       +URLEncoder.encode("date", "UTF-8")+"="+URLEncoder.encode(someMethod.getDate(), "UTF-8")+"&"
-                                       +URLEncoder.encode("month", "UTF-8")+"="+URLEncoder.encode(someMethod.getMonth(), "UTF-8");
+                                       +URLEncoder.encode("date", "UTF-8")+"="+URLEncoder.encode(someMethod.getDate(), "UTF-8");
                                DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(HomePageActivity.this);
                                backgroundTask.setOnResultListener(anInterface);
                                backgroundTask.execute(getResources().getString(R.string.homePageInfo), POST_DATA);
@@ -336,8 +339,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                        }
 
                }else dialogClass.noInternetConnection();
-
-
 
         }
 
@@ -430,6 +431,14 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 dialogClass.notMember();
                         else Toast.makeText(this,"click on button 9",Toast.LENGTH_SHORT).show();
                 }
+
+
+                fab.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                                startActivity(new Intent(HomePageActivity.this, CreateSession.class));
+                        }
+                });
 
         }
 

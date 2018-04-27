@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <include
         android:id="@+id/toolbar"
@@ -11,184 +12,187 @@
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@+id/toolbar"
+        android:background="@color/white"
+        android:gravity="center">
 
         <TextView
             android:id="@+id/txtMonth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="41dp"
+            android:layout_alignTop="@+id/mealRate"
+            android:layout_marginEnd="40dp"
             android:hint="Month"
             android:textColor="@color/color2"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"/>
+            android:padding="5dp"/>
 
-        <LinearLayout
-            android:id="@+id/layout1"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/mealRate"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            android:layout_below="@+id/txtMonth">
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="58dp"
+            android:layout_marginTop="11dp"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/icon_taka"
+            android:drawablePadding="5dp"
+            android:hint="meal rate"
+            android:padding="5dp"
+            android:textColor="@color/color2"
+            android:textSize="16dp"
+            android:textStyle="normal" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Total taka"
-                android:textSize="16dp"
-                android:textStyle="normal"
-                android:textColor="#F8067A"/>
 
-            <TextView
-                android:id="@+id/totalTaka"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Taka"
-                android:drawableLeft="@drawable/icon_taka"
-                android:drawablePadding="3dp"
-                android:textSize="16dp"
-                android:textStyle="normal" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout2"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            android:layout_below="@+id/layout1">
+            android:layout_height="133dp"
+            android:layout_below="@+id/txtMonth"
+            android:layout_marginTop="13dp"
+            android:layout_marginLeft="20dp">
 
-            <TextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/layout1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Total cost"
-                android:textSize="16dp"
-                android:textStyle="normal"
-                android:textColor="#F8067A"/>
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:paddingLeft="15dp">
 
-            <TextView
-                android:id="@+id/totalCost"
-                android:layout_width="0dp"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="Total taka"
+                    android:textColor="@color/colorA"
+                    android:textSize="16dp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="Total meal"
+                    android:textColor="@color/colorA"
+                    android:textSize="16dp"
+                    android:textStyle="normal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Taka"
-                android:drawableLeft="@drawable/icon_taka"
-                android:drawablePadding="3dp"
-                android:textSize="16dp"
-                android:textStyle="normal" />
+                android:layout_below="@+id/layout3"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:padding="5dp">
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="Total cost"
+                    android:textColor="@color/colorA"
+                    android:textSize="16dp"
+                    android:textStyle="normal" />
 
-        <LinearLayout
-            android:id="@+id/layout3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            android:layout_below="@+id/layout2">
+                <TextView
+                    android:id="@+id/text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:paddingLeft="3dp"
+                    android:text="Remain"
+                    android:textColor="@color/colorA"
+                    android:textSize="16dp"
+                    android:textStyle="normal" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/layout3"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Remaining"
-                android:textSize="16dp"
-                android:textStyle="normal"
-                android:textColor="#F8067A"/>
+                android:layout_below="@+id/layout1"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:padding="5dp">
 
-            <TextView
-                android:id="@+id/remaining"
-                android:layout_width="0dp"
+
+                <TextView
+                    android:id="@+id/totalTaka"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:drawableLeft="@drawable/icon_taka"
+                    android:drawablePadding="3dp"
+                    android:gravity="start"
+                    android:hint="Taka"
+                    android:textColor="@color/color7"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/totalMeal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:drawablePadding="3dp"
+                    android:gravity="start"
+                    android:hint="meal"
+                    android:paddingLeft="20dp"
+                    android:textColor="@color/color7"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout4"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Taka"
-                android:drawableLeft="@drawable/icon_taka"
-                android:drawablePadding="3dp"
-                android:textSize="16dp"
-                android:textStyle="normal" />
+                android:layout_below="@+id/layout2"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:padding="5dp">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/totalCost"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:drawableLeft="@drawable/icon_taka"
+                    android:drawablePadding="3dp"
+                    android:hint="Taka"
+                    android:textColor="@color/color7"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
-        <LinearLayout
-            android:id="@+id/layout4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            android:layout_below="@+id/layout3">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Total meal"
-                android:textSize="16dp"
-                android:textStyle="normal"
-                android:textColor="#F8067A"/>
+                <TextView
+                    android:id="@+id/remaining"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:drawableLeft="@drawable/icon_taka"
+                    android:drawablePadding="5dp"
+                    android:hint="Taka"
+                    android:paddingLeft="3dp"
+                    android:textColor="@color/color7"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/totalMeal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="meal"
-                android:drawablePadding="3dp"
-                android:textSize="16dp"
-                android:paddingLeft="20dp"
-                android:textStyle="normal" />
+            </LinearLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            android:layout_below="@+id/layout4">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Meal rate"
-                android:textSize="16dp"
-                android:textStyle="normal"
-                android:textColor="#F8067A"/>
-
-            <TextView
-                android:id="@+id/mealRate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="meal rate"
-                android:drawablePadding="5dp"
-                android:textSize="16dp"
-                android:textStyle="normal"
-                android:drawableLeft="@drawable/icon_taka"/>
-
-        </LinearLayout>
+        </RelativeLayout>
 
     </RelativeLayout>
 
@@ -196,13 +200,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:background="@color/color8">
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/list"
             android:padding="8dp"
-            android:dividerHeight="3dp"
+            android:dividerHeight="8dp"
             android:divider="@color/color8">
         </ListView>
 

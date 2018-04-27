@@ -3,7 +3,7 @@
     <color name="colorPrimary">#09c6df</color>
     <color name="colorPrimaryDark">#00B0FF</color>
     <color name="offWhite">#78858c</color>
-    <color name="color1">#1C4A6C</color>
+    <color name="color1">#52c40b</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#fafafa</color>
     <color name="color2">#09c6df</color>
@@ -17,4 +17,7 @@
     <color name="color8">#E0E0E0</color>
     <color name="green">#03ffa7</color>
     <color name="error">#EC407A</color>
+    <color name="color9">#00FEEB</color>
+    <color name="colorA">#FF5722</color>
+    <color name="colorB">#127CF4</color>
 </resources>

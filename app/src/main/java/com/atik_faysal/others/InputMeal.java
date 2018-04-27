@@ -19,7 +19,6 @@ import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
-import com.atik_faysal.mealcounter.HomePageActivity;
 import com.atik_faysal.mealcounter.MealClass;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
@@ -48,7 +47,6 @@ public class InputMeal extends Fragment
         private SwipeRefreshLayout refreshLayout;
 
         private String breakfast,dinner,lunch;
-        private String[] splitDate;
 
         private CheckInternetIsOn internetIsOn;
         private NeedSomeMethod someMethod;
@@ -129,7 +127,6 @@ public class InputMeal extends Fragment
                                         try {
                                                 String data = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8")+"&"
                                                         +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDate(),"UTF-8")+"&"
-                                                        +URLEncoder.encode("month","UTF-8")+"="+URLEncoder.encode(someMethod.getMonth(),"UTF-8")+"&"
                                                         +URLEncoder.encode("member","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8")+"&"
                                                         +URLEncoder.encode("breakfast","UTF-8")+"="+URLEncoder.encode(breakfast,"UTF-8")+"&"
                                                         +URLEncoder.encode("lunch","UTF-8")+"="+URLEncoder.encode(lunch,"UTF-8")+"&"

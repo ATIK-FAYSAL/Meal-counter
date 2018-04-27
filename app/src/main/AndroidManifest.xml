@@ -116,6 +116,10 @@
         <activity android:name=".MonthReport"
             android:label="Report"
             android:screenOrientation="portrait"/>
+        <activity android:name="com.atik_faysal.others.EachMemReport"
+            android:label="Member Report"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.atik_faysal.others.CreateSession"/>
 
         <service android:name="com.atik_faysal.services.FirebaseMessagingService">
             <intent-filter>

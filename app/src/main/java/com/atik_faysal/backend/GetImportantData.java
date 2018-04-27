@@ -21,13 +21,13 @@ import java.util.ArrayList;
 
 public class GetImportantData
 {
-        Context context;
-        Activity activity;
-        DatabaseBackgroundTask backgroundTask;
-        SharedPreferenceData sharedPreferenceData;
-        CheckInternetIsOn internetIsOn;
-        AlertDialogClass dialogClass;
-        InfoInterfaces infoInterfaces;
+        private Context context;
+        private Activity activity;
+        private DatabaseBackgroundTask backgroundTask;
+        private SharedPreferenceData sharedPreferenceData;
+        private CheckInternetIsOn internetIsOn;
+        private AlertDialogClass dialogClass;
+        private InfoInterfaces infoInterfaces;
 
         public GetImportantData(Context context)
         {
@@ -86,6 +86,7 @@ public class GetImportantData
                 }
         };
 
+        //group type
         private OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
                 public void onResultSuccess(final String result) {

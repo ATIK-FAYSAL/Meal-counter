@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="5dp">
+    app:cardCornerRadius="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,7 +19,8 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:hint="userName"
-            android:textSize="17dp"/>
+            android:textSize="17dp"
+            android:textColor="@color/color5"/>
 
         <View
             android:layout_width="match_parent"
@@ -34,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@+id/view"
+            android:layout_below="@+id/linear1"
             android:layout_marginTop="5dp"
             android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp">
@@ -44,50 +45,117 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="taka"
+                android:hint="taka"
                 android:textSize="17dp"
-                android:padding="5dp"/>
+                android:padding="5dp"
+                android:textColor="@color/color2"/>
 
             <TextView
                 android:id="@+id/txtMeal"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Meal"
+                android:hint="Meal"
                 android:padding="5dp"
-                android:textSize="17dp"/>
+                android:textSize="17dp"
+                android:textColor="@color/color2"/>
 
             <TextView
                 android:id="@+id/txtCost"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Cost"
+                android:hint="Cost"
                 android:padding="5dp"
-                android:textSize="17dp"/>
+                android:textSize="17dp"
+                android:textColor="@color/color2"/>
 
             <TextView
                 android:id="@+id/txtStatus"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="status"
+                android:hint="status"
                 android:padding="5dp"
-                android:textSize="17dp"/>
+                android:textSize="17dp"
+                android:textColor="@color/color2"/>
 
 
         </LinearLayout>
 
-        <Button
+        <LinearLayout
+            android:id="@+id/linear1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/view"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp">
+
+            <TextView
+                android:id="@+id/txtTaka1"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Taka"
+                android:textSize="17dp"
+                android:padding="5dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/txtMeal1"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Meal"
+                android:padding="5dp"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/txtCost1"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Cost"
+                android:padding="5dp"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/txtStatus1"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="status"
+                android:padding="5dp"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/black"/>
+
+
+        </LinearLayout>
+
+        <TextView
             android:id="@+id/bDetails"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/linear"
             android:layout_marginTop="10dp"
-            android:text="Details"
+            android:text="See"
             android:layout_below="@+id/linear"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:drawableRight="@drawable/right_icon"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/colorAccent"
+            android:paddingLeft="20dp"
+            android:textSize="20dp" />
 
     </RelativeLayout>
 

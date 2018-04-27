@@ -38,8 +38,8 @@
                android:layout_toStartOf="@+id/bOk"
                android:gravity="start"
                android:hint="current date"
-               android:textSize="15dp"
-               android:textColor="@color/black"/>
+               android:textSize="13dp"
+               android:textColor="@color/error"/>
 
            <ImageView
                android:id="@+id/bEdit"
@@ -140,7 +140,9 @@
                android:gravity="center"
                android:hint="Break fast"
                android:textSize="17dp"
-               android:inputType="number"/>
+               android:inputType="number"
+               android:textColor="@color/black"
+               android:textStyle="bold"/>
 
            <TextView
                android:id="@+id/eLunch"
@@ -153,7 +155,9 @@
                android:gravity="center"
                android:hint="Lunch"
                android:textSize="17dp"
-               android:inputType="number"/>
+               android:inputType="number"
+               android:textColor="@color/black"
+               android:textStyle="bold"/>
 
            <TextView
                android:id="@+id/eDinner"
@@ -166,7 +170,9 @@
                android:gravity="center"
                android:hint="Dinner"
                android:textSize="17dp"
-               android:inputType="number"/>
+               android:inputType="number"
+               android:textColor="@color/black"
+               android:textStyle="bold"/>
 
 
            <TextView
@@ -180,7 +186,9 @@
                android:gravity="center"
                android:hint="Total"
                android:textSize="17dp"
-               android:inputType="number"/>
+               android:inputType="number"
+               android:textColor="@color/black"
+               android:textStyle="bold"/>
        </LinearLayout>
 
    </LinearLayout>

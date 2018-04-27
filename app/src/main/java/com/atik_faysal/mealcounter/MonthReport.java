@@ -29,7 +29,11 @@ import java.util.List;
 
 public class MonthReport extends AppCompatActivity
 {
-        private TextView txtTotalTaka,txtTotalCost,txtMonth,txtTotalMeal,txtMealRate,txtRemaining;
+        private TextView txtTotalTaka;
+        private TextView txtTotalCost;
+        private TextView txtTotalMeal;
+        private TextView txtMealRate;
+        private TextView txtRemaining;
         private ListView listView;
 
         private SharedPreferenceData sharedPreferenceData;
@@ -60,7 +64,7 @@ public class MonthReport extends AppCompatActivity
                 txtTotalMeal = findViewById(R.id.totalMeal);
                 txtMealRate = findViewById(R.id.mealRate);
                 txtRemaining = findViewById(R.id.remaining);
-                txtMonth = findViewById(R.id.txtMonth);
+                TextView txtMonth = findViewById(R.id.txtMonth);
                 listView = findViewById(R.id.list);
 
 
@@ -77,7 +81,7 @@ public class MonthReport extends AppCompatActivity
                 {
                         try {
                                 String data = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8")+"&"
-                                        +URLEncoder.encode("month","UTF-8")+"="+URLEncoder.encode(someMethod.getMonth(),"UTF-8");
+                                        +URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8");
                                 backgroundTask.setOnResultListener(asyncTaskInterface);
                                 backgroundTask.execute(getResources().getString(R.string.report),data);
 
@@ -143,7 +147,7 @@ public class MonthReport extends AppCompatActivity
                                 }
                         }
 
-                        adapter = new ReportAdapter(this,modelList);
+                        adapter = new ReportAdapter(this,modelList,mealRate,someMethod.getMonth());
                         listView.setAdapter(adapter);
 
                         txtTotalTaka.setText(monthlyTaka);txtTotalMeal.setText(monthlyMeal);txtTotalCost.setText(monthlyCost);

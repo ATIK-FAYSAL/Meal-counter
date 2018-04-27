@@ -62,4 +62,6 @@
     <string name="approveBalance">http://192.168.56.1/balanceApproval.php</string>
     <string name="editMemBalance">http://192.168.56.1/editMemBalance.php</string>
     <string name="report">http://192.168.56.1/report.php</string>
+    <string name="eachMemReport">http://192.168.56.1/eachMemReport.php</string>
+    <string name="createSession">http://192.168.56.1/createSession.php</string>
 </resources>
