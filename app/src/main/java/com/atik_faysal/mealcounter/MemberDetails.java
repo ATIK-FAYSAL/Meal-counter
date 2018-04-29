@@ -81,7 +81,7 @@ public class MemberDetails extends AppCompatActivity
                 toolbar = findViewById(R.id.toolbar1);
                 setSupportActionBar(toolbar);
                 txtTaka = findViewById(R.id.txtTaka);
-                txtUserName = findViewById(R.id.txtName);
+                txtUserName = findViewById(R.id.txtUserName);
                 txtGroup = findViewById(R.id.txtGroup);
                 txtDate = findViewById(R.id.gDate);
                 imageView = findViewById(R.id.image);

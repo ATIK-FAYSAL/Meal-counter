@@ -105,7 +105,7 @@ public class NoticeBoard extends AppCompatActivity
                 someMethod.reloadPage(refreshLayout,NoticeBoard.class);
 
                 currentUser = sharedPreferenceData.getCurrentUserName();
-                readyToConnect();
+                getAllNotice();
         }
 
         //set a toolbar,above the page
@@ -188,7 +188,7 @@ public class NoticeBoard extends AppCompatActivity
         }
 
         //ready to connect online
-        private void readyToConnect()
+        private void getAllNotice()
         {
                 try {
                        if(internetIsOn.isOnline())
@@ -246,8 +246,8 @@ public class NoticeBoard extends AppCompatActivity
                                                 switch (result)
                                                 {
                                                         case "success":
-                                                                readyToConnect();
-                                                                Toast.makeText(NoticeBoard.this,"Notice published",Toast.LENGTH_SHORT).show();
+                                                                someMethod.progress("Working on it...","Notice published");
+                                                                getAllNotice();
                                                                 break;
 
                                                         case "not member":

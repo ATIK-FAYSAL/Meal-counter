@@ -68,6 +68,7 @@
                 android:hint="Cost"
                 android:padding="5dp"
                 android:textSize="17dp"
+                android:gravity="center"
                 android:textColor="@color/color2"/>
 
             <TextView
@@ -78,6 +79,7 @@
                 android:hint="status"
                 android:padding="5dp"
                 android:textSize="17dp"
+                android:gravity="center"
                 android:textColor="@color/color2"/>
 
 

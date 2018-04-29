@@ -1,5 +1,6 @@
 package com.atik_faysal.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +66,7 @@ public class BalanceApprovalAdapter extends BaseAdapter
                 return position;
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public View getView(final int i, View v, ViewGroup viewGroup)
         {
@@ -91,14 +93,17 @@ public class BalanceApprovalAdapter extends BaseAdapter
                 bCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                                dialogClass.onSuccessListener(onAsyncTaskInterface);
-                                dialogClass.warning("Do you want to remove this ?");
-                                try {
-                                        data = URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(modelList.get(i).getId(),"UTF-8")+"&"
-                                                +URLEncoder.encode("check","UTF-8")+"="+URLEncoder.encode("remove","UTF-8");
-                                } catch (UnsupportedEncodingException e) {
-                                        e.printStackTrace();
-                                }
+                                if(sharedPreferenceData.getUserType().equals("admin"))
+                                {
+                                        dialogClass.onSuccessListener(onAsyncTaskInterface);
+                                        dialogClass.warning("Do you want to remove this ?");
+                                        try {
+                                                data = URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(modelList.get(i).getId(),"UTF-8")+"&"
+                                                        +URLEncoder.encode("check","UTF-8")+"="+URLEncoder.encode("remove","UTF-8");
+                                        } catch (UnsupportedEncodingException e) {
+                                                e.printStackTrace();
+                                        }
+                                }else dialogClass.error("Only admin can delete balance.you are not an admin..");
                         }
                 });
 

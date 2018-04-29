@@ -25,8 +25,8 @@ import java.util.Calendar;
 public class NeedSomeMethod
 {
 
-        Context context;
-        Activity activity;
+        private Context context;
+        private Activity activity;
         DatabaseBackgroundTask backgroundTask;
         SharedPreferenceData sharedPreferenceData;
         CheckInternetIsOn internetIsOn;
@@ -195,6 +195,28 @@ public class NeedSomeMethod
                 });
         }
 
+        public void progress(String message, final String toast)
+        {
+                final ProgressDialog ringProgressDialog = ProgressDialog.show(context, "Please wait", message, true);
+                ringProgressDialog.setCancelable(true);
+                new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                                try {
+                                        Thread.sleep(2500);
+                                } catch (Exception e) {
+                                }
+                                ringProgressDialog.dismiss();
+                        }
+                }).start();
+                ringProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                                Toast.makeText(context,toast,Toast.LENGTH_SHORT).show();
+                        }
+                });
+        }
+
         OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
                 public void onResultSuccess(final String result) {
@@ -203,6 +225,8 @@ public class NeedSomeMethod
                                 public void run() {
                                         if(!result.equals("failed"))
                                                 sharedPreferenceData.myGroup(result);
+                                        else if(result.equals("failed"))
+                                                sharedPreferenceData.myGroup("nope");
                                 }
                         });
                 }

@@ -11,11 +11,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
+import com.gdacciaro.iOSDialog.iOSDialog;
+import com.gdacciaro.iOSDialog.iOSDialogBuilder;
+import com.gdacciaro.iOSDialog.iOSDialogClickListener;
 
 /**
  * Created by USER on 1/21/2018.
@@ -27,6 +31,8 @@ public class AlertDialogClass extends AlertDialog
         private Context context;
         private AlertDialog.Builder builder;
         private AlertDialog alertDialog;
+        private CheckInternetIsOn internetIsOn;
+        private NeedSomeMethod someMethod;
 
         private Activity activity;
 
@@ -39,6 +45,7 @@ public class AlertDialogClass extends AlertDialog
                 this.context = context;
                 builder = new AlertDialog.Builder(context);
                 activity = (Activity) context;
+                internetIsOn = new CheckInternetIsOn(context);
         }
 
         public void onSuccessListener(OnAsyncTaskInterface onAsyncTaskInterface)
@@ -53,12 +60,10 @@ public class AlertDialogClass extends AlertDialog
                 Button bSetting;
                 builder = new AlertDialog.Builder(context);
                 View view = LayoutInflater.from(context).inflate(R.layout.dialog_no_internet,null);
-
-
                 bSetting = view.findViewById(R.id.bSetting);
+
                 builder.setView(view);
                 builder.setCancelable(false);
-
                 alertDialog = builder.create();
                 alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 alertDialog.show();
@@ -95,6 +100,7 @@ public class AlertDialogClass extends AlertDialog
                                 //activity.finish();
                         }
                 });
+
         }
 
         //if you are already member

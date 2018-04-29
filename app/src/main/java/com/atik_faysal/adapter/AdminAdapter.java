@@ -1,5 +1,6 @@
 package com.atik_faysal.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -81,6 +82,7 @@ public class AdminAdapter extends BaseAdapter
                 return position;
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -88,7 +90,7 @@ public class AdminAdapter extends BaseAdapter
                 view = inflater.inflate(R.layout.member_model, parent, false);
 
                 txtName = view.findViewById(R.id.txtName);
-                txtUserName = view.findViewById(R.id.txtName);
+                txtUserName = view.findViewById(R.id.txtUserName);
                 txtPhone = view.findViewById(R.id.txtPhone);
                 txtDate = view.findViewById(R.id.txtDate);
                 txtType = view.findViewById(R.id.txtType);

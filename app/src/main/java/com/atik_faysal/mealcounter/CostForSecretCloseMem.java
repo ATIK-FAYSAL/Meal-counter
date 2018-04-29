@@ -1,5 +1,6 @@
 package com.atik_faysal.mealcounter;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,6 +25,7 @@ import com.atik_faysal.model.CostModel;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -48,10 +50,12 @@ public class CostForSecretCloseMem extends AppCompatActivity
                 setToolbar();
         }
 
+        @SuppressLint("SetTextI18n")
         private void initComponent()
         {
                 SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh1);
                 refreshLayout.setColorSchemeResources(R.color.color2, R.color.red, R.color.color6);
+                TextView txtSession = findViewById(R.id.txtSession);
 
                 someMethod = new NeedSomeMethod(this);
                 sharedPreferenceData = new SharedPreferenceData(this);
@@ -66,7 +70,7 @@ public class CostForSecretCloseMem extends AppCompatActivity
                 listView = findViewById(R.id.list);
                 currentDate = someMethod.getDate();
                 txtDate.setText(currentDate);
-
+                txtSession.setText("#"+sharedPreferenceData.getmyCurrentSession());
                 if(internetIsOn.isOnline())
                 {
                         try {

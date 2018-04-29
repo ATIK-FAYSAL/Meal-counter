@@ -18,34 +18,52 @@
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/txtDate"
-                android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/lini1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="7dp"
-                android:paddingRight="10dp"
-                android:text=" 01-03-2018"
-                android:textSize="17dp"
-                android:drawableLeft="@drawable/icon_bold"
-                android:textColor="@color/colorAccent"
-                android:drawablePadding="5dp"/>
+                android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/txtDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="7dp"
+                    android:paddingRight="10dp"
+                    android:text=" 01-03-2018"
+                    android:textSize="17dp"
+                    android:drawableLeft="@drawable/icon_bold"
+                    android:textColor="@color/colorAccent"
+                    android:drawablePadding="5dp"/>
+                <TextView
+                    android:id="@+id/txtSession"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="39dp"
+                    android:gravity="start"
+                    android:hint="Session"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/colorA"
+                    android:textSize="17dp" />
+
+            </LinearLayout>
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/list"
+                android:layout_below="@+id/lini1"
                 android:dividerHeight="8dp"
                 android:divider="@color/color8"
                 android:layout_marginTop="5dp">
             </ListView>
-
-        </LinearLayout>
-
+        </RelativeLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

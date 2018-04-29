@@ -27,6 +27,7 @@ public class SharedPreferenceData
         private static final String GROUP_TYPE = "groupType";
         private final static String USER_INFO = "currentInfo";
         private final static String USER_IMAGE = "image";
+        private final static String SESSION = "session";
 
         private Context context;
 
@@ -192,5 +193,21 @@ public class SharedPreferenceData
         {
                 sharedPreferences = context.getSharedPreferences(USER_IMAGE,Context.MODE_PRIVATE);
                 return sharedPreferences.getBoolean("isSave",false);
+        }
+
+        public void myCurrentSession(String session)
+        {
+                sharedPreferences = context.getSharedPreferences(SESSION,Context.MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putString("session",session);
+                editor.apply();
+        }
+
+        public String getmyCurrentSession()
+        {
+                String value;
+                sharedPreferences = context.getSharedPreferences(SESSION,Context.MODE_PRIVATE);
+                value = sharedPreferences.getString("session","null");
+                return value;
         }
 }

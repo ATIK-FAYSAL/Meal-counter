@@ -1,5 +1,6 @@
 package com.atik_faysal.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -68,6 +69,7 @@ public class AcceptRequestAdapter extends BaseAdapter
                 return position;
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -75,7 +77,7 @@ public class AcceptRequestAdapter extends BaseAdapter
                 view = inflater.inflate(R.layout.member_model, parent, false);
 
                 txtName = view.findViewById(R.id.txtName);
-                txtUserName = view.findViewById(R.id.txtName);
+                txtUserName = view.findViewById(R.id.txtUserName);
                 txtPhone = view.findViewById(R.id.txtPhone);
                 txtId = view.findViewById(R.id.txtType);
                 txtStatus = view.findViewById(R.id.txtTaka);

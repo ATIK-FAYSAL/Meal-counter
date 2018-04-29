@@ -1,5 +1,6 @@
 package com.atik_faysal.mealcounter;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -47,10 +48,12 @@ public class CostOfSecretCloseGroup extends ShoppingCost {
         }
 
         //initialize all  component
+        @SuppressLint("SetTextI18n")
         protected void init() {
                 spinner = findViewById(R.id.spinner);
                 txtName = findViewById(R.id.txtName);
                 spinner = findViewById(R.id.spinner);
+                TextView txtSession = findViewById(R.id.txtSession);
 
                 SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh1);
                 refreshLayout.setColorSchemeResources(R.color.color2, R.color.red, R.color.color6);
@@ -61,6 +64,7 @@ public class CostOfSecretCloseGroup extends ShoppingCost {
                 internetIsOn = new CheckInternetIsOn(this);
                 someMethod = new NeedSomeMethod(this);
                 someMethod.reloadPage(refreshLayout, CostOfSecretCloseGroup.class);
+                txtSession.setText("#"+sharedPreferenceData.getmyCurrentSession());
 
                 if (internetIsOn.isOnline()) {
                         try {
@@ -105,13 +109,13 @@ public class CostOfSecretCloseGroup extends ShoppingCost {
                                         switch (result) {
                                                 case "success":
                                                         CostOfSecretCloseGroup.super.initComponent();
-                                                        dialogClass.success("Today's only_show_cost add successfully.");
+                                                        dialogClass.success("Today's cost add successfully.");
                                                         break;
                                                 case "error":
                                                         dialogClass.error("Execution failed,Please try again.");
                                                         break;
                                                 case "exist":
-                                                        dialogClass.error("Execution failed,Today's shopping only_show_cost is already added.");
+                                                        dialogClass.error("Execution failed,Today's shopping cost is already added.");
                                                         break;
                                                 default:
                                                         memName = new ArrayList<>();

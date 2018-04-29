@@ -62,7 +62,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         private ImageView userImage;
         private FloatingActionButton fab;
 
-
         private SharedPreferenceData sharedPreferenceData;
         private CheckInternetIsOn internetIsOn;
         private AlertDialogClass dialogClass;
@@ -310,6 +309,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 someMethod.userCurrentStatus(currentUser,"active");
                 someMethod.myGroupName(currentUser);
                 importantData.myGroupType(currentUser);
+                importantData.getCurrentSession(currentUser);
                 closeApp();
 
 
@@ -372,13 +372,26 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                 if(id==cardViewId[0]||id==imageViewId[0])
                 {
-                        startActivity(new Intent(HomePageActivity.this,MealClass.class));
+                        if(sharedPreferenceData.getUserType().equals("nope"))
+                                dialogClass.notMember();
+                        else
+                        {
+                                if(sharedPreferenceData.getmyCurrentSession().equals("nope"))
+                                        dialogClass.error("No session available,please contact with admin.");
+                                else startActivity(new Intent(HomePageActivity.this,MealClass.class));
+                        }
                         //new MealClass().setTabLayout();
                 }else if(id==cardViewId[1]||id==imageViewId[1])
                 {
                         if(sharedPreferenceData.getUserType().equals("nope"))
                                 dialogClass.notMember();
-                        else noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),ApproveBalance.class,"approval");
+                        else
+                        {
+                                if (sharedPreferenceData.getmyCurrentSession().equals("nope"))
+                                        dialogClass.error("No session available,please contact with admin.");
+                                else
+                                        noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),ApproveBalance.class,"approval");
+                        }
                                // startActivity(new Intent(HomePageActivity.this,ApproveBalance.class));
                 }else if(id==cardViewId[2]||id==imageViewId[2])
                 {
@@ -386,17 +399,19 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 dialogClass.notMember();
                         else
                         {
-                                //startActivity(new Intent(HomePageActivity.this,CostForSecretCloseMem.class));
-
-                                if(sharedPreferenceData.getMyGroupType().equals("public"))
-                                        startActivity(new Intent(HomePageActivity.this,CostForPublicGroup.class));
-                                else if((sharedPreferenceData.getMyGroupType().equals("secret")||sharedPreferenceData.getMyGroupType().equals("close"))
-                                        &&sharedPreferenceData.getUserType().equals("admin"))
-                                        startActivity(new Intent(HomePageActivity.this,CostOfSecretCloseGroup.class));
-                                else if((sharedPreferenceData.getMyGroupType().equals("secret")||sharedPreferenceData.getMyGroupType().equals("close"))
-                                        &&sharedPreferenceData.getUserType().equals("member"))
-                                        startActivity(new Intent(HomePageActivity.this,CostForSecretCloseMem.class));
-
+                                if (sharedPreferenceData.getmyCurrentSession().equals("nope"))
+                                        dialogClass.error("No session available,please contact with admin.");
+                                else
+                                {
+                                        if(sharedPreferenceData.getMyGroupType().equals("public"))
+                                                startActivity(new Intent(HomePageActivity.this,CostForPublicGroup.class));
+                                        else if((sharedPreferenceData.getMyGroupType().equals("secret")||sharedPreferenceData.getMyGroupType().equals("close"))
+                                                &&sharedPreferenceData.getUserType().equals("admin"))
+                                                startActivity(new Intent(HomePageActivity.this,CostOfSecretCloseGroup.class));
+                                        else if((sharedPreferenceData.getMyGroupType().equals("secret")||sharedPreferenceData.getMyGroupType().equals("close"))
+                                                &&sharedPreferenceData.getUserType().equals("member"))
+                                                startActivity(new Intent(HomePageActivity.this,CostForSecretCloseMem.class));
+                                }
                         }
                 }else if(id==cardViewId[3]||id==imageViewId[3])
                 {
@@ -419,7 +434,13 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 {
                         if(sharedPreferenceData.getUserType().equals("nope"))
                                 dialogClass.notMember();
-                        else startActivity(new Intent(HomePageActivity.this,MonthReport.class));
+                        else
+                        {
+                                if (sharedPreferenceData.getmyCurrentSession().equals("nope"))
+                                        dialogClass.error("No session available,please contact with admin.");
+                                else
+                                        startActivity(new Intent(HomePageActivity.this,MonthReport.class));
+                        }
                 }else if(id==cardViewId[7]||id==imageViewId[7])
                 {
                         if(sharedPreferenceData.getUserType().equals("nope"))
@@ -436,7 +457,13 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 fab.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                                startActivity(new Intent(HomePageActivity.this, CreateSession.class));
+                                if(sharedPreferenceData.getUserType().equals("admin"))
+                                {
+                                        if(!sharedPreferenceData.getmyCurrentSession().equals("nope"))
+                                                dialogClass.error("Already you are in a session,please finish your first session and then retry.");
+                                        else startActivity(new Intent(HomePageActivity.this, CreateSession.class));
+                                }
+                                else dialogClass.error("Only admin can create new session");
                         }
                 });
 

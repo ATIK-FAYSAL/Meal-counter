@@ -1,5 +1,6 @@
 package com.atik_faysal.mealcounter;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -58,10 +59,12 @@ public class ApproveBalance extends AppCompatActivity
                 });
         }
 
+        @SuppressLint("SetTextI18n")
         private void initComponent()
         {
                 listView = findViewById(R.id.list);
                 TextView txtDate = findViewById(R.id.txtDate);
+                TextView txtSession = findViewById(R.id.txtSession);
 
                 costModelList = new ArrayList<>();
 
@@ -76,6 +79,7 @@ public class ApproveBalance extends AppCompatActivity
                 someMethod.reloadPage(refreshLayout,ApproveBalance.class);
 
                 txtDate.setText(someMethod.getDate());
+                txtSession.setText("#"+sharedPreferenceData.getmyCurrentSession());
                 if(internetIsOn.isOnline())
                 {
                         String file = getResources().getString(R.string.approveBalance);

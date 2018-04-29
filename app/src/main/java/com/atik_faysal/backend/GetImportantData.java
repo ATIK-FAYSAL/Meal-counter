@@ -71,6 +71,24 @@ public class GetImportantData
                 }
         }
 
+
+        public void getCurrentSession(String user)
+        {
+                String data;
+                if(internetIsOn.isOnline())
+                {
+                        try {
+                                data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8")+"&"
+                                        +URLEncoder.encode("action","UTF-8")+"="+URLEncoder.encode("session","UTF-8");
+                                backgroundTask = new DatabaseBackgroundTask(context);
+                                backgroundTask.setOnResultListener(anInterface);
+                                backgroundTask.execute(context.getResources().getString(R.string.alreadyMember),data);
+                        } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                        }
+                }else dialogClass.noInternetConnection();
+        }
+
         //get shopping list as json format
         private OnAsyncTaskInterface taskInterface = new OnAsyncTaskInterface() {
                 @Override
@@ -97,6 +115,14 @@ public class GetImportantData
                                                 sharedPreferenceData.myGroupType(result);
                                 }
                         });
+                }
+        };
+
+
+        private OnAsyncTaskInterface anInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(String message) {
+                        sharedPreferenceData.myCurrentSession(message);
                 }
         };
 

@@ -106,7 +106,7 @@ public class LogInActivity extends AppCompatActivity
                 txtSingUp.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                                startActivity(new Intent(LogInActivity.this,CreateNewAccount.class));
+                                startActivity(new Intent(LogInActivity.this,RegisterUser.class));
                         }
                 });
 

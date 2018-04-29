@@ -1,5 +1,6 @@
 package com.atik_faysal.mealcounter;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,9 +25,11 @@ public class CostForPublicGroup extends ShoppingCost
                 super.setToolbar();
         }
 
+        @SuppressLint("SetTextI18n")
         private void init()
         {
                 TextView txtName = findViewById(R.id.txtName);
+                TextView txtSession = findViewById(R.id.txtSession);
 
                 SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh1);
                 refreshLayout.setColorSchemeResources(R.color.color2, R.color.red, R.color.color6);
@@ -39,6 +42,7 @@ public class CostForPublicGroup extends ShoppingCost
                 someMethod.reloadPage(refreshLayout, CostOfSecretCloseGroup.class);
 
                 txtName.setText(sharedPreferenceData.getCurrentUserName());
+                txtSession.setText("#"+sharedPreferenceData.getmyCurrentSession());
         }
 
 

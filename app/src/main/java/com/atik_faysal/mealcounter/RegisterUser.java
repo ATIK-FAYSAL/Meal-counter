@@ -52,7 +52,7 @@ import com.atik_faysal.interfaces.OnAsyncTaskInterface;
  */
 
 
-public class CreateNewAccount extends AppCompatActivity
+public class RegisterUser extends AppCompatActivity
 {
         //phone number verification variable
         private static final int FRAMEWORK_REQUEST_CODE = 1;
@@ -126,7 +126,7 @@ public class CreateNewAccount extends AppCompatActivity
                 internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
                 someMethod = new NeedSomeMethod(this);
-                sharedPreferenceData = new SharedPreferenceData(CreateNewAccount.this);
+                sharedPreferenceData = new SharedPreferenceData(RegisterUser.this);
                 //calling method
                 onButtonClick();
         }
@@ -296,7 +296,7 @@ public class CreateNewAccount extends AppCompatActivity
                 txtSign.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                                startActivity(new Intent(CreateNewAccount.this,LogInActivity.class));
+                                startActivity(new Intent(RegisterUser.this,LogInActivity.class));
                                 finish();
                         }
                 });
@@ -305,7 +305,7 @@ public class CreateNewAccount extends AppCompatActivity
                         @Override
                         public void onClick(View view) {
 
-                                databaseBackgroundTask = new DatabaseBackgroundTask(CreateNewAccount.this);
+                                databaseBackgroundTask = new DatabaseBackgroundTask(RegisterUser.this);
                                 userInformation();//method
 
                                 if(internetIsOn.isOnline())
@@ -497,7 +497,7 @@ public class CreateNewAccount extends AppCompatActivity
                                                                                 sharedPreferenceData.ifUserLogIn(USER_LOGIN,true);
                                                                                 sharedPreferenceData.currentUserInfo(userName,password);
                                                                                 sharedPreferenceData.userType("member");
-                                                                                someMethod.closeActivity(CreateNewAccount.this,HomePageActivity.class);
+                                                                                someMethod.closeActivity(RegisterUser.this,HomePageActivity.class);
                                                                                 finish();
                                                                         }catch (InterruptedException e)
                                                                         {
@@ -534,9 +534,9 @@ public class CreateNewAccount extends AppCompatActivity
                 final AccountKitLoginResult loginResult = AccountKit.loginResultWithIntent(data);
                 if (loginResult == null || loginResult.wasCancelled()) {
                         toastMessage = "Cancelled";
-                        Toast.makeText(CreateNewAccount.this, toastMessage, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterUser.this, toastMessage, Toast.LENGTH_SHORT).show();
                 } else if (loginResult.getError() != null) {
-                        Toast.makeText(CreateNewAccount.this, "Error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterUser.this, "Error", Toast.LENGTH_SHORT).show();
                 } else {
                         final AccessToken accessToken = loginResult.getAccessToken();
                         if (accessToken != null) {
@@ -559,7 +559,7 @@ public class CreateNewAccount extends AppCompatActivity
                                 });
                         } else {
                                 toastMessage = "Unknown response type";
-                                Toast.makeText(CreateNewAccount.this, toastMessage, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterUser.this, toastMessage, Toast.LENGTH_SHORT).show();
                         }
                 }
 
@@ -567,7 +567,7 @@ public class CreateNewAccount extends AppCompatActivity
 
         public void onLogin(final LoginType loginType)
         {
-                final Intent intent = new Intent(CreateNewAccount.this, AccountKitActivity.class);
+                final Intent intent = new Intent(RegisterUser.this, AccountKitActivity.class);
                 final AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder = new AccountKitConfiguration.AccountKitConfigurationBuilder(loginType, AccountKitActivity.ResponseType.TOKEN);
                 final AccountKitConfiguration configuration = configurationBuilder.build();
                 intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION, configuration);
@@ -608,13 +608,13 @@ public class CreateNewAccount extends AppCompatActivity
 
         private boolean isGooglePlayServicesAvailable() {
                 final GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-                int googlePlayServicesAvailable = apiAvailability.isGooglePlayServicesAvailable(CreateNewAccount.this);
+                int googlePlayServicesAvailable = apiAvailability.isGooglePlayServicesAvailable(RegisterUser.this);
                 return googlePlayServicesAvailable == ConnectionResult.SUCCESS;
         }
 
         private boolean canReadSmsWithoutPermission() {
                 final GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-                int googlePlayServicesAvailable = apiAvailability.isGooglePlayServicesAvailable(CreateNewAccount.this);
+                int googlePlayServicesAvailable = apiAvailability.isGooglePlayServicesAvailable(RegisterUser.this);
                 if (googlePlayServicesAvailable == ConnectionResult.SUCCESS) {
                         return true;
                 }

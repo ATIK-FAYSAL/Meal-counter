@@ -58,7 +58,6 @@ public class FirstPage extends AppCompatActivity {
         {
                 //component initialize
                 layout1 = findViewById(R.id.relative1);
-
                 //circleImageView = findViewById(R.id.imageView);
                 //TransitionDrawable drawable =(TransitionDrawable) circleImageView.getDrawable();
                 //drawable.startTransition(2000);
@@ -68,7 +67,6 @@ public class FirstPage extends AppCompatActivity {
                 //object initialize
                 sharedPreferenceData = new SharedPreferenceData(this);
                 dialogClass = new AlertDialogClass(this);
-
         }
 
         protected void threadStart()
@@ -109,7 +107,7 @@ public class FirstPage extends AppCompatActivity {
                iOSDialogBuilder builder = new iOSDialogBuilder(FirstPage.this);
 
                        builder.setTitle("Error")
-                       .setSubtitle("saia")
+                       .setSubtitle("")
                        .setBoldPositiveLabel(true)
                        .setCancelable(false)
                        .setPositiveListener("ok",new iOSDialogClickListener() {

@@ -1,5 +1,6 @@
 package com.atik_faysal.others;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -44,7 +45,6 @@ public class InputMeal extends Fragment
         private EditText eBreakfast,eDinner,eLaunch;
         private View view;
         private ListView listView;
-        private SwipeRefreshLayout refreshLayout;
 
         private String breakfast,dinner,lunch;
 
@@ -149,7 +149,7 @@ public class InputMeal extends Fragment
         {
                 listView = view.findViewById(R.id.list);
 
-                refreshLayout = view.findViewById(R.id.refresh);
+                SwipeRefreshLayout refreshLayout = view.findViewById(R.id.refresh);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
 
                 internetIsOn = new CheckInternetIsOn(getContext());
@@ -180,13 +180,14 @@ public class InputMeal extends Fragment
         }
 
         //get date from system and split and set month in text view
+        @SuppressLint("SetTextI18n")
         private void setInfo()
         {
                 txtName.setText(sharedPreferenceData.getCurrentUserName());
 
                 String date = someMethod.getDate();
                 txtDate.setText(date);
-                txtMonth.setText("#"+someMethod.getMonth());
+                txtMonth.setText("#"+sharedPreferenceData.getmyCurrentSession());
         }
 
 
