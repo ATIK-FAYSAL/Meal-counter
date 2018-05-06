@@ -1,34 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:focusableInTouchMode="true">
 
-    <RelativeLayout
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:focusableInTouchMode="true">
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar"/>
+        android:layout_height="300dp"
+        android:background="@color/white"
+        android:fitsSystemWindows="true">
 
-        <android.support.v4.widget.SwipeRefreshLayout
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background1"
+            app:layout_collapseMode="pin"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/refreshLayout"
-            android:layout_below="@+id/toolbar">
+            android:fitsSystemWindows="true"
+            app:contentScrim="@color/colorPrimaryDark"
+            app:expandedTitleMarginBottom="32dp"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll">
 
-            <ScrollView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/scrollView">
+                android:layout_height="wrap_content">
 
-                <RelativeLayout
-                    android:id="@+id/lay1"
+
+                <EditText
+                    android:id="@+id/txtTitle"
                     android:layout_width="match_parent"
-                    android:layout_height="870dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true">
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:background="@drawable/text_style3"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Your beautiful Title"
+                    android:inputType="textPersonName"
+                    android:padding="5dp"
+                    android:textColor="@color/colorAccent" />
 
                     <EditText
                         android:id="@+id/txtNotice"
@@ -38,67 +63,58 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-                        android:layout_marginTop="13dp"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/button2"
                         android:gravity="start"
+                        android:hint="write something here"
                         android:inputType="textMultiLine"
                         android:lines="15"
-                        android:scrollbars="vertical"
-                        android:textColor="@color/black"
-                        android:textSize="14dp"
-                        android:hint="write someting here"
+                        android:padding="5dp"
                         android:paddingLeft="7dp"
-                        android:paddingRight="7dp"/>
+                        android:paddingRight="7dp"
+                        android:scrollbars="vertical"
+                        android:textSize="14dp" />
+
+                <Button
+                    android:id="@+id/bPublish"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/txtNotice"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginRight="60dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/button2"
+                    android:text="Publish"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
 
 
-                    <Button
-                        android:id="@+id/bPublish"
-                        style="@style/Base.Widget.AppCompat.Button.Borderless"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/txtNotice"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="60dp"
-                        android:layout_marginRight="60dp"
-                        android:layout_marginTop="20dp"
-                        android:background="@drawable/button2"
-                        android:text="Publish"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="@color/color8">
 
-                    <EditText
-                        android:id="@+id/txtTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginRight="30dp"
-                        android:layout_marginTop="27dp"
-                        android:background="@drawable/text_style3"
-                        android:ems="10"
-                        android:gravity="center"
-                        android:hint="Your beautiful Title"
-                        android:inputType="textPersonName"
-                        android:textColor="@color/colorAccent"
-                        android:textColorHint="@color/black"/>
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:dividerHeight="4dp"
+            android:divider="@color/color8"/>
 
-                    <ListView
-                        android:id="@+id/list"
-                        android:layout_width="match_parent"
-                        android:layout_height="580dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:layout_below="@+id/bPublish"
-                        android:layout_marginTop="10dp"/>
+    </android.support.v4.widget.NestedScrollView>
 
-                </RelativeLayout>
-
-            </ScrollView>
-
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-    </RelativeLayout>
-
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
