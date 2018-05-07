@@ -45,7 +45,7 @@ public class CostForSecretCloseMem extends AppCompatActivity
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
-                setContentView(R.layout.only_show_cost);
+                setContentView(R.layout.costs_layout);
                 initComponent();
                 setToolbar();
         }
@@ -65,11 +65,7 @@ public class CostForSecretCloseMem extends AppCompatActivity
                 importantData = new GetImportantData(this);
                 someMethod.reloadPage(refreshLayout, CostOfSecretCloseGroup.class);
 
-                String currentDate;
-                TextView txtDate = findViewById(R.id.txtDate);
                 listView = findViewById(R.id.list);
-                currentDate = someMethod.getDate();
-                txtDate.setText(currentDate);
                 txtSession.setText("#"+sharedPreferenceData.getmyCurrentSession());
                 if(internetIsOn.isOnline())
                 {

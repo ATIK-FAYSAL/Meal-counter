@@ -1,14 +1,19 @@
 package com.atik_faysal.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
@@ -20,7 +25,11 @@ import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.NoticeBoard;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.NoticeModel;
+import com.atik_faysal.model.ShoppingItemModel;
 import com.borjabravo.readmoretextview.ReadMoreTextView;
+import com.gdacciaro.iOSDialog.iOSDialog;
+import com.gdacciaro.iOSDialog.iOSDialogBuilder;
+import com.gdacciaro.iOSDialog.iOSDialogClickListener;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -30,153 +39,151 @@ import java.util.List;
  * Created by USER on 2/9/2018.
  */
 
-public class NoticeAdapter extends BaseAdapter
+public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.MyViewHolder>
 {
-        List<NoticeModel>noticeModels;
+        private List<NoticeModel>noticeModels;
         Context context;
-        View view;
-        Activity activity;
-        NeedSomeMethod someMethod;
-        SharedPreferenceData sharedPreferenceData;
-        String userType;
-        AlertDialogClass dialogClass;
-        CheckInternetIsOn internetIsOn;
+        private LayoutInflater inflater;
+        private Activity activity;
+        private String userType;
 
-        public NoticeAdapter(Context context,List<NoticeModel>noticeModels)
+
+        public NoticeAdapter(Context context,List<NoticeModel>models)
         {
                 this.context = context;
+                this.noticeModels = models;
+                inflater = LayoutInflater.from(context);
                 activity = (Activity)context;
-                this.noticeModels = noticeModels;
-                someMethod = new NeedSomeMethod(context);
-                sharedPreferenceData = new SharedPreferenceData(context);
-                dialogClass = new AlertDialogClass(context);
-                internetIsOn = new CheckInternetIsOn(context);
+                SharedPreferenceData sharedPreferenceData = new SharedPreferenceData(context);
+                userType = sharedPreferenceData.getUserType();
+        }
+
+        @NonNull
+        @Override
+        public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = inflater.inflate(R.layout.notice_model,parent,false);
+                return new MyViewHolder(view);
         }
 
         @Override
-        public int getCount() {
+        public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+                NoticeModel current = noticeModels.get(position);
+                holder.setData(current,position);
+                holder.setListeners();
+        }
+
+        @Override
+        public int getItemCount() {
                 return noticeModels.size();
         }
 
-        @Override
-        public Object getItem(int position) {
-                return noticeModels.get(position);
-        }
 
-        @Override
-        public long getItemId(int position) {
-                return position;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent)
+        public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
         {
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.notice_model, parent, false);
-                TextView txtUserName,txtDate,txtTitle,txtId;
-                ReadMoreTextView moreTextView;
-                Button bRemove;
+                private ImageView bRemove;
+                private int position;
+                private NoticeModel model;
+                private TextView txtUserName,txtDate,txtTitle,txtId;
+                private ReadMoreTextView moreTextView;
+                private AlertDialogClass dialogClass;
+                private NeedSomeMethod someMethod;
 
-                userType = sharedPreferenceData.getUserType();
-
-                txtUserName = view.findViewById(R.id.txtName);
-                txtDate = view.findViewById(R.id.txtDate);
-                txtTitle = view.findViewById(R.id.txtTitle);
-                txtId = view.findViewById(R.id.txtId);
-
-                moreTextView = view.findViewById(R.id.txtNotice);
-                bRemove = view.findViewById(R.id.bRemove);
-
-                txtUserName.setText(noticeModels.get(position).getUserName());
-                txtDate.setText(noticeModels.get(position).getDate());
-                txtTitle.setText(noticeModels.get(position).getTitle());
-                txtId.setText("#P"+noticeModels.get(position).getId());
-                moreTextView.setText(noticeModels.get(position).getNotice());
-
-                bRemove.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                              if(internetIsOn.isOnline())
-                              {
-                                      if(userType.equals("admin"))
-                                              removeNotice(noticeModels.get(position).getId());
-                                      else
-                                              dialogClass.error("Only admin can remove notice.You are not an admin.");
-                              }else dialogClass.noInternetConnection();
-                        }
-                });
-
-                return view;
-        }
-
-
-        //remove notice,only admin can remove notice
-        private void removeNotice(final String noticeId)
-        {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                View view = LayoutInflater.from(context).inflate(R.layout.dialog_warning,null);
-
-                builder.setView(view);
-                builder.setCancelable(false);
-
-                final Button bYes,bNo;
-                TextView txtWarning;
-
-                bYes = view.findViewById(R.id.bYes);
-                bNo = view.findViewById(R.id.bNo);
-                txtWarning = view.findViewById(R.id.text);
-
-                txtWarning.setText("Want to remove this notice?");
-
-                final AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-
-                bYes.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                                String id = noticeId.substring(0,noticeId.length());
-
-                                //String file = "http://192.168.56.1/removeNotice.php";
-                                String post;
-
-                                try {
-                                        post = URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(id,"UTF-8");
-
-                                        DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(context);
-                                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                        backgroundTask.execute(context.getResources().getString(R.string.removeNotice),post);
-
-                                } catch (UnsupportedEncodingException e) {
-                                        e.printStackTrace();
-                                }
-                                alertDialog.dismiss();
-                        }
-                });
-
-                bNo.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                                alertDialog.dismiss();
-                        }
-                });
-        }
-
-
-        private OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
-                @Override
-                public void onResultSuccess(final String message) {
-                        activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                        if(message.equals("success"))
-                                        {
-                                                context.startActivity(new Intent(context,NoticeBoard.class));
-                                                activity.finish();
-                                        }else
-                                                dialogClass.error("Execution failed,please try again.");
-                                }
-                        });
+                public MyViewHolder(View view) {
+                        super(view);
+                        txtUserName = view.findViewById(R.id.txtName);
+                        txtDate = view.findViewById(R.id.txtDate);
+                        txtTitle = view.findViewById(R.id.txtTitle);
+                        txtId = view.findViewById(R.id.txtId);
+                        moreTextView = view.findViewById(R.id.txtNotice);
+                        bRemove = view.findViewById(R.id.bRemove);
+                        dialogClass = new AlertDialogClass(context);
+                        someMethod = new NeedSomeMethod(context);
                 }
-        };
+
+                @SuppressLint("SetTextI18n")
+                public void setData(NoticeModel currentObject, int position) {
+                        this.position = position;
+                        this.model = currentObject;
+                        txtUserName.setText(model.getUserName());
+                        txtDate.setText(model.getDate());
+                        txtTitle.setText(model.getTitle());
+                        txtId.setText("#P"+model.getId());
+                        moreTextView.setText(model.getNotice());
+
+                        bRemove.setEnabled(false);
+                        bRemove.setImageDrawable(null);
+
+                        if(userType.equals("admin"))
+                        {
+                                bRemove.setEnabled(true);
+                                bRemove.setBackgroundResource(R.drawable.icon_delete);
+                        }
+                }
+
+                private void setListeners() {
+                        bRemove.setOnClickListener(NoticeAdapter.MyViewHolder.this);
+                }
+
+                @Override
+                public void onClick(View view) {
+                        removeNotice(model.getId());
+                }
+
+                private void removeNotice(final String noticeId)
+                {
+                        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                        iOSDialogBuilder builder = new iOSDialogBuilder(context);
+
+                        builder.setTitle("Warning")
+                                .setSubtitle("Want to remove this notice?")
+                                .setBoldPositiveLabel(true)
+                                .setCancelable(false)
+                                .setPositiveListener("Yes",new iOSDialogClickListener() {
+                                        @Override
+                                        public void onClick(iOSDialog dialog) {
+                                                String id = noticeId.substring(0,noticeId.length());
+
+                                                //String file = "http://192.168.56.1/removeNotice.php";
+                                                String post;
+
+                                                try {
+                                                        post = URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(id,"UTF-8");
+                                                        DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(context);
+                                                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
+                                                        backgroundTask.execute(context.getResources().getString(R.string.removeNotice),post);
+
+                                                } catch (UnsupportedEncodingException e) {
+                                                        e.printStackTrace();
+                                                }
+                                                dialog.dismiss();
+
+                                        }
+                                }).setNegativeListener("No", new iOSDialogClickListener() {
+                                @Override
+                                public void onClick(iOSDialog dialog) {
+                                        dialog.dismiss();
+                                }
+                        }).build().show();
+                }
+
+                private OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
+                        @Override
+                        public void onResultSuccess(final String message) {
+                                activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                                if(message.equals("success"))
+                                                {
+                                                        someMethod.progress("Working on it....","One notice deleted");
+                                                        noticeModels.remove(position);
+                                                        notifyItemRemoved(position);
+                                                        notifyItemRangeChanged(position, noticeModels.size());
+                                                }else
+                                                        dialogClass.error("Execution failed,please try again.");
+                                        }
+                                });
+                        }
+                };
+        }
 }

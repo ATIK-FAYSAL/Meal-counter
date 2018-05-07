@@ -18,7 +18,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/layout1">
+            android:id="@+id/layout1"
+            android:layout_marginTop="8dp">
             <TextView
                 android:id="@+id/txtName"
                 android:layout_width="0dp"
@@ -26,9 +27,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:text="Atik faysal"
+                android:hint="Username"
                 android:paddingLeft="10dp"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/userName"
                 android:textSize="20dp" />
             <TextView
                 android:id="@+id/txtId"
@@ -40,7 +41,7 @@
                 android:layout_toStartOf="@+id/bEdit"
                 android:textSize="20dp"
                 android:hint="cost id"
-                android:textColor="@color/color1"
+                android:textColor="@color/colorAccent"
                 android:text="#P10001"
                 android:gravity="center"/>
         </LinearLayout>
@@ -58,9 +59,9 @@
                 android:id="@+id/txtDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:padding="10dp"
-                android:text="01-03-2018"
+                android:text="date"
                 android:textSize="17dp" />
 
             <TextView
@@ -68,8 +69,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="10dip"
-                android:text="1792"
+                android:padding="10dp"
+                android:text="taka"
+                android:gravity="start"
                 android:textSize="17dp"
                 android:drawableLeft="@drawable/icon_taka"
                 android:drawablePadding="8dp"/>

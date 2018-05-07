@@ -87,7 +87,7 @@ public class CostAdapter extends BaseAdapter
                 txtId = view.findViewById(R.id.txtId);
                 bEdit = view.findViewById(R.id.bEdit);
 
-                txtId.setText("#D"+costList.get(position).getId());
+                txtId.setText("#C1005"+costList.get(position).getId());
                 txtName.setText(costList.get(position).getName());
                 txtTaka.setText(costList.get(position).getTaka());
                 txtDate.setText(costList.get(position).getDate());

@@ -104,7 +104,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:background="@color/color8">
 
-        <ListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

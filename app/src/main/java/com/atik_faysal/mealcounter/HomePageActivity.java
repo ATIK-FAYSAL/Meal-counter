@@ -460,7 +460,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 if(sharedPreferenceData.getUserType().equals("admin"))
                                 {
                                         if(!sharedPreferenceData.getmyCurrentSession().equals("nope"))
-                                                dialogClass.error("Already you are in a session,please finish your first session and then retry.");
+                                                dialogClass.error("You already in a session,please finish current session and retry.");
                                         else startActivity(new Intent(HomePageActivity.this, CreateSession.class));
                                 }
                                 else dialogClass.error("Only admin can create new session");

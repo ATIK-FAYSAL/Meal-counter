@@ -2,6 +2,8 @@ package com.atik_faysal.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,159 +22,196 @@ import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.CostModel;
+import com.atik_faysal.model.NoticeModel;
 import com.atik_faysal.others.NoResultFound;
+import com.atik_faysal.superClasses.AdaptersSuperClass;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 
-public class BalanceApprovalAdapter extends BaseAdapter
+public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApprovalAdapter.ViewHolder>
 {
-        private Context context;
         private List<CostModel>modelList;
-        private AlertDialogClass dialogClass;
-        private DatabaseBackgroundTask backgroundTask;
-        private CheckInternetIsOn internetIsOn;
-        private NeedSomeMethod someMethod;
-        private NoResultFound noResultFound;
-        private SharedPreferenceData sharedPreferenceData;
+        private Context context;
+        private LayoutInflater inflater;
         private Activity activity;
-        private static String data;
 
-        public BalanceApprovalAdapter(Context context,List<CostModel>modelList)
+        public BalanceApprovalAdapter(Context context,List<CostModel>costModels)
         {
+                this.modelList = costModels;
                 this.context = context;
-                this.modelList = modelList;
-                dialogClass = new AlertDialogClass(context);
-                internetIsOn = new CheckInternetIsOn(context);
-                someMethod = new NeedSomeMethod(context);
-                noResultFound = new NoResultFound(context);
-                sharedPreferenceData = new SharedPreferenceData(context);
-                activity = (Activity)context;
+                this.inflater = LayoutInflater.from(context);
+                this.activity = (Activity)context;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+        {
+                View view = inflater.inflate(R.layout.approve_balance,parent,false);
+                return new ViewHolder(view);
         }
 
         @Override
-        public int getCount() {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position)
+        {
+                CostModel model = modelList.get(position);
+                holder.setData(model,position);
+                holder.setListeners();
+        }
+
+        @Override
+        public int getItemCount() {
                 return modelList.size();
         }
 
-        @Override
-        public Object getItem(int i) {
-                return modelList.get(i);
-        }
 
-        @Override
-        public long getItemId(int position) {
-                return position;
-        }
-
-        @SuppressLint("SetTextI18n")
-        @Override
-        public View getView(final int i, View v, ViewGroup viewGroup)
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
         {
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View view = inflater.inflate(R.layout.approve_balance, viewGroup, false);
-                TextView txtDate,txtName,txtStatus,txtId ;
-                EditText txtTaka;
-                Button bCancel,bApprv;
+                private int position;
+                private CostModel model;
+                private TextView txtDate,txtName,txtStatus,txtId ;
+                private EditText txtTaka;
+                private Button bCancel,bApprv;
+                private SharedPreferenceData sharedPreferenceData;
+                private AlertDialogClass dialogClass;
+                private CheckInternetIsOn internetIsOn;
+                private DatabaseBackgroundTask backgroundTask;
+                private NeedSomeMethod someMethod;
+                private NoResultFound noResultFound;
+                private String data;
 
-                txtName = view.findViewById(R.id.txtName);
-                txtDate = view.findViewById(R.id.txtDate);
-                txtStatus = view.findViewById(R.id.txtStatus);
-                txtTaka = view.findViewById(R.id.txtTaka);
-                txtId = view.findViewById(R.id.txtId);
-                bCancel = view.findViewById(R.id.bCancel);
-                bApprv = view.findViewById(R.id.bApprove);
+                public ViewHolder(View view) {
+                        super(view);
+                        txtName = view.findViewById(R.id.txtName);
+                        txtDate = view.findViewById(R.id.txtDate);
+                        txtStatus = view.findViewById(R.id.txtStatus);
+                        txtTaka = view.findViewById(R.id.txtTaka);
+                        txtId = view.findViewById(R.id.txtId);
+                        bCancel = view.findViewById(R.id.bCancel);
+                        bApprv = view.findViewById(R.id.bApprove);
+                        sharedPreferenceData = new SharedPreferenceData(context);
+                        internetIsOn = new CheckInternetIsOn(context);
+                        dialogClass = new AlertDialogClass(context);
+                        someMethod = new NeedSomeMethod(context);
+                        noResultFound = new NoResultFound(context);
+                }
 
-                txtStatus.setText(modelList.get(i).getStatus());
-                txtName.setText(modelList.get(i).getName());
-                txtDate.setText(modelList.get(i).getDate());
-                txtTaka.setText(modelList.get(i).getTaka());
-                txtId.setText("#XY-10500"+modelList.get(i).getId());
+                @SuppressLint("SetTextI18n")
+                public void setData(CostModel currentObject, int position) {
+                        this.position = position;
+                        this.model = currentObject;
 
-                bCancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                                if(sharedPreferenceData.getUserType().equals("admin"))
-                                {
-                                        dialogClass.onSuccessListener(onAsyncTaskInterface);
-                                        dialogClass.warning("Do you want to remove this ?");
-                                        try {
-                                                data = URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(modelList.get(i).getId(),"UTF-8")+"&"
-                                                        +URLEncoder.encode("check","UTF-8")+"="+URLEncoder.encode("remove","UTF-8");
-                                        } catch (UnsupportedEncodingException e) {
-                                                e.printStackTrace();
-                                        }
-                                }else dialogClass.error("Only admin can delete balance.you are not an admin..");
+                        txtStatus.setText(model.getStatus());
+                        txtName.setText(model.getName());
+                        txtDate.setText(model.getDate());
+                        txtTaka.setText(model.getTaka());
+                        txtId.setText("#XY-10500"+model.getId());
+                }
+
+                private void setListeners() {
+                        bApprv.setOnClickListener(BalanceApprovalAdapter.ViewHolder.this);
+                        bCancel.setOnClickListener(BalanceApprovalAdapter.ViewHolder.this);
+                }
+
+
+                @Override
+                public void onClick(View view) {
+                        switch (view.getId())
+                        {
+                                case R.id.bCancel:
+                                        cancelRequest();
+                                        break;
+                                case R.id.bApprove:
+                                        approveBalance();
+                                        break;
                         }
-                });
+                }
 
-                bApprv.setOnClickListener(new View.OnClickListener() {
+
+                private void cancelRequest()
+                {
+                        if(sharedPreferenceData.getUserType().equals("admin"))
+                        {
+                                dialogClass.onSuccessListener(onAsyncTaskInterface);
+                                dialogClass.warning("Do you want to remove this ?");
+                                try {
+                                         data = URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(model.getId(),"UTF-8")+"&"
+                                                +URLEncoder.encode("check","UTF-8")+"="+URLEncoder.encode("remove","UTF-8");
+                                } catch (UnsupportedEncodingException e) {
+                                        e.printStackTrace();
+                                }
+                        }else dialogClass.error("Only admin can delete balance.you are not an admin..");
+                }
+
+                private void approveBalance()
+                {
+                        if(sharedPreferenceData.getUserType().equals("admin"))
+                        {
+                                dialogClass.onSuccessListener(onAsyncTaskInterface);
+                                dialogClass.warning("Do you want to approve this ?");
+                                try {
+                                         data = URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(model.getId(),"UTF-8")+"&"
+                                                +URLEncoder.encode("check","UTF-8")+"="+URLEncoder.encode("approve","UTF-8")+"&"
+                                                +URLEncoder.encode("taka","UTF-8")+"="+URLEncoder.encode(model.getTaka(),"UTF-8")+"&"
+                                                +URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(model.getName(),"UTF-8");
+                                } catch (UnsupportedEncodingException e) {
+                                        e.printStackTrace();
+                                }
+                        }else dialogClass.error("Only admin can approved balance.you are not an admin..");
+                }
+
+
+
+                private OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                         @Override
-                        public void onClick(View view) {
-                                if(sharedPreferenceData.getUserType().equals("admin"))
-                                {
-                                        dialogClass.onSuccessListener(onAsyncTaskInterface);
-                                        dialogClass.warning("Do you want to approve this ?");
-                                        try {
-                                                data = URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(modelList.get(i).getId(),"UTF-8")+"&"
-                                                        +URLEncoder.encode("check","UTF-8")+"="+URLEncoder.encode("approve","UTF-8")+"&"
-                                                        +URLEncoder.encode("taka","UTF-8")+"="+URLEncoder.encode(modelList.get(i).getTaka(),"UTF-8")+"&"
-                                                        +URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(modelList.get(i).getName(),"UTF-8");
-                                        } catch (UnsupportedEncodingException e) {
-                                                e.printStackTrace();
-                                        }
-                                }else dialogClass.error("Only admin can approved balance.you are not an admin..");
-                        }
-                });
+                        public void onResultSuccess(final String message) {
+                                activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                                String file = context.getResources().getString(R.string.approveBalance);
+                                                switch (message)
+                                                {
+                                                        case "yes":
+                                                                if(internetIsOn.isOnline())
+                                                                {
+                                                                        backgroundTask = new DatabaseBackgroundTask(context);
+                                                                        backgroundTask.setOnResultListener(anInterface);
+                                                                        backgroundTask.execute(file,data);
+                                                                }else dialogClass.noInternetConnection();
 
-                return view;
+                                                                break;
+                                                }
+                                        }
+                                });
+                        }
+                };
+
+                private OnAsyncTaskInterface anInterface = new OnAsyncTaskInterface() {
+                        @Override
+                        public void onResultSuccess(final String message) {
+                                activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                                switch (message)
+                                                {
+                                                        case "success":
+                                                                someMethod.progress("Working on it....","Balance added");
+                                                                modelList.remove(position);
+                                                                notifyItemRemoved(position);
+                                                                notifyItemRangeChanged(position, modelList.size());
+                                                                if(modelList.size()==0)
+                                                                        noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),ApproveBalance.class,"approval");
+                                                                break;
+                                                        default:
+                                                                dialogClass.error("Execution failed,please try again.");
+                                                                break;
+                                                }
+                                        }
+                                });
+                        }
+                };
+
         }
-
-
-        private OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
-                @Override
-                public void onResultSuccess(final String message) {
-                        activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                        String file = context.getResources().getString(R.string.approveBalance);
-                                        switch (message)
-                                        {
-                                                case "yes":
-                                                       if(internetIsOn.isOnline())
-                                                       {
-                                                               backgroundTask = new DatabaseBackgroundTask(context);
-                                                               backgroundTask.setOnResultListener(anInterface);
-                                                               backgroundTask.execute(file,data);
-                                                       }else dialogClass.noInternetConnection();
-
-                                                        break;
-                                        }
-                                }
-                        });
-                }
-        };
-
-        private OnAsyncTaskInterface anInterface = new OnAsyncTaskInterface() {
-                @Override
-                public void onResultSuccess(final String message) {
-                        activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                        switch (message)
-                                        {
-                                                case "success":
-                                                        someMethod.progressDialog("Working on it....");
-                                                        //context.startActivity(new Intent(context, ApproveBalance.class));
-                                                        noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),ApproveBalance.class,"approval");
-                                                        break;
-                                                default:
-                                                        dialogClass.error("Execution failed,please try again.");
-                                                        break;
-                                        }
-                                }
-                        });
-                }
-        };
 }

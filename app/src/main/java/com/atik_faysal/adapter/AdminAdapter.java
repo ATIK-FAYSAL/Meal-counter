@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,6 +23,9 @@ import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.MemberDetails;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.MemberModel;
+import com.gdacciaro.iOSDialog.iOSDialog;
+import com.gdacciaro.iOSDialog.iOSDialogBuilder;
+import com.gdacciaro.iOSDialog.iOSDialogClickListener;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -36,20 +40,12 @@ public class AdminAdapter extends BaseAdapter
         private List<MemberModel> memberList;
         private Context context;
 
-        private SharedPreferenceData sharedPreferenceData;
         private AlertDialogClass dialogClass;
         private DatabaseBackgroundTask backgroundTask;
         private CheckInternetIsOn internetIsOn;
-
-
-        private View view;
-        private TextView txtName,txtPhone,txtUserName,txtTaka,txtType,txtDate;
-        private Button bRemove,bDetails;
         private Activity activity;
 
         //private final static String FILE_URL = "http://192.168.56.1/adminSetting.php";
-        private final static String USER_INFO = "currentInfo";
-        private String classType;
         private String currentUser;
 
         public AdminAdapter(Context context,List<MemberModel>memberList)
@@ -57,11 +53,10 @@ public class AdminAdapter extends BaseAdapter
                 this.context = context;
                 activity = (Activity)context;
                 this.memberList = memberList;
-                sharedPreferenceData = new SharedPreferenceData(context);
+                SharedPreferenceData sharedPreferenceData = new SharedPreferenceData(context);
                 dialogClass = new AlertDialogClass(context);
                 internetIsOn = new CheckInternetIsOn(context);
 
-                this.classType = classType;
                 if(sharedPreferenceData.getCurrentUserName()!=null)
                         currentUser = sharedPreferenceData.getCurrentUserName();
                 else Toast.makeText(context,"under construction",Toast.LENGTH_SHORT).show();
@@ -87,7 +82,10 @@ public class AdminAdapter extends BaseAdapter
         public View getView(final int position, View convertView, ViewGroup parent) {
 
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.member_model, parent, false);
+                View view = inflater.inflate(R.layout.member_model, parent, false);
+                TextView txtName,txtPhone,txtUserName,txtTaka,txtType,txtDate;
+                Button bRemove,bDetails;
+
 
                 txtName = view.findViewById(R.id.txtName);
                 txtUserName = view.findViewById(R.id.txtUserName);
@@ -175,48 +173,39 @@ public class AdminAdapter extends BaseAdapter
         //warning
         public void warning(final String userName, final String type)
         {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                View view = LayoutInflater.from(context).inflate(R.layout.dialog_warning,null);
-
-                builder.setView(view);
-                builder.setCancelable(false);
-
-                final Button bYes,bNo;
-                TextView txtWarning;
-
-                bYes = view.findViewById(R.id.bYes);
-                bNo = view.findViewById(R.id.bNo);
-                txtWarning = view.findViewById(R.id.text);
-
+                String message;
                 if(type.equals("member"))
-                        txtWarning.setText("Want to make admin ?");
+                        message = "Want to make admin ?";
                 else
-                        txtWarning.setText("Want to remove admin ?");
+                        message = "Want to remove admin ?";
 
-                final AlertDialog alertDialog = builder.create();
-                alertDialog.show();
+                activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                iOSDialogBuilder builder = new iOSDialogBuilder(context);
 
-                bYes.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                                if(type.equals("member"))
-                                        makeNewAdmin(userName);
-                                else if(type.equals("admin")) {
-                                        if (currentUser.equals(userName))
-                                                dialogClass.error("You can not remove your own membership.");
-                                        else
-                                                removeAdmin(userName);
+                builder.setTitle("Warning")
+                        .setSubtitle(message)
+                        .setBoldPositiveLabel(true)
+                        .setCancelable(false)
+                        .setPositiveListener("Yes",new iOSDialogClickListener() {
+                                @Override
+                                public void onClick(iOSDialog dialog) {
+                                        if(type.equals("member"))
+                                                makeNewAdmin(userName);
+                                        else if(type.equals("admin")) {
+                                                if (currentUser.equals(userName))
+                                                        dialogClass.error("You can not remove your own membership.");
+                                                else
+                                                        removeAdmin(userName);
+                                        }
+                                        dialog.dismiss();
+
                                 }
-                                alertDialog.dismiss();
-                        }
-                });
-
-                bNo.setOnClickListener(new View.OnClickListener() {
+                        }).setNegativeListener("No", new iOSDialogClickListener() {
                         @Override
-                        public void onClick(View v) {
-                                alertDialog.dismiss();
+                        public void onClick(iOSDialog dialog) {
+                                dialog.dismiss();
                         }
-                });
+                }).build().show();
 
         }
 

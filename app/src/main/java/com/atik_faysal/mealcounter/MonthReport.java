@@ -56,14 +56,11 @@ public class MonthReport extends AppCompatActivity
         private TextView txtTotalCost;
         private TextView txtTotalMeal;
         private TextView txtMealRate;
-        private TextView txtRemaining,txtMonth;
+        private TextView txtRemaining;
         private ListView listView;
 
         private SharedPreferenceData sharedPreferenceData;
-        private CheckInternetIsOn internetIsOn;
-        private AlertDialogClass dialogClass;
         private NeedSomeMethod someMethod;
-        private DatabaseBackgroundTask backgroundTask;
 
         private List<CostModel>modelList;
 
@@ -88,15 +85,14 @@ public class MonthReport extends AppCompatActivity
                 txtTotalMeal = findViewById(R.id.totalMeal);
                 txtMealRate = findViewById(R.id.mealRate);
                 txtRemaining = findViewById(R.id.remaining);
-                txtMonth = findViewById(R.id.txtMonth);
+                TextView txtMonth = findViewById(R.id.txtMonth);
                 listView = findViewById(R.id.list);
 
 
                 sharedPreferenceData = new SharedPreferenceData(this);
-                internetIsOn = new CheckInternetIsOn(this);
-                dialogClass = new AlertDialogClass(this);
+                CheckInternetIsOn internetIsOn = new CheckInternetIsOn(this);
                 someMethod = new NeedSomeMethod(this);
-                backgroundTask = new DatabaseBackgroundTask(this);
+                DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(this);
 
                 modelList = new ArrayList<>();
                 txtMonth.setText("#"+sharedPreferenceData.getmyCurrentSession());
@@ -132,6 +128,7 @@ public class MonthReport extends AppCompatActivity
                 });
         }
 
+        //process json data ,set in listview
         @SuppressLint("SetTextI18n")
         private void processJsonData(String report)
         {
@@ -194,6 +191,7 @@ public class MonthReport extends AppCompatActivity
                 return true;
         }
 
+        //current session close
         private void closeCurrentSession()
         {
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -220,6 +218,7 @@ public class MonthReport extends AppCompatActivity
                         .build().show();
         }
 
+        //convert monthly report to pdf
         private void createPdf()
         {
                 Document document = new Document();
@@ -280,7 +279,7 @@ public class MonthReport extends AppCompatActivity
                 }
         }
 
-
+        //for row and column
         private void insertDataIntoTable(PdfPTable table,String text,int align,int colspan,Font font)
         {
                 PdfPCell cell = new PdfPCell(new Phrase(text.trim(),font));
@@ -291,6 +290,7 @@ public class MonthReport extends AppCompatActivity
                 table.addCell(cell);
         }
 
+        //get monthly report
         private OnAsyncTaskInterface asyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
                 public void onResultSuccess(final String message) {

@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,9 +38,9 @@ public class NoticeBoard extends AppCompatActivity
 {
         private EditText txtNotice,txtTitle;
         private Button bPublish;
-        private ListView listView;
         private Toolbar toolbar;
-        private SwipeRefreshLayout refreshLayout;
+        private RecyclerView recyclerView;
+        private LinearLayoutManager layoutManager;
 
         //private final static String FILE_URL = "http://192.168.56.1/notice.php";
         private static String POST_DATA;
@@ -45,14 +48,7 @@ public class NoticeBoard extends AppCompatActivity
         private static String POST;
         private static String currentUser;
         private String notice,title;
-        private String userName,date,id,getNotice,getTitle;
 
-        private List<NoticeModel>noticeModels = new ArrayList<>();
-        private NoticeAdapter adapter;
-        private JSONArray jsonArray;
-        private JSONObject jsonObject;
-
-        private SharedPreferenceData sharedPreferenceData;
         private AlertDialogClass dialogClass;
         private NeedSomeMethod someMethod;
         private CheckInternetIsOn internetIsOn;
@@ -63,6 +59,7 @@ public class NoticeBoard extends AppCompatActivity
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.notice);
                 initComponent();
+                getAllNotice();
         }
 
         //initialize all user information related variable by getText from textView or editText
@@ -71,9 +68,8 @@ public class NoticeBoard extends AppCompatActivity
                 txtTitle  = findViewById(R.id.txtTitle);
                 txtNotice = findViewById(R.id.txtNotice);
                 bPublish = findViewById(R.id.bPublish);
-                listView = findViewById(R.id.list);
-                refreshLayout = findViewById(R.id.refreshLayout);
-                refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
+                recyclerView = findViewById(R.id.list);
+                layoutManager = new LinearLayoutManager(this);
                 toolbar = findViewById(R.id.toolbar);
                 setSupportActionBar(toolbar);
 
@@ -97,15 +93,12 @@ public class NoticeBoard extends AppCompatActivity
                 dialogClass = new AlertDialogClass(this);
                 someMethod = new NeedSomeMethod(this);
                 internetIsOn = new CheckInternetIsOn(this);
-                sharedPreferenceData = new SharedPreferenceData(this);
+                SharedPreferenceData sharedPreferenceData = new SharedPreferenceData(this);
 
                 //calling method
                 onButtonClick();
                 setToolbar();
-                someMethod.reloadPage(refreshLayout,NoticeBoard.class);
-
                 currentUser = sharedPreferenceData.getCurrentUserName();
-                getAllNotice();
         }
 
         //set a toolbar,above the page
@@ -207,28 +200,31 @@ public class NoticeBoard extends AppCompatActivity
         //get all notice and set into list view
         private void initializeNoticeInListView(String jsonData)
         {
+                List<NoticeModel> noticeModels = new ArrayList<>();
                 try {
-                        jsonObject = new JSONObject(jsonData);
-                        jsonArray = jsonObject.optJSONArray("notice");
+                        JSONObject jsonObject = new JSONObject(jsonData);
+                        JSONArray jsonArray = jsonObject.optJSONArray("notice");
 
                         int count=0;
-                        while (count<jsonArray.length())
+                        while (count< jsonArray.length())
                         {
                                 JSONObject jObject= jsonArray.getJSONObject(count);
 
-                                userName = jObject.getString("userName");
-                                date = jObject.getString("date");
-                                id = jObject.getString("id");
-                                getTitle = jObject.getString("title");
-                                getNotice = jObject.getString("notice");
+                                String userName = jObject.getString("userName");
+                                String date = jObject.getString("date");
+                                String id = jObject.getString("id");
+                                String getTitle = jObject.getString("title");
+                                String getNotice = jObject.getString("notice");
 
-                                noticeModels.add(new NoticeModel(userName,id,getTitle,getNotice,date));
-
+                                noticeModels.add(new NoticeModel(userName, id, getTitle, getNotice, date));
                                 count++;
                         }
 
-                        adapter = new NoticeAdapter(this,noticeModels);
-                        listView.setAdapter(adapter);
+                        NoticeAdapter adapter = new NoticeAdapter(this, noticeModels);
+                        recyclerView.setAdapter(adapter);
+                        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                        recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
                 } catch (JSONException e) {
                         e.printStackTrace();
@@ -246,8 +242,8 @@ public class NoticeBoard extends AppCompatActivity
                                                 switch (result)
                                                 {
                                                         case "success":
-                                                                someMethod.progress("Working on it...","Notice published");
                                                                 getAllNotice();
+                                                                someMethod.progress("Working on it...","One notice published");
                                                                 break;
 
                                                         case "not member":

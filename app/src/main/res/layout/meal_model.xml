@@ -27,7 +27,7 @@
                android:gravity="start"
                android:hint="member name"
                android:textSize="18dp"
-               android:textColor="@color/color2"/>
+               android:textColor="@color/userName"/>
 
            <TextView
                android:id="@+id/txtDate"

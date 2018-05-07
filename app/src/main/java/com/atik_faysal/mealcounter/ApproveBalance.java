@@ -5,18 +5,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.atik_faysal.adapter.AdminAdapter;
 import com.atik_faysal.adapter.BalanceApprovalAdapter;
 import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.model.CostModel;
-import com.atik_faysal.model.MemberModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,8 +30,8 @@ import java.util.List;
 public class ApproveBalance extends AppCompatActivity
 {
 
-        private List<CostModel> costModelList;
-        private ListView listView;
+        private RecyclerView recyclerView;
+        private LinearLayoutManager layoutManager;
 
 
         @Override
@@ -62,11 +62,10 @@ public class ApproveBalance extends AppCompatActivity
         @SuppressLint("SetTextI18n")
         private void initComponent()
         {
-                listView = findViewById(R.id.list);
-                TextView txtDate = findViewById(R.id.txtDate);
+                recyclerView = findViewById(R.id.list);
                 TextView txtSession = findViewById(R.id.txtSession);
 
-                costModelList = new ArrayList<>();
+                layoutManager = new LinearLayoutManager(this);
 
                 SharedPreferenceData sharedPreferenceData = new SharedPreferenceData(this);
                 DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(this);
@@ -78,7 +77,6 @@ public class ApproveBalance extends AppCompatActivity
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
                 someMethod.reloadPage(refreshLayout,ApproveBalance.class);
 
-                txtDate.setText(someMethod.getDate());
                 txtSession.setText("#"+sharedPreferenceData.getmyCurrentSession());
                 if(internetIsOn.isOnline())
                 {
@@ -97,6 +95,7 @@ public class ApproveBalance extends AppCompatActivity
 
         private void processJsonData(String jsonData)
         {
+                List<CostModel> costModelList = new ArrayList<>();
                 try {
                         JSONObject jsonObject = new JSONObject(jsonData);
                         JSONArray jsonArray = jsonObject.optJSONArray("balance");
@@ -119,7 +118,10 @@ public class ApproveBalance extends AppCompatActivity
                         }
 
                         BalanceApprovalAdapter adapter = new BalanceApprovalAdapter(this, costModelList);
-                        listView.setAdapter(adapter);
+                        recyclerView.setAdapter(adapter);
+                        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                        recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setItemAnimator(new DefaultItemAnimator());
                 } catch (JSONException e) {
                         e.printStackTrace();
                 }

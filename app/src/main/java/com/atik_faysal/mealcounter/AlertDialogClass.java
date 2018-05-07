@@ -80,158 +80,103 @@ public class AlertDialogClass extends AlertDialog
         //if you are not a member of group
         public void notMember()
         {
-                Button bOk;
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                iOSDialogBuilder builder = new iOSDialogBuilder(context);
 
-                builder = new AlertDialog.Builder(context);
-                View view = LayoutInflater.from(context).inflate(R.layout.dialog_not_member,null);
+                builder.setTitle("Not member")
+                        .setSubtitle("Please first join a group.")
+                        .setBoldPositiveLabel(true)
+                        .setCancelable(false)
+                        .setPositiveListener("ok",new iOSDialogClickListener() {
+                                @Override
+                                public void onClick(iOSDialog dialog) {
+                                        dialog.dismiss();
 
-                bOk = view.findViewById(R.id.bOk);
-
-                builder.setView(view);
-                builder.setCancelable(false);
-                alertDialog = builder.create();
-                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                alertDialog.show();
-
-                bOk.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                                alertDialog.dismiss();
-                                //activity.finish();
-                        }
-                });
+                                }
+                        }).build().show();
 
         }
 
         //if you are already member
-        public void alreadyMember(String value)
+        public void alreadyMember(String message)
         {
-                Button bOk;
-                TextView text1,text2;
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                iOSDialogBuilder builder = new iOSDialogBuilder(context);
 
-                builder = new AlertDialog.Builder(context);
-                View view = LayoutInflater.from(context).inflate(R.layout.dialog_not_member,null);
-
-                text1 = view.findViewById(R.id.text1);
-                text2 = view.findViewById(R.id.text2);
-
-                text1.setText(value);
-                text2.setText("Please first Leave from previous group and retry.");
-
-
-
-                bOk = view.findViewById(R.id.bOk);
-                builder.setView(view);
-                builder.setCancelable(false);
-                alertDialog = builder.create();
-                alertDialog.show();
-
-                bOk.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                                alertDialog.dismiss();
-                                activity.finish();
-                        }
-                });
+                builder.setTitle("Already member")
+                        .setSubtitle(message+".Please leave from previous group and retry.")
+                        .setBoldPositiveLabel(true)
+                        .setCancelable(false)
+                        .setPositiveListener("ok",new iOSDialogClickListener() {
+                                @Override
+                                public void onClick(iOSDialog dialog) {
+                                        dialog.dismiss();
+                                        activity.finish();
+                                }
+                        }).build().show();
         }
 
         //execution failed
-        public void error(String value)
+        public void error(String message)
         {
-                Button bOk;
-                TextView text1;
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                iOSDialogBuilder builder = new iOSDialogBuilder(context);
 
-                builder = new AlertDialog.Builder(context);
-                View view = LayoutInflater.from(context).inflate(R.layout.dialog_error,null);
+                builder.setTitle("Attention")
+                        .setSubtitle(message)
+                        .setBoldPositiveLabel(true)
+                        .setCancelable(false)
+                        .setPositiveListener("ok",new iOSDialogClickListener() {
+                                @Override
+                                public void onClick(iOSDialog dialog) {
+                                        dialog.dismiss();
 
-                text1 = view.findViewById(R.id.text1);
-
-                text1.setText(value);
-
-                bOk = view.findViewById(R.id.bOk);
-                builder.setView(view);
-                builder.setCancelable(false);
-                alertDialog = builder.create();
-                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                alertDialog.show();
-
-                bOk.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                                alertDialog.dismiss();
-                        }
-                });
+                                }
+                        }).build().show();
         }
 
         //warning
-        public void warning(String value)
+        public void warning(String message)
         {
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                iOSDialogBuilder builder = new iOSDialogBuilder(context);
 
-                builder = new AlertDialog.Builder(context);
-                View view = LayoutInflater.from(context).inflate(R.layout.dialog_warning,null);
+                builder.setTitle("Warning")
+                        .setSubtitle(message)
+                        .setBoldPositiveLabel(true)
+                        .setCancelable(false)
+                        .setPositiveListener("Yes",new iOSDialogClickListener() {
+                                @Override
+                                public void onClick(iOSDialog dialog) {
+                                        onAsyncTaskInterface.onResultSuccess("yes");
+                                        dialog.dismiss();
 
-                builder.setView(view);
-                builder.setCancelable(false);
-
-                final Button bYes,bNo;
-                TextView txtWarning;
-
-                bYes = view.findViewById(R.id.bYes);
-                bNo = view.findViewById(R.id.bNo);
-                txtWarning = view.findViewById(R.id.text);
-
-                txtWarning.setText(value);
-
-                alertDialog = builder.create();
-                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                alertDialog.show();
-
-                bYes.setOnClickListener(new View.OnClickListener() {
+                                }
+                        }).setNegativeListener("No", new iOSDialogClickListener() {
                         @Override
-                        public void onClick(View v) {
-                                onAsyncTaskInterface.onResultSuccess("yes");
-                                alertDialog.dismiss();
-                        }
-                });
-
-                bNo.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                        public void onClick(iOSDialog dialog) {
                                 onAsyncTaskInterface.onResultSuccess("no");
-                                alertDialog.dismiss();
+                                dialog.dismiss();
                         }
-                });
-
+                }).build().show();
         }
 
         //if execution success
-        public void success(String value)
+        public void success(String message)
         {
-                Button bOk;
-                ImageView imageView;
-                TextView text1;
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                iOSDialogBuilder builder = new iOSDialogBuilder(context);
 
-                builder = new AlertDialog.Builder(context);
-                View view = LayoutInflater.from(context).inflate(R.layout.dialog_error,null);
+                builder.setTitle("Success")
+                        .setSubtitle(message)
+                        .setBoldPositiveLabel(true)
+                        .setCancelable(false)
+                        .setPositiveListener("ok",new iOSDialogClickListener() {
+                                @Override
+                                public void onClick(iOSDialog dialog) {
+                                        dialog.dismiss();
 
-                text1 = view.findViewById(R.id.text1);
-                imageView = view.findViewById(R.id.imageSign);
-
-                text1.setText(value);
-                imageView.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.icon_happy));
-
-                bOk = view.findViewById(R.id.bOk);
-                builder.setView(view);
-                builder.setCancelable(false);
-                alertDialog = builder.create();
-                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                alertDialog.show();
-
-                bOk.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                                alertDialog.dismiss();
-                        }
-                });
+                                }
+                        }).build().show();
         }
 }

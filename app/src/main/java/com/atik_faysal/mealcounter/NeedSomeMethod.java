@@ -203,7 +203,7 @@ public class NeedSomeMethod
                         @Override
                         public void run() {
                                 try {
-                                        Thread.sleep(2500);
+                                        Thread.sleep(1500);
                                 } catch (Exception e) {
                                 }
                                 ringProgressDialog.dismiss();

@@ -20,7 +20,8 @@
             android:layout_centerHorizontal="true"
             android:hint="userName"
             android:textSize="17dp"
-            android:textColor="@color/color5"/>
+            android:textColor="@color/userName"
+            android:textStyle="bold"/>
 
         <View
             android:layout_width="match_parent"

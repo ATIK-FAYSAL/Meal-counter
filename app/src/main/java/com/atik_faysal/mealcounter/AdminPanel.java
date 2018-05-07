@@ -1,5 +1,6 @@
 package com.atik_faysal.mealcounter;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -34,25 +35,12 @@ public class AdminPanel extends AppCompatActivity
         private ListView listView;
         private TextView txtPerson;
         private Toolbar toolbar;
-        private SwipeRefreshLayout refreshLayout;
 
-        private List<MemberModel> memberList = new ArrayList<>();
-        private JSONArray jsonArray;
-        private JSONObject jsonObject;
-
-        private DatabaseBackgroundTask backgroundTask;
         private AlertDialogClass dialogClass;
-        private CheckInternetIsOn internetIsOn;
-        private AdminAdapter adapter;
-        private SharedPreferenceData sharedPreferenceData;
-        private NeedSomeMethod someMethod;
 
         //private static final String FILE_URL = "http://192.168.56.1/json_mem_info.php";
         private static String POST_DATA;
-        private static final String USER_INFO = "currentInfo";
 
-        private String currentUser;
-        private String name,userName,phone,taka,type,date;
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
@@ -66,27 +54,27 @@ public class AdminPanel extends AppCompatActivity
                 listView = findViewById(R.id.memberList);
                 txtPerson = findViewById(R.id.txtPerson);
                 toolbar = findViewById(R.id.toolbar2);
-                refreshLayout = findViewById(R.id.refreshLayout);
+                SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
                 setSupportActionBar(toolbar);
                 setToolbar();
 
-                internetIsOn = new CheckInternetIsOn(this);
+                CheckInternetIsOn internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
-                sharedPreferenceData = new SharedPreferenceData(this);
-                someMethod = new NeedSomeMethod(this);
+                SharedPreferenceData sharedPreferenceData = new SharedPreferenceData(this);
+                NeedSomeMethod someMethod = new NeedSomeMethod(this);
 
                 //calling method
                 someMethod.reloadPage(refreshLayout,AdminPanel.class);
 
-                currentUser = sharedPreferenceData.getCurrentUserName();
+                String currentUser = sharedPreferenceData.getCurrentUserName();
                 if(internetIsOn.isOnline())
                 {
-                        if(currentUser!=null)
+                        if(currentUser !=null)
                         {
                                 try {
                                         POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
-                                        backgroundTask = new DatabaseBackgroundTask(this);
+                                        DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(this);
                                         backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                         backgroundTask.execute(getResources().getString(R.string.memberInfo),POST_DATA);
                                 } catch (UnsupportedEncodingException e) {
@@ -112,35 +100,37 @@ public class AdminPanel extends AppCompatActivity
         }
 
         //get all member and set into list view
+        @SuppressLint("SetTextI18n")
         private void addMemberInListView(String jsonData)
         {
+                List<MemberModel> memberList = new ArrayList<>();
                 if(jsonData!=null)
                 {
                         try {
-                                jsonObject = new JSONObject(jsonData);
-                                jsonArray = jsonObject.optJSONArray("memInfo");
+                                JSONObject jsonObject = new JSONObject(jsonData);
+                                JSONArray jsonArray = jsonObject.optJSONArray("memInfo");
 
                                 int count=0;
 
-                                while (count<jsonArray.length())
+                                while (count< jsonArray.length())
                                 {
                                         JSONObject jObject = jsonArray.getJSONObject(count);
 
-                                        name = jObject.getString("name");
-                                        userName = jObject.getString("userName");
-                                        phone = jObject.getString("phone");
-                                        type = jObject.getString("type");
-                                        date = jObject.getString("date");
-                                        taka = jObject.getString("taka");
+                                        String name = jObject.getString("name");
+                                        String userName = jObject.getString("userName");
+                                        String phone = jObject.getString("phone");
+                                        String type = jObject.getString("type");
+                                        String date = jObject.getString("date");
+                                        String taka = jObject.getString("taka");
 
-                                        memberList.add(new MemberModel(name,userName,phone,"",taka,type,date));
+                                        memberList.add(new MemberModel(name, userName, phone,"", taka, type, date));
                                         count++;
                                 }
 
                                 if(memberList.size()==1)txtPerson.setText(String.valueOf(memberList.size())+"  person");
                                 else txtPerson.setText(String.valueOf(memberList.size())+"  persons");
 
-                                adapter = new AdminAdapter(this,memberList);
+                                AdminAdapter adapter = new AdminAdapter(this, memberList);
                                 listView.setAdapter(adapter);
                         } catch (JSONException e) {
                                 e.printStackTrace();

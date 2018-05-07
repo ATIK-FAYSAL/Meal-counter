@@ -1,207 +1,241 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:focusableInTouchMode="true">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar"/>
-
-    <RelativeLayout
-        android:id="@+id/layout"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
+        android:layout_height="250dp"
         android:background="@color/white"
-        android:gravity="center">
-
-        <TextView
-            android:id="@+id/txtMonth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/mealRate"
-            android:layout_marginEnd="40dp"
-            android:hint="Month"
-            android:textColor="@color/color2"
-            android:padding="5dp"/>
-
-        <TextView
-            android:id="@+id/mealRate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="58dp"
-            android:layout_marginTop="11dp"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/icon_taka"
-            android:drawablePadding="5dp"
-            android:hint="meal rate"
-            android:padding="5dp"
-            android:textColor="@color/color2"
-            android:textSize="16dp"
-            android:textStyle="normal" />
+        android:fitsSystemWindows="true">
 
 
-        <RelativeLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="133dp"
-            android:layout_below="@+id/txtMonth"
-            android:layout_marginTop="13dp"
-            android:layout_marginLeft="20dp">
+            android:layout_height="wrap_content"
+            android:background="@drawable/background1"
+            app:layout_collapseMode="pin"
+            app:layout_scrollFlags="scroll|enterAlways">
 
-            <LinearLayout
-                android:id="@+id/layout1"
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="@color/colorPrimaryDark"
+            app:expandedTitleMarginBottom="32dp"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll">
+
+            <RelativeLayout
+                android:id="@+id/layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:orientation="horizontal"
-                android:padding="5dp"
-                android:paddingLeft="15dp">
+                android:layout_below="@+id/toolbar"
+                android:background="@color/white"
+                android:gravity="center">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/txtMonth"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/mealRate"
+                    android:layout_marginEnd="40dp"
+                    android:hint="Month"
+                    android:textColor="@color/colorAccent"
+                    android:padding="5dp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/mealRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="58dp"
+                    android:layout_marginTop="11dp"
                     android:layout_weight="1"
-                    android:gravity="start"
-                    android:text="Total taka"
-                    android:textColor="@color/colorA"
-                    android:textSize="16dp"
-                    android:textStyle="normal" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="start"
-                    android:text="Total meal"
-                    android:textColor="@color/colorA"
-                    android:textSize="16dp"
-                    android:textStyle="normal" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/layout3"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="start"
-                    android:text="Total cost"
-                    android:textColor="@color/colorA"
-                    android:textSize="16dp"
-                    android:textStyle="normal" />
-
-                <TextView
-                    android:id="@+id/text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="start"
-                    android:paddingLeft="3dp"
-                    android:text="Remain"
-                    android:textColor="@color/colorA"
-                    android:textSize="16dp"
-                    android:textStyle="normal" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/layout1"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:padding="5dp">
-
-
-                <TextView
-                    android:id="@+id/totalTaka"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:drawableLeft="@drawable/icon_taka"
-                    android:drawablePadding="3dp"
-                    android:gravity="start"
-                    android:hint="Taka"
-                    android:textColor="@color/color7"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/totalMeal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:drawablePadding="3dp"
-                    android:gravity="start"
-                    android:hint="meal"
-                    android:paddingLeft="20dp"
-                    android:textColor="@color/color7"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/layout2"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:padding="5dp">
-
-                <TextView
-                    android:id="@+id/totalCost"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:drawableLeft="@drawable/icon_taka"
-                    android:drawablePadding="3dp"
-                    android:hint="Taka"
-                    android:textColor="@color/color7"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-
-                <TextView
-                    android:id="@+id/remaining"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
                     android:drawableLeft="@drawable/icon_taka"
                     android:drawablePadding="5dp"
-                    android:hint="Taka"
-                    android:paddingLeft="3dp"
-                    android:textColor="@color/color7"
+                    android:hint="meal rate"
+                    android:padding="5dp"
+                    android:textColor="@color/color2"
                     android:textSize="16dp"
-                    android:textStyle="bold" />
+                    android:textStyle="normal" />
 
-            </LinearLayout>
 
-        </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="133dp"
+                    android:layout_below="@+id/txtMonth"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginLeft="20dp">
 
-    </RelativeLayout>
+                    <LinearLayout
+                        android:id="@+id/layout1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
+                        android:orientation="horizontal"
+                        android:padding="5dp"
+                        android:paddingLeft="15dp">
 
-    <RelativeLayout
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:text="Total taka"
+                            android:textColor="@color/colorA"
+                            android:textSize="16dp"
+                            android:textStyle="normal" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:text="Total meal"
+                            android:textColor="@color/colorA"
+                            android:textSize="16dp"
+                            android:textStyle="normal" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/layout3"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:text="Total cost"
+                            android:textColor="@color/colorA"
+                            android:textSize="16dp"
+                            android:textStyle="normal" />
+
+                        <TextView
+                            android:id="@+id/text"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:paddingLeft="3dp"
+                            android:text="Remain"
+                            android:textColor="@color/colorA"
+                            android:textSize="16dp"
+                            android:textStyle="normal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/layout1"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
+                        android:padding="5dp">
+
+
+                        <TextView
+                            android:id="@+id/totalTaka"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:drawableLeft="@drawable/icon_taka"
+                            android:drawablePadding="3dp"
+                            android:gravity="start"
+                            android:hint="Taka"
+                            android:textColor="@color/color7"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/totalMeal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:drawablePadding="3dp"
+                            android:gravity="start"
+                            android:hint="meal"
+                            android:paddingLeft="20dp"
+                            android:textColor="@color/color7"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/layout2"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:id="@+id/totalCost"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:drawableLeft="@drawable/icon_taka"
+                            android:drawablePadding="3dp"
+                            android:hint="Taka"
+                            android:textColor="@color/color7"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:id="@+id/remaining"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:drawableLeft="@drawable/icon_taka"
+                            android:drawablePadding="5dp"
+                            android:hint="Taka"
+                            android:paddingLeft="3dp"
+                            android:textColor="@color/color7"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layout"
-        android:layout_marginTop="10dp"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:background="@color/color8">
+
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -211,6 +245,8 @@
             android:divider="@color/color8">
         </ListView>
 
-    </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
+
+

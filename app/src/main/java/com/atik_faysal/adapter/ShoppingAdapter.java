@@ -1,5 +1,6 @@
 package com.atik_faysal.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +24,9 @@ import java.util.Map;
 
 public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.MyViewHolder>
 {
-        List<ShoppingItemModel>itemModels = new ArrayList<>();
-        LayoutInflater inflater;
-        Context context;
+        private List<ShoppingItemModel>itemModels;
+        private LayoutInflater inflater;
+        private Context context;
         public ShoppingAdapter(Context context,List<ShoppingItemModel>itemModels)
         {
                 inflater = LayoutInflater.from(context);
@@ -33,16 +34,16 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.MyView
                 this.itemModels = itemModels;
         }
 
+        @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
         {
                 View view = inflater.inflate(R.layout.item_list, parent, false);
-                MyViewHolder holder = new MyViewHolder(view);
-                return holder;
+                return new MyViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
                 ShoppingItemModel current = itemModels.get(position);
                 holder.setData(current, position);
                 holder.setListeners();
