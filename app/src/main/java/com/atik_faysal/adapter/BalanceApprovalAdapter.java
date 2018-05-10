@@ -36,6 +36,7 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
         private Context context;
         private LayoutInflater inflater;
         private Activity activity;
+        private SharedPreferenceData sharedPreferenceData;
 
         public BalanceApprovalAdapter(Context context,List<CostModel>costModels)
         {
@@ -43,13 +44,17 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
                 this.context = context;
                 this.inflater = LayoutInflater.from(context);
                 this.activity = (Activity)context;
+                sharedPreferenceData = new SharedPreferenceData(context);
         }
 
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
         {
-                View view = inflater.inflate(R.layout.approve_balance,parent,false);
+                View view;
+                if(sharedPreferenceData.getUserType().equals("admin"))
+                        view = inflater.inflate(R.layout.approve_balance,parent,false);
+                else view = inflater.inflate(R.layout.pending_balance,parent,false);
                 return new ViewHolder(view);
         }
 
@@ -89,13 +94,17 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
                         txtStatus = view.findViewById(R.id.txtStatus);
                         txtTaka = view.findViewById(R.id.txtTaka);
                         txtId = view.findViewById(R.id.txtId);
-                        bCancel = view.findViewById(R.id.bCancel);
-                        bApprv = view.findViewById(R.id.bApprove);
                         sharedPreferenceData = new SharedPreferenceData(context);
                         internetIsOn = new CheckInternetIsOn(context);
                         dialogClass = new AlertDialogClass(context);
                         someMethod = new NeedSomeMethod(context);
                         noResultFound = new NoResultFound(context);
+
+                        if(sharedPreferenceData.getUserType().equals("admin"))
+                        {
+                                bCancel = view.findViewById(R.id.bCancel);
+                                bApprv = view.findViewById(R.id.bApprove);
+                        }
                 }
 
                 @SuppressLint("SetTextI18n")
@@ -111,8 +120,11 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
                 }
 
                 private void setListeners() {
-                        bApprv.setOnClickListener(BalanceApprovalAdapter.ViewHolder.this);
-                        bCancel.setOnClickListener(BalanceApprovalAdapter.ViewHolder.this);
+                        if(sharedPreferenceData.getUserType().equals("admin"))
+                        {
+                                bApprv.setOnClickListener(BalanceApprovalAdapter.ViewHolder.this);
+                                bCancel.setOnClickListener(BalanceApprovalAdapter.ViewHolder.this);
+                        }
                 }
 
 
@@ -202,7 +214,10 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
                                                                 notifyItemRemoved(position);
                                                                 notifyItemRangeChanged(position, modelList.size());
                                                                 if(modelList.size()==0)
+                                                                {
                                                                         noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),ApproveBalance.class,"approval");
+
+                                                                }
                                                                 break;
                                                         default:
                                                                 dialogClass.error("Execution failed,please try again.");
