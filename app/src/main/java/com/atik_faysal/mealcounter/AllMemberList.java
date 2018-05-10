@@ -1,9 +1,13 @@
 package com.atik_faysal.mealcounter;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
@@ -33,28 +37,17 @@ import java.util.List;
 
 public class AllMemberList extends AppCompatActivity
 {
-        private ListView listView;
+        private RecyclerView listView;
         private TextView txtPerson;
         private Toolbar toolbar;
-        private SwipeRefreshLayout refreshLayout;
+        private LinearLayoutManager layoutManager;
 
-        private List<MemberModel>memberList = new ArrayList<>();
-        private JSONArray jsonArray;
-        private JSONObject jsonObject;
-
-        private DatabaseBackgroundTask backgroundTask;
         private AlertDialogClass dialogClass;
-        private CheckInternetIsOn internetIsOn;
-        private AdapterMemberList adapter;
-        private SharedPreferenceData sharedPreferenceData;
-        private NeedSomeMethod someMethod;
 
         //private static final String FILE_URL = "http://192.168.56.1/json_mem_info.php";
         private static String POST_DATA;
 
 
-        private String currentUser;
-        private String name,userName,phone,taka,type,date;
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
@@ -68,30 +61,31 @@ public class AllMemberList extends AppCompatActivity
                 listView = findViewById(R.id.memberList);
                 txtPerson = findViewById(R.id.txtPerson);
                 toolbar = findViewById(R.id.toolbar2);
-                refreshLayout = findViewById(R.id.refreshLayout);
+                SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
                 setSupportActionBar(toolbar);
+                layoutManager = new LinearLayoutManager(this);
 
-                internetIsOn = new CheckInternetIsOn(this);
+                CheckInternetIsOn internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
-                sharedPreferenceData = new SharedPreferenceData(this);
-                someMethod = new NeedSomeMethod(this);
+                SharedPreferenceData sharedPreferenceData = new SharedPreferenceData(this);
+                NeedSomeMethod someMethod = new NeedSomeMethod(this);
 
                 //calling method
                 someMethod.reloadPage(refreshLayout,AllMemberList.class);
                 setToolbar();
 
-                currentUser = sharedPreferenceData.getCurrentUserName();
+                String currentUser = sharedPreferenceData.getCurrentUserName();
                 if(internetIsOn.isOnline())
                 {
-                        if(currentUser!=null)
+                        if(currentUser !=null)
                         {
                                 try {
                                         POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
                                 }
-                                backgroundTask = new DatabaseBackgroundTask(this);
+                                DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(this);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 backgroundTask.execute(getResources().getString(R.string.memberInfo),POST_DATA);
                         }else Toast.makeText(this,"under construction",Toast.LENGTH_SHORT).show();
@@ -114,17 +108,20 @@ public class AllMemberList extends AppCompatActivity
         }
 
         //process json data,get all member from database and show in listview
+        @SuppressLint("SetTextI18n")
         private void addMemberInListView(String jsonData)
         {
+                String name,userName,phone,taka,type,date;
+                List<MemberModel>memberList = new ArrayList<>();
                 if(jsonData!=null)
                 {
                         try {
-                                jsonObject = new JSONObject(jsonData);
-                                jsonArray = jsonObject.optJSONArray("memInfo");
+                                JSONObject jsonObject = new JSONObject(jsonData);
+                                JSONArray jsonArray = jsonObject.optJSONArray("memInfo");
 
                                 int count=0;
 
-                                while (count<jsonArray.length())
+                                while (count< jsonArray.length())
                                 {
                                         JSONObject jObject = jsonArray.getJSONObject(count);
 
@@ -142,8 +139,11 @@ public class AllMemberList extends AppCompatActivity
                                 if(memberList.size()==1)txtPerson.setText(String.valueOf(memberList.size())+"  person");
                                 else txtPerson.setText("("+String.valueOf(memberList.size())+")");
 
-                                adapter = new AdapterMemberList(this,memberList);
+                                AdapterMemberList adapter = new AdapterMemberList(this, memberList);
                                 listView.setAdapter(adapter);
+                                layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                                listView.setLayoutManager(layoutManager);
+                                listView.setItemAnimator(new DefaultItemAnimator());
                         } catch (JSONException e) {
                                 e.printStackTrace();
                         }

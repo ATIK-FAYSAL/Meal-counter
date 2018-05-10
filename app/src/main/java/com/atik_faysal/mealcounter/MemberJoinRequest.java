@@ -1,19 +1,25 @@
 package com.atik_faysal.mealcounter;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.MemberModel;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
-import com.atik_faysal.adapter.AcceptRequestAdapter;
+import com.atik_faysal.adapter.RequestsAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,26 +36,20 @@ import java.util.List;
 
 public class MemberJoinRequest extends AppCompatActivity
 {
-        private ListView listView;
+        private RecyclerView recyclerView;
         private TextView textView;
         private Toolbar toolbar;
-
-        private SwipeRefreshLayout refreshLayout;
         private List<MemberModel>memberModelList = new ArrayList<>();
-        private JSONObject jsonObject;
-        private JSONArray jsonArray;
-        private AcceptRequestAdapter adapter;
 
         //private static final String FILE_URL = "http://192.168.56.1/allJoinRequests.php";
         private static String POST_DATA;
         private String currentUser;
-        private static final String USER_INFO = "currentInfo";
+
+        private LinearLayoutManager layoutManager;
 
         private CheckInternetIsOn internetIsOn;
         private AlertDialogClass dialogClass;
-        private DatabaseBackgroundTask backgroundTask;
-        private SharedPreferenceData sharedPreferenceData;
-        private NeedSomeMethod someMethod;
+
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
@@ -57,19 +57,23 @@ public class MemberJoinRequest extends AppCompatActivity
                 initComponent();
         }
 
+        @SuppressLint("SetTextI18n")
         private void initComponent()
         {
-                listView = findViewById(R.id.memberList);
+                recyclerView = findViewById(R.id.memberList);
+                layoutManager = new LinearLayoutManager(this);
                 textView = findViewById(R.id.txtPerson);
-                refreshLayout = findViewById(R.id.refreshLayout);
+                SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
+                TextView textView = findViewById(R.id.textView16);
+                textView.setText("Requests");
                 toolbar = findViewById(R.id.toolbar2);
                 setSupportActionBar(toolbar);
 
                 internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
-                sharedPreferenceData = new SharedPreferenceData(this);
-                someMethod = new NeedSomeMethod(this);
+                SharedPreferenceData sharedPreferenceData = new SharedPreferenceData(this);
+                NeedSomeMethod someMethod = new NeedSomeMethod(this);
 
                 currentUser = sharedPreferenceData.getCurrentUserName();
 
@@ -99,7 +103,7 @@ public class MemberJoinRequest extends AppCompatActivity
                 {
                         try {
                                 POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
-                                backgroundTask = new DatabaseBackgroundTask(this);
+                                DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(this);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 backgroundTask.execute(getResources().getString(R.string.allJoinRequest),POST_DATA);
                         } catch (UnsupportedEncodingException e) {
@@ -114,12 +118,12 @@ public class MemberJoinRequest extends AppCompatActivity
                 String name,userName,phone,status,date,id,group;
 
                 try {
-                        jsonObject = new JSONObject(jsonData);
-                        jsonArray = jsonObject.optJSONArray("joinRequests");
+                        JSONObject jsonObject = new JSONObject(jsonData);
+                        JSONArray jsonArray = jsonObject.optJSONArray("joinRequests");
 
                         int count=0;
 
-                        while (count<jsonArray.length())
+                        while (count< jsonArray.length())
                         {
                                 JSONObject jObject = jsonArray.getJSONObject(count);
 
@@ -135,8 +139,11 @@ public class MemberJoinRequest extends AppCompatActivity
                                 count++;
                         }
 
-                        adapter = new AcceptRequestAdapter(this,memberModelList);
-                        listView.setAdapter(adapter);
+                        RequestsAdapter adapter = new RequestsAdapter(this, memberModelList);
+                        recyclerView.setAdapter(adapter);
+                        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                        recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setItemAnimator(new DefaultItemAnimator());
                         textView.setText(String.valueOf(memberModelList.size()));
 
                 } catch (JSONException e) {

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    app:cardCornerRadius="10dp"
+    android:layout_marginBottom="7dp"
+    android:focusableInTouchMode="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txtStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="40dp"
+            android:layout_weight="1"
+            android:hint="status"
+            android:padding="2dp"
+            android:textColor="@color/color6"
+            android:textSize="17dp"
+            android:layout_marginTop="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout1"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@+id/txtStatus">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtDate"
+                android:layout_weight="1"
+                android:hint="date"
+                android:textSize="17dp"
+                android:textColor="@color/black"
+                android:padding="2dp"/>
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtName"
+                android:layout_weight="1"
+                android:hint="user name"
+                android:textSize="17dp"
+                android:textColor="@color/userName"
+                android:padding="2dp"
+                android:textStyle="bold"
+                android:gravity="center"/>
+
+            <EditText
+                android:id="@+id/txtTaka"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:hint="Taka"
+                android:gravity="start"
+                android:drawablePadding="5dp"
+                android:textSize="17dp"
+                android:inputType="number"
+                android:drawableLeft="@drawable/icon_taka"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/txtStatus"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:hint="approval id"
+            android:padding="2dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="17dp" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

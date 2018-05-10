@@ -198,18 +198,11 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 break;
 
                         case R.id.acceptRequest:
-                                if(userType.equals("admin"))
-                                {
-                                        //startActivity(new Intent(HomePageActivity.this,MemberJoinRequest.class));
-                                        noResultFound.checkValueIsExist(currentUser,MemberJoinRequest.class,"request");
-                                }else dialogClass.error("Only admin can accept request.You are not an admin.");
+                                noResultFound.checkValueIsExist(currentUser,MemberJoinRequest.class,"request");
                                 break;
 
                         case R.id.makeAdmin:
-                                if(userType.equals("admin"))
-                                {
-                                        startActivity(new Intent(HomePageActivity.this,AdminPanel.class));
-                                }else dialogClass.error("Only admin can make another admin.You are not an admin.");
+                                startActivity(new Intent(HomePageActivity.this,AdminPanel.class));
                                 break;
 
                         case R.id.member:

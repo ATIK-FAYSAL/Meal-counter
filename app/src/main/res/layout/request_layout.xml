@@ -22,14 +22,12 @@
             android:backgroundTint="@color/offWhite"
             android:focusable="false"
             android:gravity="center"
-            android:hint="UserName"
+            android:hint="userName"
             android:textColor="@color/userName"
             android:textSize="22dp"
             android:textStyle="bold"
             android:clickable="true"
-            android:layout_marginTop="7dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"/>
+            android:layout_marginTop="7dp"/>
 
         <View
             android:id="@+id/view2"
@@ -44,14 +42,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="48dp"
+            android:layout_below="@+id/txtUserName"
+            android:layout_marginTop="12dp"
             android:drawableLeft="@drawable/icon_name"
-            android:drawablePadding="5dp"
             android:drawableTint="@color/color2"
             android:gravity="center"
             android:hint="user name"
+            android:drawablePadding="5dp"
             android:padding="5dp"
             android:textColor="@color/black"
             android:textSize="17dp" />
@@ -60,13 +57,12 @@
             android:id="@+id/txtPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/txtName"
-            android:layout_marginTop="93dp"
+            android:layout_below="@+id/txtName"
+            android:layout_marginTop="10dp"
             android:drawableLeft="@drawable/icon_phone"
-            android:drawablePadding="5dp"
             android:gravity="center"
             android:hint="phone number"
+            android:drawablePadding="5dp"
             android:padding="5dp"
             android:textColor="@color/black"
             android:textSize="15dp" />
@@ -88,7 +84,8 @@
             android:layout_width="111dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/txtName"
-            android:layout_alignEnd="@+id/bRemove"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
             android:hint="Type/request id"
             android:padding="5dp"
             android:textColor="@color/colorAccent" />
@@ -101,65 +98,9 @@
             android:layout_alignStart="@+id/txtType"
             android:drawablePadding="5dp"
             android:hint="taka/status"
-            android:padding="5dp"
-            android:textSize="15dp" />
-
-        <ImageView
-            android:id="@+id/bRemove"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/txtUserName"
-            android:layout_marginEnd="16dp"
-            card_view:srcCompat="@drawable/icon_delete"
-            android:layout_marginTop="4dp"/>
-
+            android:textSize="15dp"
+            android:padding="5dp" />
 
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>
-
-
-<!-- <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/offWhite"
-            android:layout_below="@+id/txtDate"
-            android:layout_marginTop="12dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txtDate"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="10dp">
-            <Button
-                android:id="@+id/bRemove"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Remove"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:textColor="@color/color2"
-                android:textSize="20dp" />
-            <View
-                android:id="@+id/view1"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/offWhite"
-                android:layout_below="@+id/txtTaka"
-                />
-            <Button
-                android:id="@+id/bDetails"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Approve"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:textSize="20dp"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:textColor="@color/color2"/>
-
-        </LinearLayout>-->

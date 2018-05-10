@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
@@ -32,11 +35,12 @@ import java.util.List;
 
 public class AdminPanel extends AppCompatActivity
 {
-        private ListView listView;
+        private RecyclerView listView;
         private TextView txtPerson;
         private Toolbar toolbar;
-
         private AlertDialogClass dialogClass;
+        private LinearLayoutManager layoutManager;
+
 
         //private static final String FILE_URL = "http://192.168.56.1/json_mem_info.php";
         private static String POST_DATA;
@@ -54,6 +58,7 @@ public class AdminPanel extends AppCompatActivity
                 listView = findViewById(R.id.memberList);
                 txtPerson = findViewById(R.id.txtPerson);
                 toolbar = findViewById(R.id.toolbar2);
+                layoutManager = new LinearLayoutManager(this);
                 SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
                 setSupportActionBar(toolbar);
@@ -132,6 +137,9 @@ public class AdminPanel extends AppCompatActivity
 
                                 AdminAdapter adapter = new AdminAdapter(this, memberList);
                                 listView.setAdapter(adapter);
+                                layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                                listView.setLayoutManager(layoutManager);
+                                listView.setItemAnimator(new DefaultItemAnimator());
                         } catch (JSONException e) {
                                 e.printStackTrace();
                         }
