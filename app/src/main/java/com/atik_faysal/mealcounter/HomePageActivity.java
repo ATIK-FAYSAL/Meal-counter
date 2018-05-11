@@ -30,6 +30,7 @@ import com.atik_faysal.backend.GetImportantData;
 import com.atik_faysal.backend.RegisterDeviceToken;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.SearchableModel;
+import com.atik_faysal.others.AboutUs;
 import com.atik_faysal.others.CreateSession;
 import com.atik_faysal.others.NoResultFound;
 import com.gdacciaro.iOSDialog.iOSDialog;
@@ -223,6 +224,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 break;
 
                         case R.id.aboutUs:
+                                startActivity(new Intent(this, AboutUs.class));
                                 break;
 
                         case R.id.logout:

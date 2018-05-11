@@ -28,8 +28,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="icon_admin" />
-                            <entry key="sourceFile" value="C:\Users\USER\Downloads\user.svg" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="linkedin" />
+                            <entry key="sourceFile" value="C:\Users\USER\Downloads\linkedin.svg" />
                           </map>
                         </option>
                       </PersistentState>
