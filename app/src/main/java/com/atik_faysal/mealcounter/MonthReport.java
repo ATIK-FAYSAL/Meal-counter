@@ -148,11 +148,25 @@ public class MonthReport extends AppCompatActivity
                         JSONArray detailArray = jsonIndex.getJSONArray("detail");
                         JSONObject detailObject = detailArray.getJSONObject(0);
 
-                        monthlyTaka = detailObject.getString("monthlyTaka");
-                        monthlyCost = detailObject.getString("monthlyCost");
-                        monthlyMeal = detailObject.getString("monthlyMeal");
-                        remain = detailObject.getString("remaining");
-                        mealRate = detailObject.getString("mealRate");
+                        if(!detailObject.getString("monthlyTaka").equals("0"))
+                                monthlyTaka = detailObject.getString("monthlyTaka");
+                        else monthlyTaka = "0";
+
+                        if(!detailObject.getString("monthlyCost").equals("0"))
+                                monthlyCost = detailObject.getString("monthlyCost");
+                        else monthlyCost = "0";
+
+                        if(!detailObject.getString("monthlyMeal").equals("0"))
+                                monthlyMeal = detailObject.getString("monthlyMeal");
+                        else monthlyMeal = "0";
+
+                        if(!detailObject.getString("remaining").equals("0"))
+                                remain = detailObject.getString("remaining");
+                        else remain = "0";
+
+                        if(!detailObject.getString("mealRate").equals("0"))
+                                mealRate = detailObject.getString("mealRate");
+                        else mealRate = "0";
 
                         String name,meal,taka,cost,status;
 
@@ -164,11 +178,20 @@ public class MonthReport extends AppCompatActivity
                                 while(count<infoArray.length())
                                 {
                                         JSONObject object = infoArray.getJSONObject(count);
+
                                         name = object.getString("name");
-                                        meal = object.getString("meal");
-                                        taka = object.getString("taka");
-                                        cost = object.getString("cost");
-                                        status = object.getString("status");
+                                        if(!object.getString("meal").equals("null"))
+                                                meal = object.getString("meal");
+                                        else meal = "0";
+                                        if(!object.getString("taka").equals("null"))
+                                                taka = object.getString("taka");
+                                        else taka = "0";
+                                        if(!object.getString("cost").equals("null"))
+                                                cost = object.getString("cost");
+                                        else cost = "0";
+                                        if(!object.getString("status").equals("null"))
+                                                status = object.getString("status");
+                                        else status = "0";
                                         modelList.add(new CostModel(name,meal,taka,cost,status));
                                         count++;
                                 }
