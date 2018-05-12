@@ -1,5 +1,6 @@
 package com.atik_faysal.mealcounter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -7,11 +8,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
+import com.gdacciaro.iOSDialog.iOSDialog;
+import com.gdacciaro.iOSDialog.iOSDialogBuilder;
+import com.gdacciaro.iOSDialog.iOSDialogClickListener;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -50,6 +55,7 @@ public class NeedSomeMethod
         }
 
         //get current time and date
+        @SuppressLint("SimpleDateFormat")
         public String getDateWithTime()
         {
                 Calendar calendar = Calendar.getInstance();
@@ -58,6 +64,7 @@ public class NeedSomeMethod
         }
 
         //get current time and date
+        @SuppressLint("SimpleDateFormat")
         public String getDate()
         {
                 Calendar calendar = Calendar.getInstance();
@@ -66,6 +73,7 @@ public class NeedSomeMethod
         }
 
         //get current time and date
+        @SuppressLint("SimpleDateFormat")
         public String getMonth()
         {
                 Calendar calendar = Calendar.getInstance();
@@ -171,7 +179,6 @@ public class NeedSomeMethod
                 }else dialogClass.noInternetConnection();
         }
 
-
         public void progressDialog(String message)
         {
                 final ProgressDialog ringProgressDialog = ProgressDialog.show(context, "Please wait", message, true);
@@ -213,6 +220,42 @@ public class NeedSomeMethod
                         @Override
                         public void onDismiss(DialogInterface dialog) {
                                 Toast.makeText(context,toast,Toast.LENGTH_SHORT).show();
+                        }
+                });
+        }
+
+        public void closeSessionAlert(String message, final String path)
+        {
+                final ProgressDialog ringProgressDialog = ProgressDialog.show(context, "Please wait", message, true);
+                ringProgressDialog.setCancelable(true);
+                new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                                try {
+                                        Thread.sleep(2500);
+                                } catch (Exception e) {
+                                }
+                                ringProgressDialog.dismiss();
+                        }
+                }).start();
+                ringProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                               activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                                iOSDialogBuilder builder = new iOSDialogBuilder(context);
+
+                                builder.setTitle("SUCCESS")
+                                        .setSubtitle("Your current session closed successfully.Monthly report save in your SD card ("+path+")")
+                                        .setBoldPositiveLabel(true)
+                                        .setCancelable(false)
+                                        .setPositiveListener("ok",new iOSDialogClickListener() {
+                                                @Override
+                                                public void onClick(iOSDialog dialog) {
+                                                        dialog.dismiss();
+                                                        closeActivity(activity,HomePageActivity.class);
+
+                                                }
+                                        }).build().show();
                         }
                 });
         }
