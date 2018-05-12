@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
@@ -22,6 +23,7 @@ import com.atik_faysal.mealcounter.R;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class CreateSession extends AppCompatActivity implements DatePickerDialog.OnDateSetListener
@@ -64,6 +66,7 @@ public class CreateSession extends AppCompatActivity implements DatePickerDialog
                 bCancel = findViewById(R.id.bCancel);
                 bDone = findViewById(R.id.bDone);
 
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM-dd-yyyy");
                 txtSessionName = findViewById(R.id.sessionName);
                 txtStartDate = findViewById(R.id.startDate);
                 txtEndDate = findViewById(R.id.endDate);
@@ -71,7 +74,7 @@ public class CreateSession extends AppCompatActivity implements DatePickerDialog
 
                 txtEndDate.setClickable(true);
 
-                txtStartDate.setText(someMethod.getDate());
+                txtStartDate.setText(dateFormat.format(calendar.getTime()));
                 bCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -155,7 +158,7 @@ public class CreateSession extends AppCompatActivity implements DatePickerDialog
                         dialogClass.error("Invalid date.Please pick a valid date.");
                 else
                 {
-                        txtEndDate.setText(year+"-"+calculateMonth(month)+"-"+day);
+                        txtEndDate.setText(calculateMonth(month)+"-"+day+"-"+year);
                         txtDuration.setText(String.valueOf(endDays-currentDays)+" Days");
                 }
         }
@@ -213,11 +216,10 @@ public class CreateSession extends AppCompatActivity implements DatePickerDialog
                         runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                        Log.d("Inserting error",message);
                                         switch (message)
                                         {
                                                 case "success":
-                                                        someMethod.progressDialog("Working on it...");
+                                                        someMethod.progressDialog("Creating a new session...");
                                                         break;
                                                 default:
                                                         dialogClass.error("Execution failed.Please try again.");
