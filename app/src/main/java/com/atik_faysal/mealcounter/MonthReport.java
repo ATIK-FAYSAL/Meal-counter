@@ -47,7 +47,10 @@ import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.net.UnknownServiceException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MonthReport extends AppCompatActivity
@@ -61,10 +64,14 @@ public class MonthReport extends AppCompatActivity
 
         private SharedPreferenceData sharedPreferenceData;
         private NeedSomeMethod someMethod;
-
+        private SimpleDateFormat format;
+        private DatabaseBackgroundTask backgroundTask;
+        private AlertDialogClass dialogClass;
+        private CheckInternetIsOn internetIsOn;
         private List<CostModel>modelList;
 
         private String monthlyTaka ,monthlyCost,monthlyMeal,remain,mealRate;
+        private String reportPath;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,7 +83,7 @@ public class MonthReport extends AppCompatActivity
 
 
         //initialize all component
-        @SuppressLint("SetTextI18n")
+        @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
         private void initComponent()
         {
                 //initialize all design component
@@ -90,10 +97,11 @@ public class MonthReport extends AppCompatActivity
 
 
                 sharedPreferenceData = new SharedPreferenceData(this);
-                CheckInternetIsOn internetIsOn = new CheckInternetIsOn(this);
+                internetIsOn = new CheckInternetIsOn(this);
                 someMethod = new NeedSomeMethod(this);
-                DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(this);
-
+                backgroundTask = new DatabaseBackgroundTask(this);
+                dialogClass = new AlertDialogClass(this);
+                format = new SimpleDateFormat("MMMM-dd-yyyy");
                 modelList = new ArrayList<>();
                 txtMonth.setText("#"+sharedPreferenceData.getmyCurrentSession());
 
@@ -108,7 +116,7 @@ public class MonthReport extends AppCompatActivity
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                         }
-                }
+                }else dialogClass.noInternetConnection();
         }
 
         //set a toolbar,above the page
@@ -194,6 +202,9 @@ public class MonthReport extends AppCompatActivity
         //current session close
         private void closeCurrentSession()
         {
+                Calendar calendar = Calendar.getInstance();
+                final String currentDate = format.format(calendar.getTime());
+
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 iOSDialogBuilder builder = new iOSDialogBuilder(MonthReport.this);
 
@@ -204,9 +215,19 @@ public class MonthReport extends AppCompatActivity
                         .setPositiveListener("Yes",new iOSDialogClickListener() {
                                 @Override
                                 public void onClick(iOSDialog dialog) {
-                                        someMethod.progress("Removing data","Current session close successfully");
-                                        createPdf();
-                                        dialog.dismiss();
+                                        if(internetIsOn.isOnline())
+                                        {
+                                                try {
+                                                        String data = URLEncoder.encode("user","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8")+"&"
+                                                                +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(currentDate,"UTF-8");
+                                                        backgroundTask = new DatabaseBackgroundTask(MonthReport.this);
+                                                        backgroundTask.setOnResultListener(anInterface);
+                                                        backgroundTask.execute(getResources().getString(R.string.dateInterval),data);
+                                                } catch (UnsupportedEncodingException e) {
+                                                        e.printStackTrace();
+                                                }
+                                                dialog.dismiss();
+                                        }else dialogClass.noInternetConnection();
                                 }
                         })
                         .setNegativeListener("No", new iOSDialogClickListener() {
@@ -229,6 +250,7 @@ public class MonthReport extends AppCompatActivity
                                 directory.mkdir();
 
                         File file = new File(directory,sharedPreferenceData.getmyCurrentSession()+".pdf");
+                        reportPath = file.getAbsolutePath();
                         FileOutputStream fileOutputStream = new FileOutputStream(file);
                         PdfWriter.getInstance(document,fileOutputStream);
                         document.setPageSize(PageSize.A4);
@@ -298,6 +320,48 @@ public class MonthReport extends AppCompatActivity
                                 @Override
                                 public void run() {
                                         processJsonData(message);
+                                }
+                        });
+                }
+        };
+
+        //check this session is expire or not
+        private OnAsyncTaskInterface anInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String message) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        if(message.equals("success"))
+                                        {
+                                                //someMethod.progress("Closing current session","Current session close successfully");
+                                                createPdf();
+                                                someMethod.closeSessionAlert("Closing current session",reportPath);
+                                        }
+                                        else
+                                        {
+                                               dialogClass.onSuccessListener(taskInterface);
+                                               dialogClass.warning("Some days still available in this session,do you really want to close this session?It will remove all current information.");
+                                        }
+                                }
+                        });
+                }
+        };
+
+
+        //get warning return message
+        private OnAsyncTaskInterface taskInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String message) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        if(message.equals("yes"))
+                                        {
+                                                //someMethod.progress("Working on it","Current session close successfully");
+                                                createPdf();
+                                                someMethod.closeSessionAlert("Closing current session",reportPath);
+                                        }
                                 }
                         });
                 }
