@@ -1,5 +1,6 @@
 package com.atik_faysal.mealcounter;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,6 +32,7 @@ import com.atik_faysal.backend.RegisterDeviceToken;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.SearchableModel;
 import com.atik_faysal.others.AboutUs;
+import com.atik_faysal.others.ChangePassword;
 import com.atik_faysal.others.CreateSession;
 import com.atik_faysal.others.NoResultFound;
 import com.gdacciaro.iOSDialog.iOSDialog;
@@ -77,7 +79,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
         private ArrayList<SearchableModel>groupList;
 
-        private TextView txtTotalCost,txtTotalMeal,txtTodayMeal,txtMyMeal;
+        private TextView txtTotalCost,txtTotalMeal,txtTodayMeal,txtMyMeal,txtSession;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -216,7 +218,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                         case R.id.setAlarm:
                                 break;
 
-                        case R.id.setting:
+                        case R.id.changePass:
+                                startActivity(new Intent(HomePageActivity.this, ChangePassword.class));
                                 break;
 
                         case R.id.feedback:
@@ -273,6 +276,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 View view = navigationView.inflateHeaderView(R.layout.nav_header_home_page);
                 TextView txtUserName = view.findViewById(R.id.txtName);
                 userImage = view.findViewById(R.id.userImage);
+                txtSession = findViewById(R.id.txtSession);
                 txtTotalCost = findViewById(R.id.txtTaka);
                 txtTotalMeal = findViewById(R.id.txtMeal);
                 txtTodayMeal = findViewById(R.id.txtTmeal);
@@ -561,9 +565,14 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 @Override
                 public void onResultSuccess(final String message) {
                         runOnUiThread(new Runnable() {
+                                @SuppressLint("SetTextI18n")
                                 @Override
                                 public void run() {
-                                        String totalMeal=null,totalTaka = null,myMeal=null,todayMeal=null;
+                                        String totalMeal=null;
+                                        String totalTaka = null;
+                                        String myMeal=null;
+                                        String todayMeal=null;
+                                        String session=null;
                                         if(message!=null)
                                         {
                                                 try {
@@ -573,13 +582,26 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                                         while (count<jsonArray.length())
                                                         {
                                                                 JSONObject jObject = jsonArray.getJSONObject(count);
-                                                                totalTaka = jObject.getString("cost");
-                                                                totalMeal = jObject.getString("meals");
-                                                                todayMeal = jObject.getString("tmeal");
-                                                                myMeal = jObject.getString("mmeal");
+                                                                if(!jObject.getString("cost").equals("null"))
+                                                                        totalTaka = jObject.getString("cost");
+                                                                else totalTaka = "0";
+                                                                if(!jObject.getString("meals").equals("null"))
+                                                                        totalMeal = jObject.getString("meals");
+                                                                else totalMeal = "0";
+                                                                if(!jObject.getString("tmeal").equals("null"))
+                                                                        todayMeal = jObject.getString("tmeal");
+                                                                else todayMeal = "0";
+                                                                if(!jObject.getString("mmeal").equals("null"))
+                                                                        myMeal = jObject.getString("mmeal");
+                                                                else myMeal = "0";
+                                                                if(!jObject.getString("session").equals("nope"))
+                                                                        session = jObject.getString("session");
+                                                                else session = "0";
+
                                                                 count++;
                                                         }
 
+                                                        txtSession.setText("#"+session);
                                                         txtTotalCost.setText(totalTaka);
                                                         txtTotalMeal.setText(totalMeal);
                                                         txtTodayMeal.setText(todayMeal);
