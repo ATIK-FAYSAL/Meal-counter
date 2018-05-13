@@ -238,19 +238,22 @@ public class MonthReport extends AppCompatActivity
                         .setPositiveListener("Yes",new iOSDialogClickListener() {
                                 @Override
                                 public void onClick(iOSDialog dialog) {
-                                        if(internetIsOn.isOnline())
+                                        if(sharedPreferenceData.getUserType().equals("admin"))
                                         {
-                                                try {
-                                                        String data = URLEncoder.encode("user","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8")+"&"
-                                                                +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(currentDate,"UTF-8");
-                                                        backgroundTask = new DatabaseBackgroundTask(MonthReport.this);
-                                                        backgroundTask.setOnResultListener(anInterface);
-                                                        backgroundTask.execute(getResources().getString(R.string.dateInterval),data);
-                                                } catch (UnsupportedEncodingException e) {
-                                                        e.printStackTrace();
-                                                }
-                                                dialog.dismiss();
-                                        }else dialogClass.noInternetConnection();
+                                                if(internetIsOn.isOnline())
+                                                {
+                                                        try {
+                                                                String data = URLEncoder.encode("user","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8")+"&"
+                                                                        +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(currentDate,"UTF-8");
+                                                                backgroundTask = new DatabaseBackgroundTask(MonthReport.this);
+                                                                backgroundTask.setOnResultListener(anInterface);
+                                                                backgroundTask.execute(getResources().getString(R.string.dateInterval),data);
+                                                        } catch (UnsupportedEncodingException e) {
+                                                                e.printStackTrace();
+                                                        }
+                                                        dialog.dismiss();
+                                                }else dialogClass.noInternetConnection();
+                                        }else dialogClass.error("Only admin can close current session.");
                                 }
                         })
                         .setNegativeListener("No", new iOSDialogClickListener() {
@@ -335,6 +338,22 @@ public class MonthReport extends AppCompatActivity
                 table.addCell(cell);
         }
 
+        private void rmvSessionData()
+        {
+                if(internetIsOn.isOnline())
+                {
+                        try {
+                                String data = URLEncoder.encode("user","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8")+"&"
+                                        +URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8");
+                                backgroundTask = new DatabaseBackgroundTask(this);
+                                backgroundTask.execute(getResources().getString(R.string.closeSession),data);
+                        } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                        }
+                }else dialogClass.noInternetConnection();
+        }
+
+
         //get monthly report
         private OnAsyncTaskInterface asyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
@@ -357,8 +376,8 @@ public class MonthReport extends AppCompatActivity
                                 public void run() {
                                         if(message.equals("success"))
                                         {
-                                                //someMethod.progress("Closing current session","Current session close successfully");
-                                                createPdf();
+                                                createPdf();//it's convert all monthly report to pdf and store in sd card.
+                                                rmvSessionData();//it's remove all session data,like meal,cost etc.
                                                 someMethod.closeSessionAlert("Closing current session",reportPath);
                                         }
                                         else
@@ -381,8 +400,8 @@ public class MonthReport extends AppCompatActivity
                                 public void run() {
                                         if(message.equals("yes"))
                                         {
-                                                //someMethod.progress("Working on it","Current session close successfully");
-                                                createPdf();
+                                                createPdf();//it's convert all monthly report to pdf and store in sd card.
+                                                rmvSessionData();//it's remove all session data,like meal,cost etc.
                                                 someMethod.closeSessionAlert("Closing current session",reportPath);
                                         }
                                 }
