@@ -200,6 +200,19 @@
                                 android:paddingLeft="6dp"/>
                         </LinearLayout>
 
+                        <TextView
+                            android:id="@+id/txtSession"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginEnd="49dp"
+                            android:padding="5dp"
+                            android:layout_marginTop="5dp"
+                            android:hint="Current session"
+                            android:textColor="@color/colorAccent"
+                            android:textStyle="bold"/>
+
                     </RelativeLayout>
 
                     <RelativeLayout

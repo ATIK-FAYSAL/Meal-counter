@@ -161,9 +161,9 @@ public class LogInActivity extends AppCompatActivity
         //check checkBox status
         public void onClickCheckBox(View view)
         {
-                if(checkBox.isChecked())
+                if(checkBox.isChecked())//this mehtod contain username ,password,and checkbox status
                         sharedPreferenceData.saveUserNamePassword(REMEMBER_ME,txtUserName.getText().toString(),txtUserPassword.getText().toString(),true);
-                else
+                else//this mehtod contain username ,password,and checkbox status
                         sharedPreferenceData.saveUserNamePassword(REMEMBER_ME,txtUserName.getText().toString(),txtUserPassword.getText().toString(),false);
         }
 

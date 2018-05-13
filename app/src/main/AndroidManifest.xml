@@ -127,6 +127,13 @@
         <activity android:name="com.atik_faysal.others.AboutUs"
             android:screenOrientation="portrait"
             android:label="About us"/>
+        <activity android:name="com.atik_faysal.others.ChangePassword"
+            android:label="Change Password"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name="com.atik_faysal.others.MemBalances"
+            android:label="Member balances"
+            android:screenOrientation="portrait"/>
 
         <service android:name="com.atik_faysal.services.FirebaseMessagingService">
             <intent-filter>

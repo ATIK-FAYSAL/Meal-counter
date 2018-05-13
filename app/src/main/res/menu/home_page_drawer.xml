@@ -36,9 +36,9 @@
             android:icon="@drawable/icon_alarm"
             android:title="Set alarm" />
         <item
-            android:id="@+id/setting"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Setting" />
+            android:id="@+id/changePass"
+            android:icon="@drawable/icon_pass"
+            android:title="Change Password" />
         <item
             android:id="@+id/feedback"
             android:icon="@drawable/icon_feedback"

@@ -19,12 +19,11 @@ import java.net.URLEncoder;
 
 public class NoResultFound
 {
-        Context context;
-        Activity activity;
-        CheckInternetIsOn internetIsOn;
-        DatabaseBackgroundTask backgroundTask;
-        AlertDialogClass dialogClass;
-        Class<?> nameOfClass;
+        private Context context;
+        private Activity activity;
+        private CheckInternetIsOn internetIsOn;
+        private AlertDialogClass dialogClass;
+        private Class<?> nameOfClass;
 
         public NoResultFound(Context context)
         {
@@ -45,7 +44,7 @@ public class NoResultFound
                         try {
                                 post = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
                                         +URLEncoder.encode("action","UTF-8")+"="+URLEncoder.encode(action,"UTF-8");
-                                backgroundTask = new DatabaseBackgroundTask(context);
+                                DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(context);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 backgroundTask.execute(context.getResources().getString(R.string.noResultFound),post);
                         } catch (UnsupportedEncodingException e) {

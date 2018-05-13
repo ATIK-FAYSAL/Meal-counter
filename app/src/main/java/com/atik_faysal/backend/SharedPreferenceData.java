@@ -44,6 +44,7 @@ public class SharedPreferenceData
                 return flag;
         }
 
+        //this mehtod contain username ,password,and checkbox status
         public void saveUserNamePassword(String prefName,String userName,String password,boolean flag)
         {
                 sharedPreferences = context.getSharedPreferences(prefName,Context.MODE_PRIVATE);
@@ -87,10 +88,10 @@ public class SharedPreferenceData
                 return value;
         }
 
-        public String getCurrentPassword(String prefName)
+        public String getCurrentPassword()
         {
                 String value;
-                sharedPreferences = context.getSharedPreferences(prefName,Context.MODE_PRIVATE);
+                sharedPreferences = context.getSharedPreferences(USER_INFO,Context.MODE_PRIVATE);
                 value = sharedPreferences.getString("password","null");
                 return value;
         }

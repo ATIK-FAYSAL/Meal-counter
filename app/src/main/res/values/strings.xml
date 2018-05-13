@@ -64,4 +64,7 @@
     <string name="report">http://192.168.56.1/report.php</string>
     <string name="eachMemReport">http://192.168.56.1/eachMemReport.php</string>
     <string name="createSession">http://192.168.56.1/createSession.php</string>
+    <string name="dateInterval">http://192.168.56.1/dateInterval.php</string>
+    <string name="closeSession">http://192.168.56.1/removeSessionData.php</string>
+    <string name="memBalances">http://192.168.56.1/memBalances.php</string>
 </resources>

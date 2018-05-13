@@ -2,6 +2,7 @@ package com.atik_faysal.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -54,7 +55,14 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
                 View view;
                 if(sharedPreferenceData.getUserType().equals("admin"))
                         view = inflater.inflate(R.layout.approve_balance,parent,false);
-                else view = inflater.inflate(R.layout.pending_balance,parent,false);
+                else
+                {
+                        view = inflater.inflate(R.layout.pending_balance,parent,false);
+                        EditText text = view.findViewById(R.id.txtTaka);
+                        text.setEnabled(false);
+                        text.setClickable(false);
+                        text.setTextColor(activity.getResources().getColor(R.color.black));
+                }
                 return new ViewHolder(view);
         }
 

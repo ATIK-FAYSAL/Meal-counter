@@ -34,6 +34,7 @@ import com.atik_faysal.model.SearchableModel;
 import com.atik_faysal.others.AboutUs;
 import com.atik_faysal.others.ChangePassword;
 import com.atik_faysal.others.CreateSession;
+import com.atik_faysal.others.MemBalances;
 import com.atik_faysal.others.NoResultFound;
 import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
@@ -241,7 +242,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 return true;
         }
 
-
         //get image from shared pref,if image is already downloaded,else it will download user image and save into shared pref
         private void myImage()
         {
@@ -389,7 +389,10 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 if (sharedPreferenceData.getmyCurrentSession().equals("nope"))
                                         dialogClass.error("No session available,please contact with admin.");
                                 else
-                                        noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),ApproveBalance.class,"approval");
+                                        if(sharedPreferenceData.getMyGroupType().equals("secret")||sharedPreferenceData.getMyGroupType().equals("close"))
+                                                noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),MemBalances.class,"approval");
+                                        else
+                                                noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),ApproveBalance.class,"approval");
                         }
                                // startActivity(new Intent(HomePageActivity.this,ApproveBalance.class));
                 }else if(id==cardViewId[2]||id==imageViewId[2])
@@ -596,7 +599,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                                                 else myMeal = "0";
                                                                 if(!jObject.getString("session").equals("nope"))
                                                                         session = jObject.getString("session");
-                                                                else session = "0";
+                                                                else session = "no session available";
 
                                                                 count++;
                                                         }
