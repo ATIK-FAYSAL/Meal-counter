@@ -56,7 +56,7 @@ public class CostForPublicGroup extends ShoppingCost
                                         switch (result) {
                                                 case "success":
                                                         CostForPublicGroup.super.initComponent();
-                                                        dialogClass.success("Today's cost added successfully.Please wait for admin approval.");
+                                                        someMethod.progress("Adding today's cost...","Today's cost added successfully.Please wait for admin approval.");
                                                         break;
                                                 case "error":
                                                         dialogClass.error("Execution failed,Please try again.");

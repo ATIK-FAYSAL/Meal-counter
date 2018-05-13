@@ -109,7 +109,7 @@ public class CostOfSecretCloseGroup extends ShoppingCost {
                                         switch (result) {
                                                 case "success":
                                                         CostOfSecretCloseGroup.super.initComponent();
-                                                        dialogClass.success("Today's cost add successfully.");
+                                                        someMethod.progress("Adding today's cost...","Today's cost add successfully.");
                                                         break;
                                                 case "error":
                                                         dialogClass.error("Execution failed,Please try again.");

@@ -246,7 +246,7 @@ public class InputMeal extends Fragment
                                         switch (message)
                                         {
                                                 case "success":
-                                                        Toast.makeText(getContext(), "meal inserted", Toast.LENGTH_SHORT).show();
+                                                        someMethod.progress("Inserting your today's meal","meal successfully inserted");
                                                         getAllMealListFromDb();
                                                         break;
                                                 case "fail":
