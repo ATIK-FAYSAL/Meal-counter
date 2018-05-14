@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
+import com.atik_faysal.others.DesEncryptionAlgo;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -39,6 +40,7 @@ public class LogInActivity extends AppCompatActivity
         private SharedPreferenceData sharedPreferenceData;
         private DatabaseBackgroundTask backgroundTask;
         private NeedSomeMethod someMethod;
+        private DesEncryptionAlgo encryptionAlgo;
 
         private String userName,password;
         private static final String REMEMBER_ME = "rememberMe";
@@ -98,6 +100,7 @@ public class LogInActivity extends AppCompatActivity
                 dialogClass = new AlertDialogClass(this);
                 sharedPreferenceData = new SharedPreferenceData(this);
                 someMethod = new NeedSomeMethod(this);
+                encryptionAlgo = new DesEncryptionAlgo(this);
         }
 
         //button click to take action
@@ -117,7 +120,7 @@ public class LogInActivity extends AppCompatActivity
 
                                 userName = txtUserName.getText().toString();
                                 password = txtUserPassword.getText().toString();
-                                password = someMethod.encryptPassword(password);//get new encrypt password
+                                password = encryptionAlgo.encryptPass(password);//get new encrypt password
 
                                 backgroundTask = new DatabaseBackgroundTask(LogInActivity.this);
 

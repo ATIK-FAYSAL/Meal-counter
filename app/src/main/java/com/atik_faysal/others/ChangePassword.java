@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
@@ -27,8 +29,9 @@ public class ChangePassword extends AppCompatActivity
         private DatabaseBackgroundTask backgroundTask;
         private CheckInternetIsOn internetIsOn;
         private SharedPreferenceData sharedPreferenceData;
+        private DesEncryptionAlgo encryptionAlgo;
 
-        private String newPass;
+        private String newPass,encryptNewPas;
         private static final String REMEMBER_ME = "rememberMe";
 
         @Override
@@ -51,6 +54,7 @@ public class ChangePassword extends AppCompatActivity
                 internetIsOn = new CheckInternetIsOn(this);
                 backgroundTask = new DatabaseBackgroundTask(this);
                 sharedPreferenceData = new SharedPreferenceData(this);
+                encryptionAlgo = new DesEncryptionAlgo(this);
 
                 bChange.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -82,15 +86,16 @@ public class ChangePassword extends AppCompatActivity
                 });
         }
 
-
         private void changePassword(String newPass)
         {
                 if(internetIsOn.isOnline())
                 {
+                        encryptNewPas = encryptionAlgo.encryptPass(newPass);
+                        Log.d("encryption pass ",encryptNewPas);
                         try
                         {
                                 String data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8")+"&"
-                                        +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(someMethod.encryptPassword(newPass),"UTF-8");
+                                        +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(encryptNewPas,"UTF-8");
                                 backgroundTask = new DatabaseBackgroundTask(ChangePassword.this);
                                 backgroundTask.setOnResultListener(asyncTaskInterface);
                                 backgroundTask.execute(getResources().getString(R.string.changePassword),data);
@@ -102,7 +107,7 @@ public class ChangePassword extends AppCompatActivity
 
         private boolean checkPassword(String pass1,String pass2,String pass3)
         {
-                if((pass1.length()<6||pass1.length()>25)||(pass2.length()<6||pass2.length()>25)||(pass3.length()<6||pass3.length()>25))
+                if((pass1.length()<6||pass1.length()>16)||(pass2.length()<6||pass2.length()>16)||(pass3.length()<6||pass3.length()>16))
                 {
                         dialogClass.error("Password must be in 6-25.Please input valid password");
                         return false;
@@ -114,7 +119,7 @@ public class ChangePassword extends AppCompatActivity
                         return false;
                 }
 
-                if(!pass1.equals(sharedPreferenceData.getCurrentPassword()))
+                if(!encryptionAlgo.encryptPass(pass1).equals(sharedPreferenceData.getCurrentPassword()))
                 {
                         dialogClass.error("Current password does not match.Please input valid password");
                         return false;
@@ -133,10 +138,11 @@ public class ChangePassword extends AppCompatActivity
                                         {
                                                 case "success"://this method contain username ,password,and checkbox status
                                                         sharedPreferenceData.saveUserNamePassword(REMEMBER_ME,sharedPreferenceData.getCurrentUserName(),newPass,true);
-                                                        sharedPreferenceData.currentUserInfo(sharedPreferenceData.getCurrentUserName(),newPass);
+                                                        sharedPreferenceData.currentUserInfo(sharedPreferenceData.getCurrentUserName(),encryptNewPas);
                                                         someMethod.progress("Changing password...","Your password has been changed.");
                                                         break;
                                                 case "failed":
+                                                        dialogClass.error("Execution failed.Please try again.");
                                                         break;
                                         }
                                 }

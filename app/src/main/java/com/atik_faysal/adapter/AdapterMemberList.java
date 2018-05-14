@@ -185,7 +185,8 @@ public class AdapterMemberList extends RecyclerView.Adapter<AdapterMemberList.Vi
                         if (internetIsOn.isOnline())
                         {
                                 try {
-                                        DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
+                                        DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8")+"&"
+                                             +URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8");
                                         backgroundTask = new DatabaseBackgroundTask(context);
                                         backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                         backgroundTask.execute(context.getResources().getString(R.string.removeMember),DATA);

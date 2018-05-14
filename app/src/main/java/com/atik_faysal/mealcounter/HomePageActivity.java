@@ -412,7 +412,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                                 startActivity(new Intent(HomePageActivity.this,CostOfSecretCloseGroup.class));
                                         else if((sharedPreferenceData.getMyGroupType().equals("secret")||sharedPreferenceData.getMyGroupType().equals("close"))
                                                 &&sharedPreferenceData.getUserType().equals("member"))
-                                                startActivity(new Intent(HomePageActivity.this,CostForSecretCloseMem.class));
+                                                 noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),CostForSecretCloseMem.class,"cost");
+
                                 }
                         }
                 }else if(id==cardViewId[3]||id==imageViewId[3])

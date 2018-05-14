@@ -22,6 +22,7 @@
     <string name="permissions_receive_sms_title">Read SMS Code</string>
     <string name="todo">TODO</string>
 
+    <string name="encryptionKey">A9F5E0D2B1A8CD76</string>
 
     //php file location
     <string name="homePageInfo">http://192.168.56.1/homePageInfo.php</string>

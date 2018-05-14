@@ -34,11 +34,6 @@ import java.util.List;
 
 public class CostForSecretCloseMem extends AppCompatActivity
 {
-        private SharedPreferenceData sharedPreferenceData;
-        private AlertDialogClass dialogClass;
-        private CheckInternetIsOn internetIsOn;
-        private NeedSomeMethod someMethod;
-        private GetImportantData importantData;
 
         private ListView listView;
 
@@ -57,16 +52,15 @@ public class CostForSecretCloseMem extends AppCompatActivity
                 refreshLayout.setColorSchemeResources(R.color.color2, R.color.red, R.color.color6);
                 TextView txtSession = findViewById(R.id.txtSession);
 
-                someMethod = new NeedSomeMethod(this);
-                sharedPreferenceData = new SharedPreferenceData(this);
-                dialogClass = new AlertDialogClass(this);
-                internetIsOn = new CheckInternetIsOn(this);
-                someMethod = new NeedSomeMethod(this);
-                importantData = new GetImportantData(this);
+                NeedSomeMethod someMethod = new NeedSomeMethod(this);
+                SharedPreferenceData sharedPreferenceData = new SharedPreferenceData(this);
+                AlertDialogClass dialogClass = new AlertDialogClass(this);
+                CheckInternetIsOn internetIsOn = new CheckInternetIsOn(this);
+                GetImportantData importantData = new GetImportantData(this);
                 someMethod.reloadPage(refreshLayout, CostOfSecretCloseGroup.class);
 
                 listView = findViewById(R.id.list);
-                txtSession.setText("#"+sharedPreferenceData.getmyCurrentSession());
+                txtSession.setText("#"+ sharedPreferenceData.getmyCurrentSession());
                 if(internetIsOn.isOnline())
                 {
                         try {
@@ -78,8 +72,6 @@ public class CostForSecretCloseMem extends AppCompatActivity
 
                 }else dialogClass.noInternetConnection();
         }
-
-
 
 
         //set a toolbar,above the page

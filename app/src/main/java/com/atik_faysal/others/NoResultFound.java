@@ -3,6 +3,7 @@ package com.atik_faysal.others;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
@@ -42,11 +43,11 @@ public class NoResultFound
                 if(internetIsOn.isOnline())
                 {
                         try {
-                                post = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
-                                        +URLEncoder.encode("action","UTF-8")+"="+URLEncoder.encode(action,"UTF-8");
-                                DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(context);
-                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(context.getResources().getString(R.string.noResultFound),post);
+                             post = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
+                                  +URLEncoder.encode("action","UTF-8")+"="+URLEncoder.encode(action,"UTF-8");
+                             DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(context);
+                             backgroundTask.setOnResultListener(onAsyncTaskInterface);
+                             backgroundTask.execute(context.getResources().getString(R.string.noResultFound),post);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                         }

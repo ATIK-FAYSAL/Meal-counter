@@ -312,7 +312,8 @@ public class MemberDetails extends AppCompatActivity
                 if(internetIsOn.isOnline())
                 {
                         try {
-                                DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
+                                DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8")+"&"
+                                        +URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8");
                                 DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(MemberDetails.this);
                                 backgroundTask.setOnResultListener(asyncTaskInterface);
                                 backgroundTask.execute(getResources().getString(R.string.removeMember),DATA);

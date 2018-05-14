@@ -253,7 +253,11 @@ public class MonthReport extends AppCompatActivity
                                                         }
                                                         dialog.dismiss();
                                                 }else dialogClass.noInternetConnection();
-                                        }else dialogClass.error("Only admin can close current session.");
+                                        }else
+                                        {
+                                                dialogClass.error("Only admin can close current session.");
+                                                dialog.dismiss();
+                                        }
                                 }
                         })
                         .setNegativeListener("No", new iOSDialogClickListener() {

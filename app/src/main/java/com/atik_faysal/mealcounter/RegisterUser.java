@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.atik_faysal.backend.*;
+import com.atik_faysal.others.DesEncryptionAlgo;
 import com.facebook.accountkit.AccessToken;
 import com.facebook.accountkit.Account;
 import com.facebook.accountkit.AccountKit;
@@ -81,8 +82,8 @@ public class RegisterUser extends AppCompatActivity
         private AlertDialogClass dialogClass;
         private NeedSomeMethod someMethod;
         private SharedPreferenceData sharedPreferenceData;
-        DatabaseBackgroundTask databaseBackgroundTask;
-
+        private DatabaseBackgroundTask databaseBackgroundTask;
+        private DesEncryptionAlgo encryptionAlgo;
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
@@ -127,6 +128,7 @@ public class RegisterUser extends AppCompatActivity
                 dialogClass = new AlertDialogClass(this);
                 someMethod = new NeedSomeMethod(this);
                 sharedPreferenceData = new SharedPreferenceData(RegisterUser.this);
+                encryptionAlgo = new DesEncryptionAlgo(this);
                 //calling method
                 onButtonClick();
         }
@@ -285,7 +287,7 @@ public class RegisterUser extends AppCompatActivity
                 userName = eUserName.getText().toString();
                 email = eEmail.getText().toString();
                 password = ePassword.getText().toString();
-                password = someMethod.encryptPassword(password);//initialize new encrypt password
+                password = encryptionAlgo.encryptPass(password);//initialize new encrypt password
                 address = eAddress.getText().toString();
                 favouriteWord = eFavourite.getText().toString();
         }

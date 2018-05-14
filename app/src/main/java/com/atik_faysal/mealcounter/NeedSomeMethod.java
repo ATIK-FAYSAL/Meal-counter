@@ -37,14 +37,6 @@ public class NeedSomeMethod
         CheckInternetIsOn internetIsOn;
         AlertDialogClass dialogClass;
 
-
-        //alphabet array
-        private String[] capitalLatter = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
-        private String[] encryptCap = {"F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","A","B","C","D","E"};
-
-        private String[] smallLatter = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
-        private String[] encryptSma = {"f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","a","b","c","d","e"};
-
         public NeedSomeMethod(Context context)
         {
                 this.context = context;
@@ -83,39 +75,6 @@ public class NeedSomeMethod
                 return value[1];
         }
 
-        //encrypt password key=5 using cisear cipher
-        public String encryptPassword(String pass)
-        {
-                StringBuilder encryptPass = new StringBuilder();
-                int i=0;
-                while(i<pass.length())
-                {
-                        if((pass.charAt(i)>='a'&&pass.charAt(i)<='z'))
-                        {
-                                for (int j=0;j<smallLatter.length;j++)
-                                {
-                                        if(smallLatter[j].equals(Character.toString(pass.charAt(i))))
-                                        {
-                                                encryptPass.append(encryptSma[j]);
-                                                break;
-                                        }
-                                }
-                        }else if ((pass.charAt(i)>='A'&&pass.charAt(i)<='Z'))
-                        {
-                                for (int j=0;j<smallLatter.length;j++)
-                                {
-                                        if(capitalLatter[j].equals(Character.toString(pass.charAt(i))))
-                                        {
-                                                encryptPass.append(encryptCap[j]);
-                                                break;
-                                        }
-                                }
-                        }else encryptPass.append(Character.toString(pass.charAt(i)));
-                        i++;
-                }
-
-                return encryptPass.toString();
-        }
 
         //close top all activity and go to specific activity
         public void closeActivity(Activity context, Class<?> clazz) {

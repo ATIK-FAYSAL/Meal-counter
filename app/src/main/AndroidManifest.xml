@@ -111,7 +111,7 @@
             android:label="Cost List"/>
 
         <activity android:name=".ApproveBalance"
-            android:label="Approving"
+            android:label="Pending balances"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".MonthReport"
