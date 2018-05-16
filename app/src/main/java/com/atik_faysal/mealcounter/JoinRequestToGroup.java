@@ -1,14 +1,18 @@
 package com.atik_faysal.mealcounter;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
@@ -35,28 +39,23 @@ public class JoinRequestToGroup extends AppCompatActivity
         private Toolbar toolbar;
 
         private String currentUser;
-        private static final String USER_INFO = "currentInfo";
         private String group;
         //private final static String FILE = "http://192.168.56.1/RequestGroupInfo.php";
        //private final static String FILE_URL = "http://192.168.56.1/joinRequestAction.php";
         private static String DATA;
         private String name,id,address,description,type,member,time,date,admin,status;
 
-        private JSONObject jsonObject;
-        private JSONArray jsonArray;
-
         private DatabaseBackgroundTask backgroundTask;
         private AlertDialogClass dialogClass;
         private CheckInternetIsOn internetIsOn;
         private NeedSomeMethod someMethod;
-        private SharedPreferenceData sharedPreferenceData;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.group_info);
                 initComponent();
-                setToolbar();
+                //setToolbar();
         }
 
         //initialize all user information related variable by getText from textView or editText
@@ -75,6 +74,9 @@ public class JoinRequestToGroup extends AppCompatActivity
                 toolbar = findViewById(R.id.toolbar1);
                 setSupportActionBar(toolbar);
 
+                SwipeRefreshLayout refreshLayout = findViewById(R.id.layout1);
+                refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
+
 
                 //disable
                 gName.setEnabled(false);
@@ -84,9 +86,10 @@ public class JoinRequestToGroup extends AppCompatActivity
                 dialogClass = new AlertDialogClass(this);
                 someMethod = new NeedSomeMethod(this);
                 internetIsOn = new CheckInternetIsOn(this);
-                sharedPreferenceData = new SharedPreferenceData(this);
+                SharedPreferenceData sharedPreferenceData = new SharedPreferenceData(this);
 
                 currentUser = sharedPreferenceData.getCurrentUserName();
+                someMethod.reloadPage(refreshLayout,JoinRequestToGroup.class);
                 if(getIntent().hasExtra("group"))
                         group = getIntent().getExtras().getString("group");
                 else group = "null";
@@ -115,18 +118,26 @@ public class JoinRequestToGroup extends AppCompatActivity
         //button click
         private void onButtonClick(final String value)
         {
-                bEdit.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+             ImageView imgBack = findViewById(R.id.imgBack);
+             imgBack.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View view) {
+                       finish();
+                  }
+             });
 
-                               if(internetIsOn.isOnline())
-                               {
-                                       backgroundTask = new DatabaseBackgroundTask(JoinRequestToGroup.this);
-                                       backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                       backgroundTask.execute(getResources().getString(R.string.requestAction),value);
-                               }else dialogClass.noInternetConnection();
-                        }
-                });
+             bEdit.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+
+                       if(internetIsOn.isOnline())
+                       {
+                            backgroundTask = new DatabaseBackgroundTask(JoinRequestToGroup.this);
+                            backgroundTask.setOnResultListener(onAsyncTaskInterface);
+                            backgroundTask.execute(getResources().getString(R.string.requestAction),value);
+                       }else dialogClass.noInternetConnection();
+                  }
+             });
         }
 
         //get all group information from database
@@ -146,16 +157,18 @@ public class JoinRequestToGroup extends AppCompatActivity
         }
 
         //process json data and show in page
+        @SuppressLint("SetTextI18n")
         private void groupInformation(String groupInfo)
         {
                 if(groupInfo!=null)
                 {
                         try {
-                                jsonObject = new JSONObject(groupInfo);
-                                jsonArray = jsonObject.optJSONArray("groupInfo");
+                                String reqGroup=null;
+                                JSONObject jsonObject = new JSONObject(groupInfo);
+                                JSONArray jsonArray = jsonObject.optJSONArray("groupInfo");
 
                                 int count = 0;
-                                while(count<jsonArray.length())
+                                while(count< jsonArray.length())
                                 {
                                         JSONObject jObject = jsonArray.getJSONObject(count);
                                         name = jObject.getString("gName");
@@ -168,6 +181,7 @@ public class JoinRequestToGroup extends AppCompatActivity
                                         member = jObject.getString("gMem");
                                         admin = jObject.getString("gAdmin");
                                         status = jObject.getString("status");
+                                        reqGroup = jObject.getString("newGroup");
                                         count++;
                                 }
 
@@ -180,6 +194,13 @@ public class JoinRequestToGroup extends AppCompatActivity
                                 gMember.setText(member);
                                 gAdmin.setText(admin);
                                 gAddress.setText(address);
+
+                                assert reqGroup != null;
+                                if(!reqGroup.equals(id)&&!reqGroup.equals("Null"))
+                                {
+                                        dialogClass.alreadyMember("You already send a request,please cancel previous request and retry.");
+                                        return;
+                                }
 
                                 switch (status)
                                 {
@@ -194,6 +215,7 @@ public class JoinRequestToGroup extends AppCompatActivity
                                                 }
                                                 break;
                                         case "complete":
+                                                onButtonClick("");
                                                 bEdit.setText("Already member");
                                                 bEdit.setEnabled(false);
                                                 break;
@@ -226,6 +248,7 @@ public class JoinRequestToGroup extends AppCompatActivity
                         runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                        Toast.makeText(JoinRequestToGroup.this,"return mess :"+status,Toast.LENGTH_LONG).show();
                                         switch (result)
                                         {
                                                 case "success":
@@ -254,7 +277,7 @@ public class JoinRequestToGroup extends AppCompatActivity
                                         switch (result)
                                         {
                                                 case "member":
-                                                        dialogClass.alreadyMember("You are already member.So you can not see another group information.If you want,");
+                                                        dialogClass.alreadyMember("You are already member.So you can not see another group information.If you want,Please leave from previous group and retry.");
                                                         break;
                                                 default:
                                                         groupInformation(result);

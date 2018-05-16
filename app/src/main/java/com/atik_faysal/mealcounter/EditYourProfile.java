@@ -1,11 +1,14 @@
 package com.atik_faysal.mealcounter;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,6 +16,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -57,12 +62,10 @@ public class EditYourProfile extends AppCompatActivity
         private NeedSomeMethod someMethod;
 
         private Button bEdit;
-        private Toolbar toolbar;
-        private TextView txtTaka,txtGroup,txtUserName,txtDate,txtUploadPhoto;
-        private EditText eName,eEmail,eAddress,eFaWord,ePhone;
+        private TextView txtTaka,txtGroup,txtUserName,txtDate,txtUploadPhoto,ePhone;
+        private EditText eName,eEmail,eAddress,eFaWord;
         private CircleImageView imageView;
 
-        private Uri imageUri;
         private String name,userName,phone,email,address,fWord,taka,group,date;
         private String currentUser;
        // private final static String FILE_URL = "http://192.168.56.1/json_read_member_info.php";
@@ -84,8 +87,13 @@ public class EditYourProfile extends AppCompatActivity
         //initialize all user information related variable by getText from textView or editText
         private void initComponent()
         {
-                toolbar = findViewById(R.id.toolbar1);
-                setSupportActionBar(toolbar);
+                //initialize all component
+                bEdit = findViewById(R.id.bEdit);
+                eName = findViewById(R.id.txtName);
+                eEmail = findViewById(R.id.txtEmail);
+                eAddress = findViewById(R.id.gAddress);
+                eFaWord = findViewById(R.id.fWord);
+                ePhone = findViewById(R.id.txtPhoneNumber);
                 txtTaka = findViewById(R.id.txtTaka);
                 txtUserName = findViewById(R.id.txtUserName);
                 txtGroup = findViewById(R.id.txtGroup);
@@ -95,17 +103,16 @@ public class EditYourProfile extends AppCompatActivity
                 imageView.setEnabled(false);
                 txtUploadPhoto.setEnabled(false);
 
-
-                eName = findViewById(R.id.txtName);
-                eEmail = findViewById(R.id.txtEmail);
-                eAddress = findViewById(R.id.gAddress);
-                eFaWord = findViewById(R.id.fWord);
-                ePhone = findViewById(R.id.txtPhoneNumber);
+                //disable edittext
+                eName.setEnabled(false);
+                eEmail.setEnabled(false);
+                eFaWord.setEnabled(false);
+                eAddress.setEnabled(false);
+                bEdit.setEnabled(false);
+                bEdit.setBackgroundDrawable(getDrawable(R.drawable.disable_button));
 
                 SwipeRefreshLayout refreshLayout = findViewById(R.id.layout1);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
-                bEdit = findViewById(R.id.bEdit);
-                bEdit.setEnabled(false);
 
                 sharedPreferenceData = new SharedPreferenceData(this);
                 internetIsOn = new CheckInternetIsOn(this);
@@ -114,7 +121,7 @@ public class EditYourProfile extends AppCompatActivity
 
                 //calling method
                 someMethod.reloadPage(refreshLayout,EditYourProfile.class);
-                setToolbar();
+                //setToolbar();
                 onButtonClick();
 
                 currentUser = sharedPreferenceData.getCurrentUserName();
@@ -124,12 +131,9 @@ public class EditYourProfile extends AppCompatActivity
                if(internetIsOn.isOnline())
                {
                        try {
-                               if(currentUser!=null)
-                                       POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
-                               else Toast.makeText(this,"under construction",Toast.LENGTH_SHORT).show();
-
+                               POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
                                databaseBackgroundTask = new DatabaseBackgroundTask(this);
-                               databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
+                               databaseBackgroundTask.setOnResultListener(taskInterface);
                                databaseBackgroundTask.execute(getResources().getString(R.string.getMemberInfo),POST_DATA);
                        } catch (UnsupportedEncodingException e) {
                                e.printStackTrace();
@@ -138,23 +142,146 @@ public class EditYourProfile extends AppCompatActivity
 
         }
 
-        //set a toolbar,above the page
-        private void setToolbar()
+        //onText change listener,action will be change on text change
+        private void onTextChangeListener()
         {
-                toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                getSupportActionBar().setDisplayShowHomeEnabled(true);
-                toolbar.setNavigationIcon(R.drawable.icon_back);
-                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                final Drawable icon = getResources().getDrawable(R.drawable.icon_done);
+                icon.setBounds(0,0,icon.getIntrinsicWidth(),icon.getIntrinsicHeight());
+
+                eName.addTextChangedListener(new TextWatcher() {
                         @Override
-                        public void onClick(View v) {
-                                finish();
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                                boolean flag = true;
+                                if(eName.getText().toString().length()<3||eName.getText().toString().length()>20)
+                                        eName.setError("Invalid");
+                                else
+                                {
+                                        for(int i=0;i<eName.length();i++)
+                                        {
+                                                if(((eName.getText().toString().charAt(i)>='a')&&(eName.getText().toString().charAt(i)<='z'))||
+                                                     ((eName.getText().toString().charAt(i)>='A')&&(eName.getText().toString().charAt(i)<='Z'))||
+                                                     eName.getText().toString().charAt(i)==' '||eName.getText().toString().charAt(i)==':'||eName.getText().toString().charAt(i)=='.'||eName.getText().toString().charAt(i)=='_')
+                                                        eName.setError("Valid",icon);
+                                                else flag = false;
+                                        }
+                                        if(!flag)eName.setError("Invalid");
+                                }
+                        }
+                });
+
+
+                eEmail.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                                boolean flag = true;
+                                if(!eEmail.getText().toString().contains("@"))
+                                        flag = false;
+                                else
+                                {
+                                        String[] email = eEmail.getText().toString().split("@");
+                                        if(email[0].length()<3||email[0].length()>30)
+                                                flag = false;
+                                }
+
+                                if(flag)
+                                        eEmail.setError("Valid",icon);
+                                else
+                                        eEmail.setError("invalid");
+                        }
+                });
+
+
+                eAddress.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                                if(eAddress.getText().toString().length()<10||eAddress.getText().toString().length()>30)
+                                        eAddress.setError("invalid");
+                                else eAddress.setError("Valid",icon);
+                        }
+                });
+
+
+                eFaWord.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                                if(eFaWord.getText().toString().length()<4||eFaWord.getText().toString().length()>15)
+                                        eFaWord.setError("invalid");
+                                else
+                                        eFaWord.setError("Valid",icon);
                         }
                 });
         }
 
         private void onButtonClick()
         {
+                ImageView imgBack,imgEdit;
+                imgBack = findViewById(R.id.imgBack);
+                imgEdit = findViewById(R.id.imgEdit);
+
+                if(!sharedPreferenceData.getUserType().equals("admin"))
+                {
+                        imgEdit.setEnabled(false);
+                        imgEdit.setImageBitmap(null);
+                }
+
+
+                imgBack.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                                finish();
+                        }
+                });
+
+                imgEdit.setOnClickListener(new View.OnClickListener() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void onClick(View view) {
+
+                                eName.setEnabled(true);
+                                eEmail.setEnabled(true);
+                                eFaWord.setEnabled(true);
+                                eAddress.setEnabled(true);
+                                eName.setFocusableInTouchMode(true);
+                                eEmail.setFocusableInTouchMode(true);
+                                eFaWord.setFocusableInTouchMode(true);
+                                eAddress.setFocusableInTouchMode(true);
+                                bEdit.setEnabled(true);
+                                bEdit.setBackgroundDrawable(getDrawable(R.drawable.button1));
+                                txtUploadPhoto.setEnabled(true);
+                                txtUploadPhoto.setText("Choose photo");
+                                onTextChangeListener();
+
+                                Drawable image = EditYourProfile.this.getResources().getDrawable(R.drawable.icon_photo);
+                                image.setBounds(0,0,30,30);
+                                txtUploadPhoto.setCompoundDrawables(image,null,null,null);
+                                imageView.setEnabled(true);
+                        }
+                });
+
+
                 bEdit.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -277,7 +404,7 @@ public class EditYourProfile extends AppCompatActivity
                 super.onActivityResult(requestCode, resultCode, data);
 
                 if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-                        imageUri = data.getData();
+                        Uri imageUri = data.getData();
                         try {
                                 File file = new File(getRealPathFromURI(imageUri));
                                 long length = file.length()/1024;//in kb
@@ -308,6 +435,7 @@ public class EditYourProfile extends AppCompatActivity
         }
 
         //process json data to string
+        @SuppressLint("SetTextI18n")
         private void processJsonData(String jsonData)
         {
                 try {
@@ -337,44 +465,12 @@ public class EditYourProfile extends AppCompatActivity
                 txtUserName.setText(userName);
                 ePhone.setText(phone);
                 eAddress.setText(address);
-                eFaWord.setText("Favourite word : "+fWord);
+                eFaWord.setText(fWord);
                 txtDate.setText("Join "+date);
                 eEmail.setText(email);
                 txtTaka.setText(taka);
                 txtGroup.setText(group);
         }
-
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
-                MenuInflater menuInflater = getMenuInflater();
-                menuInflater.inflate(R.menu.edit,menu);
-                return true;
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-                int id;
-                id = item.getItemId();
-                switch (id)
-                {
-                        case R.id.edit:
-                                eName.setFocusableInTouchMode(true);
-                                eEmail.setFocusableInTouchMode(true);
-                                eFaWord.setFocusableInTouchMode(true);
-                                eAddress.setFocusableInTouchMode(true);
-                                bEdit.setEnabled(true);
-                                txtUploadPhoto.setEnabled(true);
-                                txtUploadPhoto.setText("Choose photo");
-
-                                Drawable image = this.getResources().getDrawable(R.drawable.icon_photo);
-                                image.setBounds(0,0,30,30);
-                                txtUploadPhoto.setCompoundDrawables(image,null,null,null);
-                                imageView.setEnabled(true);
-                                break;
-                }
-                return true;
-        }
-
 
         //image upload to server
         private void uploadImage(Bitmap imageBit)
@@ -438,27 +534,21 @@ public class EditYourProfile extends AppCompatActivity
 
                                        switch (userInfo)
                                        {
-                                               case "failed":
-                                                       dialogClass.error("Execution failed.Please try again.");
-                                                       break;
                                                case "updated":
-                                                       if(internetIsOn.isOnline())
-                                                       {
-                                                               try {
-                                                                       if(currentUser!=null)
-                                                                               POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
-                                                                       else Toast.makeText(EditYourProfile.this,"under construction",Toast.LENGTH_SHORT).show();
-                                                               } catch (UnsupportedEncodingException e) {
-                                                                       e.printStackTrace();
-                                                               }
-                                                               databaseBackgroundTask = new DatabaseBackgroundTask(EditYourProfile.this);
-                                                               databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                               databaseBackgroundTask.execute(getResources().getString(R.string.getMemberInfo),POST_DATA);
-                                                               Toast.makeText(EditYourProfile.this,"Information updated successfully.",Toast.LENGTH_SHORT).show();
-                                                       }else dialogClass.noInternetConnection();
+                                                       someMethod.progress("Updating your information...","Your information is updated.");
+                                                       eName.setEnabled(false);
+                                                       eEmail.setEnabled(false);
+                                                       eFaWord.setEnabled(false);
+                                                       eAddress.setEnabled(false);
+                                                       eName.setFocusable(false);
+                                                       eEmail.setFocusable(false);
+                                                       eFaWord.setFocusable(false);
+                                                       eAddress.setFocusable(false);
+                                                       bEdit.setEnabled(false);
+                                                       bEdit.setBackgroundDrawable(getDrawable(R.drawable.disable_button));
                                                        break;
                                                default:
-                                                       processJsonData(userInfo);
+                                                       dialogClass.error("Execution failed.Please try again.");
                                                        break;
                                        }
                                 }
@@ -466,6 +556,18 @@ public class EditYourProfile extends AppCompatActivity
                 }
         };
 
+        OnAsyncTaskInterface taskInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String message) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        if(message!=null)
+                                                processJsonData(message);
+                                }
+                        });
+                }
+        };
 
         //check result for upload image
         OnAsyncTaskInterface anInterface = new OnAsyncTaskInterface() {
@@ -480,7 +582,7 @@ public class EditYourProfile extends AppCompatActivity
                                                 case "success":
                                                         imageView.setImageBitmap(bitmap);
                                                         sharedPreferenceData.myImage(bitmap,true);
-                                                        someMethod.progressDialog("Image uploading...");
+                                                        someMethod.progressDialog("Image uploading...","Image uploaded successfully.");
                                                         alertDialog.dismiss();
                                                         break;
                                                 default:

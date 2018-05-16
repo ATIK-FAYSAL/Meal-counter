@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -52,10 +53,8 @@ public class MemberDetails extends AppCompatActivity
         private NeedSomeMethod someMethod;
 
         //component variable
-        private Button bRemove;
-        private Toolbar toolbar;
-        private TextView txtTaka,txtGroup,txtUserName,txtDate;
-        private EditText eName,eEmail,eAddress,eFaWord,ePhone;
+        private TextView txtTaka,txtGroup,txtUserName,txtDate,ePhone;
+        private EditText eName,eEmail,eAddress,eFaWord;
         public ImageView imageView;
 
         private String name,userName,phone,email,address,fWord,taka,group,date;
@@ -69,7 +68,7 @@ public class MemberDetails extends AppCompatActivity
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
-                setContentView(R.layout.profile);
+                setContentView(R.layout.searchable_profile);
                 initComponent();
         }
 
@@ -78,8 +77,6 @@ public class MemberDetails extends AppCompatActivity
         private void initComponent()
         {
                 //initialize all component
-                toolbar = findViewById(R.id.toolbar1);
-                setSupportActionBar(toolbar);
                 txtTaka = findViewById(R.id.txtTaka);
                 txtUserName = findViewById(R.id.txtUserName);
                 txtGroup = findViewById(R.id.txtGroup);
@@ -93,8 +90,6 @@ public class MemberDetails extends AppCompatActivity
                 eFaWord = findViewById(R.id.fWord);
                 ePhone = findViewById(R.id.txtPhoneNumber);
 
-                bRemove = findViewById(R.id.bEdit);
-                bRemove.setText("Remove");
                 //swaprefresh layout
                 final SwipeRefreshLayout refreshLayout = findViewById(R.id.layout1);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
@@ -102,11 +97,11 @@ public class MemberDetails extends AppCompatActivity
                         @Override
                         public void onRefresh() {
                                 refreshLayout.setRefreshing(true);
-
                                 (new Handler()).postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
                                                 refreshLayout.setRefreshing(false);
+                                                finish();
                                         }
                                 },2500);
                         }
@@ -134,10 +129,7 @@ public class MemberDetails extends AppCompatActivity
                 if(internetIsOn.isOnline())
                 {
                         try {
-                                if(user!=null)
-                                        POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
-                                else Toast.makeText(this,"under construction",Toast.LENGTH_SHORT).show();
-
+                                POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
                                 databaseBackgroundTask = new DatabaseBackgroundTask(this);
                                 databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 databaseBackgroundTask.execute(getResources().getString(R.string.getMemberInfo),POST_DATA);
@@ -149,11 +141,9 @@ public class MemberDetails extends AppCompatActivity
                 }else dialogClass.noInternetConnection();
 
                 //calling method
-                setToolbar();
                 onButtonClick();
 
         }
-
 
         //edit member balance,only admin can access in it;
         private void editBalanceByAdmin(String taka)
@@ -207,24 +197,24 @@ public class MemberDetails extends AppCompatActivity
                 });
         }
 
-        //set a toolbar,above the page
-        private void setToolbar()
-        {
-                toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                getSupportActionBar().setDisplayShowHomeEnabled(true);
-                toolbar.setNavigationIcon(R.drawable.icon_back);
-                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                                finish();
-                        }
-                });
-        }
-
         //remove button
         private void onButtonClick()
         {
+                ImageView bRemove = findViewById(R.id.imgRemove);
+                ImageView imgBack = findViewById(R.id.imgBack);
+                imgBack.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                                finish();
+                        }
+                });
+
+
+                if(!sharedPreferenceData.getUserType().equals("admin"))
+                {
+                    bRemove.setImageBitmap(null);
+                    bRemove.setEnabled(false);
+                }
                 bRemove.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -246,6 +236,7 @@ public class MemberDetails extends AppCompatActivity
         }
 
         //initialize all information about user and show on this page
+        @SuppressLint("SetTextI18n")
         private void initializeUserInfo(String userInfo)
         {
                 if(userInfo!=null)
@@ -274,13 +265,13 @@ public class MemberDetails extends AppCompatActivity
                         }
 
 
-                        eName.setText("  "+name);
-                        txtUserName.setText("  "+userName);
-                        ePhone.setText("  "+phone);
-                        eAddress.setText("  "+address);
-                        eFaWord.setText("  "+fWord);
-                        txtDate.setText("  "+"Join  "+date);
-                        eEmail.setText("  "+email);
+                        eName.setText(name);
+                        txtUserName.setText(userName);
+                        ePhone.setText(phone);
+                        eAddress.setText(address);
+                        eFaWord.setText(fWord);
+                        txtDate.setText("Join  "+date);
+                        eEmail.setText(email);
                         txtTaka.setText(taka);
                         txtGroup.setText(group);
                 }else Log.d(TAG,"Json object error");
@@ -337,8 +328,7 @@ public class MemberDetails extends AppCompatActivity
                                                         dialogClass.error("Failed to execute operation.Please retry after sometimes");
                                                         break;
                                                 case "successful":
-                                                        Toast.makeText(MemberDetails.this,"one member removed",Toast.LENGTH_SHORT).show();
-                                                        finish();
+                                                        someMethod.progressDialog("Removing a member...","one member removed");
                                                         break;
                                         }
                                 }
@@ -402,7 +392,7 @@ public class MemberDetails extends AppCompatActivity
                                         switch (message)
                                         {
                                                 case "success":
-                                                        someMethod.progressDialog("Working on it....");
+                                                        someMethod.progressDialog("Working on it....","Member balance edited successfully.");
                                                         break;
                                                 case "failed":
                                                         dialogClass.error("Execution failed,please try again..");
