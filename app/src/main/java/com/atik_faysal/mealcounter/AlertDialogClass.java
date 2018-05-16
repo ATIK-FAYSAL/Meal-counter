@@ -91,6 +91,7 @@ public class AlertDialogClass extends AlertDialog
                                 @Override
                                 public void onClick(iOSDialog dialog) {
                                         dialog.dismiss();
+                                        activity.finish();
 
                                 }
                         }).build().show();
@@ -103,8 +104,8 @@ public class AlertDialogClass extends AlertDialog
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 iOSDialogBuilder builder = new iOSDialogBuilder(context);
 
-                builder.setTitle("Already member")
-                        .setSubtitle(message+".Please leave from previous group and retry.")
+                builder.setTitle("Attention")
+                        .setSubtitle(message)
                         .setBoldPositiveLabel(true)
                         .setCancelable(false)
                         .setPositiveListener("ok",new iOSDialogClickListener() {

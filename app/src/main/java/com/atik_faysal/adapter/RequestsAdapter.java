@@ -228,7 +228,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                                                                 }
                                                                 break;
                                                         case "member":
-                                                                dialogClass.alreadyMember("You are already member.");
+                                                                dialogClass.alreadyMember("You are already member"+".Please leave from previous group and retry.");
                                                                 break;
                                                         default:
                                                                 dialogClass.error("Execution failed.Please try again.");

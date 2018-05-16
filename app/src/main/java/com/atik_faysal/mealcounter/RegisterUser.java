@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -138,6 +139,9 @@ public class RegisterUser extends AppCompatActivity
         //onText change listener,action will be change on text change
         private void onTextChangeListener()
         {
+                final Drawable icon = getResources().getDrawable(R.drawable.icon_done);
+                icon.setBounds(0,0,icon.getIntrinsicWidth(),icon.getIntrinsicHeight());
+
                 eName.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -148,7 +152,7 @@ public class RegisterUser extends AppCompatActivity
                         public void afterTextChanged(Editable s) {
                                 boolean flag = true;
                                 if(eName.getText().toString().length()<3||eName.getText().toString().length()>20)
-                                        layout3.setBackground(getDrawable(R.color.error));
+                                        eName.setError("Invalid");
                                 else
                                 {
                                         for(int i=0;i<eName.length();i++)
@@ -156,10 +160,10 @@ public class RegisterUser extends AppCompatActivity
                                                 if(((eName.getText().toString().charAt(i)>='a')&&(eName.getText().toString().charAt(i)<='z'))||
                                                         ((eName.getText().toString().charAt(i)>='A')&&(eName.getText().toString().charAt(i)<='Z'))||
                                                         eName.getText().toString().charAt(i)==' '||eName.getText().toString().charAt(i)==':'||eName.getText().toString().charAt(i)=='.'||eName.getText().toString().charAt(i)=='_')
-                                                        layout3.setBackground(getDrawable(R.color.green));
+                                                        eName.setError("Valid",icon);
                                                 else flag = false;
                                         }
-                                        if(!flag)layout3.setBackground(getDrawable(R.color.error));
+                                        if(!flag)eName.setError("Invalid");
                                 }
                         }
                 });
@@ -173,9 +177,9 @@ public class RegisterUser extends AppCompatActivity
                         @Override
                         public void afterTextChanged(Editable s) {
                                 if(eUserName.getText().toString().length()<5||eUserName.getText().toString().length()>15)
-                                        layout2.setBackground(getDrawable(R.color.error));
+                                        eUserName.setError("invalid");
                                 else
-                                        layout2.setBackground(getDrawable(R.color.green));
+                                        eUserName.setError("Valid",icon);
                         }
                 });
 
@@ -199,9 +203,9 @@ public class RegisterUser extends AppCompatActivity
                                 }
 
                                 if(flag)
-                                        layout4.setBackground(getDrawable(R.color.green));
+                                        eEmail.setError("Valid",icon);
                                 else
-                                        layout4.setBackground(getDrawable(R.color.error));
+                                        eEmail.setError("invalid");
                         }
                 });
 
@@ -216,8 +220,8 @@ public class RegisterUser extends AppCompatActivity
                         @Override
                         public void afterTextChanged(Editable s) {
                                 if(eAddress.getText().toString().length()<10||eAddress.getText().toString().length()>30)
-                                        layout5.setBackground(getDrawable(R.color.error));
-                                else layout5.setBackground(getDrawable(R.color.green));
+                                        eAddress.setError("invalid");
+                                else eAddress.setError("Valid",icon);
                         }
                 });
 
@@ -231,8 +235,8 @@ public class RegisterUser extends AppCompatActivity
                         @Override
                         public void afterTextChanged(Editable s) {
                                 if(ePassword.getText().toString().length()<6||eAddress.getText().toString().length()>15)
-                                        layout6.setBackground(getDrawable(R.color.error));
-                                else layout6.setBackground(getDrawable(R.color.green));
+                                        ePassword.setError("invalid");
+                                else ePassword.setError("Valid",icon);
                                 if(ePassword.getText().toString().length()>=6&&ePassword.getText().toString().length()<=9)
                                         txtPassErr.setText("Too short");
                                 else if(ePassword.getText().toString().length()>=10&&ePassword.getText().toString().length()<=13)
@@ -258,9 +262,9 @@ public class RegisterUser extends AppCompatActivity
                         @Override
                         public void afterTextChanged(Editable s) {
                                 if(eFavourite.getText().toString().length()<4||eFavourite.getText().toString().length()>15)
-                                        layout7.setBackground(getDrawable(R.color.error));
+                                        eFavourite.setError("invalid");
                                 else
-                                        layout7.setBackground(getDrawable(R.color.green));
+                                        eFavourite.setError("Valid",icon);
                         }
                 });
         }
@@ -332,7 +336,6 @@ public class RegisterUser extends AppCompatActivity
          */
         private boolean checkUserInformation(String name,String userName,String email,String password)
         {
-                boolean flag = true;
 
                 if(userName.isEmpty())
                 {
@@ -362,48 +365,48 @@ public class RegisterUser extends AppCompatActivity
                 {
                         ePassword.setError("Invalid password");
                         ePassword.requestFocus();
-                        flag = false;
+                        return false;
                 }
-                if(password.length()>15)
+                if(password.length()>16)
                 {
                         ePassword.setError("Invalid password");
                         ePassword.requestFocus();
-                        flag =false;
+                        return false;
                 }
 
                 if(eAddress.getText().toString().isEmpty())
                 {
                         eAddress.setError("Invalid address");
-                        flag = false;
                         eAddress.requestFocus();
+                        return false;
                 }
 
                 if(eFavourite.getText().toString().isEmpty())
                 {
                         eFavourite.setError("empty field");
-                        flag = false;
                         eFavourite.requestFocus();
+                        return false;
                 }
 
                 if(!email.contains("@"))
                 {
                         eEmail.setError("Invalid email");
                         eEmail.requestFocus();
-                        flag = false;
+                        return false;
                 }
 
                 if(name.length()<3)
                 {
                         eName.setError("Invalid name");
                         eName.requestFocus();
-                        flag = false;
+                        return false;
                 }
 
                 for(char c : name.toCharArray()){
                         if(Character.isDigit(c)){
                                 eName.setError("Invalid Name");
-                                flag = false;
                                 eName.requestFocus();
+                                return false;
                         }
                 }
 
@@ -411,16 +414,16 @@ public class RegisterUser extends AppCompatActivity
                 {
                         eUserName.setError("User name must be in 6 to 12 character");
                         eUserName.requestFocus();
-                        flag = false;
+                        return false;
                 }
 
                 if(eAddress.getText().toString().length()<10||eAddress.getText().toString().length()>30)
                 {
-                        flag = false;
                         eAddress.setError("Must be in 10-30 characters");
                         eAddress.requestFocus();
+                        return false;
                 }
-                return flag;
+                return true;
         }
 
         //new user registration process
@@ -465,6 +468,7 @@ public class RegisterUser extends AppCompatActivity
                                         switch (result) {
                                                 case "success":
                                                         onLogin(LoginType.PHONE);
+                                                        //Toast.makeText(RegisterUser.this,"message : "+result,Toast.LENGTH_LONG).show();
                                                         break;
                                                 case "offline":
                                                         dialogClass.noInternetConnection();
@@ -523,9 +527,10 @@ public class RegisterUser extends AppCompatActivity
         //phone number verification with facebook kid
 
         @Override
-        protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
-        {
-
+        protected void onActivityResult(
+             final int requestCode,
+             final int resultCode,
+             final Intent data) {
                 super.onActivityResult(requestCode, resultCode, data);
 
                 if (requestCode != FRAMEWORK_REQUEST_CODE) {
@@ -534,11 +539,13 @@ public class RegisterUser extends AppCompatActivity
 
                 final String toastMessage;
                 final AccountKitLoginResult loginResult = AccountKit.loginResultWithIntent(data);
-                if (loginResult == null || loginResult.wasCancelled()) {
+                if (loginResult == null || loginResult.wasCancelled())
+                {
                         toastMessage = "Cancelled";
-                        Toast.makeText(RegisterUser.this, toastMessage, Toast.LENGTH_SHORT).show();
-                } else if (loginResult.getError() != null) {
-                        Toast.makeText(RegisterUser.this, "Error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterUser.this,toastMessage,Toast.LENGTH_SHORT).show();
+                }
+                else if (loginResult.getError() != null) {
+                        Toast.makeText(RegisterUser.this,"Error",Toast.LENGTH_SHORT).show();
                 } else {
                         final AccessToken accessToken = loginResult.getAccessToken();
                         if (accessToken != null) {
@@ -564,12 +571,11 @@ public class RegisterUser extends AppCompatActivity
                                 Toast.makeText(RegisterUser.this, toastMessage, Toast.LENGTH_SHORT).show();
                         }
                 }
-
         }
 
         public void onLogin(final LoginType loginType)
         {
-                final Intent intent = new Intent(RegisterUser.this, AccountKitActivity.class);
+                final Intent intent = new Intent(this, AccountKitActivity.class);
                 final AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder = new AccountKitConfiguration.AccountKitConfigurationBuilder(loginType, AccountKitActivity.ResponseType.TOKEN);
                 final AccountKitConfiguration configuration = configurationBuilder.build();
                 intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION, configuration);

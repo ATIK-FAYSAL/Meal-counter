@@ -219,7 +219,7 @@ public class CreateSession extends AppCompatActivity implements DatePickerDialog
                                         switch (message)
                                         {
                                                 case "success":
-                                                        someMethod.progressDialog("Creating a new session...");
+                                                        someMethod.progressDialog("Creating a new session...","New session created successfully");
                                                         break;
                                                 default:
                                                         dialogClass.error("Execution failed.Please try again.");

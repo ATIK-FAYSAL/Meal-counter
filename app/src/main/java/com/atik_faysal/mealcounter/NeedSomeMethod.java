@@ -138,7 +138,7 @@ public class NeedSomeMethod
                 }else dialogClass.noInternetConnection();
         }
 
-        public void progressDialog(String message)
+        public void progressDialog(String message,final String toast)
         {
                 final ProgressDialog ringProgressDialog = ProgressDialog.show(context, "Please wait", message, true);
                 ringProgressDialog.setCancelable(true);
@@ -155,7 +155,7 @@ public class NeedSomeMethod
                 ringProgressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialog) {
-                                Toast.makeText(context,"Task complete.",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context,toast,Toast.LENGTH_SHORT).show();
                                 activity.finish();
                         }
                 });

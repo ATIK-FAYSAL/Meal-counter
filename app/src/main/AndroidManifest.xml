@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -31,7 +34,7 @@
 
         <activity android:name=".RegisterUser"
             android:screenOrientation="portrait"
-            android:label="Registration"/>
+            android:label="New user"/>
 
         <activity
             android:name=".HomePageActivity"
@@ -100,6 +103,7 @@
         <activity android:name="com.atik_faysal.others.SelectMember"
             android:screenOrientation="portrait"
             android:label="Select"/>
+
         <activity android:name="com.atik_faysal.others.EmptyActivity"/>
 
         <activity android:name=".CostForPublicGroup"
@@ -117,9 +121,11 @@
         <activity android:name=".MonthReport"
             android:label="Report"
             android:screenOrientation="portrait"/>
+
         <activity android:name="com.atik_faysal.others.EachMemReport"
             android:label="Member Report"
             android:screenOrientation="portrait"/>
+
         <activity android:name="com.atik_faysal.others.CreateSession"
             android:screenOrientation="portrait"
             android:label="New Session"/>
@@ -127,6 +133,7 @@
         <activity android:name="com.atik_faysal.others.AboutUs"
             android:screenOrientation="portrait"
             android:label="About us"/>
+
         <activity android:name="com.atik_faysal.others.ChangePassword"
             android:label="Change Password"
             android:screenOrientation="portrait"/>
