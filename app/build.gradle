@@ -59,6 +59,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'de.hdodenhof:circleimageview:2.1.0'
+    implementation 'com.applozic.communication.uiwidget:mobicomkitui:5.8.4'
     implementation 'com.facebook.android:facebook-login:4.28.0'
     implementation 'com.facebook.android:account-kit-sdk:4.28.0'
     implementation 'com.facebook.android:facebook-android-sdk:4.28.0'
@@ -66,6 +67,7 @@ dependencies {
     implementation 'com.github.mirrajabi:search-dialog:1.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
     //noinspection GradleCompatible
     implementation 'com.google.firebase:firebase-auth:15.1.0'
     implementation 'com.firebase:firebase-client-android:2.5.0'
