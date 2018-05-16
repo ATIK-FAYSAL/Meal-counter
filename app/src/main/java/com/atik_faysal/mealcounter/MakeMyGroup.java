@@ -1,6 +1,7 @@
 package com.atik_faysal.mealcounter;
 
 import android.app.TimePickerDialog;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -35,17 +36,15 @@ import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 
 public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener
 {
-        protected EditText groupName,groupId,groupAddress,groupDescription;
-        protected Button bCreate;
-        protected RadioButton rPublic;
-        protected Toolbar toolbar;
-        protected TextView fTime;
-        protected ProgressBar progressBar;
-        private TextView txtNameErr,txtIdErr,txtAddEr,txtDecErr;
+        private EditText groupName,groupId,groupAddress,groupDescription;
+        private Button bCreate;
+        private RadioButton rPublic;
+        private Toolbar toolbar;
+        private TextView fTime;
+        private ProgressBar progressBar;
 
         private String gName,gId,gAddress,gDescription;
         private String currentUserName;
-        private final static String USER_INFO = "currentInfo";
         //private final static String FILE_URL  = "http://192.168.56.1/alreadyMember.php";
         //private final static String URL = "http://192.168.56.1/createGroup.php";
         private String POST_DATA;
@@ -53,7 +52,8 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
         private String groupType="";
         private String time;
 
-        private int hour,minute,hourFinal,minFinal;
+        private int hour;
+        private int minute;
 
         //Class object
         private SharedPreferenceData sharedPreferenceData;
@@ -62,7 +62,6 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
         private AlertDialogClass dialogClass;
         private Calendar calendar;
         private TimePickerDialog timePickerDialog;
-        private DatabaseBackgroundTask backgroundTask;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,22 +77,16 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
         private void initComponent()
         {
                 groupName = findViewById(R.id.groupName);
-                groupName.requestFocus();
                 groupId = findViewById(R.id.gId);
                 groupAddress = findViewById(R.id.gAddress);
                 groupDescription = findViewById(R.id.gDescription);
                 bCreate = findViewById(R.id.bCreate);
-                rPublic = findViewById(R.id.rPublic);
+                rPublic = findViewById(R.id.rSecret);
                 fTime = findViewById(R.id.fTime);
                 toolbar = findViewById(R.id.toolbar);
                 setSupportActionBar(toolbar);
                 calendar = Calendar.getInstance();
                 progressBar = findViewById(R.id.progress);
-
-                txtNameErr = findViewById(R.id.txtNameErr);
-                txtIdErr = findViewById(R.id.txtIdErr);
-                txtAddEr = findViewById(R.id.txtAddErr);
-                txtDecErr = findViewById(R.id.txtDecErr);
 
                 //set scrollview in description editText
                 groupDescription.setOnTouchListener(new View.OnTouchListener() {
@@ -119,9 +112,12 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                 dialogClass = new AlertDialogClass(this);
         }
 
-
+        //set validation for text
         private void addTextChangeListener()
         {
+                final Drawable icon = getResources().getDrawable(R.drawable.icon_done);
+                icon.setBounds(0,0,icon.getIntrinsicWidth(),icon.getIntrinsicHeight());
+
                 groupName.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -131,9 +127,9 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                         @Override
                         public void afterTextChanged(Editable s) {
                                 if(groupName.getText().toString().length()<3||groupName.getText().toString().length()>20)
-                                        txtNameErr.setText("Invalid group name");
+                                        groupName.setError("Invalid");
                                 else
-                                        txtNameErr.setText("");
+                                        groupName.setError("Valid",icon);
 
                         }
                 });
@@ -147,9 +143,9 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                         @Override
                         public void afterTextChanged(Editable s) {
                                 if(groupId.getText().toString().length()<5||groupId.getText().toString().length()>15)
-                                        txtIdErr.setText("Invalid group id");
+                                        groupId.setError("Invalid");
                                 else
-                                        txtIdErr.setText("");
+                                        groupId.setError("Valid",icon);
                         }
                 });
 
@@ -163,11 +159,10 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                         @Override
                         public void afterTextChanged(Editable s) {
                                if(groupDescription.getText().toString().length()<20||groupDescription.getText().toString().length()>200)
-                                       txtDecErr.setText("Must be in 20-200");
-                               else txtDecErr.setText("");
+                                       groupDescription.setError("Invalid");
+                               else groupDescription.setError("Valid",icon);
                         }
                 });
-
 
                 groupAddress.addTextChangedListener(new TextWatcher() {
                         @Override
@@ -179,12 +174,11 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                         @Override
                         public void afterTextChanged(Editable s) {
                                 if(groupAddress.getText().toString().length()<10||groupAddress.getText().toString().length()>30)
-                                        txtAddEr.setText("Must be in 10-30 characters");
-                                else txtAddEr.setText("");
+                                        groupAddress.setError("Invalid");
+                                else groupAddress.setError("Valid",icon);
                         }
                 });
         }
-
 
         //set toolbar
         private void setToolbar()
@@ -247,6 +241,9 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
 
                 if(time.isEmpty())
                         time = "not set";
+
+                if(groupDescription.getText().toString().length()<20||groupDescription.getText().toString().length()>200)
+                        groupDescription.setError("Invalid description");
 
                 return flag;
         }
@@ -328,7 +325,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                                 +URLEncoder.encode("groupType","UTF-8")+"="+URLEncoder.encode(groupType,"UTF-8")+"&"
                                 +URLEncoder.encode("time","UTF-8")+"="+URLEncoder.encode(time,"UTF-8");
 
-                       backgroundTask = new DatabaseBackgroundTask(this);
+                        DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(this);
                        backgroundTask.setOnResultListener(taskInterface);
                        backgroundTask.execute(getResources().getString(R.string.createGroup),DATA);
 
@@ -396,7 +393,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                                                         dialogClass.noInternetConnection();
                                                         break;
                                                 default:
-                                                        dialogClass.alreadyMember("You are already a member of "+message);
+                                                        dialogClass.alreadyMember("You are already a member of "+message+".Please leave from previous group and retry.");
                                                         break;
                                         }
                                 }
@@ -405,31 +402,30 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
         };
 
 
-
         //user can fixed time for last meal input or shopping cost input.
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                hourFinal = hourOfDay;
-                minFinal = minute;
+                int hourFinal = hourOfDay;
+                int minFinal = minute;
 
                 String format;
                 String sHour;
-                if(hourFinal>12)
+                if(hourFinal >12)
                 {
-                        hourFinal-=12;
+                        hourFinal -=12;
                         format = " PM";
-                }else if(hourFinal==0)
+                }else if(hourFinal ==0)
                 {
                         hourFinal = 12;
                         format = " AM";
-                }else if(hourFinal==12)
+                }else if(hourFinal ==12)
                         format = " PM";
                 else
                         format = " AM";
 
                 sHour = String.valueOf(hourFinal);
 
-                if(hourFinal<10)
+                if(hourFinal <10)
                         sHour = "0"+String.valueOf(hourFinal);
 
                 if(minute<10)
