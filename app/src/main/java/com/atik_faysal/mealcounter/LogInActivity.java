@@ -16,6 +16,7 @@ import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.others.DesEncryptionAlgo;
+import com.google.android.gms.ads.AdView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -95,12 +96,14 @@ public class LogInActivity extends AppCompatActivity
                 checkBox = findViewById(R.id.cRemember);
                 txtUserName = findViewById(R.id.txtName);
                 txtUserPassword = findViewById(R.id.ePassword);
+                AdView adView = findViewById(R.id.adView);
 
                 checkInternet = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
                 sharedPreferenceData = new SharedPreferenceData(this);
                 someMethod = new NeedSomeMethod(this);
                 encryptionAlgo = new DesEncryptionAlgo(this);
+                someMethod.setAdmob(adView);
         }
 
         //button click to take action

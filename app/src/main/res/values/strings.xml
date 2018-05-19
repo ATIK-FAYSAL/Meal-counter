@@ -23,6 +23,7 @@
     <string name="todo">TODO</string>
 
     <string name="encryptionKey">A9F5E0D2B1A8CD76</string>
+    <string name="adUnitId">ca-app-pub-3940256099942544/6300978111</string>
 
     //php file location
     <string name="homePageInfo">http://192.168.56.1/homePageInfo.php</string>

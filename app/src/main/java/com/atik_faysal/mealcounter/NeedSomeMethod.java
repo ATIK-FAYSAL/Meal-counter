@@ -17,6 +17,9 @@ import com.atik_faysal.backend.SharedPreferenceData;
 import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
 import com.gdacciaro.iOSDialog.iOSDialogClickListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -75,7 +78,6 @@ public class NeedSomeMethod
                 return value[1];
         }
 
-
         //close top all activity and go to specific activity
         public void closeActivity(Activity context, Class<?> clazz) {
                 Intent intent = new Intent(context, clazz);
@@ -102,6 +104,13 @@ public class NeedSomeMethod
                                 },2500);
                         }
                 });
+        }
+
+        public void setAdmob(AdView viewId)
+        {
+                MobileAds.initialize(context,activity.getResources().getString(R.string.adUnitId));
+                AdRequest request = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+                viewId.loadAd(request);
         }
 
         //current user status
