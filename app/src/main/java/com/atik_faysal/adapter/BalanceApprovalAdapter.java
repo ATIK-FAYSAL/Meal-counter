@@ -221,11 +221,6 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
                                                                 modelList.remove(position);
                                                                 notifyItemRemoved(position);
                                                                 notifyItemRangeChanged(position, modelList.size());
-                                                                if(modelList.size()==0)
-                                                                {
-                                                                        noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),ApproveBalance.class,"approval");
-
-                                                                }
                                                                 break;
                                                         default:
                                                                 dialogClass.error("Execution failed,please try again.");
