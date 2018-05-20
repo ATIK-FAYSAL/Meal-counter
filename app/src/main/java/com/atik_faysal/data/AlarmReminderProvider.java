@@ -1,4 +1,4 @@
-package com.atik_faysal.alarmexample.data;
+package com.atik_faysal.data;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;

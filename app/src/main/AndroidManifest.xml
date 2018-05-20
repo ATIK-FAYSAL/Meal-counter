@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo"
@@ -141,6 +142,28 @@
         <activity android:name="com.atik_faysal.others.MemBalances"
             android:label="Member balances"
             android:screenOrientation="portrait"/>
+
+        <activity android:name="com.atik_faysal.setRemainder.SetRemainder"/>
+
+        <activity android:name="com.atik_faysal.setRemainder.AddReminderActivity"
+            android:label="Add remainder"
+            android:parentActivityName="com.atik_faysal.setRemainder.SetRemainder"
+            android:theme="@style/AppTheme">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.atik_faysal.setRemainder.SetRemainder"
+                />
+        </activity>
+
+        <provider
+            android:name="com.atik_faysal.data.AlarmReminderProvider"
+            android:authorities="com.atik_faysal.mealcounter"
+            android:exported="false"/>
+
+        <service
+            android:name="com.atik_faysal.reminder.ReminderAlarmService"
+            android:exported="false" />
 
         <service android:name="com.atik_faysal.services.FirebaseMessagingService">
             <intent-filter>

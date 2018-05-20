@@ -1,4 +1,4 @@
-package com.atik_faysal.alarmexample.reminder;
+package com.atik_faysal.reminder;
 
 import android.app.AlarmManager;
 import android.content.Context;

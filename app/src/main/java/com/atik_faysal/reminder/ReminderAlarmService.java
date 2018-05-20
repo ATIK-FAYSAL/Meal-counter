@@ -1,4 +1,4 @@
-package com.atik_faysal.alarmexample.reminder;
+package com.atik_faysal.reminder;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -12,9 +12,9 @@ import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
-import com.atik_faysal.alarmexample.AddReminderActivity;
-import com.atik_faysal.alarmexample.R;
-import com.atik_faysal.alarmexample.data.AlarmReminderContract;
+import com.atik_faysal.setRemainder.AddReminderActivity;
+import com.atik_faysal.mealcounter.R;
+import com.atik_faysal.data.AlarmReminderContract;
 
 /**
  * Created by delaroy on 9/22/17.
