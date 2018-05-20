@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ public class InputMeal extends Fragment
         private EditText eBreakfast,eDinner,eLaunch;
         private View view;
         private ListView listView;
+        private RelativeLayout emptyView;
 
         private String breakfast,dinner,lunch;
 
@@ -148,6 +150,7 @@ public class InputMeal extends Fragment
         private void initComponent()
         {
                 listView = view.findViewById(R.id.list);
+                emptyView = view.findViewById(R.id.empty_view);
 
                 SwipeRefreshLayout refreshLayout = view.findViewById(R.id.refresh);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
@@ -212,6 +215,12 @@ public class InputMeal extends Fragment
                                 modelList.add(new MealModel(date,name,breakfast,lunch,dinner,total));
                                 count++;
                         }
+
+                        if(modelList.isEmpty())
+                        {
+                                listView.setEmptyView(emptyView);
+                        }else
+                                emptyView.setVisibility(View.INVISIBLE);
 
                         MealAdapter adapter = new MealAdapter(getContext(), modelList);
                         listView.setAdapter(adapter);

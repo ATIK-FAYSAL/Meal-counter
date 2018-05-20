@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.atik_faysal.adapter.MealAdapter;
@@ -43,12 +44,14 @@ public class MyMeal extends Fragment
         private AlertDialogClass dialogClass;
         private DatabaseBackgroundTask backgroundTask;
         private CheckInternetIsOn internetIsOn;
+        private RelativeLayout emptyView;
 
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
                 View view = inflater.inflate(R.layout.only_show_meal, container, false);
                 listView = view.findViewById(R.id.list);
+                emptyView = view.findViewById(R.id.empty_view);
                 SwipeRefreshLayout refreshLayout = view.findViewById(R.id.refresh);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
 
@@ -104,6 +107,12 @@ public class MyMeal extends Fragment
                                 modelList.add(new MealModel(date,name,breakfast,lunch,dinner,total));
                                 count++;
                         }
+
+                        if(modelList.isEmpty())
+                        {
+                                listView.setEmptyView(emptyView);
+                        }else
+                             emptyView.setVisibility(View.INVISIBLE);
 
                         MealAdapter adapter = new MealAdapter(getContext(), modelList);
                         listView.setAdapter(adapter);

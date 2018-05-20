@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.atik_faysal.adapter.BalanceApprovalAdapter;
@@ -32,6 +33,7 @@ public class ApproveBalance extends AppCompatActivity
 
         private RecyclerView recyclerView;
         private LinearLayoutManager layoutManager;
+        private RelativeLayout emptyView;
 
 
         @Override
@@ -64,6 +66,7 @@ public class ApproveBalance extends AppCompatActivity
         {
                 recyclerView = findViewById(R.id.list);
                 TextView txtSession = findViewById(R.id.txtSession);
+                emptyView = findViewById(R.id.empty_view);
 
                 layoutManager = new LinearLayoutManager(this);
 
@@ -115,6 +118,16 @@ public class ApproveBalance extends AppCompatActivity
 
                                 costModelList.add(new CostModel(id,name,taka,date,status));
                                 count++;
+                        }
+
+                        if(costModelList.isEmpty())
+                        {
+                                emptyView.setVisibility(View.VISIBLE);
+                                recyclerView.setVisibility(View.INVISIBLE);
+                        }else
+                        {
+                                emptyView.setVisibility(View.INVISIBLE);
+                                recyclerView.setVisibility(View.VISIBLE);
                         }
 
                         BalanceApprovalAdapter adapter = new BalanceApprovalAdapter(this, costModelList);

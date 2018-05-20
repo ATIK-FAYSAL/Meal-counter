@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ import java.util.List;
 public class MemBalances extends AppCompatActivity
 {
         private ListView listView;
+        private RelativeLayout emptyView;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class MemBalances extends AppCompatActivity
         {
                 TextView txtSession = findViewById(R.id.txtSession);
                 listView = findViewById(R.id.list);
+                emptyView = findViewById(R.id.empty_view);
 
 
                 SharedPreferenceData sharedPreferenceData = new SharedPreferenceData(this);
@@ -106,6 +109,11 @@ public class MemBalances extends AppCompatActivity
                                 modelList.add(new MemBalanceModel(id,name,taka));
                                 count++;
                         }
+
+                        if(modelList.isEmpty())
+                                listView.setEmptyView(emptyView);
+                        else
+                                emptyView.setVisibility(View.INVISIBLE);
 
                         MemBalanceAdapter adapter = new MemBalanceAdapter(this, modelList);
                         listView.setAdapter(adapter);

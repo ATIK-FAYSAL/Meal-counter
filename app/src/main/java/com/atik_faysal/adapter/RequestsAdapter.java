@@ -210,22 +210,12 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                                                                 memberModelList.remove(position);
                                                                 notifyItemRemoved(position);
                                                                 notifyItemRangeChanged(position, memberModelList.size());
-                                                                if(memberModelList.size()==0)
-                                                                {
-                                                                        noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),MemberJoinRequest.class,"request");
-
-                                                                }
                                                                 break;
                                                         case "deleted":
                                                                 someMethod.progress("Working on it...","One Request canceled.");
                                                                 memberModelList.remove(position);
                                                                 notifyItemRemoved(position);
                                                                 notifyItemRangeChanged(position, memberModelList.size());
-                                                                if(memberModelList.size()==0)
-                                                                {
-                                                                        noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),MemberJoinRequest.class,"request");
-
-                                                                }
                                                                 break;
                                                         case "member":
                                                                 dialogClass.alreadyMember("You are already member"+".Please leave from previous group and retry.");

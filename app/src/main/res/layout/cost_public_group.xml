@@ -110,6 +110,25 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="10dp"/>
 
+                <RelativeLayout
+                    android:id="@+id/empty_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <TextView
+                        android:id="@+id/no_reminder_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:padding="16dp"
+                        android:textStyle="bold"
+                        android:textSize="25dp"
+                        android:textColor="@color/black"
+                        android:gravity="center"
+                        android:text="@string/noResultMessage"/>
+                </RelativeLayout>
+
                 <ListView
                     android:id="@+id/costList"
                     android:layout_width="match_parent"
@@ -121,6 +140,9 @@
                     android:divider="@color/color8">
 
                 </ListView>
+
+
+
             </RelativeLayout>
 
         </android.support.v4.widget.SwipeRefreshLayout>

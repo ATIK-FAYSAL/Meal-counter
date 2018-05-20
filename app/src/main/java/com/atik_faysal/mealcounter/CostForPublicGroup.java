@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +15,8 @@ import com.atik_faysal.superClasses.ShoppingCost;
 
 public class CostForPublicGroup extends ShoppingCost
 {
+
+
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +65,7 @@ public class CostForPublicGroup extends ShoppingCost
                                                         dialogClass.error("Execution failed,Please try again.");
                                                         break;
                                                 case "exist":
-                                                        dialogClass.error("Execution failed,Today's shopping only_show_cost is already added.");
+                                                        dialogClass.error("Execution failed,Today's shopping cost is already added.");
                                                         break;
                                         }
                                 }

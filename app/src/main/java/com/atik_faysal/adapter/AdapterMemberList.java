@@ -214,10 +214,6 @@ public class AdapterMemberList extends RecyclerView.Adapter<AdapterMemberList.Vi
                                                                 memberList.remove(position);
                                                                 notifyItemRemoved(position);
                                                                 notifyItemRangeChanged(position, memberList.size());
-                                                                if(memberList.size()==0)
-                                                                {
-                                                                        noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),ApproveBalance.class,"member");
-                                                                }
                                                                 break;
                                                 }
                                         }

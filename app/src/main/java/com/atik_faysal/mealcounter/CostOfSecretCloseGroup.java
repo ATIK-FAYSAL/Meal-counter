@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -34,7 +35,6 @@ public class CostOfSecretCloseGroup extends ShoppingCost {
 
         private TextView txtName;
         private Spinner spinner;
-
         private List<String> memName;
 
         @Override
@@ -54,7 +54,6 @@ public class CostOfSecretCloseGroup extends ShoppingCost {
                 txtName = findViewById(R.id.txtName);
                 spinner = findViewById(R.id.spinner);
                 TextView txtSession = findViewById(R.id.txtSession);
-
                 SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh1);
                 refreshLayout.setColorSchemeResources(R.color.color2, R.color.red, R.color.color6);
 

@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ import java.util.List;
 public class AdminPanel extends AppCompatActivity
 {
         private RecyclerView listView;
+        private RelativeLayout empty_view;
         private TextView txtPerson;
         private Toolbar toolbar;
         private AlertDialogClass dialogClass;
@@ -59,6 +61,7 @@ public class AdminPanel extends AppCompatActivity
                 txtPerson = findViewById(R.id.txtPerson);
                 toolbar = findViewById(R.id.toolbar2);
                 layoutManager = new LinearLayoutManager(this);
+                empty_view = findViewById(R.id.empty_view);
                 SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
                 setSupportActionBar(toolbar);
@@ -134,6 +137,16 @@ public class AdminPanel extends AppCompatActivity
 
                                 if(memberList.size()==1)txtPerson.setText(String.valueOf(memberList.size())+"  person");
                                 else txtPerson.setText(String.valueOf(memberList.size())+"  persons");
+
+                                if(memberList.isEmpty())
+                                {
+                                     listView.setVisibility(View.INVISIBLE);
+                                     empty_view.setVisibility(View.VISIBLE);
+                                }else
+                                {
+                                     listView.setVisibility(View.VISIBLE);
+                                     empty_view.setVisibility(View.INVISIBLE);
+                                }
 
                                 AdminAdapter adapter = new AdminAdapter(this, memberList);
                                 listView.setAdapter(adapter);

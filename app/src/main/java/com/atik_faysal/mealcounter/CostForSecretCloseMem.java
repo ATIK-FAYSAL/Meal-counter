@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.atik_faysal.adapter.CostAdapter;
@@ -36,6 +37,7 @@ public class CostForSecretCloseMem extends AppCompatActivity
 {
 
         private ListView listView;
+        private RelativeLayout emptyView;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class CostForSecretCloseMem extends AppCompatActivity
         private void initComponent()
         {
                 SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh1);
+                emptyView = findViewById(R.id.empty_view);
                 refreshLayout.setColorSchemeResources(R.color.color2, R.color.red, R.color.color6);
                 TextView txtSession = findViewById(R.id.txtSession);
 
@@ -112,6 +115,12 @@ public class CostForSecretCloseMem extends AppCompatActivity
                                 costList.add(new CostModel(id,name,taka,date,""));
                                 count++;
                         }
+
+                        if(costList.isEmpty())
+                                listView.setEmptyView(emptyView);
+                        else
+                                emptyView.setVisibility(View.INVISIBLE);
+
                         CostAdapter adapter = new CostAdapter(this, costList);
                         listView.setAdapter(adapter);
                 } catch (JSONException e) {

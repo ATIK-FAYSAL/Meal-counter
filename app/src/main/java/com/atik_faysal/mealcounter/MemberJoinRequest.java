@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class MemberJoinRequest extends AppCompatActivity
         private RecyclerView recyclerView;
         private TextView textView;
         private Toolbar toolbar;
+        private RelativeLayout emptyView;
         private List<MemberModel>memberModelList = new ArrayList<>();
 
         //private static final String FILE_URL = "http://192.168.56.1/allJoinRequests.php";
@@ -63,6 +65,7 @@ public class MemberJoinRequest extends AppCompatActivity
                 recyclerView = findViewById(R.id.memberList);
                 layoutManager = new LinearLayoutManager(this);
                 textView = findViewById(R.id.txtPerson);
+                emptyView = findViewById(R.id.empty_view);
                 SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
                 TextView textView = findViewById(R.id.textView16);
@@ -137,6 +140,12 @@ public class MemberJoinRequest extends AppCompatActivity
 
                                 memberModelList.add(new MemberModel(name,userName,phone,group,status,id,date));
                                 count++;
+                        }
+
+                        if(memberModelList.isEmpty())
+                        {
+                             recyclerView.setVisibility(View.INVISIBLE);
+                             emptyView.setVisibility(View.VISIBLE);
                         }
 
                         RequestsAdapter adapter = new RequestsAdapter(this, memberModelList);

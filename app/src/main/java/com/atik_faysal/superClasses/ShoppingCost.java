@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +46,7 @@ public class ShoppingCost extends AppCompatActivity
 
         private ListView listView;
         private TextView txtName,txtDate,txtTaka;
+        private RelativeLayout emptyView;
 
 
         protected void initComponent()
@@ -60,6 +62,7 @@ public class ShoppingCost extends AppCompatActivity
                 txtName = findViewById(R.id.txtName);
                 txtTaka = findViewById(R.id.txtTaka);
                 listView = findViewById(R.id.costList);
+                emptyView = findViewById(R.id.empty_view);
                 currentDate = someMethod.getDate();
                 txtDate.setText(currentDate);
 
@@ -151,6 +154,12 @@ public class ShoppingCost extends AppCompatActivity
                                 costList.add(new CostModel(id,name,taka,date,""));
                                 count++;
                         }
+
+                        if(costList.isEmpty())
+                                listView.setEmptyView(emptyView);
+                        else
+                                emptyView.setVisibility(View.INVISIBLE);
+
                         CostAdapter adapter = new CostAdapter(this, costList);
                         listView.setAdapter(adapter);
                 } catch (JSONException e) {
