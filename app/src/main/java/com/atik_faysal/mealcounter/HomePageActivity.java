@@ -36,6 +36,7 @@ import com.atik_faysal.others.ChangePassword;
 import com.atik_faysal.others.CreateSession;
 import com.atik_faysal.others.MemBalances;
 import com.atik_faysal.others.NoResultFound;
+import com.atik_faysal.setRemainder.SetRemainder;
 import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
 import com.gdacciaro.iOSDialog.iOSDialogClickListener;
@@ -202,7 +203,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 break;
 
                         case R.id.acceptRequest:
-                                noResultFound.checkValueIsExist(currentUser,MemberJoinRequest.class,"request");
+                                //noResultFound.checkValueIsExist(currentUser,MemberJoinRequest.class,"request");
+                                startActivity(new Intent(HomePageActivity.this,MemberJoinRequest.class));
                                 break;
 
                         case R.id.makeAdmin:
@@ -212,13 +214,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                         case R.id.member:
                                 if(internetIsOn.isOnline())
                                         noResultFound.checkValueIsExist(currentUser,AllMemberList.class,"member");
-                                        //startActivity(new Intent(HomePageActivity.this,AllMemberList.class));
                                 else dialogClass.noInternetConnection();
                                 break;
-
-                        case R.id.setAlarm:
-                                break;
-
                         case R.id.changePass:
                                 startActivity(new Intent(HomePageActivity.this, ChangePassword.class));
                                 break;
@@ -390,9 +387,10 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                         dialogClass.error("No session available,please contact with admin.");
                                 else
                                         if(sharedPreferenceData.getMyGroupType().equals("secret")||sharedPreferenceData.getMyGroupType().equals("close"))
-                                                noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),MemBalances.class,"approval");
+                                                //noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),MemBalances.class,"approval");
+                                                startActivity(new Intent(HomePageActivity.this,MemBalances.class));
                                         else
-                                                noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),ApproveBalance.class,"approval");
+                                                startActivity(new Intent(HomePageActivity.this,ApproveBalance.class));
                         }
                                // startActivity(new Intent(HomePageActivity.this,ApproveBalance.class));
                 }else if(id==cardViewId[2]||id==imageViewId[2])
@@ -412,7 +410,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                                 startActivity(new Intent(HomePageActivity.this,CostOfSecretCloseGroup.class));
                                         else if((sharedPreferenceData.getMyGroupType().equals("secret")||sharedPreferenceData.getMyGroupType().equals("close"))
                                                 &&sharedPreferenceData.getUserType().equals("member"))
-                                                 noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),CostForSecretCloseMem.class,"cost");
+                                                startActivity(new Intent(HomePageActivity.this,CostForSecretCloseMem.class));
 
                                 }
                         }
@@ -426,7 +424,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 {
                         if(sharedPreferenceData.getUserType().equals("nope"))
                                 dialogClass.notMember();
-                        else Toast.makeText(this,"click on button 5",Toast.LENGTH_SHORT).show();
+                        else startActivity(new Intent(HomePageActivity.this, SetRemainder.class));
                 }else if(id==cardViewId[5]||id==imageViewId[5])
                 {
                         if(sharedPreferenceData.getUserType().equals("nope"))

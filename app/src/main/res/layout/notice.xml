@@ -104,16 +104,23 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:background="@color/color8">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="5dp"
-            android:padding="8dp"
-            android:dividerHeight="4dp"
-            android:divider="@color/color8"/>
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:padding="8dp"
+                android:dividerHeight="4dp"
+                android:divider="@color/color8"/>
+
+        </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 

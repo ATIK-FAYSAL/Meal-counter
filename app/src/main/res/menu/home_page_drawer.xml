@@ -32,10 +32,6 @@
             android:title="Member's" />
 
         <item
-            android:id="@+id/setAlarm"
-            android:icon="@drawable/icon_alarm"
-            android:title="Set alarm" />
-        <item
             android:id="@+id/changePass"
             android:icon="@drawable/icon_pass"
             android:title="Change Password" />

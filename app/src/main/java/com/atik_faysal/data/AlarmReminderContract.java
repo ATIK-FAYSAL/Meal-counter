@@ -1,4 +1,4 @@
-package com.atik_faysal.alarmexample.data;
+package com.atik_faysal.data;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
@@ -12,7 +12,7 @@ public class AlarmReminderContract {
 
     private AlarmReminderContract() {}
 
-    public static final String CONTENT_AUTHORITY = "com.atik_faysal.alarmexample";
+    public static final String CONTENT_AUTHORITY = "com.atik_faysal.mealcounter";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
