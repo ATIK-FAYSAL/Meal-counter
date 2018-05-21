@@ -91,7 +91,6 @@ public class AlertDialogClass extends AlertDialog
                                 @Override
                                 public void onClick(iOSDialog dialog) {
                                         dialog.dismiss();
-                                        activity.finish();
 
                                 }
                         }).build().show();

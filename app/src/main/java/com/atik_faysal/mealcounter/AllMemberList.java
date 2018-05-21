@@ -22,6 +22,7 @@ import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.MemberModel;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.adapter.AdapterMemberList;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,6 +65,7 @@ public class AllMemberList extends AppCompatActivity
           txtPerson = findViewById(R.id.txtPerson);
           toolbar = findViewById(R.id.toolbar2);
           emptyView = findViewById(R.id.empty_view);
+          AdView adView = findViewById(R.id.adView);
           SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
           refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
           setSupportActionBar(toolbar);
@@ -76,6 +78,7 @@ public class AllMemberList extends AppCompatActivity
 
           //calling method
           someMethod.reloadPage(refreshLayout,AllMemberList.class);
+          someMethod.setAdmob(adView);
           setToolbar();
 
           String currentUser = sharedPreferenceData.getCurrentUserName();
@@ -175,7 +178,7 @@ public class AllMemberList extends AppCompatActivity
                                    break;
 
                               case "not member":
-                                   dialogClass.notMember();
+                                   dialogClass.alreadyMember("Please first join a group.");
                                    break;
                               default:
                                    addMemberInListView(userInfo);

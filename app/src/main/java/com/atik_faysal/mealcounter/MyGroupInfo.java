@@ -1,5 +1,6 @@
 package com.atik_faysal.mealcounter;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -316,6 +317,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
      }
 
      //process json data to string
+     @SuppressLint("SetTextI18n")
      private void groupInformation(String userInfo)
      {
           if(userInfo!=null)
@@ -368,6 +370,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
 
           builder.setSingleChoiceItems(values, -1, new DialogInterface.OnClickListener() {
 
+               @SuppressLint("SetTextI18n")
                public void onClick(DialogInterface dialog, int item) {
 
                     switch(item)
@@ -429,7 +432,6 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
                          switch (result)
                          {
                               case "no result"://get group info,if no result found
@@ -437,7 +439,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                                    break;
 
                               case "not member"://get group info,if not a member
-                                   dialogClass.notMember();
+                                   dialogClass.alreadyMember("Please first join a group.");
                                    break;
 
                               case "failed"://update info failed

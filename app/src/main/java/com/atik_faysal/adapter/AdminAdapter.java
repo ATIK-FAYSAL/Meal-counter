@@ -24,6 +24,7 @@ import com.atik_faysal.mealcounter.AdminPanel;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.MemberDetails;
+import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.MemberModel;
 import com.gdacciaro.iOSDialog.iOSDialog;
@@ -84,6 +85,7 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminAdapter.ViewHolder>
                 private AlertDialogClass dialogClass;
                 private DatabaseBackgroundTask backgroundTask;
                 private CheckInternetIsOn internetIsOn;
+                private NeedSomeMethod someMethod;
                 private MemberModel model;
                 private SharedPreferenceData sharedPreferenceData;
                 private int position;
@@ -98,6 +100,7 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminAdapter.ViewHolder>
                         internetIsOn = new CheckInternetIsOn(context);
                         dialogClass = new AlertDialogClass(context);
                         sharedPreferenceData = new SharedPreferenceData(context);
+                        someMethod = new NeedSomeMethod(context);
                         txtName = view.findViewById(R.id.txtName);
                         txtUserName = view.findViewById(R.id.txtUserName);
                         txtPhone = view.findViewById(R.id.txtPhone);
@@ -215,8 +218,7 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminAdapter.ViewHolder>
                                                 switch (message)
                                                 {
                                                         case "success"://remove or make admin
-                                                                context.startActivity(new Intent(context, AdminPanel.class));
-                                                                activity.finish();
+                                                                someMethod.progress("Working on it....","user type change,please reload the current page.");
                                                                 break;
 
                                                         default://remove or make admin

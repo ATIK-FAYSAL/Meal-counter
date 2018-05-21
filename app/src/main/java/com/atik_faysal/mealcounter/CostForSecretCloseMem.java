@@ -22,6 +22,7 @@ import com.atik_faysal.mealcounter.CostOfSecretCloseGroup;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.CostModel;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,6 +53,7 @@ public class CostForSecretCloseMem extends AppCompatActivity
         {
                 SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh1);
                 emptyView = findViewById(R.id.empty_view);
+                AdView adView = findViewById(R.id.adView);
                 refreshLayout.setColorSchemeResources(R.color.color2, R.color.red, R.color.color6);
                 TextView txtSession = findViewById(R.id.txtSession);
 
@@ -61,6 +63,7 @@ public class CostForSecretCloseMem extends AppCompatActivity
                 CheckInternetIsOn internetIsOn = new CheckInternetIsOn(this);
                 GetImportantData importantData = new GetImportantData(this);
                 someMethod.reloadPage(refreshLayout, CostOfSecretCloseGroup.class);
+                someMethod.setAdmob(adView);
 
                 listView = findViewById(R.id.list);
                 txtSession.setText("#"+ sharedPreferenceData.getmyCurrentSession());

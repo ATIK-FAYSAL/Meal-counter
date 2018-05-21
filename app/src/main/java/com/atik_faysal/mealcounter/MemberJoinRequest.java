@@ -21,6 +21,7 @@ import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.MemberModel;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.adapter.RequestsAdapter;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,6 +67,7 @@ public class MemberJoinRequest extends AppCompatActivity
                 layoutManager = new LinearLayoutManager(this);
                 textView = findViewById(R.id.txtPerson);
                 emptyView = findViewById(R.id.empty_view);
+                AdView adView = findViewById(R.id.adView);
                 SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
                 TextView textView = findViewById(R.id.textView16);
@@ -79,6 +81,7 @@ public class MemberJoinRequest extends AppCompatActivity
                 NeedSomeMethod someMethod = new NeedSomeMethod(this);
 
                 currentUser = sharedPreferenceData.getCurrentUserName();
+                someMethod.setAdmob(adView);
 
                 //calling method
                 setToolbar();

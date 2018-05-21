@@ -17,6 +17,7 @@ import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
+import com.google.android.gms.ads.AdView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -47,6 +48,7 @@ public class ChangePassword extends AppCompatActivity
                 txtOldPass = findViewById(R.id.txtOldPass);
                 txtNewPass = findViewById(R.id.txtNewPass);
                 txtConPass = findViewById(R.id.txtConPass);
+                AdView adView = findViewById(R.id.adView);
                 Button bChange = findViewById(R.id.bChange);
 
                 someMethod = new NeedSomeMethod(this);
@@ -55,6 +57,8 @@ public class ChangePassword extends AppCompatActivity
                 backgroundTask = new DatabaseBackgroundTask(this);
                 sharedPreferenceData = new SharedPreferenceData(this);
                 encryptionAlgo = new DesEncryptionAlgo(this);
+
+                someMethod.setAdmob(adView);
 
                 bChange.setOnClickListener(new View.OnClickListener() {
                         @Override

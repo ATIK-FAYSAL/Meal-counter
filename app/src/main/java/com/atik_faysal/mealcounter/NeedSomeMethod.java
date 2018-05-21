@@ -116,7 +116,7 @@ public class NeedSomeMethod
         //current user status
         public void userCurrentStatus(String currentUser,String status)
         {
-                String url = "http://192.168.56.1/currentStatus.php";
+                String url = "http://mealcounter.bdtechnosoft.com/currentStatus.php";
                 String data;
                 try {
                         data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8")+"&"
@@ -131,7 +131,7 @@ public class NeedSomeMethod
         //get current user group name
         public void myGroupName(String currentUser)
         {
-                String url = "http://192.168.56.1/alreadyMember.php";
+                String url = "http://mealcounter.bdtechnosoft.com/alreadyMember.php";
                 String data;
                 if(internetIsOn.isOnline())
                 {

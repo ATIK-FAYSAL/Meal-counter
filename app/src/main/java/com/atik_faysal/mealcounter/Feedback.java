@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
+import com.google.android.gms.ads.AdView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -28,13 +29,11 @@ public class Feedback extends AppCompatActivity
 {
         private EditText eFeedback;
         private Button bFeedback;
-        private TextView txtName;
         private Toolbar toolbar;
 
         private AlertDialogClass dialogClass;
         private NeedSomeMethod someMethod;
         private DatabaseBackgroundTask checkBackgroundTask;
-        private SharedPreferenceData sharedPreferenceData;
         private CheckInternetIsOn internetIsOn;
 
 
@@ -53,9 +52,10 @@ public class Feedback extends AppCompatActivity
         private void initComponent()
         {
                 eFeedback = findViewById(R.id.eFeedback);
-                txtName = findViewById(R.id.txtName);
+                TextView txtName = findViewById(R.id.txtName);
                 bFeedback = findViewById(R.id.bFeedback);
                 toolbar = findViewById(R.id.toolbar1);
+                AdView adView = findViewById(R.id.adView);
                 setSupportActionBar(toolbar);
 
                 //add scrollview in editText
@@ -77,12 +77,14 @@ public class Feedback extends AppCompatActivity
 
                 dialogClass = new AlertDialogClass(this);
                 someMethod = new NeedSomeMethod(this);
-                sharedPreferenceData = new SharedPreferenceData(this);
+                SharedPreferenceData sharedPreferenceData = new SharedPreferenceData(this);
                 internetIsOn = new CheckInternetIsOn(this);
                 currentUser = sharedPreferenceData.getCurrentUserName();
 
                 txtName.setText(currentUser);
                 if(eFeedback.getText().toString().isEmpty())bFeedback.setEnabled(false);
+
+                someMethod.setAdmob(adView);
 
                 //on text changed listener and take action
                 eFeedback.addTextChangedListener(new TextWatcher() {

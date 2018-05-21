@@ -20,6 +20,7 @@ import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.MemberModel;
 import com.atik_faysal.adapter.AdminAdapter;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,6 +63,7 @@ public class AdminPanel extends AppCompatActivity
                 toolbar = findViewById(R.id.toolbar2);
                 layoutManager = new LinearLayoutManager(this);
                 empty_view = findViewById(R.id.empty_view);
+                AdView adView = findViewById(R.id.adView);
                 SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
                 setSupportActionBar(toolbar);
@@ -71,6 +73,7 @@ public class AdminPanel extends AppCompatActivity
                 dialogClass = new AlertDialogClass(this);
                 SharedPreferenceData sharedPreferenceData = new SharedPreferenceData(this);
                 NeedSomeMethod someMethod = new NeedSomeMethod(this);
+                someMethod.setAdmob(adView);
 
                 //calling method
                 someMethod.reloadPage(refreshLayout,AdminPanel.class);
@@ -171,7 +174,7 @@ public class AdminPanel extends AppCompatActivity
                                                         break;
 
                                                 case "not member":
-                                                        dialogClass.notMember();
+                                                        dialogClass.alreadyMember("Please first join a group.");
                                                         break;
 
                                                 default:

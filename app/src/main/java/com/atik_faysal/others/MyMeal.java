@@ -21,6 +21,7 @@ import com.atik_faysal.mealcounter.MealClass;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.MealModel;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,7 +41,6 @@ public class MyMeal extends Fragment
         private ListView listView;
 
         private SharedPreferenceData sharedPreferenceData;
-        private NeedSomeMethod someMethod;
         private AlertDialogClass dialogClass;
         private DatabaseBackgroundTask backgroundTask;
         private CheckInternetIsOn internetIsOn;
@@ -52,16 +52,18 @@ public class MyMeal extends Fragment
                 View view = inflater.inflate(R.layout.only_show_meal, container, false);
                 listView = view.findViewById(R.id.list);
                 emptyView = view.findViewById(R.id.empty_view);
+                AdView adView = view.findViewById(R.id.adView);
                 SwipeRefreshLayout refreshLayout = view.findViewById(R.id.refresh);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
 
                 sharedPreferenceData = new SharedPreferenceData(getContext());
-                someMethod = new NeedSomeMethod(getContext());
+                NeedSomeMethod someMethod = new NeedSomeMethod(getContext());
                 dialogClass = new AlertDialogClass(getContext());
                 internetIsOn = new CheckInternetIsOn(getContext());
                 backgroundTask = new DatabaseBackgroundTask(getContext());
 
                 someMethod.reloadPage(refreshLayout, MealClass.class);
+                someMethod.setAdmob(adView);
                 getAllMealListFromDb();
 
                 return view;

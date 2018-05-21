@@ -213,7 +213,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                         case R.id.member:
                                 if(internetIsOn.isOnline())
-                                        noResultFound.checkValueIsExist(currentUser,AllMemberList.class,"member");
+                                        //noResultFound.checkValueIsExist(currentUser,AllMemberList.class,"member");
+                                        startActivity(new Intent(HomePageActivity.this, AllMemberList.class));
                                 else dialogClass.noInternetConnection();
                                 break;
                         case R.id.changePass:

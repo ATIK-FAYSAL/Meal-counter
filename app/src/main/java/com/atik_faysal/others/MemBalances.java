@@ -23,6 +23,7 @@ import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.MealModel;
 import com.atik_faysal.model.MemBalanceModel;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,6 +52,7 @@ public class MemBalances extends AppCompatActivity
         {
                 TextView txtSession = findViewById(R.id.txtSession);
                 listView = findViewById(R.id.list);
+                AdView adView = findViewById(R.id.adView);
                 emptyView = findViewById(R.id.empty_view);
 
 
@@ -58,6 +60,8 @@ public class MemBalances extends AppCompatActivity
                 CheckInternetIsOn internetIsOn = new CheckInternetIsOn(this);
                 AlertDialogClass dialogClass = new AlertDialogClass(this);
                 DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(this);
+                NeedSomeMethod someMethod = new NeedSomeMethod(this);
+                someMethod.setAdmob(adView);
 
                 txtSession.setText("#"+sharedPreferenceData.getmyCurrentSession());
 

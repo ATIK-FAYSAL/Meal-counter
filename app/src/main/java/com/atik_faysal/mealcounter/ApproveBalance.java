@@ -18,6 +18,7 @@ import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.model.CostModel;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,6 +67,7 @@ public class ApproveBalance extends AppCompatActivity
         {
                 recyclerView = findViewById(R.id.list);
                 TextView txtSession = findViewById(R.id.txtSession);
+                AdView adView = findViewById(R.id.adView);
                 emptyView = findViewById(R.id.empty_view);
 
                 layoutManager = new LinearLayoutManager(this);
@@ -79,6 +81,7 @@ public class ApproveBalance extends AppCompatActivity
                 SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh1);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
                 someMethod.reloadPage(refreshLayout,ApproveBalance.class);
+                someMethod.setAdmob(adView);
 
                 txtSession.setText("#"+sharedPreferenceData.getmyCurrentSession());
                 if(internetIsOn.isOnline())

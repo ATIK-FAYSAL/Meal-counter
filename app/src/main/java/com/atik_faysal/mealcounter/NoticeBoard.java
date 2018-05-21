@@ -248,7 +248,7 @@ public class NoticeBoard extends AppCompatActivity
                                                                 break;
 
                                                         case "not member":
-                                                                dialogClass.notMember();
+                                                                dialogClass.alreadyMember("Please first join a group.");
                                                                 break;
 
                                                         default:
