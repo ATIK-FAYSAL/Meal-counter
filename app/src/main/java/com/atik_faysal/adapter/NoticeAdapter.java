@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.mealcounter.AlertDialogClass;
@@ -33,7 +34,9 @@ import com.gdacciaro.iOSDialog.iOSDialogClickListener;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by USER on 2/9/2018.
@@ -144,9 +147,13 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.MyViewHold
                                                 String id = noticeId.substring(0,noticeId.length());
 
                                                 //String file = "http://192.168.56.1/removeNotice.php";
-                                                String post;
+                                                //String post;
 
-                                                try {
+                                                Map<String,String> map = new HashMap<>();
+                                                map.put("id",id);
+                                                PostData postData = new PostData(context,onAsyncTaskInterface);
+                                                postData.InsertData(context.getResources().getString(R.string.removeNotice),map);
+                                                /*try {
                                                         post = URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(id,"UTF-8");
                                                         DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(context);
                                                         backgroundTask.setOnResultListener(onAsyncTaskInterface);
@@ -154,7 +161,7 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.MyViewHold
 
                                                 } catch (UnsupportedEncodingException e) {
                                                         e.printStackTrace();
-                                                }
+                                                }*/
                                                 dialog.dismiss();
 
                                         }

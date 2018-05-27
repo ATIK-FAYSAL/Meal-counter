@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.superClasses.ShoppingCost;
@@ -24,7 +25,9 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by USER on 2/28/2018.
@@ -66,14 +69,18 @@ public class CostOfSecretCloseGroup extends ShoppingCost {
                 txtSession.setText("#"+sharedPreferenceData.getmyCurrentSession());
 
                 if (internetIsOn.isOnline()) {
-                        try {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("group",sharedPreferenceData.getMyGroupName());
+                        GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.groupMemberName),map);
+                        dataFromServer.sendJsonRequest();
+                        /*try {
                                 String DATA = URLEncoder.encode("group", "UTF-8") + "=" + URLEncoder.encode(sharedPreferenceData.getMyGroupName(), "UTF-8");
                                 backgroundTask = new DatabaseBackgroundTask(this);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 backgroundTask.execute(getResources().getString(R.string.groupMemberName), DATA);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
-                        }
+                        }*/
                 } else dialogClass.noInternetConnection();
         }
 
@@ -84,6 +91,7 @@ public class CostOfSecretCloseGroup extends ShoppingCost {
                 ArrayAdapter<String> memAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, names);
                 spinner.setAdapter(memAdapter);
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @SuppressLint("SetTextI18n")
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 String name = parent.getItemAtPosition(position).toString();

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
@@ -33,7 +34,9 @@ import com.atik_faysal.others.MemBalances;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MemBalanceAdapter  extends BaseAdapter
 {
@@ -144,7 +147,17 @@ public class MemBalanceAdapter  extends BaseAdapter
                                         txtTaka.setError("Invalid taka");
                                         return;
                                 }
-                                try {
+
+                                if(internetIsOn.isOnline()) {
+                                        Map<String,String>map = new HashMap<>();
+                                        map.put("user",name);
+                                        map.put("taka",taka);
+                                        map.put("action","update");
+                                        PostData postData = new PostData(context,onAsyncTaskInterface);
+                                        postData.InsertData(context.getResources().getString(R.string.memBalances),map);
+                                }else dialogClass.noInternetConnection();
+
+                                /*try {
                                         if(internetIsOn.isOnline())
                                         {
                                                 String data = URLEncoder.encode("user","UTF-8")+"="+URLEncoder.encode(name,"UTF-8")+"&"
@@ -156,7 +169,7 @@ public class MemBalanceAdapter  extends BaseAdapter
                                         }else dialogClass.noInternetConnection();
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
-                                }
+                                }*/
                         }
                 });
 

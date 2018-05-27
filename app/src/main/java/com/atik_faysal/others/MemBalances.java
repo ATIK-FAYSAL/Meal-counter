@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.atik_faysal.adapter.MealAdapter;
 import com.atik_faysal.adapter.MemBalanceAdapter;
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
@@ -32,7 +33,9 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MemBalances extends AppCompatActivity
 {
@@ -67,14 +70,19 @@ public class MemBalances extends AppCompatActivity
 
                 if(internetIsOn.isOnline())
                 {
-                        try {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("group",sharedPreferenceData.getMyGroupName());
+                        map.put("action","all");
+                        GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.memBalances),map);
+                        dataFromServer.sendJsonRequest();
+                        /*try {
                                 String data = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8")+"&"
                                         +URLEncoder.encode("action","UTF-8")+"="+URLEncoder.encode("all","UTF-8");
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 backgroundTask.execute(getResources().getString(R.string.memBalances),data);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
-                        }
+                        }*/
                 }else dialogClass.noInternetConnection();
         }
 

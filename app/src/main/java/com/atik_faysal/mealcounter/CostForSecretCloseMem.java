@@ -13,9 +13,11 @@ import android.widget.TextView;
 
 import com.atik_faysal.adapter.CostAdapter;
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.GetImportantData;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.InfoInterfaces;
+import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.CostOfSecretCloseGroup;
@@ -32,7 +34,9 @@ import org.w3c.dom.Text;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CostForSecretCloseMem extends AppCompatActivity
 {
@@ -69,12 +73,16 @@ public class CostForSecretCloseMem extends AppCompatActivity
                 txtSession.setText("#"+ sharedPreferenceData.getmyCurrentSession());
                 if(internetIsOn.isOnline())
                 {
-                        try {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("userName",sharedPreferenceData.getCurrentUserName());
+                        GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.shoppingCost),map);
+                        dataFromServer.sendJsonRequest();
+                        /*try {
                                 String DATA = URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(sharedPreferenceData.getCurrentUserName(), "UTF-8");
                                 importantData.getAllShoppingCost(getResources().getString(R.string.shoppingCost), DATA,infoInterfaces);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
-                        }
+                        }*/
 
                 }else dialogClass.noInternetConnection();
         }
@@ -132,9 +140,9 @@ public class CostForSecretCloseMem extends AppCompatActivity
         }
 
         //get all shopping list
-        InfoInterfaces infoInterfaces = new InfoInterfaces() {
+        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
-                public void getInfo(final String result) {
+                public void onResultSuccess(final String result) {
                         runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

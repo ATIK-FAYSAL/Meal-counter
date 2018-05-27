@@ -27,11 +27,13 @@ import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.MemberModel;
 import com.atik_faysal.others.NoResultFound;
-
+import com.atik_faysal.backend.PostData;
+import com.atik_faysal.mealcounter.NoticeBoard;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
-
+import java.util.HashMap;
+import java.util.Map;
 /**
  * Created by USER on 2/1/2018.
  */
@@ -86,7 +88,7 @@ public class AdapterMemberList extends RecyclerView.Adapter<AdapterMemberList.Vi
                 private ImageView bRemove;
                 private SharedPreferenceData sharedPreferenceData;
                 private AlertDialogClass dialogClass;
-                private DatabaseBackgroundTask backgroundTask;
+                //private DatabaseBackgroundTask backgroundTask;
                 private CheckInternetIsOn internetIsOn;
                 private int position;
                 private String removeUserName;
@@ -184,7 +186,12 @@ public class AdapterMemberList extends RecyclerView.Adapter<AdapterMemberList.Vi
                 {
                         if (internetIsOn.isOnline())
                         {
-                                try {
+                             Map<String,String> map = new HashMap<>();
+                             map.put("userName",user);
+                             map.put("group",sharedPreferenceData.getMyGroupName());
+                             PostData postData = new PostData(context,onAsyncTaskInterface);
+                             postData.InsertData(context.getResources().getString(R.string.removeMember),map);
+                                /*try {
                                         DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8")+"&"
                                              +URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8");
                                         backgroundTask = new DatabaseBackgroundTask(context);
@@ -192,7 +199,7 @@ public class AdapterMemberList extends RecyclerView.Adapter<AdapterMemberList.Vi
                                         backgroundTask.execute(context.getResources().getString(R.string.removeMember),DATA);
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
-                                }
+                                }*/
                         }else dialogClass.noInternetConnection();
                 }
 

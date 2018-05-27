@@ -13,12 +13,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
+import com.atik_faysal.others.ChangePassword;
 import com.google.android.gms.ads.AdView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -129,7 +133,14 @@ public class Feedback extends AppCompatActivity
                         public void onClick(View v) {
                                 if(internetIsOn.isOnline())
                                 {
-                                        try {
+
+                                        Map<String,String> map = new HashMap<>();
+                                        map.put("userName",currentUser);
+                                        map.put("feedback",eFeedback.getText().toString());
+                                        map.put("date",someMethod.getDateWithTime());
+                                        PostData postData = new PostData(Feedback.this,onAsyncTaskInterface);
+                                        postData.InsertData(getResources().getString(R.string.feedback),map);
+                                        /*try {
                                                 POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8")+"&"
                                                         +URLEncoder.encode("feedback","UTF-8")+"="+URLEncoder.encode(eFeedback.getText().toString(),"UTF-8")+"&"
                                                         +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDateWithTime(),"UTF-8");
@@ -139,7 +150,7 @@ public class Feedback extends AppCompatActivity
 
                                         checkBackgroundTask = new DatabaseBackgroundTask(Feedback.this);
                                         checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                        checkBackgroundTask.execute(getResources().getString(R.string.feedback),POST_DATA);
+                                        checkBackgroundTask.execute(getResources().getString(R.string.feedback),POST_DATA);*/
                                 }else dialogClass.noInternetConnection();
 
                         }
@@ -156,7 +167,7 @@ public class Feedback extends AppCompatActivity
                                         switch (message)
                                         {
                                                 case "success":
-                                                        dialogClass.success("Success!!Thank you!for your cooperation.");
+                                                        someMethod.progress("Working on it....","Thank you for your cooperation.");
                                                         break;
                                                 case "offline":
                                                         dialogClass.noInternetConnection();

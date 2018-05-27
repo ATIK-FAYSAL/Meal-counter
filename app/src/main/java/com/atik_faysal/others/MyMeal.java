@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.atik_faysal.adapter.MealAdapter;
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
@@ -30,7 +31,9 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by USER on 3/19/2018.
@@ -75,14 +78,18 @@ public class MyMeal extends Fragment
                 //String url = "http://192.168.56.1/myAllMeal.php";
                 if(internetIsOn.isOnline())
                 {
-                        try {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("userName",sharedPreferenceData.getCurrentUserName());
+                        GetDataFromServer dataFromServer = new GetDataFromServer(getContext(),onAsyncTaskInterface,getResources().getString(R.string.myMeal),map);
+                        dataFromServer.sendJsonRequest();
+                        /*try {
                                 String data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8");
                                 backgroundTask = new DatabaseBackgroundTask(getContext());
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 backgroundTask.execute(getResources().getString(R.string.myMeal),data);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
-                        }
+                        }*/
                 }else dialogClass.noInternetConnection();
         }
 

@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.DownLoadImageTask;
+import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.GetImportantData;
 import com.atik_faysal.backend.RegisterDeviceToken;
@@ -50,6 +51,8 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import ir.mirrajabi.searchdialog.SimpleSearchDialogCompat;
 import ir.mirrajabi.searchdialog.core.BaseSearchDialogCompat;
@@ -96,10 +99,14 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 super.onStart();
 
                 //String fUrl = "http://192.168.56.1/checkMemType.php";
-                String postData;
+                //String postData;
                 if(internetIsOn.isOnline())
                 {
-                        try {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("userName",currentUser);
+                        GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.memberType),map);
+                        dataFromServer.sendJsonRequest();
+                        /*try {
                                 postData = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
                                 DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(this);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
@@ -107,7 +114,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
-                        }
+                        }*/
 
                         myImage();//download image and set image in imageview
                 }else dialogClass.noInternetConnection();
@@ -312,7 +319,18 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                if(internetIsOn.isOnline())
                {
-                       try {
+                       groupList = new ArrayList<>();
+                       Map<String,String> map = new HashMap<>();
+                       GetDataFromServer dataFromServer = new GetDataFromServer(this,taskInterface,getResources().getString(R.string.allGroupName),map);
+                       dataFromServer.sendJsonRequest();
+
+                       map.put("userName",sharedPreferenceData.getCurrentUserName());
+                       map.put("group",sharedPreferenceData.getMyGroupName());
+                       map.put("date",someMethod.getDate());
+                       dataFromServer = new GetDataFromServer(this,anInterface,getResources().getString(R.string.homePageInfo),map);
+                       dataFromServer.sendJsonRequest();
+
+                       /*try {
                                String POST_DATA = URLEncoder.encode("userName", "UTF-8")+"="+URLEncoder.encode("", "UTF-8");
                                groupList = new ArrayList<>();
                                DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(HomePageActivity.this);
@@ -333,7 +351,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                backgroundTask.execute(getResources().getString(R.string.homePageInfo), POST_DATA);
                        } catch (UnsupportedEncodingException e) {
                                e.printStackTrace();
-                       }
+                       }*/
 
                }else dialogClass.noInternetConnection();
 
@@ -443,18 +461,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 else
                                         startActivity(new Intent(HomePageActivity.this,MonthReport.class));
                         }
-                }else if(id==cardViewId[7]||id==imageViewId[7])
-                {
-                        if(sharedPreferenceData.getUserType().equals("nope"))
-                                dialogClass.notMember();
-                        else Toast.makeText(this,"click on button 8",Toast.LENGTH_SHORT).show();
-                }else if(id==cardViewId[8]||id==imageViewId[8])
-                {
-                        if(sharedPreferenceData.getUserType().equals("nope"))
-                                dialogClass.notMember();
-                        else Toast.makeText(this,"click on button 9",Toast.LENGTH_SHORT).show();
                 }
-
 
                 fab.setOnClickListener(new View.OnClickListener() {
                         @Override

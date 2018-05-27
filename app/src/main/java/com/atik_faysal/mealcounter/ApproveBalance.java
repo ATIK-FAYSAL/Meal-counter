@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.atik_faysal.adapter.BalanceApprovalAdapter;
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.model.CostModel;
@@ -27,7 +28,9 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ApproveBalance extends AppCompatActivity
 {
@@ -86,7 +89,12 @@ public class ApproveBalance extends AppCompatActivity
                 txtSession.setText("#"+sharedPreferenceData.getmyCurrentSession());
                 if(internetIsOn.isOnline())
                 {
-                        String file = getResources().getString(R.string.approveBalance);
+                        Map<String,String> map = new HashMap<>();
+                        map.put("group",sharedPreferenceData.getMyGroupName());
+                        map.put("check","all");
+                        GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.approveBalance),map);
+                        dataFromServer.sendJsonRequest();
+                        /*String file = getResources().getString(R.string.approveBalance);
                         try {
                                 String data = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8")+"&"
                                         +URLEncoder.encode("check","UTF-8")+"="+URLEncoder.encode("all","UTF-8");
@@ -94,7 +102,7 @@ public class ApproveBalance extends AppCompatActivity
                                 backgroundTask.execute(file,data);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
-                        }
+                        }*/
                 }else dialogClass.noInternetConnection();
 
         }

@@ -11,17 +11,22 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.MealClass;
+import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.MealModel;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import android.content.Context;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,6 +48,7 @@ public class MealAdapter extends BaseAdapter
         private DatabaseBackgroundTask backgroundTask;
         private Activity activity;
         private AlertDialogClass dialogClass;
+        private NeedSomeMethod someMethod;
 
         public MealAdapter(Context context,List<MealModel>modelList)
         {
@@ -52,6 +58,7 @@ public class MealAdapter extends BaseAdapter
                 this.internetIsOn = new CheckInternetIsOn(context);
                 this.activity = (Activity)context;
                 this.dialogClass = new AlertDialogClass(context);
+                this.someMethod = new NeedSomeMethod(context);
         }
 
         @Override
@@ -189,7 +196,18 @@ public class MealAdapter extends BaseAdapter
 
                                 if(internetIsOn.isOnline())
                                 {
-                                        try {
+
+                                        Map<String,String> map = new HashMap<>();
+                                        map.put("date",txtDate.getText().toString());
+                                        map.put("userName",txtName.getText().toString());
+                                        map.put("breakfast",breakfast);
+                                        map.put("lunch",lunch);
+                                        map.put("dinner",dinner);
+                                        map.put("total",String.valueOf(totalMeal));
+                                        PostData postData = new PostData(context,onAsyncTaskInterface);
+                                        postData.InsertData(context.getResources().getString(R.string.mealEdit),map);
+
+                                        /*try {
                                                 String data = URLEncoder.encode("breakfast","UTF-8")+"="+URLEncoder.encode(breakfast,"UTF-8")+"&"
                                                         +URLEncoder.encode("lunch","UTF-8")+"="+URLEncoder.encode(lunch,"UTF-8")+"&"
                                                         +URLEncoder.encode("dinner","UTF-8")+"="+URLEncoder.encode(dinner,"UTF-8")+"&"
@@ -201,7 +219,7 @@ public class MealAdapter extends BaseAdapter
                                                 backgroundTask.execute(context.getResources().getString(R.string.mealEdit),data);
                                         } catch (UnsupportedEncodingException e) {
                                                 e.printStackTrace();
-                                        }
+                                        }*/
                                 }
                         }
                 });
@@ -217,9 +235,9 @@ public class MealAdapter extends BaseAdapter
                                         {
                                                 case "success":
                                                         alertDialog.dismiss();
-                                                        Toast.makeText(context, "Meal updated successfully.", Toast.LENGTH_SHORT).show();
-                                                        context.startActivity(new Intent(context, MealClass.class));
-                                                        activity.finish();
+                                                        someMethod.progress("Working on it....","Cost updated successfully,please reload this page.");
+                                                        //context.startActivity(new Intent(context, MealClass.class));
+                                                        //activity.finish();
                                                         break;
                                                 default:
                                                         alertDialog.dismiss();

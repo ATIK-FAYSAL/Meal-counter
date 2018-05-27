@@ -14,17 +14,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
+import com.atik_faysal.superClasses.ShoppingCost;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateSession extends AppCompatActivity implements DatePickerDialog.OnDateSetListener
 {
@@ -104,7 +108,16 @@ public class CreateSession extends AppCompatActivity implements DatePickerDialog
                                 backgroundTask = new DatabaseBackgroundTask(CreateSession.this);
                                 if(internetIsOn.isOnline())
                                 {
-                                        try {
+
+                                        Map<String,String> map = new HashMap<>();
+                                        map.put("group",sharedPreferenceData.getMyGroupName());
+                                        map.put("start",start);
+                                        map.put("end",end);
+                                        map.put("session",name);
+                                        map.put("duration",duration);
+                                        PostData postData = new PostData(CreateSession.this,onAsyncTaskInterface);
+                                        postData.InsertData(getResources().getString(R.string.createSession),map);
+                                        /*try {
                                                 String data = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8")+"&"
                                                         +URLEncoder.encode("start","UTF-8")+"="+URLEncoder.encode(start,"UTF-8")+"&"
                                                         +URLEncoder.encode("end","UTF-8")+"="+URLEncoder.encode(end,"UTF-8")+"&"
@@ -115,7 +128,7 @@ public class CreateSession extends AppCompatActivity implements DatePickerDialog
                                                 backgroundTask.execute(getResources().getString(R.string.createSession),data);
                                         } catch (UnsupportedEncodingException e) {
                                                 e.printStackTrace();
-                                        }
+                                        }*/
                                 }else dialogClass.noInternetConnection();
                         }
                 });

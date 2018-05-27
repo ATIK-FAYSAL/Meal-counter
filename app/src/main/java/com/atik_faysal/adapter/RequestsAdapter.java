@@ -16,11 +16,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.ApproveBalance;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
+import com.atik_faysal.mealcounter.EditYourProfile;
 import com.atik_faysal.mealcounter.MemberDetails;
 import com.atik_faysal.mealcounter.MemberJoinRequest;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
@@ -30,7 +32,9 @@ import com.atik_faysal.others.NoResultFound;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by USER on 2/11/2018.
@@ -183,7 +187,13 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                 //admin take action about join request.accept or cancel request
                 private void requestAction(String userName,String action,String group)
                 {
-                        try {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("userName",userName);
+                        map.put("action",action);
+                        map.put("group",group);
+                        PostData postData = new PostData(context,onAsyncTaskInterface);
+                        postData.InsertData(context.getResources().getString(R.string.actionRequest),map);
+                        /*try {
                                 String POST = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
                                         +URLEncoder.encode("action","UTF-8")+"="+URLEncoder.encode(action,"UTF-8")+"&"
                                         +URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(group,"UTF-8");
@@ -193,7 +203,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                                 backgroundTask.execute(context.getResources().getString(R.string.actionRequest),POST);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
-                        }
+                        }*/
                 }
 
 

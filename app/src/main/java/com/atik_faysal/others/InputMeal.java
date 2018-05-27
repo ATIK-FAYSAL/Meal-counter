@@ -2,6 +2,7 @@ package com.atik_faysal.others;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -11,16 +12,20 @@ import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.atik_faysal.adapter.MealAdapter;
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.GetDataFromServer;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
+import com.atik_faysal.mealcounter.Feedback;
 import com.atik_faysal.mealcounter.MealClass;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
@@ -32,8 +37,13 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -55,6 +65,8 @@ public class InputMeal extends Fragment
         private DatabaseBackgroundTask backgroundTask;
         private AlertDialogClass dialogClass;
         private SharedPreferenceData sharedPreferenceData;
+        private TextView txtNoResult;
+        private ProgressBar progressBar;
 
         @Nullable
         @Override
@@ -126,7 +138,18 @@ public class InputMeal extends Fragment
 
                                 if(internetIsOn.isOnline())
                                 {
-                                        try {
+                                        Map<String,String> map = new HashMap<>();
+                                        map.put("group",sharedPreferenceData.getMyGroupName());
+                                        map.put("date",someMethod.getDate());
+                                        map.put("member",sharedPreferenceData.getCurrentUserName());
+                                        map.put("breakfast",breakfast);
+                                        map.put("lunch",lunch);
+                                        map.put("dinner",dinner);
+                                        map.put("total",String.valueOf(totalMeal));
+                                        PostData postData = new PostData(getContext(),anInterface);
+                                        postData.InsertData(getResources().getString(R.string.inputMeal),map);
+
+                                        /*try {
                                                 String data = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8")+"&"
                                                         +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDate(),"UTF-8")+"&"
                                                         +URLEncoder.encode("member","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8")+"&"
@@ -140,7 +163,7 @@ public class InputMeal extends Fragment
                                                 backgroundTask.execute(getResources().getString(R.string.inputMeal),data);
                                         } catch (UnsupportedEncodingException e) {
                                                 e.printStackTrace();
-                                        }
+                                        }*/
                                 }
                         }
                 });
@@ -151,6 +174,10 @@ public class InputMeal extends Fragment
         {
                 listView = view.findViewById(R.id.list);
                 emptyView = view.findViewById(R.id.empty_view);
+                txtNoResult = view.findViewById(R.id.txtNoResult);
+                txtNoResult.setVisibility(View.INVISIBLE);
+                progressBar = view.findViewById(R.id.progressBar);
+
 
                 SwipeRefreshLayout refreshLayout = view.findViewById(R.id.refresh);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
@@ -171,14 +198,18 @@ public class InputMeal extends Fragment
                 //String url = "http://192.168.56.1/allMeal.php";
                 if(internetIsOn.isOnline())
                 {
-                        try {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("userName",sharedPreferenceData.getCurrentUserName());
+                        GetDataFromServer dataFromServer = new GetDataFromServer(getContext(),onAsyncTaskInterface,getResources().getString(R.string.allMeal),map);
+                        dataFromServer.sendJsonRequest();
+                        /*try {
                                 String data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8");
                                 backgroundTask = new DatabaseBackgroundTask(getContext());
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 backgroundTask.execute(getResources().getString(R.string.allMeal),data);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
-                        }
+                        }*/
                 }else dialogClass.noInternetConnection();
         }
 
@@ -198,7 +229,7 @@ public class InputMeal extends Fragment
         private void processJsonData(String jsonData)
         {
                 String name,date,breakfast,dinner,lunch,total;
-                List<MealModel> modelList = new ArrayList<>();
+                final List<MealModel> modelList = new ArrayList<>();
                 try {
                         JSONObject jsonObject = new JSONObject(jsonData);
                         JSONArray jsonArray = jsonObject.optJSONArray("mealInfo");
@@ -216,15 +247,33 @@ public class InputMeal extends Fragment
                                 count++;
                         }
 
-                        if(modelList.isEmpty())
-                        {
-                                listView.setEmptyView(emptyView);
-                        }else
-                                emptyView.setVisibility(View.INVISIBLE);
+                        final Timer timer = new Timer();
+                        final Handler handler = new Handler();
 
-                        MealAdapter adapter = new MealAdapter(getContext(), modelList);
-                        listView.setAdapter(adapter);
-
+                        final  Runnable runnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                        if(modelList.isEmpty())
+                                        {
+                                                txtNoResult.setVisibility(View.VISIBLE);
+                                                listView.setEmptyView(emptyView);
+                                        }
+                                        else
+                                        {
+                                                emptyView.setVisibility(View.INVISIBLE);
+                                                MealAdapter adapter = new MealAdapter(getContext(), modelList);
+                                                listView.setAdapter(adapter);
+                                        }
+                                        progressBar.setVisibility(View.GONE);
+                                        timer.cancel();
+                                }
+                        };
+                        timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                        handler.post(runnable);
+                                }
+                        },2800);
 
                 } catch (JSONException e) {
                         e.printStackTrace();
@@ -255,7 +304,7 @@ public class InputMeal extends Fragment
                                         switch (message)
                                         {
                                                 case "success":
-                                                        someMethod.progress("Inserting your today's meal","meal successfully inserted");
+                                                        someMethod.progress("Inserting your today's meal.....","meal successfully inserted");
                                                         getAllMealListFromDb();
                                                         break;
                                                 case "fail":

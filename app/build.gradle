@@ -78,7 +78,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:15.0.1'
     implementation 'com.borjabravo:readmoretextview:2.0.1'
     implementation 'com.google.firebase:firebase-messaging:15.0.2'
-    implementation 'com.squareup.okhttp3:okhttp:3.7.0'
     implementation 'com.gmail.samehadar:iosdialog:1.0'
     implementation 'com.gdacciaro:iosdialog:1.0.3'
     implementation 'com.getbase:floatingactionbutton:1.10.1'
@@ -86,6 +85,10 @@ dependencies {
     implementation 'com.bignerdranch.android:recyclerview-multiselect:0.2'
     implementation 'com.wrapp.floatlabelededittext:library:0.0.6'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+    implementation 'com.android.volley:volley:1.1.0-rc1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.github.bumptech.glide:glide:4.5.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.7.0'
     implementation('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
         transitive = true
     }

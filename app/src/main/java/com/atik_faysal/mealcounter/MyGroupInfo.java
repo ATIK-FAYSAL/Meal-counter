@@ -27,6 +27,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.GetDataFromServer;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 
@@ -37,6 +39,8 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
@@ -256,7 +260,16 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                     {
                          if(internetIsOn.isOnline())
                          {
-                              try {
+                              Map<String,String> map = new HashMap<>();
+                              map.put("groupID",groupId.getText().toString());
+                              map.put("name",name);
+                              map.put("address",address);
+                              map.put("fixedTime",time);
+                              map.put("groupType",type);
+                              map.put("description",description);
+                              PostData postData = new PostData(MyGroupInfo.this,onAsyncTaskInterface);
+                              postData.InsertData(getResources().getString(R.string.editGroupInfo),map);
+                              /*try {
                                    DATA = URLEncoder.encode("groupID","UTF-8")+"="+URLEncoder.encode(groupId.getText().toString(),"UTF-8")+"&"
                                         +URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(name,"UTF-8")+"&"
                                         +URLEncoder.encode("address","UTF-8")+"="+URLEncoder.encode(address,"UTF-8")+"&"
@@ -269,7 +282,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                                    backgroundTask.execute(getResources().getString(R.string.editGroupInfo),DATA);
                               } catch (UnsupportedEncodingException e) {
                                    e.printStackTrace();
-                              }
+                              }*/
                          }else dialogClass.noInternetConnection();
                     }
                }
@@ -303,7 +316,11 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
      {
           if(internetIsOn.isOnline())
           {
-               try {
+               Map<String,String>map = new HashMap<>();
+               map.put("userName",currentUser);
+               GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.groupInfo),map);
+               dataFromServer.sendJsonRequest();
+               /*try {
                     POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
 
                     backgroundTask = new DatabaseBackgroundTask(MyGroupInfo.this);
@@ -312,7 +329,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
 
                }catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
-               }
+               }*/
           }else dialogClass.noInternetConnection();
      }
 

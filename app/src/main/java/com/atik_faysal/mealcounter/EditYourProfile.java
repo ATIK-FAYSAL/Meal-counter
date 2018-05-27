@@ -31,6 +31,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.GetDataFromServer;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 
@@ -44,6 +46,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -130,14 +134,18 @@ public class EditYourProfile extends AppCompatActivity
 
                if(internetIsOn.isOnline())
                {
-                       try {
+                       Map<String,String>map = new HashMap<>();
+                       map.put("userName",currentUser);
+                       GetDataFromServer dataFromServer = new GetDataFromServer(this,taskInterface,getResources().getString(R.string.getMemberInfo),map);
+                       dataFromServer.sendJsonRequest();
+                       /*try {
                                POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
                                databaseBackgroundTask = new DatabaseBackgroundTask(this);
                                databaseBackgroundTask.setOnResultListener(taskInterface);
                                databaseBackgroundTask.execute(getResources().getString(R.string.getMemberInfo),POST_DATA);
                        } catch (UnsupportedEncodingException e) {
                                e.printStackTrace();
-                       }
+                       }*/
                }else dialogClass.noInternetConnection();
 
         }
@@ -295,7 +303,15 @@ public class EditYourProfile extends AppCompatActivity
                                 {
                                         if(checkUserInfo(getName,getEmail))
                                         {
-                                                try
+                                                Map<String,String> map = new HashMap<>();
+                                                map.put("userName",currentUser);
+                                                map.put("name",getName);
+                                                map.put("email",getEmail);
+                                                map.put("address",getAddress);
+                                                map.put("fWord",getFword);
+                                                PostData postData = new PostData(EditYourProfile.this,onAsyncTaskInterface);
+                                                postData.InsertData(getResources().getString(R.string.editProfile),map);
+                                                /*try
                                                 {
                                                         POST_DATA1 = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8")+"&"
                                                                 +URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(getName,"UTF-8")+"&"
@@ -305,7 +321,7 @@ public class EditYourProfile extends AppCompatActivity
                                                         //POST_DATA1 = URLEncoder.encode("image","UTF-8")+"="+URLEncoder.encode(convertImageToString(bitmap),"UTF-8");
                                                 } catch (UnsupportedEncodingException e) {
                                                         e.printStackTrace();
-                                                }
+                                                }*/
                                                 DatabaseBackgroundTask checkBackgroundTask = new DatabaseBackgroundTask(EditYourProfile.this);
                                                 checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
                                                 checkBackgroundTask.execute(getResources().getString(R.string.editProfile),POST_DATA1);

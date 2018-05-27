@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.mealcounter.AdminPanel;
@@ -33,7 +34,9 @@ import com.gdacciaro.iOSDialog.iOSDialogClickListener;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by USER on 2/21/2018.
@@ -193,10 +196,15 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminAdapter.ViewHolder>
                 //make new admin
                 private void adminAction(String userName)
                 {
-                        String postData;
+                        //String postData;
                         if (internetIsOn.isOnline())
                         {
-                                try {
+                                Map<String,String> map = new HashMap<>();
+                                map.put("userName",userName);
+                                map.put("type",action);
+                                PostData postData = new PostData(context,onAsyncTaskInterface);
+                                postData.InsertData(context.getResources().getString(R.string.adminSetting),map);
+                                /*try {
                                         postData = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
                                                 +URLEncoder.encode("type","UTF-8")+"="+URLEncoder.encode(action,"UTF-8");
 
@@ -205,7 +213,7 @@ public class AdminAdapter extends RecyclerView.Adapter<AdminAdapter.ViewHolder>
                                         backgroundTask.execute(context.getResources().getString(R.string.adminSetting),postData);
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
-                                }
+                                }*/
                         }else dialogClass.noInternetConnection();
                 }
 

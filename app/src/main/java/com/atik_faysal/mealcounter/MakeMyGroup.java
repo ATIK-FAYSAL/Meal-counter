@@ -19,12 +19,15 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.backend.SharedPreferenceData;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import android.text.format.DateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 
@@ -282,7 +285,19 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
 
                                 if(!currentUserName.isEmpty())
                                 {
-                                        try {
+                                        if(checkInfo())
+                                        {
+                                                if(internetIsOn.isOnline())
+                                                {
+                                                        Map<String,String> map = new HashMap<>();
+                                                        map.put("userName",currentUserName);
+                                                        map.put("action","name");
+                                                        PostData postData = new PostData(MakeMyGroup.this,onAsyncTaskInterface);
+                                                        postData.InsertData(getResources().getString(R.string.alreadyMember),map);
+
+                                                }else dialogClass.noInternetConnection();
+                                        }
+                                        /*try {
                                                 POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUserName,"UTF-8")+"&"
                                                 +URLEncoder.encode("action","UTF-8")+"="+URLEncoder.encode("name","UTF-8");
                                                 if(checkInfo())
@@ -295,7 +310,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                                                 }
                                         } catch (UnsupportedEncodingException e) {
                                                 e.printStackTrace();
-                                        }
+                                        }*/
                                 }else Toast.makeText(MakeMyGroup.this,"Under construction",Toast.LENGTH_SHORT).show();
                         }
                 });
@@ -315,7 +330,20 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
         //process group info and ready to upload
         private void createNewGroup()
         {
-                try {
+
+                Map<String,String> map = new HashMap<>();
+                map.put("groupName",gName);
+                map.put("groupId",gId);
+                map.put("groupAddress",gAddress);
+                map.put("groupDescription",gDescription);
+                map.put("groupAdmin",currentUserName);
+                map.put("date",someMethod.getDateWithTime());
+                map.put("groupType",groupType);
+                map.put("time",time);
+                PostData postData = new PostData(MakeMyGroup.this,taskInterface);
+                postData.InsertData(getResources().getString(R.string.alreadyMember),map);
+
+                /*try {
                        DATA =  URLEncoder.encode("groupName","UTF-8")+"="+URLEncoder.encode(gName,"UTF-8")+"&"
                                 +URLEncoder.encode("groupId","UTF-8")+"="+URLEncoder.encode(gId,"UTF-8")+"&"
                                 +URLEncoder.encode("groupAddress","UTF-8")+"="+URLEncoder.encode(gAddress,"UTF-8")+"&"
@@ -331,7 +359,7 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
 
                 } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
-                }
+                }*/
         }
 
         //interface,insert new group information
@@ -371,23 +399,8 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                                         switch (message) {
                                                 case "Null":
                                                         if(internetIsOn.isOnline())
-                                                        {
-                                                                progressBar.setVisibility(View.VISIBLE);
-                                                                Thread thread = new Thread(new Runnable() {
-                                                                        @Override
-                                                                        public void run() {
-                                                                                try
-                                                                                {
-                                                                                        Thread.sleep(2500);
-                                                                                        createNewGroup();
-                                                                                }catch (InterruptedException e)
-                                                                                {
-                                                                                        e.printStackTrace();
-                                                                                }
-                                                                        }
-                                                                });
-                                                                thread.start();
-                                                        }else dialogClass.noInternetConnection();
+                                                                createNewGroup();
+                                                        else dialogClass.noInternetConnection();
                                                         break;
                                                 case "offline":
                                                         dialogClass.noInternetConnection();

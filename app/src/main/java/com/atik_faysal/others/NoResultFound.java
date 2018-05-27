@@ -67,7 +67,7 @@ public class NoResultFound
                                                         break;
 
                                                 default:
-                                                        context.startActivity(new Intent(context,EmptyActivity.class));
+                                                        //context.startActivity(new Intent(context,EmptyActivity.class));
                                                         break;
                                         }
                                 }

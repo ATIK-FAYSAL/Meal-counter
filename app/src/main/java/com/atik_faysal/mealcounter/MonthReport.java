@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.atik_faysal.adapter.ReportAdapter;
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.model.CostModel;
@@ -51,7 +52,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MonthReport extends AppCompatActivity
 {
@@ -107,7 +110,12 @@ public class MonthReport extends AppCompatActivity
 
                 if(internetIsOn.isOnline())
                 {
-                        try {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("group",sharedPreferenceData.getMyGroupName());
+                        map.put("name",sharedPreferenceData.getCurrentUserName());
+                        GetDataFromServer dataFromServer = new GetDataFromServer(this,asyncTaskInterface,getResources().getString(R.string.report),map);
+                        dataFromServer.sendJsonRequest();
+                        /*try {
                                 String data = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8")+"&"
                                         +URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8");
                                 backgroundTask.setOnResultListener(asyncTaskInterface);
@@ -115,7 +123,7 @@ public class MonthReport extends AppCompatActivity
 
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
-                        }
+                        }*/
                 }else dialogClass.noInternetConnection();
         }
 

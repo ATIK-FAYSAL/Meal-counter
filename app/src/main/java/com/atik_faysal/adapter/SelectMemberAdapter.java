@@ -1,5 +1,6 @@
 package com.atik_faysal.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,7 @@ import android.widget.TextView;
 
 public class SelectMemberAdapter extends RecyclerView.Adapter<SelectMemberAdapter.ViewHolder>
 {
-        List<ShoppingItemModel>models ;
+        private List<ShoppingItemModel>models ;
         Context context;
 
         LayoutInflater inflater;
@@ -31,13 +32,13 @@ public class SelectMemberAdapter extends RecyclerView.Adapter<SelectMemberAdapte
                 inflater = LayoutInflater.from(context);
         }
 
+        @NonNull
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
         {
                 View view = inflater.inflate(R.layout.mem_select_model,parent,false);
-                ViewHolder holder = new ViewHolder(view);
 
-                return holder;
+                return new ViewHolder(view);
         }
 
         @Override

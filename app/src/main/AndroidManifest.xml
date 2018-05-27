@@ -105,8 +105,6 @@
             android:screenOrientation="portrait"
             android:label="Select"/>
 
-        <activity android:name="com.atik_faysal.others.EmptyActivity"/>
-
         <activity android:name=".CostForPublicGroup"
             android:screenOrientation="portrait"
             android:label="Cost"/>
@@ -144,6 +142,8 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name="com.atik_faysal.setRemainder.SetRemainder"/>
+
+        <activity android:name=".TestActivity"/>
 
         <activity android:name="com.atik_faysal.setRemainder.AddReminderActivity"
             android:label="Add remainder"

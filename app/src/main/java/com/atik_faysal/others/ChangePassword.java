@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
@@ -21,6 +22,8 @@ import com.google.android.gms.ads.AdView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChangePassword extends AppCompatActivity
 {
@@ -95,8 +98,12 @@ public class ChangePassword extends AppCompatActivity
                 if(internetIsOn.isOnline())
                 {
                         encryptNewPas = encryptionAlgo.encryptPass(newPass);
-                        Log.d("encryption pass ",encryptNewPas);
-                        try
+                        Map<String,String>map = new HashMap<>();
+                        map.put("userName",sharedPreferenceData.getCurrentUserName());
+                        map.put("password",encryptNewPas);
+                        PostData postData = new PostData(ChangePassword.this,asyncTaskInterface);
+                        postData.InsertData(getResources().getString(R.string.changePassword),map);
+                        /*try
                         {
                                 String data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8")+"&"
                                         +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(encryptNewPas,"UTF-8");
@@ -105,7 +112,7 @@ public class ChangePassword extends AppCompatActivity
                                 backgroundTask.execute(getResources().getString(R.string.changePassword),data);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
-                        }
+                        }*/
                 }
         }
 

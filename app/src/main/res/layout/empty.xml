@@ -1,39 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+android:id="@+id/empty_view"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:layout_centerInParent="true"
+android:background="#fff">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar"/>
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/txtNoResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/toolbar"
-        android:layout_marginTop="59dp"
-        android:gravity="center">
+        android:layout_centerInParent="true"
+        android:padding="16dp"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:textColor="#000"
+        android:gravity="center"
+        android:text="@string/noResultMessage"/>
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="92dp"
-            android:src="@drawable/icon_alarm" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView2"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:text="No result found"
-            android:textSize="22dp"
-            android:textColor="@color/black" />
-
-    </RelativeLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/progress_style"/>
 
 </RelativeLayout>

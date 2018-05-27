@@ -12,17 +12,23 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.CostOfSecretCloseGroup;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
+import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.CostModel;
+import com.atik_faysal.others.CreateSession;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import android.content.Context;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,6 +52,7 @@ public class CostAdapter extends BaseAdapter
         private AlertDialogClass dialogClass;
         private SharedPreferenceData sharedPreferenceData;
         private CheckInternetIsOn internetIsOn;
+        private NeedSomeMethod someMethod;
 
         public CostAdapter(Context context,List<CostModel>cosList)
         {
@@ -55,6 +62,7 @@ public class CostAdapter extends BaseAdapter
                 sharedPreferenceData = new SharedPreferenceData(context);
                 dialogClass = new AlertDialogClass(context);
                 internetIsOn = new CheckInternetIsOn(context);
+                someMethod = new NeedSomeMethod(context);
         }
 
         @Override
@@ -122,7 +130,7 @@ public class CostAdapter extends BaseAdapter
 
 
         //it will show an alertDialog and you can edit shopping cost from here
-        private void editShoppingCost(final String id,String date,String taka)
+        private void editShoppingCost(final String id, final String date, String taka)
         {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 View view = LayoutInflater.from(context).inflate(R.layout.edit_cost,null);
@@ -159,7 +167,17 @@ public class CostAdapter extends BaseAdapter
                                         txtTaka.setError("Invalid taka");
                                         return;
                                 }
-                                try {
+
+                                if (internetIsOn.isOnline())
+                                {
+                                        Map<String,String> map = new HashMap<>();
+                                        map.put("id",id);
+                                        map.put("taka",taka);
+                                        PostData postData = new PostData(context,onAsyncTaskInterface);
+                                        postData.InsertData(context.getResources().getString(R.string.costEdit),map);
+                                }else dialogClass.noInternetConnection();
+
+                                /*try {
                                         if(internetIsOn.isOnline())
                                         {
                                                 String data = URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(id,"UTF-8")+"&"
@@ -170,7 +188,7 @@ public class CostAdapter extends BaseAdapter
                                         }else dialogClass.noInternetConnection();
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
-                                }
+                                }*/
                         }
                 });
 
@@ -193,8 +211,9 @@ public class CostAdapter extends BaseAdapter
                                         {
                                                 case "success":
                                                         alertDialog.dismiss();
-                                                        context.startActivity(new Intent(context, CostOfSecretCloseGroup.class));
-                                                        activity.finish();
+                                                        someMethod.progress("Working on it....","Cost updated successfully,please reload this page.");
+                                                        //context.startActivity(new Intent(context, CostOfSecretCloseGroup.class));
+                                                        //activity.finish();
                                                         break;
                                                 default:
                                                         alertDialog.dismiss();

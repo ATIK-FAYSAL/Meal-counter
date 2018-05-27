@@ -17,6 +17,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.GetDataFromServer;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.NoticeModel;
@@ -29,7 +31,9 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by USER on 2/8/2018.
@@ -162,7 +166,14 @@ public class NoticeBoard extends AppCompatActivity
 
                                         if(internetIsOn.isOnline())
                                         {
-                                                try {
+                                                Map<String,String> map = new HashMap<>();
+                                                map.put("userName",currentUser);
+                                                map.put("title",title);
+                                                map.put("notice",notice);
+                                                map.put("date",someMethod.getDateWithTime());
+                                                PostData postData = new PostData(NoticeBoard.this,onAsyncTaskInterface);
+                                                postData.InsertData(getResources().getString(R.string.notice),map);
+                                                /*try {
                                                         POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8")+"&"
                                                                 +URLEncoder.encode("title","UTF-8")+"="+URLEncoder.encode(title,"UTF-8")+"&"
                                                                 +URLEncoder.encode("notice","UTF-8")+"="+URLEncoder.encode(notice,"UTF-8")+"&"
@@ -174,7 +185,7 @@ public class NoticeBoard extends AppCompatActivity
 
                                                 } catch (UnsupportedEncodingException e) {
                                                         e.printStackTrace();
-                                                }
+                                                }*/
                                         }else dialogClass.noInternetConnection();
                                 }
                         }
@@ -184,7 +195,16 @@ public class NoticeBoard extends AppCompatActivity
         //ready to connect online
         private void getAllNotice()
         {
-                try {
+
+                if(internetIsOn.isOnline())
+                {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("userName",currentUser);
+                        GetDataFromServer dataFromServer = new GetDataFromServer(this,asyncTaskInterface,getResources().getString(R.string.allNotice),map);
+                        dataFromServer.sendJsonRequest();
+                }else dialogClass.noInternetConnection();
+
+                /*try {
                        if(internetIsOn.isOnline())
                        {
                                POST = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
@@ -195,7 +215,7 @@ public class NoticeBoard extends AppCompatActivity
 
                 } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
-                }
+                }*/
         }
 
         //get all notice and set into list view

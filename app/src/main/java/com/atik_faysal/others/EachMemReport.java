@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.atik_faysal.adapter.EachMemReportAdapter;
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.interfaces.ProcessJsonData;
 import com.atik_faysal.mealcounter.AlertDialogClass;
@@ -27,15 +28,13 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class EachMemReport extends AppCompatActivity
 {
 
-        private CheckInternetIsOn internetIsOn;
-        private AlertDialogClass dialogClass;
-        private DatabaseBackgroundTask backgroundTask;
         private List<MealModel>mealModels;
         private ListView listView;
         private EachMemReportAdapter adapter;
@@ -60,9 +59,9 @@ public class EachMemReport extends AppCompatActivity
                 TextView txtMonth = findViewById(R.id.txtMonth);
                 listView = findViewById(R.id.list);
 
-                internetIsOn = new CheckInternetIsOn(this);
-                backgroundTask = new DatabaseBackgroundTask(this);
-                dialogClass = new AlertDialogClass(this);
+                CheckInternetIsOn internetIsOn = new CheckInternetIsOn(this);
+                DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(this);
+                AlertDialogClass dialogClass = new AlertDialogClass(this);
 
                 try {
                         Map<String,String> infoMap = (Map<String, String>) getIntent().getSerializableExtra("map");
@@ -75,13 +74,17 @@ public class EachMemReport extends AppCompatActivity
 
                         if(internetIsOn.isOnline())
                         {
-                                try {
+                                Map<String,String> map = new HashMap<>();
+                                map.put("name",infoMap.get("name"));
+                                GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.eachMemReport),map);
+                                dataFromServer.sendJsonRequest();
+                                /*try {
                                         String data = URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(infoMap.get("name"),"UTF-8");
                                         backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                         backgroundTask.execute(getResources().getString(R.string.eachMemReport),data);
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
-                                }
+                                }*/
                         }else
                                 dialogClass.noInternetConnection();
 

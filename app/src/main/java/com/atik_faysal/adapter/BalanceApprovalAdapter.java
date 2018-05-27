@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
@@ -29,7 +30,9 @@ import com.atik_faysal.superClasses.AdaptersSuperClass;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApprovalAdapter.ViewHolder>
 {
@@ -94,6 +97,7 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
                 private NeedSomeMethod someMethod;
                 private NoResultFound noResultFound;
                 private String data;
+                Map<String,String> map = new HashMap<>();
 
                 public ViewHolder(View view) {
                         super(view);
@@ -156,12 +160,15 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
                         {
                                 dialogClass.onSuccessListener(onAsyncTaskInterface);
                                 dialogClass.warning("Do you want to remove this ?");
-                                try {
+                                map.put("id",model.getId());
+                                map.put("check","remove");
+
+                                /*try {
                                          data = URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(model.getId(),"UTF-8")+"&"
                                                 +URLEncoder.encode("check","UTF-8")+"="+URLEncoder.encode("remove","UTF-8");
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
-                                }
+                                }*/
                         }else dialogClass.error("Only admin can delete balance.you are not an admin..");
                 }
 
@@ -171,14 +178,18 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
                         {
                                 dialogClass.onSuccessListener(onAsyncTaskInterface);
                                 dialogClass.warning("Do you want to approve this ?");
-                                try {
+                                map.put("id",model.getId());
+                                map.put("check","approve");
+                                map.put("taka",model.getTaka());
+                                map.put("userName",model.getName());
+                                /*try {
                                          data = URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(model.getId(),"UTF-8")+"&"
                                                 +URLEncoder.encode("check","UTF-8")+"="+URLEncoder.encode("approve","UTF-8")+"&"
                                                 +URLEncoder.encode("taka","UTF-8")+"="+URLEncoder.encode(model.getTaka(),"UTF-8")+"&"
                                                 +URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(model.getName(),"UTF-8");
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
-                                }
+                                }*/
                         }else dialogClass.error("Only admin can approved balance.you are not an admin..");
                 }
 
@@ -196,9 +207,11 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
                                                         case "yes":
                                                                 if(internetIsOn.isOnline())
                                                                 {
-                                                                        backgroundTask = new DatabaseBackgroundTask(context);
-                                                                        backgroundTask.setOnResultListener(anInterface);
-                                                                        backgroundTask.execute(file,data);
+                                                                        //backgroundTask = new DatabaseBackgroundTask(context);
+                                                                        //backgroundTask.setOnResultListener(anInterface);
+                                                                        //backgroundTask.execute(file,data);
+                                                                        PostData postData = new PostData(context,anInterface);
+                                                                        postData.InsertData(file,map);
                                                                 }else dialogClass.noInternetConnection();
 
                                                                 break;
@@ -217,7 +230,7 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
                                                 switch (message)
                                                 {
                                                         case "success":
-                                                                someMethod.progress("Working on it....","Balance added");
+                                                                someMethod.progress("Working on it....","Execution complete.");
                                                                 modelList.remove(position);
                                                                 notifyItemRemoved(position);
                                                                 notifyItemRangeChanged(position, modelList.size());

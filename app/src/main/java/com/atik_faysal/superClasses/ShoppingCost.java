@@ -15,7 +15,9 @@ import android.widget.Toast;
 
 import com.atik_faysal.adapter.CostAdapter;
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.GetImportantData;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.InfoInterfaces;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
@@ -32,7 +34,9 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SuppressLint("Registered")
 public class ShoppingCost extends AppCompatActivity
@@ -68,12 +72,16 @@ public class ShoppingCost extends AppCompatActivity
 
                 if(internetIsOn.isOnline())
                 {
-                        try {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("userName",sharedPreferenceData.getCurrentUserName());
+                        GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.shoppingCost),map);
+                        dataFromServer.sendJsonRequest();
+                        /*try {
                                 String DATA = URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(sharedPreferenceData.getCurrentUserName(), "UTF-8");
                                 importantData.getAllShoppingCost(getResources().getString(R.string.shoppingCost), DATA,infoInterfaces);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
-                        }
+                        }*/
 
                 }else dialogClass.noInternetConnection();
         }
@@ -116,7 +124,16 @@ public class ShoppingCost extends AppCompatActivity
                                                 Toast.makeText(ShoppingCost.this,"Please select a member.",Toast.LENGTH_SHORT).show();
                                                 return;
                                         }
-                                        try {
+                                        Map<String,String>map = new HashMap<>();
+                                        map.put("group",sharedPreferenceData.getMyGroupName());
+                                        map.put("name",txtName.getText().toString());
+                                        map.put("cost",taka);
+                                        map.put("date",txtDate.getText().toString());
+                                        map.put("action",action);
+                                        PostData postData = new PostData(ShoppingCost.this,onAsyncTaskInterface);
+                                        postData.InsertData(getResources().getString(R.string.shoppingCostNotify),map);
+
+                                        /*try {
                                                 String post = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8")+"&"
                                                         +URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(txtName.getText().toString(),"UTF-8")+"&"
                                                         +URLEncoder.encode("cost","UTF-8")+"="+URLEncoder.encode(taka,"UTF-8")+"&"
@@ -127,7 +144,7 @@ public class ShoppingCost extends AppCompatActivity
                                                 backgroundTask.execute(getResources().getString(R.string.shoppingCostNotify),post);
                                         } catch (UnsupportedEncodingException e) {
                                                 e.printStackTrace();
-                                        }
+                                        }*/
                                 }else dialogClass.noInternetConnection();
                         }
                 });
@@ -168,9 +185,9 @@ public class ShoppingCost extends AppCompatActivity
         }
 
         //get all shopping list
-        InfoInterfaces infoInterfaces = new InfoInterfaces() {
+        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
-                public void getInfo(final String result) {
+                public void onResultSuccess(final String result) {
                         runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
