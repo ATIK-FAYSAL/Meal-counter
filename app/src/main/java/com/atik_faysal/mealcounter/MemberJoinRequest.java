@@ -2,6 +2,7 @@ package com.atik_faysal.mealcounter;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -9,9 +10,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +37,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by USER on 2/11/2018.
@@ -45,16 +50,15 @@ public class MemberJoinRequest extends AppCompatActivity
         private TextView textView;
         private Toolbar toolbar;
         private RelativeLayout emptyView;
-        private List<MemberModel>memberModelList = new ArrayList<>();
 
-        //private static final String FILE_URL = "http://192.168.56.1/allJoinRequests.php";
-        private static String POST_DATA;
         private String currentUser;
 
         private LinearLayoutManager layoutManager;
 
         private CheckInternetIsOn internetIsOn;
         private AlertDialogClass dialogClass;
+        private TextView txtNoResult;
+        private ProgressBar progressBar;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,6 +74,9 @@ public class MemberJoinRequest extends AppCompatActivity
                 layoutManager = new LinearLayoutManager(this);
                 textView = findViewById(R.id.txtPerson);
                 emptyView = findViewById(R.id.empty_view);
+                progressBar = findViewById(R.id.progressBar);
+                txtNoResult = findViewById(R.id.txtNoResult);
+                txtNoResult.setVisibility(View.INVISIBLE);
                 AdView adView = findViewById(R.id.adView);
                 SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
@@ -125,9 +132,9 @@ public class MemberJoinRequest extends AppCompatActivity
                 }else dialogClass.noInternetConnection();
         }
 
-        private void processJsonData(String jsonData)
+        private void processJsonData(final String jsonData)
         {
-
+                final List<MemberModel>memberModelList = new ArrayList<>();
                 String name,userName,phone,status,date,id,group;
 
                 try {
@@ -148,25 +155,46 @@ public class MemberJoinRequest extends AppCompatActivity
                                 phone = jObject.getString("phone");
                                 group = jObject.getString("group");
 
-                                memberModelList.add(new MemberModel(name,userName,phone,group,status,id,date));
+                                memberModelList.add(new MemberModel(name.trim(),userName.trim(),phone.trim(),group.trim(),status.trim(),id.trim(),date.trim()));
                                 count++;
                         }
 
-                        if(memberModelList.isEmpty())
-                        {
-                             recyclerView.setVisibility(View.INVISIBLE);
-                             emptyView.setVisibility(View.VISIBLE);
-                        }
-
-                        RequestsAdapter adapter = new RequestsAdapter(this, memberModelList);
-                        recyclerView.setAdapter(adapter);
-                        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                        recyclerView.setLayoutManager(layoutManager);
-                        recyclerView.setItemAnimator(new DefaultItemAnimator());
-                        textView.setText(String.valueOf(memberModelList.size()));
-
                 } catch (JSONException e) {
                         e.printStackTrace();
+                }finally {
+                        //add progress bar ...
+                        final Timer timer = new Timer();
+                        final Handler handler = new Handler();
+                        final  Runnable runnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                        if(memberModelList.isEmpty())
+                                        {
+                                                emptyView.setVisibility(View.VISIBLE);
+                                                txtNoResult.setVisibility(View.VISIBLE);
+                                                recyclerView.setVisibility(View.INVISIBLE);
+                                        }
+                                        else
+                                        {
+                                                emptyView.setVisibility(View.INVISIBLE);
+                                                recyclerView.setVisibility(View.VISIBLE);
+                                                RequestsAdapter adapter = new RequestsAdapter(MemberJoinRequest.this, memberModelList);
+                                                recyclerView.setAdapter(adapter);
+                                                layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                                                recyclerView.setLayoutManager(layoutManager);
+                                                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                                                textView.setText(String.valueOf(memberModelList.size()));
+                                        }
+                                        progressBar.setVisibility(View.GONE);
+                                        timer.cancel();
+                                }
+                        };
+                        timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                        handler.post(runnable);
+                                }
+                        },2800);
                 }
         }
 
@@ -176,7 +204,6 @@ public class MemberJoinRequest extends AppCompatActivity
                         runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                        if(result!=null)
                                                 processJsonData(result);
                                 }
                         });

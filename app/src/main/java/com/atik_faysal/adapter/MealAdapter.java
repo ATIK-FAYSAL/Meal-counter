@@ -2,7 +2,6 @@ package com.atik_faysal.adapter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -16,13 +15,10 @@ import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
-import com.atik_faysal.mealcounter.MealClass;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.MealModel;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +28,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Created by USER on 3/20/2018.
@@ -105,7 +100,7 @@ public class MealAdapter extends BaseAdapter
                 if(sharedPreferenceData.getUserType().equals("admin"))
                 {
                         imgEdit.setEnabled(true);
-                        imgEdit.setBackgroundResource(R.drawable.edit);
+                        imgEdit.setBackgroundResource(R.drawable.icon_edit_blue);
                 }
 
                 imgEdit.setOnClickListener(new View.OnClickListener() {

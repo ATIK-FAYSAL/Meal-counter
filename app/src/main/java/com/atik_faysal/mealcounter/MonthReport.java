@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.atik_faysal.adapter.ReportAdapter;
 import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.GetDataFromServer;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.model.CostModel;
@@ -250,7 +251,14 @@ public class MonthReport extends AppCompatActivity
                                         {
                                                 if(internetIsOn.isOnline())
                                                 {
-                                                        try {
+                                                        Map<String,String> map = new HashMap<>();
+                                                        map.put("user",sharedPreferenceData.getCurrentUserName());
+                                                        map.put("date",currentDate);
+                                                        GetDataFromServer fromServer = new GetDataFromServer(MonthReport.this,anInterface,
+                                                             getResources().getString(R.string.dateInterval),map);
+                                                        fromServer.sendJsonRequest();
+
+                                                        /*try {
                                                                 String data = URLEncoder.encode("user","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8")+"&"
                                                                         +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(currentDate,"UTF-8");
                                                                 backgroundTask = new DatabaseBackgroundTask(MonthReport.this);
@@ -258,7 +266,7 @@ public class MonthReport extends AppCompatActivity
                                                                 backgroundTask.execute(getResources().getString(R.string.dateInterval),data);
                                                         } catch (UnsupportedEncodingException e) {
                                                                 e.printStackTrace();
-                                                        }
+                                                        }*/
                                                         dialog.dismiss();
                                                 }else dialogClass.noInternetConnection();
                                         }else
@@ -354,14 +362,20 @@ public class MonthReport extends AppCompatActivity
         {
                 if(internetIsOn.isOnline())
                 {
-                        try {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("user",sharedPreferenceData.getCurrentUserName());
+                        map.put("group",sharedPreferenceData.getMyGroupName());
+                        PostData postData = new PostData(this,taskInterface);
+                        postData.InsertData(getResources().getString(R.string.closeSession),map);
+
+                       /* try {
                                 String data = URLEncoder.encode("user","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8")+"&"
                                         +URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8");
                                 backgroundTask = new DatabaseBackgroundTask(this);
                                 backgroundTask.execute(getResources().getString(R.string.closeSession),data);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
-                        }
+                        }*/
                 }else dialogClass.noInternetConnection();
         }
 

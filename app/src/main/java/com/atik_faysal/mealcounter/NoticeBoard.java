@@ -2,7 +2,6 @@ package com.atik_faysal.mealcounter;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,11 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.PostData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
@@ -28,8 +23,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,17 +40,12 @@ public class NoticeBoard extends AppCompatActivity
         private RecyclerView recyclerView;
         private LinearLayoutManager layoutManager;
 
-        //private final static String FILE_URL = "http://192.168.56.1/notice.php";
-        private static String POST_DATA;
-        //private final static String FILE = "http://192.168.56.1/getAllNotice.php";
-        private static String POST;
         private static String currentUser;
         private String notice,title;
 
         private AlertDialogClass dialogClass;
         private NeedSomeMethod someMethod;
         private CheckInternetIsOn internetIsOn;
-        private DatabaseBackgroundTask backgroundTask;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {

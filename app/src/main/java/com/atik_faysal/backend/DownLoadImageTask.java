@@ -23,7 +23,7 @@ public class DownLoadImageTask extends AsyncTask<String,Void,Bitmap>
         protected Bitmap doInBackground(String... voids)
         {
                 String userName = voids[0];
-                String imageUrl = "http://192.168.56.1/images/"+userName+".png";
+                String imageUrl = "http://mealcounter.bdtechnosoft.com/"+userName+".png";
                 try {
                         URLConnection connection = new URL(imageUrl).openConnection();
                         connection.setConnectTimeout(1000*20);

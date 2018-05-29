@@ -4,29 +4,21 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
-
-import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.PostData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
@@ -36,8 +28,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,14 +44,10 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
      private EditText gName,gAddress,gDescription;
      private Button bEdit;
 
-     //private static final String FILE_URL = "http://192.168.56.1/groupInfo.php";
-     //private final static String EDIT_URL = "http://192.168.56.1/editGroupInfo.php";
-     private static String POST_DATA ;
-     private static String DATA;
+
      private String currentUser,userType;
      private String name,id,address,description,type,member,time,date,admin;
 
-     private DatabaseBackgroundTask backgroundTask;
      private AlertDialogClass dialogClass;
      private CheckInternetIsOn internetIsOn;
      private  SharedPreferenceData sharedPreferenceData;
@@ -239,7 +225,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                          gAddress.setFocusableInTouchMode(true);
                          gDescription.setFocusableInTouchMode(true);
                          addTextChangeListener();//group information validation
-                    }else dialogClass.error("Only admin can edit group info.You are not admin.");
+                    }else dialogClass.error("Only admin can icon_edit_blue group info.You are not admin.");
                }
           });
 
@@ -378,7 +364,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
           }else Log.d(TAG,"Json object error");
      }
 
-     //edit your group type
+     //icon_edit_blue your group type
      private void editGroupType()
      {
 
@@ -410,10 +396,10 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
 
      }
 
+     @SuppressLint("SetTextI18n")
      @Override
      public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
           int hourFinal = hourOfDay;
-          int minuteFinal = minute;
 
 
           String format;
@@ -437,9 +423,9 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                sHour = "0"+String.valueOf(hourFinal);
 
           if(minute<10)
-               gTime.setText(sHour+" : 0"+String.valueOf(minuteFinal)+format);
+               gTime.setText(sHour+" : 0"+String.valueOf(minute)+format);
           else
-               gTime.setText(sHour+" : "+String.valueOf(minuteFinal)+format);
+               gTime.setText(sHour+" : "+String.valueOf(minute)+format);
      }
 
 

@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.gdacciaro.iOSDialog.iOSDialog;
@@ -25,6 +26,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by USER on 1/25/2018.
@@ -116,22 +119,25 @@ public class NeedSomeMethod
         //current user status
         public void userCurrentStatus(String currentUser,String status)
         {
-                String url = "http://mealcounter.bdtechnosoft.com/currentStatus.php";
+                String url = context.getResources().getString(R.string.currentStatus);
                 String data;
-                try {
-                        data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8")+"&"
-                                +URLEncoder.encode("status","UTF-8")+"="+URLEncoder.encode(status,"UTF-8");
-                        backgroundTask = new DatabaseBackgroundTask(context);
-                        backgroundTask.execute(url,data);
-                } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
+                if(internetIsOn.isOnline())
+                {
+                        try {
+                                data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8")+"&"
+                                     +URLEncoder.encode("status","UTF-8")+"="+URLEncoder.encode(status,"UTF-8");
+                                backgroundTask = new DatabaseBackgroundTask(context);
+                                backgroundTask.execute(url,data);
+                        } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                        }
                 }
         }
 
         //get current user group name
         public void myGroupName(String currentUser)
         {
-                String url = "http://mealcounter.bdtechnosoft.com/alreadyMember.php";
+                String url = context.getResources().getString(R.string.alreadyMember);
                 String data;
                 if(internetIsOn.isOnline())
                 {

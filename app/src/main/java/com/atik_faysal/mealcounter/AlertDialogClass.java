@@ -8,13 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.gdacciaro.iOSDialog.iOSDialog;
@@ -31,8 +28,6 @@ public class AlertDialogClass extends AlertDialog
         private Context context;
         private AlertDialog.Builder builder;
         private AlertDialog alertDialog;
-        private CheckInternetIsOn internetIsOn;
-        private NeedSomeMethod someMethod;
 
         private Activity activity;
 
@@ -45,7 +40,7 @@ public class AlertDialogClass extends AlertDialog
                 this.context = context;
                 builder = new AlertDialog.Builder(context);
                 activity = (Activity) context;
-                internetIsOn = new CheckInternetIsOn(context);
+
         }
 
         public void onSuccessListener(OnAsyncTaskInterface onAsyncTaskInterface)

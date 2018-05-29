@@ -153,7 +153,7 @@
             android:layout_marginTop="10dp"
             android:text="See"
             android:layout_below="@+id/linear"
-            android:drawableRight="@drawable/right_icon"
+            android:drawableRight="@drawable/icon_right"
             android:gravity="center_vertical"
             android:layout_marginBottom="5dp"
             android:textColor="@color/colorAccent"

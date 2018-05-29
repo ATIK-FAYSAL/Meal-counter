@@ -2,47 +2,42 @@ package com.atik_faysal.mealcounter;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.atik_faysal.adapter.CostAdapter;
-import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.GetDataFromServer;
-import com.atik_faysal.backend.GetImportantData;
 import com.atik_faysal.backend.SharedPreferenceData;
-import com.atik_faysal.interfaces.InfoInterfaces;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
-import com.atik_faysal.mealcounter.AlertDialogClass;
-import com.atik_faysal.mealcounter.CheckInternetIsOn;
-import com.atik_faysal.mealcounter.CostOfSecretCloseGroup;
-import com.atik_faysal.mealcounter.NeedSomeMethod;
-import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.CostModel;
 import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CostForSecretCloseMem extends AppCompatActivity
 {
 
         private ListView listView;
         private RelativeLayout emptyView;
+        private TextView textView;
+        private ProgressBar progressBar;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,12 +55,14 @@ public class CostForSecretCloseMem extends AppCompatActivity
                 AdView adView = findViewById(R.id.adView);
                 refreshLayout.setColorSchemeResources(R.color.color2, R.color.red, R.color.color6);
                 TextView txtSession = findViewById(R.id.txtSession);
+                textView = findViewById(R.id.txtNoResult);
+                textView.setVisibility(View.INVISIBLE);
+                progressBar = findViewById(R.id.progressBar);
 
                 NeedSomeMethod someMethod = new NeedSomeMethod(this);
                 SharedPreferenceData sharedPreferenceData = new SharedPreferenceData(this);
                 AlertDialogClass dialogClass = new AlertDialogClass(this);
                 CheckInternetIsOn internetIsOn = new CheckInternetIsOn(this);
-                GetImportantData importantData = new GetImportantData(this);
                 someMethod.reloadPage(refreshLayout, CostOfSecretCloseGroup.class);
                 someMethod.setAdmob(adView);
 
@@ -108,7 +105,7 @@ public class CostForSecretCloseMem extends AppCompatActivity
         //process shopping only_show_cost json data
         private void processJsonData(String result)
         {
-                List<CostModel> costList = new ArrayList<>();
+                final List<CostModel> costList = new ArrayList<>();
                 int count=0;
                 String name,taka,date,id;
                 try {
@@ -127,15 +124,36 @@ public class CostForSecretCloseMem extends AppCompatActivity
                                 count++;
                         }
 
-                        if(costList.isEmpty())
-                                listView.setEmptyView(emptyView);
-                        else
-                                emptyView.setVisibility(View.INVISIBLE);
-
-                        CostAdapter adapter = new CostAdapter(this, costList);
-                        listView.setAdapter(adapter);
                 } catch (JSONException e) {
                         e.printStackTrace();
+                }finally {
+                        //add progress bar ...
+                        final Timer timer = new Timer();
+                        final Handler handler = new Handler();
+                        final  Runnable runnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                        if(costList.isEmpty())
+                                        {
+                                                textView.setVisibility(View.VISIBLE);
+                                                listView.setEmptyView(emptyView);
+                                        }
+                                        else
+                                        {
+                                                emptyView.setVisibility(View.INVISIBLE);
+                                                CostAdapter adapter = new CostAdapter(CostForSecretCloseMem.this, costList);
+                                                listView.setAdapter(adapter);
+                                        }
+                                        progressBar.setVisibility(View.GONE);
+                                        timer.cancel();
+                                }
+                        };
+                        timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                        handler.post(runnable);
+                                }
+                        },2800);
                 }
         }
 

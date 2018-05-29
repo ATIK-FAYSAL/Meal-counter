@@ -1,5 +1,6 @@
 package com.atik_faysal.mealcounter;
 
+import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -22,8 +23,6 @@ import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.PostData;
 import com.atik_faysal.backend.SharedPreferenceData;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import android.text.format.DateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -48,10 +47,6 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
 
         private String gName,gId,gAddress,gDescription;
         private String currentUserName;
-        //private final static String FILE_URL  = "http://192.168.56.1/alreadyMember.php";
-        //private final static String URL = "http://192.168.56.1/createGroup.php";
-        private String POST_DATA;
-        private static String DATA;
         private String groupType="";
         private String time;
 
@@ -281,8 +276,6 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                         public void onClick(View v) {
                                 getGroupInformation();
 
-                                DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(MakeMyGroup.this);
-
                                 if(!currentUserName.isEmpty())
                                 {
                                         if(checkInfo())
@@ -416,10 +409,10 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
 
 
         //user can fixed time for last meal input or shopping cost input.
+        @SuppressLint("SetTextI18n")
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 int hourFinal = hourOfDay;
-                int minFinal = minute;
 
                 String format;
                 String sHour;
@@ -442,8 +435,8 @@ public class MakeMyGroup extends AppCompatActivity implements TimePickerDialog.O
                         sHour = "0"+String.valueOf(hourFinal);
 
                 if(minute<10)
-                        fTime.setText(sHour+" : 0"+String.valueOf(minFinal)+format);
+                        fTime.setText(sHour+" : 0"+String.valueOf(minute)+format);
                 else
-                        fTime.setText(sHour+" : "+String.valueOf(minFinal)+format);
+                        fTime.setText(sHour+" : "+String.valueOf(minute)+format);
         }
 }

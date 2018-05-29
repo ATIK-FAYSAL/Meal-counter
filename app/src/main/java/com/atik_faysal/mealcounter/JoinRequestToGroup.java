@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 
@@ -24,6 +25,8 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
@@ -36,13 +39,8 @@ public class JoinRequestToGroup extends AppCompatActivity
         private TextView groupId,gAdmin,gMember,gTime,gDate,gType;
         private EditText gName,gAddress,gDescription;
         private Button bEdit;
-        private Toolbar toolbar;
-
         private String currentUser;
         private String group;
-        //private final static String FILE = "http://192.168.56.1/RequestGroupInfo.php";
-       //private final static String FILE_URL = "http://192.168.56.1/joinRequestAction.php";
-        private static String DATA;
         private String name,id,address,description,type,member,time,date,admin,status;
 
         private DatabaseBackgroundTask backgroundTask;
@@ -71,12 +69,23 @@ public class JoinRequestToGroup extends AppCompatActivity
                 gType = findViewById(R.id.txtPhoneNumber);
                 gDescription = findViewById(R.id.gDescription);
                 bEdit = findViewById(R.id.buEdit);
-                toolbar = findViewById(R.id.toolbar1);
-                setSupportActionBar(toolbar);
 
                 SwipeRefreshLayout refreshLayout = findViewById(R.id.layout1);
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
 
+                //disable edit button
+                ImageView imageEdit = findViewById(R.id.imgEdit);
+                imageEdit.setImageBitmap(null);
+                imageEdit.setEnabled(false);
+
+                //back button
+                ImageView imgBack = findViewById(R.id.imgBack);
+                imgBack.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                                finish();
+                        }
+                });
 
                 //disable
                 gName.setEnabled(false);
@@ -100,32 +109,9 @@ public class JoinRequestToGroup extends AppCompatActivity
 
         }
 
-        //set a toolbar,above the page
-        private void setToolbar()
-        {
-                toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                getSupportActionBar().setDisplayShowHomeEnabled(true);
-                toolbar.setNavigationIcon(R.drawable.icon_back);
-                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                                finish();
-                        }
-                });
-        }
-
         //button click
         private void onButtonClick(final String value)
         {
-             ImageView imgBack = findViewById(R.id.imgBack);
-             imgBack.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View view) {
-                       finish();
-                  }
-             });
-
              bEdit.setOnClickListener(new View.OnClickListener() {
                   @Override
                   public void onClick(View v) {
@@ -143,17 +129,26 @@ public class JoinRequestToGroup extends AppCompatActivity
         //get all group information from database
         private void initializeGroupInfo()
         {
-                try {
-                        DATA = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(group,"UTF-8")+"&"
-                                +URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
+                if(internetIsOn.isOnline())
+                {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("group",group);
+                        map.put("userName",currentUser);
+                        GetDataFromServer fromServer = new GetDataFromServer(this,taskInterface,getResources().getString(R.string.requestGroupInfo),map);
+                        fromServer.sendJsonRequest();
+                }else dialogClass.noInternetConnection();
+
+                /*try {
+                        String DATA = URLEncoder.encode("group", "UTF-8") + "=" + URLEncoder.encode(group, "UTF-8") + "&"
+                             + URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(currentUser, "UTF-8");
 
                         backgroundTask = new DatabaseBackgroundTask(JoinRequestToGroup.this);
                         backgroundTask.setOnResultListener(taskInterface);
-                        backgroundTask.execute(getResources().getString(R.string.requestGroupInfo),DATA);
+                        backgroundTask.execute(getResources().getString(R.string.requestGroupInfo), DATA);
 
                 }catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
-                }
+                }*/
         }
 
         //process json data and show in page
@@ -248,7 +243,6 @@ public class JoinRequestToGroup extends AppCompatActivity
                         runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                        Toast.makeText(JoinRequestToGroup.this,"return mess :"+status,Toast.LENGTH_LONG).show();
                                         switch (result)
                                         {
                                                 case "success":
@@ -280,6 +274,7 @@ public class JoinRequestToGroup extends AppCompatActivity
                                                         dialogClass.alreadyMember("You are already member.So you can not see another group information.If you want,Please leave from previous group and retry.");
                                                         break;
                                                 default:
+                                                        Toast.makeText(JoinRequestToGroup.this,"result :"+result,Toast.LENGTH_LONG).show();
                                                         groupInformation(result);
                                                         break;
                                         }

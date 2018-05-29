@@ -1,8 +1,8 @@
 package com.atik_faysal.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
@@ -11,20 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.PostData;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
-import com.atik_faysal.mealcounter.CostOfSecretCloseGroup;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.CostModel;
-import com.atik_faysal.others.CreateSession;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,12 +38,10 @@ public class CostAdapter extends BaseAdapter
 {
         private List<CostModel>costList;
         private Context context;
-        private View view;
         private Activity activity;
 
 
         private AlertDialog alertDialog;
-        private DatabaseBackgroundTask backgroundTask;
         private AlertDialogClass dialogClass;
         private SharedPreferenceData sharedPreferenceData;
         private CheckInternetIsOn internetIsOn;
@@ -80,6 +73,7 @@ public class CostAdapter extends BaseAdapter
                 return position;
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public View getView(final int position, View convertView, ViewGroup parent)
         {
@@ -87,7 +81,8 @@ public class CostAdapter extends BaseAdapter
                 TextView txtName,txtDate,txtTaka,txtId;
                 ImageView bEdit;
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.cost_model, parent, false);
+                assert inflater != null;
+                @SuppressLint("ViewHolder") View view = inflater.inflate(R.layout.cost_model, parent, false);
 
                 txtName = view.findViewById(R.id.txtName);
                 txtDate = view.findViewById(R.id.txtDate);
@@ -95,7 +90,7 @@ public class CostAdapter extends BaseAdapter
                 txtId = view.findViewById(R.id.txtId);
                 bEdit = view.findViewById(R.id.bEdit);
 
-                txtId.setText("#C1005"+costList.get(position).getId());
+                txtId.setText("#ID-1005"+costList.get(position).getId());
                 txtName.setText(costList.get(position).getName());
                 txtTaka.setText(costList.get(position).getTaka());
                 txtDate.setText(costList.get(position).getDate());
@@ -108,13 +103,13 @@ public class CostAdapter extends BaseAdapter
                         ||sharedPreferenceData.getMyGroupType().equals("public")))
                 {
                         bEdit.setEnabled(true);
-                        bEdit.setBackgroundResource(R.drawable.edit);
+                        bEdit.setBackgroundResource(R.drawable.icon_edit_blue);
                 }else if((sharedPreferenceData.getMyGroupType().equals("public"))&&
                         (sharedPreferenceData.getUserType().equals("member")))
                 {
                         if(sharedPreferenceData.getCurrentUserName().equals(costList.get(position).getName())) {
                                 bEdit.setEnabled(true);
-                                bEdit.setBackgroundResource(R.drawable.edit);
+                                bEdit.setBackgroundResource(R.drawable.icon_edit_blue);
                         }
                 }
 
@@ -129,7 +124,7 @@ public class CostAdapter extends BaseAdapter
         }
 
 
-        //it will show an alertDialog and you can edit shopping cost from here
+        //it will show an alertDialog and you can icon_edit_blue shopping cost from here
         private void editShoppingCost(final String id, final String date, String taka)
         {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -159,7 +154,6 @@ public class CostAdapter extends BaseAdapter
                 done.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                                backgroundTask = new DatabaseBackgroundTask(context);
                                 //String url = "http://192.168.56.1/costEdit.php";
                                 String taka = txtTaka.getText().toString();
                                 if(TextUtils.isEmpty(taka))

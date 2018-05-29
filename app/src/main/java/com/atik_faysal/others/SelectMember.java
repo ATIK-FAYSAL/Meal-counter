@@ -9,9 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.atik_faysal.adapter.SelectMemberAdapter;
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
@@ -26,7 +28,9 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by USER on 2/24/2018.
@@ -38,13 +42,8 @@ public class SelectMember extends AppCompatActivity
         private Button bNotify;
         private RecyclerView recyclerView;
         private SelectMemberAdapter adapter;
-        private LinearLayoutManager linearLayoutManager;
 
         private List<ShoppingItemModel> memberName = new ArrayList<>();
-        private List<String>selectedMemList;
-        private JSONObject jsonObject;
-        private JSONArray jsonArray;
-        private DatabaseBackgroundTask backgroundTask;
         private SharedPreferenceData sharedPreferenceData;
         private CheckInternetIsOn internetIsOn;
         private AlertDialogClass dialogClass;
@@ -60,9 +59,7 @@ public class SelectMember extends AppCompatActivity
         private void iniComponent()
         {
                 recyclerView = findViewById(R.id.recyclerView);
-                adapter = new SelectMemberAdapter(this,memberName);
-                recyclerView.setAdapter(adapter);
-                linearLayoutManager = new LinearLayoutManager(this);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
                 linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -116,17 +113,21 @@ public class SelectMember extends AppCompatActivity
         private void getGroupMemberName()
         {
                 //String url = "http://192.168.56.1/groupMemberName.php";
-                String data;
+                //String data;
                 if(internetIsOn.isOnline())
                 {
-                        try {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("group",sharedPreferenceData.getMyGroupName());
+                        GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.groupMemberName),map);
+                        dataFromServer.sendJsonRequest();
+                        /*try {
                                 data = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8");
                                 backgroundTask = new DatabaseBackgroundTask(SelectMember.this);
                                 backgroundTask.setOnResultListener(onAsyncTaskInterface);
                                 backgroundTask.execute(getResources().getString(R.string.groupMemberName),data);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
-                        }
+                        }*/
                 }else
                         dialogClass.noInternetConnection();
         }
@@ -135,16 +136,17 @@ public class SelectMember extends AppCompatActivity
         private void processJsonData(String json)
         {
                 try {
-                        jsonObject = new JSONObject(json);
-                        jsonArray = jsonObject.optJSONArray("userName");
+                        JSONObject jsonObject = new JSONObject(json);
+                        JSONArray jsonArray = jsonObject.optJSONArray("userName");
                         int count=0;
-                        while (count<jsonArray.length())
+                        while (count< jsonArray.length())
                         {
                                 JSONObject jObject = jsonArray.getJSONObject(count);
                                 memberName.add(new ShoppingItemModel(jObject.getString("userName"),"",""));
                                 count++;
                         }
                         adapter = new SelectMemberAdapter(this,memberName);
+                        recyclerView.setAdapter(adapter);
                 } catch (JSONException e) {
                         e.printStackTrace();
                 }
@@ -156,7 +158,7 @@ public class SelectMember extends AppCompatActivity
                 //String url = "http://192.168.56.1/notifyMember.php";
                 String data;
 
-                selectedMemList = new ArrayList<>();
+                List<String> selectedMemList = new ArrayList<>();
                 String name;
                 if(recyclerView.getChildCount()>0)
                 {
@@ -178,15 +180,22 @@ public class SelectMember extends AppCompatActivity
                 {
                        if(internetIsOn.isOnline())
                        {
-                               for(int i=0;i<selectedMemList.size();i++)
+                               for(int i = 0; i< selectedMemList.size(); i++)
                                {
-                                       try {
+
+                                       Toast.makeText(this,"member : "+selectedMemList.get(i),Toast.LENGTH_LONG).show();
+                                       Map<String,String> map = new HashMap<>();
+                                       map.put("userName",selectedMemList.get(i));
+                                       GetDataFromServer dataFromServer = new GetDataFromServer(this,
+                                            onAsyncTaskInterface,getResources().getString(R.string.notifyMember),map);
+                                       dataFromServer.sendJsonRequest();
+                                       /*try {
                                                data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(selectedMemList.get(i),"UTF-8");
-                                               backgroundTask = new DatabaseBackgroundTask(this);
+                                               DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(this);
                                                backgroundTask.execute(getResources().getString(R.string.notifyMember),data);
                                        } catch (UnsupportedEncodingException e) {
                                                e.printStackTrace();
-                                       }
+                                       }*/
                                }
                        }else dialogClass.noInternetConnection();
                 }

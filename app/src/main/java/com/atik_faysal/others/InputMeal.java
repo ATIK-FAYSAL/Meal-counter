@@ -247,6 +247,10 @@ public class InputMeal extends Fragment
                                 count++;
                         }
 
+                } catch (JSONException e) {
+                        e.printStackTrace();
+                }finally {
+
                         final Timer timer = new Timer();
                         final Handler handler = new Handler();
 
@@ -274,9 +278,6 @@ public class InputMeal extends Fragment
                                         handler.post(runnable);
                                 }
                         },2800);
-
-                } catch (JSONException e) {
-                        e.printStackTrace();
                 }
         }
 

@@ -3,23 +3,8 @@ package com.atik_faysal.mealcounter;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.atik_faysal.backend.SharedPreferenceData;
 import com.crashlytics.android.Crashlytics;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-import com.gdacciaro.iOSDialog.iOSDialog;
-import com.gdacciaro.iOSDialog.iOSDialogBuilder;
-import com.gdacciaro.iOSDialog.iOSDialogClickListener;
 import io.fabric.sdk.android.Fabric;
 
 public class FirstPage extends AppCompatActivity {

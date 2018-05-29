@@ -285,7 +285,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginEnd="33dp"
-                android:drawableRight="@drawable/right_icon"
+                android:drawableRight="@drawable/icon_right"
                 android:gravity="center"
                 android:text="PROCEED"
                 android:textColor="#06EDF5"

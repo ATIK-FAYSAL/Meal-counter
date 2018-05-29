@@ -19,17 +19,10 @@ import com.atik_faysal.backend.PostData;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
-import com.atik_faysal.mealcounter.ApproveBalance;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.CostModel;
-import com.atik_faysal.model.NoticeModel;
-import com.atik_faysal.others.NoResultFound;
-import com.atik_faysal.superClasses.AdaptersSuperClass;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,10 +86,7 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
                 private SharedPreferenceData sharedPreferenceData;
                 private AlertDialogClass dialogClass;
                 private CheckInternetIsOn internetIsOn;
-                private DatabaseBackgroundTask backgroundTask;
                 private NeedSomeMethod someMethod;
-                private NoResultFound noResultFound;
-                private String data;
                 Map<String,String> map = new HashMap<>();
 
                 public ViewHolder(View view) {
@@ -110,7 +100,6 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
                         internetIsOn = new CheckInternetIsOn(context);
                         dialogClass = new AlertDialogClass(context);
                         someMethod = new NeedSomeMethod(context);
-                        noResultFound = new NoResultFound(context);
 
                         if(sharedPreferenceData.getUserType().equals("admin"))
                         {

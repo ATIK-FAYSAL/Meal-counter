@@ -22,9 +22,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.atik_faysal.backend.DatabaseBackgroundTask;
+
 import com.atik_faysal.backend.DownLoadImageTask;
 import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
@@ -36,7 +35,6 @@ import com.atik_faysal.others.AboutUs;
 import com.atik_faysal.others.ChangePassword;
 import com.atik_faysal.others.CreateSession;
 import com.atik_faysal.others.MemBalances;
-import com.atik_faysal.others.NoResultFound;
 import com.atik_faysal.setRemainder.SetRemainder;
 import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
@@ -48,8 +46,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,13 +70,11 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         private CheckInternetIsOn internetIsOn;
         private AlertDialogClass dialogClass;
         private NeedSomeMethod someMethod;
-        private NoResultFound noResultFound;
 
 
         private final static String USER_LOGIN = "userLogIn";
         private String currentUser;
         private String userType;
-        //private final static String FILE = "http://192.168.56.1/getGroupName.php";
 
         private ArrayList<SearchableModel>groupList;
 
@@ -295,7 +289,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
                 someMethod = new NeedSomeMethod(this);
-                noResultFound = new NoResultFound(this);
                 GetImportantData importantData = new GetImportantData(this);
 
                 FirebaseMessaging.getInstance().subscribeToTopic("test");
@@ -395,7 +388,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                         dialogClass.error("No session available,please contact with admin.");
                                 else startActivity(new Intent(HomePageActivity.this,MealClass.class));
                         }
-                        //new MealClass().setTabLayout();
                 }else if(id==cardViewId[1]||id==imageViewId[1])
                 {
                         if(sharedPreferenceData.getUserType().equals("nope"))
@@ -406,12 +398,10 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                         dialogClass.error("No session available,please contact with admin.");
                                 else
                                         if(sharedPreferenceData.getMyGroupType().equals("secret")||sharedPreferenceData.getMyGroupType().equals("close"))
-                                                //noResultFound.checkValueIsExist(sharedPreferenceData.getCurrentUserName(),MemBalances.class,"approval");
                                                 startActivity(new Intent(HomePageActivity.this,MemBalances.class));
                                         else
                                                 startActivity(new Intent(HomePageActivity.this,ApproveBalance.class));
                         }
-                               // startActivity(new Intent(HomePageActivity.this,ApproveBalance.class));
                 }else if(id==cardViewId[2]||id==imageViewId[2])
                 {
                         if(sharedPreferenceData.getUserType().equals("nope"))
@@ -438,7 +428,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                         if(sharedPreferenceData.getUserType().equals("nope"))
                                 dialogClass.notMember();
                         else startActivity(new Intent(HomePageActivity.this,SetTabLayout.class));
-                        //startActivity(new Intent(HomePageActivity.this,MakeShoppingList.class));
                 }else if(id==cardViewId[4]||id==imageViewId[4])
                 {
                         if(sharedPreferenceData.getUserType().equals("nope"))
@@ -618,7 +607,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                                         txtMyMeal.setText(myMeal);
 
                                                 } catch (JSONException e) {
-                                                        Toast.makeText(HomePageActivity.this,"Error : "+e.toString(),Toast.LENGTH_LONG).show();
+                                                        e.printStackTrace();
                                                 }
 
                                         }

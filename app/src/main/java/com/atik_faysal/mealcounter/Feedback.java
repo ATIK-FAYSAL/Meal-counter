@@ -12,15 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.PostData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
-import com.atik_faysal.others.ChangePassword;
 import com.google.android.gms.ads.AdView;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,13 +33,11 @@ public class Feedback extends AppCompatActivity
 
         private AlertDialogClass dialogClass;
         private NeedSomeMethod someMethod;
-        private DatabaseBackgroundTask checkBackgroundTask;
         private CheckInternetIsOn internetIsOn;
 
 
         private String currentUser;
         //private static final String FILE_URL = "http://192.168.56.1/feedback.php";
-        private static String POST_DATA;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {

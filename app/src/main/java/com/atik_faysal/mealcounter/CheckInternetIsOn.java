@@ -11,7 +11,7 @@ import android.net.NetworkInfo;
 
 public class CheckInternetIsOn
 {
-        Context context;
+        private Context context;
         public CheckInternetIsOn(Context context)
         {
                 this.context = context;

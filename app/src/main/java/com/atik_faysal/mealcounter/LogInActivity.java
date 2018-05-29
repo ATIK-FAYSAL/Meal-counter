@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.others.DesEncryptionAlgo;
@@ -20,6 +21,8 @@ import com.google.android.gms.ads.AdView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *initComponent-->Void.    initialize all component and object,also call some method.
@@ -46,7 +49,6 @@ public class LogInActivity extends AppCompatActivity
         private String userName,password;
         private static final String REMEMBER_ME = "rememberMe";
         private static final String USER_LOGIN = "userLogIn";
-        //private static final String URL = "http://192.168.56.1/user_log_in.php";
         private static String DATA;
 
         private int errorCount=0;
@@ -135,7 +137,14 @@ public class LogInActivity extends AppCompatActivity
                                                 else if(password.isEmpty())txtUserPassword.setError("Input valid password");
                                         }else
                                         {
-                                                try {
+                                                Map<String,String> map = new HashMap<>();
+                                                map.put("userName",userName);
+                                                map.put("password",password);
+                                                GetDataFromServer fromServer = new GetDataFromServer(LogInActivity.this,onAsyncTaskInterface,
+                                                     getResources().getString(R.string.logIn),map);
+                                                fromServer.sendJsonRequest();
+
+                                                /*try {
                                                         DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8")+"&"
                                                                 +URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8");
 
@@ -143,7 +152,7 @@ public class LogInActivity extends AppCompatActivity
                                                         backgroundTask.execute(getResources().getString(R.string.logIn),DATA);
                                                 } catch (UnsupportedEncodingException e) {
                                                         e.printStackTrace();
-                                                }
+                                                }*/
                                         }
 
                                 }else dialogClass.noInternetConnection();

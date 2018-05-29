@@ -2,6 +2,7 @@ package com.atik_faysal.mealcounter;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,11 +11,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.atik_faysal.adapter.BalanceApprovalAdapter;
-import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
@@ -25,12 +26,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ApproveBalance extends AppCompatActivity
 {
@@ -38,6 +39,8 @@ public class ApproveBalance extends AppCompatActivity
         private RecyclerView recyclerView;
         private LinearLayoutManager layoutManager;
         private RelativeLayout emptyView;
+        private TextView textView;
+        private ProgressBar progressBar;
 
 
         @Override
@@ -72,11 +75,13 @@ public class ApproveBalance extends AppCompatActivity
                 TextView txtSession = findViewById(R.id.txtSession);
                 AdView adView = findViewById(R.id.adView);
                 emptyView = findViewById(R.id.empty_view);
+                progressBar = findViewById(R.id.progressBar);
+                textView = findViewById(R.id.txtNoResult);
+                textView.setVisibility(View.INVISIBLE);
 
                 layoutManager = new LinearLayoutManager(this);
 
                 SharedPreferenceData sharedPreferenceData = new SharedPreferenceData(this);
-                DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(this);
                 AlertDialogClass dialogClass = new AlertDialogClass(this);
                 NeedSomeMethod someMethod = new NeedSomeMethod(this);
                 CheckInternetIsOn internetIsOn = new CheckInternetIsOn(this);
@@ -109,7 +114,7 @@ public class ApproveBalance extends AppCompatActivity
 
         private void processJsonData(String jsonData)
         {
-                List<CostModel> costModelList = new ArrayList<>();
+                final List<CostModel> costModelList = new ArrayList<>();
                 try {
                         JSONObject jsonObject = new JSONObject(jsonData);
                         JSONArray jsonArray = jsonObject.optJSONArray("balance");
@@ -131,23 +136,41 @@ public class ApproveBalance extends AppCompatActivity
                                 count++;
                         }
 
-                        if(costModelList.isEmpty())
-                        {
-                                emptyView.setVisibility(View.VISIBLE);
-                                recyclerView.setVisibility(View.INVISIBLE);
-                        }else
-                        {
-                                emptyView.setVisibility(View.INVISIBLE);
-                                recyclerView.setVisibility(View.VISIBLE);
-                        }
-
-                        BalanceApprovalAdapter adapter = new BalanceApprovalAdapter(this, costModelList);
-                        recyclerView.setAdapter(adapter);
-                        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                        recyclerView.setLayoutManager(layoutManager);
-                        recyclerView.setItemAnimator(new DefaultItemAnimator());
                 } catch (JSONException e) {
                         e.printStackTrace();
+                }finally {
+                        //add progress bar ...
+                        final Timer timer = new Timer();
+                        final Handler handler = new Handler();
+                        final  Runnable runnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                        if(costModelList.isEmpty())
+                                        {
+                                                emptyView.setVisibility(View.VISIBLE);
+                                                textView.setVisibility(View.VISIBLE);
+                                                recyclerView.setVisibility(View.INVISIBLE);
+                                        }
+                                        else
+                                        {
+                                                emptyView.setVisibility(View.INVISIBLE);
+                                                recyclerView.setVisibility(View.VISIBLE);
+                                                BalanceApprovalAdapter adapter = new BalanceApprovalAdapter(ApproveBalance.this, costModelList);
+                                                recyclerView.setAdapter(adapter);
+                                                layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                                                recyclerView.setLayoutManager(layoutManager);
+                                                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                                        }
+                                        progressBar.setVisibility(View.GONE);
+                                        timer.cancel();
+                                }
+                        };
+                        timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                        handler.post(runnable);
+                                }
+                        },2800);
                 }
         }
 

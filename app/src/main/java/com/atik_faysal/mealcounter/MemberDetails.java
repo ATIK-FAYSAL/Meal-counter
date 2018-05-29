@@ -4,14 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atik_faysal.backend.DatabaseBackgroundTask;
+import com.atik_faysal.backend.GetDataFromServer;
+import com.atik_faysal.backend.PostData;
 import com.atik_faysal.backend.SharedPreferenceData;
 
 import org.json.JSONArray;
@@ -34,6 +34,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
@@ -48,7 +50,6 @@ public class MemberDetails extends AppCompatActivity
 {
         private AlertDialogClass dialogClass;
         private CheckInternetIsOn internetIsOn;
-        private DatabaseBackgroundTask databaseBackgroundTask;
         private SharedPreferenceData sharedPreferenceData;
         private NeedSomeMethod someMethod;
 
@@ -60,10 +61,6 @@ public class MemberDetails extends AppCompatActivity
         private String name,userName,phone,email,address,fWord,taka,group,date;
         public String user;
         private String currentUser;
-        //private final static String FILE_URL = "http://192.168.56.1/json_read_member_info.php";
-        private static String POST_DATA;
-        //private final static String URL = "http://192.168.56.1/remove_member.php";
-        private static String DATA ;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,6 +112,8 @@ public class MemberDetails extends AppCompatActivity
 
                 user = Objects.requireNonNull(getIntent().getExtras()).getString("userName");
                 currentUser = sharedPreferenceData.getCurrentUserName();
+                //ImageDownLoad imageDownLoad = new ImageDownLoad();
+                //imageDownLoad.execute();
 
                 if(sharedPreferenceData.getUserType().equals("admin")&&(sharedPreferenceData.getMyGroupType().equals("secret")||sharedPreferenceData.getMyGroupType().equals("close")))
                 {
@@ -128,7 +127,13 @@ public class MemberDetails extends AppCompatActivity
                 }
                 if(internetIsOn.isOnline())
                 {
-                        try {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("userName",user);
+                        GetDataFromServer fromServer = new GetDataFromServer(this,onAsyncTaskInterface,
+                             getResources().getString(R.string.getMemberInfo),map);
+                        fromServer.sendJsonRequest();
+
+                        /*try {
                                 POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
                                 databaseBackgroundTask = new DatabaseBackgroundTask(this);
                                 databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
@@ -137,7 +142,7 @@ public class MemberDetails extends AppCompatActivity
                                 new ImageDownLoad().execute();
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
-                        }
+                        }*/
                 }else dialogClass.noInternetConnection();
 
                 //calling method
@@ -145,7 +150,7 @@ public class MemberDetails extends AppCompatActivity
 
         }
 
-        //edit member balance,only admin can access in it;
+        //icon_edit_blue member balance,only admin can access in it;
         private void editBalanceByAdmin(String taka)
         {
                 Button bOk,bCancel;
@@ -182,14 +187,20 @@ public class MemberDetails extends AppCompatActivity
                                 {
                                         try {
                                                 double balance = Double.parseDouble(txtTaka.getText().toString());
-                                                String data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8")+"&"
+                                                Map<String,String> map = new HashMap<>();
+                                                map.put("userName",user);
+                                                map.put("taka",String.valueOf(balance));
+                                                PostData postData = new PostData(MemberDetails.this,taskInterface);
+                                                postData.InsertData(getResources().getString(R.string.editMemBalance),map);
+
+                                                /*String data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8")+"&"
                                                         +URLEncoder.encode("taka","UTF-8")+"="+URLEncoder.encode(String.valueOf(balance),"UTF-8");
 
                                                 databaseBackgroundTask = new DatabaseBackgroundTask(MemberDetails.this);
                                                 databaseBackgroundTask.setOnResultListener(taskInterface);
-                                                databaseBackgroundTask.execute(getResources().getString(R.string.editMemBalance),data);
+                                                databaseBackgroundTask.execute(getResources().getString(R.string.editMemBalance),data);*/
                                                 alertDialog.dismiss();
-                                        } catch (UnsupportedEncodingException | NumberFormatException e) {
+                                        } catch (NumberFormatException e) {
                                                 e.printStackTrace();
                                         }
                                 }else dialogClass.noInternetConnection();
@@ -212,8 +223,8 @@ public class MemberDetails extends AppCompatActivity
 
                 if(!sharedPreferenceData.getUserType().equals("admin"))
                 {
-                    bRemove.setImageBitmap(null);
-                    bRemove.setEnabled(false);
+                        bRemove.setImageBitmap(null);
+                        bRemove.setEnabled(false);
                 }
                 bRemove.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -274,7 +285,7 @@ public class MemberDetails extends AppCompatActivity
                         eEmail.setText(email);
                         txtTaka.setText(taka);
                         txtGroup.setText(group);
-                }else Log.d(TAG,"Json object error");
+                }
         }
 
         //update user information
@@ -282,7 +293,11 @@ public class MemberDetails extends AppCompatActivity
         {
                 if(internetIsOn.isOnline())
                 {
-                        try {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("userName",user);
+                        PostData postData = new PostData(MemberDetails.this,onAsyncTaskInterface);
+                        postData.InsertData(getResources().getString(R.string.getMemberInfo),map);
+                        /*try {
                                 if(user!=null)
                                         POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
                                 else Toast.makeText(MemberDetails.this,"under construction",Toast.LENGTH_SHORT).show();
@@ -291,7 +306,7 @@ public class MemberDetails extends AppCompatActivity
                         }
                         databaseBackgroundTask = new DatabaseBackgroundTask(MemberDetails.this);
                         databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                        databaseBackgroundTask.execute(getResources().getString(R.string.getMemberInfo),POST_DATA);
+                        databaseBackgroundTask.execute(getResources().getString(R.string.getMemberInfo),POST_DATA);*/
                         Toast.makeText(MemberDetails.this,"Information updated successfully.",Toast.LENGTH_SHORT).show();
                         finish();
                 }else dialogClass.noInternetConnection();
@@ -302,7 +317,12 @@ public class MemberDetails extends AppCompatActivity
         {
                 if(internetIsOn.isOnline())
                 {
-                        try {
+                        Map<String,String> map = new HashMap<>();
+                        map.put("userName",user);
+                        map.put("group",sharedPreferenceData.getMyGroupName());
+                        PostData postData = new PostData(MemberDetails.this,asyncTaskInterface);
+                        postData.InsertData(getResources().getString(R.string.removeMember),map);
+                        /*try {
                                 DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8")+"&"
                                         +URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8");
                                 DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(MemberDetails.this);
@@ -310,7 +330,7 @@ public class MemberDetails extends AppCompatActivity
                                 backgroundTask.execute(getResources().getString(R.string.removeMember),DATA);
                         } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
-                        }
+                        }*/
 
                 }else dialogClass.noInternetConnection();
         }
@@ -324,11 +344,11 @@ public class MemberDetails extends AppCompatActivity
                                 public void run() {
                                         switch (value)
                                         {
-                                                case "error":
-                                                        dialogClass.error("Failed to execute operation.Please retry after sometimes");
-                                                        break;
                                                 case "successful":
                                                         someMethod.progressDialog("Removing a member...","one member removed");
+                                                        break;
+                                                default:
+                                                        dialogClass.error("Failed to execute operation.Please retry after sometimes");
                                                         break;
                                         }
                                 }
@@ -382,7 +402,7 @@ public class MemberDetails extends AppCompatActivity
         };
 
 
-        //edit member balance
+        //icon_edit_blue member balance
         OnAsyncTaskInterface taskInterface = new OnAsyncTaskInterface() {
                 @Override
                 public void onResultSuccess(final String message) {
@@ -394,7 +414,7 @@ public class MemberDetails extends AppCompatActivity
                                                 case "success":
                                                         someMethod.progressDialog("Working on it....","Member balance edited successfully.");
                                                         break;
-                                                case "failed":
+                                                default:
                                                         dialogClass.error("Execution failed,please try again..");
                                                         break;
                                         }
@@ -410,7 +430,7 @@ public class MemberDetails extends AppCompatActivity
         {
                 @Override
                 protected Void doInBackground(Void... voids) {
-                        String imageUrl = "http://192.168.56.1/images/"+user+".png";
+                        String imageUrl = "http://mealcounter.bdtechnosoft.com/images/"+user+".png";
                         try {
                                 URLConnection connection = new URL(imageUrl).openConnection();
                                 connection.setConnectTimeout(1000*20);

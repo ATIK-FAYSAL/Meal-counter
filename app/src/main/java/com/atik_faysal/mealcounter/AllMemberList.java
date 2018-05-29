@@ -2,6 +2,7 @@ package com.atik_faysal.mealcounter;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,14 +11,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-
-import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.model.MemberModel;
@@ -29,12 +28,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by USER on 2/1/2018.
@@ -49,10 +49,8 @@ public class AllMemberList extends AppCompatActivity
      private LinearLayoutManager layoutManager;
 
      private AlertDialogClass dialogClass;
-
-     //private static final String FILE_URL = "http://192.168.56.1/json_mem_info.php";
-     private static String POST_DATA;
-
+     private ProgressBar progressBar;
+     private TextView textView;
 
      @Override
      protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +67,9 @@ public class AllMemberList extends AppCompatActivity
           toolbar = findViewById(R.id.toolbar2);
           emptyView = findViewById(R.id.empty_view);
           AdView adView = findViewById(R.id.adView);
+          progressBar = findViewById(R.id.progressBar);
+          textView = findViewById(R.id.txtNoResult);
+          textView.setVisibility(View.INVISIBLE);
           SwipeRefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
           refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
           setSupportActionBar(toolbar);
@@ -125,7 +126,7 @@ public class AllMemberList extends AppCompatActivity
      private void addMemberInListView(String jsonData)
      {
           String name,userName,phone,taka,type,date;
-          List<MemberModel>memberList = new ArrayList<>();
+          final List<MemberModel>memberList = new ArrayList<>();
           if(jsonData!=null)
           {
                try {
@@ -149,26 +150,43 @@ public class AllMemberList extends AppCompatActivity
                          count++;
                     }
 
-                    if(memberList.size()==1)txtPerson.setText(String.valueOf(memberList.size())+"  person");
-                    else txtPerson.setText("("+String.valueOf(memberList.size())+")");
-
-                    if(memberList.isEmpty())
-                    {
-                         listView.setVisibility(View.INVISIBLE);
-                         emptyView.setVisibility(View.VISIBLE);
-                    }else
-                    {
-                         listView.setVisibility(View.VISIBLE);
-                         emptyView.setVisibility(View.INVISIBLE);
-                    }
-
-                    AdapterMemberList adapter = new AdapterMemberList(this, memberList);
-                    listView.setAdapter(adapter);
-                    layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                    listView.setLayoutManager(layoutManager);
-                    listView.setItemAnimator(new DefaultItemAnimator());
                } catch (JSONException e) {
                     e.printStackTrace();
+               }finally {
+                    //add progress bar ...
+                    final Timer timer = new Timer();
+                    final Handler handler = new Handler();
+                    final  Runnable runnable = new Runnable() {
+                         @Override
+                         public void run() {
+                              if(memberList.isEmpty())
+                              {
+                                   textView.setVisibility(View.VISIBLE);
+                                   listView.setVisibility(View.INVISIBLE);
+                                   emptyView.setVisibility(View.VISIBLE);
+                              }
+                              else
+                              {
+                                   listView.setVisibility(View.VISIBLE);
+                                   emptyView.setVisibility(View.INVISIBLE);
+                                   AdapterMemberList adapter = new AdapterMemberList(AllMemberList.this, memberList);
+                                   listView.setAdapter(adapter);
+                                   layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                                   listView.setLayoutManager(layoutManager);
+                                   listView.setItemAnimator(new DefaultItemAnimator());
+                                   if(memberList.size()==1)txtPerson.setText(String.valueOf(memberList.size())+"  person");
+                                   else txtPerson.setText("("+String.valueOf(memberList.size())+")");
+                              }
+                              progressBar.setVisibility(View.GONE);
+                              timer.cancel();
+                         }
+                    };
+                    timer.schedule(new TimerTask() {
+                         @Override
+                         public void run() {
+                              handler.post(runnable);
+                         }
+                    },2800);
                }
           }
      }

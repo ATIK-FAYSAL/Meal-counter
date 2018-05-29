@@ -18,9 +18,9 @@ public class AboutUs extends AppCompatActivity implements View.OnClickListener
 {
         CircleImageView imgFacebook,imgGmail,imgGithub,imgLinkedin;
         private static final String myFacebookProfile = "atikfaysal1404";
-        private static final String myGmail = "atikfaysal1404@gmail.com";
+        private static final String myGmail = "atikfaysal1404@logo_gmail.com";
         private static final String myLinkedin = "https://www.linkedin.com/in/atik-faysal-368a6412b/";
-        private static final String myGithub = "https://github.com/ATIK-FAYSAL";
+        private static final String myGithub = "https://logo_github.com/ATIK-FAYSAL";
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
@@ -73,7 +73,7 @@ public class AboutUs extends AppCompatActivity implements View.OnClickListener
                 startActivity(page);
         }
 
-        ////show my github profile
+        ////show my logo_github profile
         private void openGithub()
         {
                 Uri uri = Uri.parse(myGithub);
@@ -97,10 +97,10 @@ public class AboutUs extends AppCompatActivity implements View.OnClickListener
                                 openFacebook();//open facebook app or open browser
                                 break;
                         case R.id.gmail:
-                                openGmail();//open gmail box to send a mail
+                                openGmail();//open logo_gmail box to send a mail
                                 break;
                         case R.id.github:
-                                openGithub();//open browser and show github profile
+                                openGithub();//open browser and show logo_github profile
                                 break;
                         case R.id.linkedin:
                                 openLinkedin();//opne browser and show linkedin profile

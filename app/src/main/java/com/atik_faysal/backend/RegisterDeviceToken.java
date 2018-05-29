@@ -38,7 +38,7 @@ public class RegisterDeviceToken
                         .build();
 
                 final Request request = new Request.Builder()
-                        .url("http://192.168.56.1/registerToken.php")
+                        .url("http://mealcounter.bdtechnosoft.com/registerToken.php")
                         .post(body)
                         .build();
 

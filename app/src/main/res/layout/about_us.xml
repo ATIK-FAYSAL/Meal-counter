@@ -91,7 +91,7 @@
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:layout_width="0dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/facebook"
+                        android:src="@drawable/logo_facebook"
                         android:layout_weight="1"
                         android:id="@+id/facebook"
                         android:onClick="onClick"
@@ -101,7 +101,7 @@
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:layout_width="0dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/gmail"
+                        android:src="@drawable/logo_gmail"
                         android:layout_weight="1"
                         android:id="@+id/gmail"
                         android:onClick="onClick"
@@ -111,7 +111,7 @@
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:layout_width="0dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/github"
+                        android:src="@drawable/logo_github"
                         android:layout_weight="1"
                         android:id="@+id/github"
                         android:onClick="onClick"
@@ -123,7 +123,7 @@
                         android:layout_weight="1"
                         android:id="@+id/linkedin"
                         android:onClick="onClick"
-                        android:src="@drawable/linkedin"/>
+                        android:src="@drawable/logo_linkedin"/>
 
                 </LinearLayout>
 

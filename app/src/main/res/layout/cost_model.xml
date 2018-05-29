@@ -37,9 +37,9 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginEnd="67dp"
+                android:layout_marginEnd="50dp"
                 android:layout_toStartOf="@+id/bEdit"
-                android:textSize="20dp"
+                android:textSize="15dp"
                 android:hint="cost id"
                 android:textColor="@color/colorAccent"
                 android:text="#P10001"
@@ -61,8 +61,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="10dp"
-                android:text="date"
-                android:textSize="17dp" />
+                android:hint="date"
+                android:textStyle="normal"
+                android:textColor="@color/offWhite"
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/txtTaka"
@@ -70,8 +72,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="10dp"
-                android:text="taka"
+                android:hint="taka"
                 android:gravity="start"
+                android:textColor="@color/black"
+                android:textStyle="bold"
                 android:textSize="17dp"
                 android:drawableLeft="@drawable/icon_taka"
                 android:drawablePadding="8dp"/>

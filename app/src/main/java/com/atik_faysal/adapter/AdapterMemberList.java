@@ -9,28 +9,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
+
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.mealcounter.AlertDialogClass;
-import com.atik_faysal.mealcounter.AllMemberList;
-import com.atik_faysal.mealcounter.ApproveBalance;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.MemberDetails;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.MemberModel;
-import com.atik_faysal.others.NoResultFound;
 import com.atik_faysal.backend.PostData;
-import com.atik_faysal.mealcounter.NoticeBoard;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -93,7 +84,6 @@ public class AdapterMemberList extends RecyclerView.Adapter<AdapterMemberList.Vi
                 private int position;
                 private String removeUserName;
                 private NeedSomeMethod someMethod;
-                private NoResultFound noResultFound;
 
                 @SuppressLint("SetTextI18n")
                 public ViewHolder(View view) {
@@ -103,8 +93,6 @@ public class AdapterMemberList extends RecyclerView.Adapter<AdapterMemberList.Vi
                         internetIsOn = new CheckInternetIsOn(context);
                         dialogClass = new AlertDialogClass(context);
                         someMethod = new NeedSomeMethod(context);
-                        noResultFound = new NoResultFound(context);
-
 
                         txtName = view.findViewById(R.id.txtName);
                         txtUserName = view.findViewById(R.id.txtUserName);

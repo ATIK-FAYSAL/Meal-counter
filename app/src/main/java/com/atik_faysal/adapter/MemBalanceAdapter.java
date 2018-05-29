@@ -46,7 +46,6 @@ public class MemBalanceAdapter  extends BaseAdapter
         private CheckInternetIsOn internetIsOn;
         private Activity activity;
         private AlertDialogClass dialogClass;
-        private DatabaseBackgroundTask backgroundTask;
         private AlertDialog alertDialog;
 
         public MemBalanceAdapter(Context context, List<MemBalanceModel> modelList)
@@ -78,25 +77,23 @@ public class MemBalanceAdapter  extends BaseAdapter
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View view = inflater.inflate(R.layout.mem_balance_model, parent, false);
+                assert inflater != null;
+                @SuppressLint("ViewHolder") View view = inflater.inflate(R.layout.mem_balance_model, parent, false);
                 TextView txtId,txtName,txtTaka;
-                ImageView imgEdit;
                 txtId = view.findViewById(R.id.txtId);
                 txtName = view.findViewById(R.id.txtName);
                 txtTaka = view.findViewById(R.id.txtTaka);
-                imgEdit = view.findViewById(R.id.imgEdit);
 
                 txtId.setText("#ID-10050"+balanceModels.get(position).getId());
                 txtName.setText(balanceModels.get(position).getName());
                 txtTaka.setText(balanceModels.get(position).getBalance());
 
-                if(!sharedPreferenceData.getUserType().equals("admin"))
+                if(sharedPreferenceData.getUserType().equals("admin"))
                 {
-                        imgEdit.setImageBitmap(null);
-                        imgEdit.setEnabled(false);
+                        txtTaka.setClickable(true);
                 }
 
-                imgEdit.setOnClickListener(new View.OnClickListener() {
+                txtTaka.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                                 editShoppingCost(balanceModels.get(position).getName(),balanceModels.get(position).getId(),balanceModels.get(position).getBalance());
@@ -139,7 +136,6 @@ public class MemBalanceAdapter  extends BaseAdapter
                 done.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                                backgroundTask = new DatabaseBackgroundTask(context);
                                 //String url = "http://192.168.56.1/costEdit.php";
                                 String taka = txtTaka.getText().toString();
                                 if(TextUtils.isEmpty(taka))
@@ -189,6 +185,7 @@ public class MemBalanceAdapter  extends BaseAdapter
                                 @Override
                                 public void run() {
 
+                                        Toast.makeText(context,"result :"+message,Toast.LENGTH_LONG).show();
                                         switch (message)
                                         {
                                                 case "success":

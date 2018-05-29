@@ -20,132 +20,130 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:id="@+id/lini1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp">
-
-                    <TextView
-                        android:id="@+id/txtDate"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingLeft="7dp"
-                        android:paddingRight="10dp"
-                        android:hint=" 01-03-2018"
-                        android:textSize="17dp"
-                        android:drawableLeft="@drawable/icon_bold"
-                        android:textColor="@color/colorAccent"
-                        android:drawablePadding="5dp"/>
-
-                    <TextView
-                        android:id="@+id/txtSession"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/colorA"
-                        android:paddingLeft="5dp"
-                        android:gravity="start"
-                        android:hint="Session"
-                        android:textSize="17dp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/lini2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_below="@+id/lini1">
-
-                    <TextView
-                        android:id="@+id/txtName"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:hint="Member name"
-                        android:gravity="start"
-                        android:textSize="18dp"
-                        android:textColor="@color/userName"
-                        android:padding="10dp"/>
-
-                    <EditText
-                        android:id="@+id/txtTaka"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="10dp"
-                        android:hint="Taka"
-                        android:gravity="start"
-                        android:drawablePadding="3dp"
-                        android:textSize="17dp"
-                        android:inputType="numberDecimal"
-                        android:drawableLeft="@drawable/icon_taka"/>
-
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/bAdd"
-                    style="@style/Base.Widget.AppCompat.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/lini2"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/button2"
-                    android:text="Add"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="10dp"/>
 
                 <RelativeLayout
-                    android:id="@+id/empty_view"
+                    android:id="@+id/layout1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/no_reminder_text"
+                    <LinearLayout
+                        android:id="@+id/lini1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:padding="16dp"
-                        android:textStyle="bold"
-                        android:textSize="25dp"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="15dp">
+
+                        <TextView
+                            android:id="@+id/txtDate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="7dp"
+                            android:paddingRight="10dp"
+                            android:hint=" 01-03-2018"
+                            android:textSize="17dp"
+                            android:drawableLeft="@drawable/icon_bold"
+                            android:textColor="@color/colorAccent"
+                            android:drawablePadding="5dp"/>
+
+                        <TextView
+                            android:id="@+id/txtSession"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/colorA"
+                            android:paddingLeft="5dp"
+                            android:gravity="start"
+                            android:hint="Session"
+                            android:textSize="17dp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lini2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_below="@+id/lini1">
+
+                        <TextView
+                            android:id="@+id/txtName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:hint="Member name"
+                            android:gravity="start"
+                            android:textSize="18dp"
+                            android:textColor="@color/userName"
+                            android:padding="10dp"/>
+
+                        <EditText
+                            android:id="@+id/txtTaka"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="10dp"
+                            android:hint="Taka"
+                            android:gravity="start"
+                            android:drawablePadding="3dp"
+                            android:textSize="17dp"
+                            android:inputType="numberDecimal"
+                            android:drawableLeft="@drawable/icon_taka"/>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/bAdd"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/lini2"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/button2"
+                        android:text="Add"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         android:textColor="@color/black"
-                        android:gravity="center"
-                        android:text="@string/noResultMessage"/>
+                        android:textStyle="bold"
+                        android:layout_marginBottom="10dp"/>
+
                 </RelativeLayout>
 
-                <ListView
-                    android:id="@+id/costList"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@id/bAdd"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:dividerHeight="4dp"
-                    android:divider="@color/color8">
+                    android:layout_below="@id/layout1">
 
-                </ListView>
+                    <include
+                        android:id="@+id/empty_view"
+                        layout="@layout/empty"/>
 
+                    <ListView
+                        android:id="@+id/costList"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginLeft="12dp"
+                        android:dividerHeight="4dp"
+                        android:divider="@color/color8">
 
+                    </ListView>
+
+                </RelativeLayout>
 
             </RelativeLayout>
 
         </android.support.v4.widget.SwipeRefreshLayout>
+
     </RelativeLayout>
 
 

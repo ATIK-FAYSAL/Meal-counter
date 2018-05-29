@@ -6,23 +6,17 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,8 +38,6 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,7 +53,6 @@ public class EditYourProfile extends AppCompatActivity
         //class object declaration
         private AlertDialogClass dialogClass;
         private CheckInternetIsOn internetIsOn;
-        private DatabaseBackgroundTask databaseBackgroundTask;
         private SharedPreferenceData sharedPreferenceData;
         private NeedSomeMethod someMethod;
 
@@ -72,10 +63,6 @@ public class EditYourProfile extends AppCompatActivity
 
         private String name,userName,phone,email,address,fWord,taka,group,date;
         private String currentUser;
-       // private final static String FILE_URL = "http://192.168.56.1/json_read_member_info.php";
-        private static String POST_DATA;
-        //private final static String FILE_URL1 = "http://192.168.56.1/editProfile.php";
-        private static String POST_DATA1;
         private static final int PICK_IMAGE_REQUEST = 1;
         private Bitmap bitmap;
         private final static long IMAGE_SIZE = 1600;//in kb
@@ -249,13 +236,6 @@ public class EditYourProfile extends AppCompatActivity
                 imgBack = findViewById(R.id.imgBack);
                 imgEdit = findViewById(R.id.imgEdit);
 
-                if(!sharedPreferenceData.getUserType().equals("admin"))
-                {
-                        imgEdit.setEnabled(false);
-                        imgEdit.setImageBitmap(null);
-                }
-
-
                 imgBack.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -321,10 +301,10 @@ public class EditYourProfile extends AppCompatActivity
                                                         //POST_DATA1 = URLEncoder.encode("image","UTF-8")+"="+URLEncoder.encode(convertImageToString(bitmap),"UTF-8");
                                                 } catch (UnsupportedEncodingException e) {
                                                         e.printStackTrace();
-                                                }*/
+                                                }
                                                 DatabaseBackgroundTask checkBackgroundTask = new DatabaseBackgroundTask(EditYourProfile.this);
                                                 checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                checkBackgroundTask.execute(getResources().getString(R.string.editProfile),POST_DATA1);
+                                                checkBackgroundTask.execute(getResources().getString(R.string.editProfile),POST_DATA1);*/
 
                                         }
                                 }else dialogClass.noInternetConnection();
@@ -396,7 +376,6 @@ public class EditYourProfile extends AppCompatActivity
 
                 return flag;
         }
-
 
         //open phone gallery and choose a photo
         public void openGallery()
@@ -520,11 +499,18 @@ public class EditYourProfile extends AppCompatActivity
                         @Override
                         public void onClick(View view) {
                                 String image = null;
-                                String url = "http://192.168.56.1/imageUpload.php";
+                                String url = getResources().getString(R.string.image);
                                 if(bitmap!=null)
                                         image = convertImageToString(bitmap);
 
-                                try {
+                                Map<String,String> map = new HashMap<>();
+                                map.put("image_path",image);
+                                map.put("date",someMethod.getDate());
+                                map.put("userName",sharedPreferenceData.getCurrentUserName());
+                                PostData postData = new PostData(EditYourProfile.this,anInterface);
+                                postData.InsertData(url,map);
+
+                                /*try {
                                         String data = URLEncoder.encode("image_path","UTF-8")+"="+URLEncoder.encode(image,"UTF-8")+"&"
                                                         +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDate(),"UTF-8")+"&"
                                                         +URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8");
@@ -534,7 +520,7 @@ public class EditYourProfile extends AppCompatActivity
                                         databaseBackgroundTask.execute(url,data);
                                 } catch (UnsupportedEncodingException e) {
                                         e.printStackTrace();
-                                }
+                                }*/
                         }
                 });
 
@@ -592,7 +578,6 @@ public class EditYourProfile extends AppCompatActivity
                         runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-
                                         switch (message)
                                         {
                                                 case "success":

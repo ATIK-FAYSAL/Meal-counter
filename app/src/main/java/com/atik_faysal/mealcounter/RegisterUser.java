@@ -2,6 +2,7 @@ package com.atik_faysal.mealcounter;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -59,6 +60,7 @@ public class RegisterUser extends AppCompatActivity
         //phone number verification variable
         private static final int FRAMEWORK_REQUEST_CODE = 1;
         private int nextPermissionsRequestCode = 4000;
+        @SuppressLint("UseSparseArrays")
         private final Map<Integer, OnCompleteListener> permissionsListeners = new HashMap<>();
         //finish
 
@@ -67,13 +69,10 @@ public class RegisterUser extends AppCompatActivity
         private TextView txtSign,txtProceed;
         private ProgressBar progressBar;
         private Toolbar toolbar;
-        private LinearLayout layout2,layout3,layout4,layout5,layout6,layout7;
         //String variable declaration
         private String name,userName,address,password,email,favouriteWord;
         private TextView txtPassErr;
 
-        //private final static String FILE_URL = "http://192.168.56.1/userNameExist.php";
-        //private final static String FILE = "http://192.168.56.1/insert_member_info.php";
         private static String POST_DATA ;
         private final static String USER_LOGIN = "userLogIn";
 
@@ -115,12 +114,6 @@ public class RegisterUser extends AppCompatActivity
                 setSupportActionBar(toolbar);
 
 
-                layout2 = findViewById(R.id.layout2);
-                layout3 = findViewById(R.id.layout3);
-                layout4 = findViewById(R.id.layout4);
-                layout5 = findViewById(R.id.layout5);
-                layout6 = findViewById(R.id.layout6);
-                layout7 = findViewById(R.id.layout7);
                 txtPassErr = findViewById(R.id.passErr);
 
                 //object initialize
@@ -318,13 +311,17 @@ public class RegisterUser extends AppCompatActivity
                                 {
                                         if(checkUserInformation(name,userName,email,password))
                                         {
-                                                try {
+                                                Map<String,String> map = new HashMap<>();
+                                                map.put("userName",userName);
+                                                GetDataFromServer fromServer = new GetDataFromServer(RegisterUser.this,onAsyncTaskInterface,getResources().getString(R.string.nameExist),map);
+                                                fromServer.sendJsonRequest();
+                                                /*try {
                                                         POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(userName,"UTF-8");
                                                         databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
                                                         databaseBackgroundTask.execute(getResources().getString(R.string.nameExist),POST_DATA);
                                                 }catch(UnsupportedEncodingException e) {
                                                         e.printStackTrace();
-                                                }
+                                                }*/
                                         }
                                 }else dialogClass.noInternetConnection();
                         }
@@ -431,7 +428,26 @@ public class RegisterUser extends AppCompatActivity
         {
                if(internetIsOn.isOnline())
                {
-                       try {
+                       String memberType = "nope";
+                       String taka = "0";
+                       String groupId = "Null";
+
+                       Map<String,String> map = new HashMap<>();
+                       map.put("userName",userName);
+                       map.put("name",name);
+                       map.put("email",email);
+                       map.put("phone",phoneNumber);
+                       map.put("address",address);
+                       map.put("taka",taka);
+                       map.put("memberType",memberType);
+                       map.put("password",password);
+                       map.put("groupId",groupId);
+                       map.put("date",someMethod.getDateWithTime());
+                       map.put("favouriteWord",favouriteWord);
+                       PostData postData = new PostData(RegisterUser.this,taskInterface);
+                       postData.InsertData(getResources().getString(R.string.insertMemInfo),map);
+
+                       /*try {
                                String memberType = "nope";
                                String taka = "0";
                                String groupId = "Null";
@@ -453,7 +469,7 @@ public class RegisterUser extends AppCompatActivity
                                informationCheck.execute(getResources().getString(R.string.insertMemInfo),POST_DATA);
                        } catch (UnsupportedEncodingException e) {
                                e.printStackTrace();
-                       }
+                       }*/
                }else dialogClass.noInternetConnection();
         }
 

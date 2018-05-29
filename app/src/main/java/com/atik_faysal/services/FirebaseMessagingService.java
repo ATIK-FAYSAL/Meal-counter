@@ -30,7 +30,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                         .setAutoCancel(true)
-                        .setContentTitle("Meal Counter")
+                        .setContentTitle("Notification")
                         .setContentText(message)
                         .setSmallIcon(R.drawable.icon_notification)
                         .setContentIntent(pendingIntent);

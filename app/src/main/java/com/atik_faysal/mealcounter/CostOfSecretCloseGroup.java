@@ -7,11 +7,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
@@ -22,8 +20,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,7 +67,8 @@ public class CostOfSecretCloseGroup extends ShoppingCost {
                 if (internetIsOn.isOnline()) {
                         Map<String,String> map = new HashMap<>();
                         map.put("group",sharedPreferenceData.getMyGroupName());
-                        GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.groupMemberName),map);
+                        GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface
+                             ,getResources().getString(R.string.groupMemberName),map);
                         dataFromServer.sendJsonRequest();
                         /*try {
                                 String DATA = URLEncoder.encode("group", "UTF-8") + "=" + URLEncoder.encode(sharedPreferenceData.getMyGroupName(), "UTF-8");

@@ -2,18 +2,21 @@ package com.atik_faysal.superClasses;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atik_faysal.adapter.CostAdapter;
+import com.atik_faysal.adapter.MemBalanceAdapter;
 import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.GetImportantData;
@@ -26,6 +29,7 @@ import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.CostModel;
+import com.atik_faysal.others.MemBalances;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +41,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @SuppressLint("Registered")
 public class ShoppingCost extends AppCompatActivity
@@ -51,6 +57,8 @@ public class ShoppingCost extends AppCompatActivity
         private ListView listView;
         private TextView txtName,txtDate,txtTaka;
         private RelativeLayout emptyView;
+        private TextView textView;
+        private ProgressBar progressBar;
 
 
         protected void initComponent()
@@ -67,6 +75,9 @@ public class ShoppingCost extends AppCompatActivity
                 txtTaka = findViewById(R.id.txtTaka);
                 listView = findViewById(R.id.costList);
                 emptyView = findViewById(R.id.empty_view);
+                textView = findViewById(R.id.txtNoResult);
+                textView.setVisibility(View.INVISIBLE);
+                progressBar = findViewById(R.id.progressBar);
                 currentDate = someMethod.getDate();
                 txtDate.setText(currentDate);
 
@@ -153,7 +164,7 @@ public class ShoppingCost extends AppCompatActivity
         //process shopping only_show_cost json data
         private void processJsonData(String result)
         {
-                List<CostModel> costList = new ArrayList<>();
+                final List<CostModel> costList = new ArrayList<>();
                 int count=0;
                 String name,taka,date,id;
                 try {
@@ -172,15 +183,36 @@ public class ShoppingCost extends AppCompatActivity
                                 count++;
                         }
 
-                        if(costList.isEmpty())
-                                listView.setEmptyView(emptyView);
-                        else
-                                emptyView.setVisibility(View.INVISIBLE);
-
-                        CostAdapter adapter = new CostAdapter(this, costList);
-                        listView.setAdapter(adapter);
                 } catch (JSONException e) {
                         e.printStackTrace();
+                }finally {
+                        //add progress bar ...
+                        final Timer timer = new Timer();
+                        final Handler handler = new Handler();
+                        final  Runnable runnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                        if(costList.isEmpty())
+                                        {
+                                                textView.setVisibility(View.VISIBLE);
+                                                listView.setEmptyView(emptyView);
+                                        }
+                                        else
+                                        {
+                                                emptyView.setVisibility(View.INVISIBLE);
+                                                CostAdapter adapter = new CostAdapter(ShoppingCost.this, costList);
+                                                listView.setAdapter(adapter);
+                                        }
+                                        progressBar.setVisibility(View.GONE);
+                                        timer.cancel();
+                                }
+                        };
+                        timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                        handler.post(runnable);
+                                }
+                        },2800);
                 }
         }
 

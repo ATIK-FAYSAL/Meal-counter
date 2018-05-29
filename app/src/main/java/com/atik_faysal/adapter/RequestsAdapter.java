@@ -10,28 +10,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.PostData;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
-import com.atik_faysal.mealcounter.ApproveBalance;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
-import com.atik_faysal.mealcounter.EditYourProfile;
 import com.atik_faysal.mealcounter.MemberDetails;
-import com.atik_faysal.mealcounter.MemberJoinRequest;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.MemberModel;
-import com.atik_faysal.others.NoResultFound;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,13 +71,10 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
         {
-
-                private DatabaseBackgroundTask backgroundTask;
                 private AlertDialogClass dialogClass;
                 private CheckInternetIsOn internetIsOn;
                 private NeedSomeMethod someMethod;
                 private SharedPreferenceData sharedPreferenceData;
-                private NoResultFound noResultFound;
                 private TextView txtUserName,txtName,txtPhone,txtDate,txtStatus,txtId;
                 private Button bAccept,bCancel;
                 private MemberModel model;
@@ -97,7 +84,6 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                 @SuppressLint("SetTextI18n")
                 public ViewHolder(View view) {
                         super(view);
-                        backgroundTask = new DatabaseBackgroundTask(context);
                         dialogClass = new AlertDialogClass(context);
                         internetIsOn = new CheckInternetIsOn(context);
                         txtName = view.findViewById(R.id.txtName);
@@ -114,7 +100,6 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                         dialogClass = new AlertDialogClass(context);
                         sharedPreferenceData = new SharedPreferenceData(context);
                         someMethod = new NeedSomeMethod(context);
-                        noResultFound = new NoResultFound(context);
 
                         if(sharedPreferenceData.getUserType().equals("admin"))
                         {

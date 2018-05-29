@@ -143,7 +143,6 @@
 
         <activity android:name="com.atik_faysal.setRemainder.SetRemainder"/>
 
-        <activity android:name=".TestActivity"/>
 
         <activity android:name="com.atik_faysal.setRemainder.AddReminderActivity"
             android:label="Add remainder"

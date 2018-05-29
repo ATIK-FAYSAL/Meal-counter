@@ -69,6 +69,8 @@
     <string name="dateInterval">http://mealcounter.bdtechnosoft.com/dateInterval.php</string>
     <string name="closeSession">http://mealcounter.bdtechnosoft.com/removeSessionData.php</string>
     <string name="memBalances">http://mealcounter.bdtechnosoft.com/memBalances.php</string>
+    <string name="currentStatus">http://mealcounter.bdtechnosoft.com/currentStatus.php</string>
+    <string name="image">http://mealcounter.bdtechnosoft.com/imageUpload.php</string>
 
 
     //Add remainder
