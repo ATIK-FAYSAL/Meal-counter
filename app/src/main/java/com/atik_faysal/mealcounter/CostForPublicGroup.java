@@ -32,15 +32,11 @@ public class CostForPublicGroup extends ShoppingCost
                 TextView txtName = findViewById(R.id.txtName);
                 TextView txtSession = findViewById(R.id.txtSession);
 
-                SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh1);
-                refreshLayout.setColorSchemeResources(R.color.color2, R.color.red, R.color.color6);
-
                 someMethod = new NeedSomeMethod(this);
                 sharedPreferenceData = new SharedPreferenceData(this);
                 dialogClass = new AlertDialogClass(this);
                 internetIsOn = new CheckInternetIsOn(this);
                 someMethod = new NeedSomeMethod(this);
-                someMethod.reloadPage(refreshLayout, CostOfSecretCloseGroup.class);
 
                 txtName.setText(sharedPreferenceData.getCurrentUserName());
                 txtSession.setText("#"+sharedPreferenceData.getmyCurrentSession());

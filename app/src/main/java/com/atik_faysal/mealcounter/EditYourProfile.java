@@ -377,6 +377,7 @@ public class EditYourProfile extends AppCompatActivity
                 return flag;
         }
 
+
         //open phone gallery and choose a photo
         public void openGallery()
         {
@@ -578,6 +579,8 @@ public class EditYourProfile extends AppCompatActivity
                         runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+
+                                        Toast.makeText(EditYourProfile.this,"result : "+message,Toast.LENGTH_LONG).show();
                                         switch (message)
                                         {
                                                 case "success":

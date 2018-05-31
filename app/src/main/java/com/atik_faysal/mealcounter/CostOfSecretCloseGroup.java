@@ -53,15 +53,12 @@ public class CostOfSecretCloseGroup extends ShoppingCost {
                 txtName = findViewById(R.id.txtName);
                 spinner = findViewById(R.id.spinner);
                 TextView txtSession = findViewById(R.id.txtSession);
-                SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh1);
-                refreshLayout.setColorSchemeResources(R.color.color2, R.color.red, R.color.color6);
 
                 someMethod = new NeedSomeMethod(this);
                 sharedPreferenceData = new SharedPreferenceData(this);
                 dialogClass = new AlertDialogClass(this);
                 internetIsOn = new CheckInternetIsOn(this);
                 someMethod = new NeedSomeMethod(this);
-                someMethod.reloadPage(refreshLayout, CostOfSecretCloseGroup.class);
                 txtSession.setText("#"+sharedPreferenceData.getmyCurrentSession());
 
                 if (internetIsOn.isOnline()) {

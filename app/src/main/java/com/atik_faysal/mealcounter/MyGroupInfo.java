@@ -215,6 +215,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                     if(userType.equals("admin"))
                     {
                          gName.setEnabled(true);
+                         gName.setFocusable(true);
                          gDescription.setEnabled(true);
                          gAddress.setEnabled(true);
                          gTime.setEnabled(true);
@@ -304,7 +305,7 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
           {
                Map<String,String>map = new HashMap<>();
                map.put("userName",currentUser);
-               GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.groupInfo),map);
+               GetDataFromServer dataFromServer = new GetDataFromServer(this,taskInterface,getResources().getString(R.string.groupInfo),map);
                dataFromServer.sendJsonRequest();
                /*try {
                     POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
@@ -323,51 +324,44 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
      @SuppressLint("SetTextI18n")
      private void groupInformation(String userInfo)
      {
-          if(userInfo!=null)
-          {
-               try {
-                    JSONObject jsonObject = new JSONObject(userInfo);
-                    JSONArray jsonArray = jsonObject.optJSONArray("groupInfo");
+          try {
+               JSONObject jsonObject = new JSONObject(userInfo);
+               JSONArray jsonArray = jsonObject.optJSONArray("groupInfo");
 
-                    int count = 0;
-                    while(count< jsonArray.length())
-                    {
-                         JSONObject jObject = jsonArray.getJSONObject(count);
-                         name = jObject.getString("gName");
-                         id = jObject.getString("groupId");
-                         description = jObject.getString("gDescription");
-                         type = jObject.getString("gType");
-                         address = jObject.getString("gAddress");
-                         time = jObject.getString("gTime");
-                         date = jObject.getString("gDate");
-                         member = jObject.getString("gMem");
-                         admin = jObject.getString("gAdmin");
-                         count++;
-                    }
-
-                    gName.setText(name);
-                    groupId.setText(id);
-                    gDescription.setText(description);
-                    gType.setText(type);
-                    gTime.setText(time);
-                    gDate.setText("Create at "+date);
-                    gMember.setText(member);
-                    gAdmin.setText(admin);
-                    gAddress.setText(address);
-
-               } catch (JSONException e) {
-                    e.printStackTrace();
+               int count = 0;
+               while(count< jsonArray.length())
+               {
+                    JSONObject jObject = jsonArray.getJSONObject(count);
+                    name = jObject.getString("gName");
+                    id = jObject.getString("groupId");
+                    description = jObject.getString("gDescription");
+                    type = jObject.getString("gType");
+                    address = jObject.getString("gAddress");
+                    time = jObject.getString("gTime");
+                    date = jObject.getString("gDate");
+                    member = jObject.getString("gMem");
+                    admin = jObject.getString("gAdmin");
+                    count++;
                }
 
+               gName.setText(name);
+               groupId.setText(id);
+               gDescription.setText(description);
+               gType.setText(type);
+               gTime.setText(time);
+               gDate.setText("Create at "+date);
+               gMember.setText(member);
+               gAdmin.setText(admin);
+               gAddress.setText(address);
 
-
-          }else Log.d(TAG,"Json object error");
+          } catch (JSONException e) {
+               e.printStackTrace();
+          }
      }
 
-     //icon_edit_blue your group type
+     //edit your group type
      private void editGroupType()
      {
-
           CharSequence[] values = {"Public group","Close group","Secret group"};
           AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -437,24 +431,12 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                     public void run() {
                          switch (result)
                          {
-                              case "no result"://get group info,if no result found
-                                   dialogClass.error("No result found.Please retry.");
-                                   break;
-
-                              case "not member"://get group info,if not a member
-                                   dialogClass.alreadyMember("Please first join a group.");
-                                   break;
-
-                              case "failed"://update info failed
-                                   dialogClass.error("Group information update failed.Please retry after sometimes");
-                                   bEdit.setEnabled(false);
-                                   break;
-
                               case "success"://update info success
                                    someMethod.progress("Updating information...","Group information updated successfully.");
-                                   initializeGroupInfo();
-                                   bEdit.setEnabled(false);
-                                   bEdit.setBackgroundDrawable(getDrawable(R.drawable.disable_button));
+                                   initializeGroupInfo();//initialize new information about group
+                                   bEdit.setEnabled(false);//disable button
+                                   bEdit.setBackgroundDrawable(getDrawable(R.drawable.disable_button));//change disable button background
+                                   //disable all component
                                    gName.setEnabled(false);
                                    gAddress.setEnabled(false);
                                    gDescription.setEnabled(false);
@@ -462,11 +444,26 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                                    gAddress.setFocusable(false);
                                    gDescription.setFocusable(false);
                                    break;
-
                               default:
-                                   groupInformation(result);//json data group info
+                                   dialogClass.error("Group information update failed.Please retry after sometimes");
+                                   bEdit.setEnabled(false);//disable button
+                                   bEdit.setBackgroundDrawable(getDrawable(R.drawable.disable_button));//change background for disable button
                                    break;
                          }
+                    }
+               });
+          }
+     };
+
+     //get json data from server
+     OnAsyncTaskInterface taskInterface = new OnAsyncTaskInterface() {
+          @Override
+          public void onResultSuccess(final String message) {
+               runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                         if(message!=null)
+                              groupInformation(message);//send json data for processing
                     }
                });
           }

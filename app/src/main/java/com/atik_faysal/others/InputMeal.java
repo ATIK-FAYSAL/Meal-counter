@@ -62,7 +62,6 @@ public class InputMeal extends Fragment
 
         private CheckInternetIsOn internetIsOn;
         private NeedSomeMethod someMethod;
-        private DatabaseBackgroundTask backgroundTask;
         private AlertDialogClass dialogClass;
         private SharedPreferenceData sharedPreferenceData;
         private TextView txtNoResult;
@@ -178,17 +177,11 @@ public class InputMeal extends Fragment
                 txtNoResult.setVisibility(View.INVISIBLE);
                 progressBar = view.findViewById(R.id.progressBar);
 
-
-                SwipeRefreshLayout refreshLayout = view.findViewById(R.id.refresh);
-                refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
-
                 internetIsOn = new CheckInternetIsOn(getContext());
                 dialogClass = new AlertDialogClass(getContext());
-                backgroundTask = new DatabaseBackgroundTask(getContext());
                 someMethod = new NeedSomeMethod(getContext());
 
                 //calling page reload method
-                someMethod.reloadPage(refreshLayout, MealClass.class);
                 getAllMealListFromDb();
         }
 

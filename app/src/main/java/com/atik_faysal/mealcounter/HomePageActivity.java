@@ -71,11 +71,9 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         private AlertDialogClass dialogClass;
         private NeedSomeMethod someMethod;
 
-
         private final static String USER_LOGIN = "userLogIn";
         private String currentUser;
         private String userType;
-
         private ArrayList<SearchableModel>groupList;
 
         private TextView txtTotalCost,txtTotalMeal,txtTodayMeal,txtMyMeal,txtSession;
@@ -91,9 +89,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         @Override
         protected void onStart() {
                 super.onStart();
-
-                //String fUrl = "http://192.168.56.1/checkMemType.php";
-                //String postData;
                 if(internetIsOn.isOnline())
                 {
                         Map<String,String> map = new HashMap<>();
@@ -283,7 +278,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 TextView txtDate = findViewById(R.id.txtDate);
                 fab = findViewById(R.id.fab);
 
-                initObject();//initialize cardView and imageView
                 //other initialize
                 sharedPreferenceData = new SharedPreferenceData(this);
                 internetIsOn = new CheckInternetIsOn(this);
@@ -301,6 +295,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 txtDate.setText(someMethod.getDate());
 
                 //calling method
+                initObject();//initialize cardView and imageView
                 RegisterDeviceToken.registerToken(token,currentUser, date);
                 someMethod.reloadPage(refreshLayout,HomePageActivity.class);
                 someMethod.userCurrentStatus(currentUser,"active");
@@ -308,7 +303,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 importantData.myGroupType(currentUser);
                 importantData.getCurrentSession(currentUser);
                 closeApp();
-
 
                if(internetIsOn.isOnline())
                {
@@ -513,6 +507,52 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 });
         }
 
+        //get all home page information
+        private void getInitialInformation(String message)
+        {
+                String totalMeal=null;
+                String totalTaka = null;
+                String myMeal=null;
+                String todayMeal=null;
+                String session=null;
+                try {
+                        int count=0;
+                        JSONObject jsonObject = new JSONObject(message);
+                        JSONArray jsonArray = jsonObject.optJSONArray("jsonData");
+                        while (count<jsonArray.length())
+                        {
+                                JSONObject jObject = jsonArray.getJSONObject(count);
+                                if(!jObject.getString("cost").equals("null"))
+                                        totalTaka = jObject.getString("cost");
+                                else totalTaka = "0";
+                                if(!jObject.getString("meals").equals("null"))
+                                        totalMeal = jObject.getString("meals");
+                                else totalMeal = "0";
+                                if(!jObject.getString("tmeal").equals("null"))
+                                        todayMeal = jObject.getString("tmeal");
+                                else todayMeal = "0";
+                                if(!jObject.getString("mmeal").equals("null"))
+                                        myMeal = jObject.getString("mmeal");
+                                else myMeal = "0";
+                                if(!jObject.getString("session").equals("nope"))
+                                        session = jObject.getString("session");
+                                else session = "no session available";
+
+                                count++;
+                        }
+
+                        txtSession.setText("#"+session);
+                        txtTotalCost.setText(totalTaka);
+                        txtTotalMeal.setText(totalMeal);
+                        txtTodayMeal.setText(todayMeal);
+                        txtMyMeal.setText(myMeal);
+
+                } catch (JSONException e) {
+                        e.printStackTrace();
+                }
+
+        }
+
         //app terminated method
         private void closeApp()
         {
@@ -567,50 +607,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 @SuppressLint("SetTextI18n")
                                 @Override
                                 public void run() {
-                                        String totalMeal=null;
-                                        String totalTaka = null;
-                                        String myMeal=null;
-                                        String todayMeal=null;
-                                        String session=null;
-                                        if(message!=null)
-                                        {
-                                                try {
-                                                        int count=0;
-                                                        JSONObject jsonObject = new JSONObject(message);
-                                                        JSONArray jsonArray = jsonObject.optJSONArray("jsonData");
-                                                        while (count<jsonArray.length())
-                                                        {
-                                                                JSONObject jObject = jsonArray.getJSONObject(count);
-                                                                if(!jObject.getString("cost").equals("null"))
-                                                                        totalTaka = jObject.getString("cost");
-                                                                else totalTaka = "0";
-                                                                if(!jObject.getString("meals").equals("null"))
-                                                                        totalMeal = jObject.getString("meals");
-                                                                else totalMeal = "0";
-                                                                if(!jObject.getString("tmeal").equals("null"))
-                                                                        todayMeal = jObject.getString("tmeal");
-                                                                else todayMeal = "0";
-                                                                if(!jObject.getString("mmeal").equals("null"))
-                                                                        myMeal = jObject.getString("mmeal");
-                                                                else myMeal = "0";
-                                                                if(!jObject.getString("session").equals("nope"))
-                                                                        session = jObject.getString("session");
-                                                                else session = "no session available";
-
-                                                                count++;
-                                                        }
-
-                                                        txtSession.setText("#"+session);
-                                                        txtTotalCost.setText(totalTaka);
-                                                        txtTotalMeal.setText(totalMeal);
-                                                        txtTodayMeal.setText(todayMeal);
-                                                        txtMyMeal.setText(myMeal);
-
-                                                } catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                }
-
-                                        }
+                                      if (message!=null)
+                                              getInitialInformation(message);
                                 }
                         });
                 }
