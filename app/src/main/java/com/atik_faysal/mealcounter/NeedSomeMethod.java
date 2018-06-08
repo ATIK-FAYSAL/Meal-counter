@@ -111,10 +111,10 @@ public class NeedSomeMethod
 
         public void setAdmob(AdView viewId)
         {
-                MobileAds.initialize(context,activity.getResources().getString(R.string.adUnitId));
-                AdRequest request = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-                viewId.loadAd(request);
-        }
+        MobileAds.initialize(context,activity.getResources().getString(R.string.adUnitId));
+        AdRequest request = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        viewId.loadAd(request);
+}
 
         //current user status
         public void userCurrentStatus(String currentUser,String status)

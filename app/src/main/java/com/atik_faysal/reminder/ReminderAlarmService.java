@@ -67,7 +67,7 @@ public class ReminderAlarmService extends IntentService {
                 .setContentText(description)
                 .setSmallIcon(R.drawable.icon_notification)
                 .setContentIntent(operation)
-                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
+                .setVibrate(new long[] { 2000, 2000, 2000, 2000, 2000 })
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                 .setAutoCancel(true)
                 .build();

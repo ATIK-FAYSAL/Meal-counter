@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,14 +23,19 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.atik_faysal.backend.DownLoadImageTask;
 import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.GetImportantData;
 import com.atik_faysal.backend.RegisterDeviceToken;
 import com.atik_faysal.backend.SharedPreferenceData;
+import com.atik_faysal.interfaces.OnUploadImageResult;
 import com.atik_faysal.model.SearchableModel;
 import com.atik_faysal.others.AboutUs;
 import com.atik_faysal.others.ChangePassword;
@@ -59,10 +65,10 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 {
 
         //component array object
-        private CardView[] cardViews = new CardView[8];
-        private int[] cardViewId = {R.id.cardView1,R.id.cardView2,R.id.cardView3,R.id.cardView4,R.id.cardView5,R.id.cardView6,R.id.cardView7,R.id.cardView8};
-        private ImageView[] imageViews = new ImageView[8];
-        private int[] imageViewId = {R.id.image1,R.id.image2,R.id.image3,R.id.image4,R.id.image5,R.id.image6,R.id.image7,R.id.image8};
+        private CardView[] cardViews = new CardView[7];
+        private int[] cardViewId = {R.id.cardView1,R.id.cardView2,R.id.cardView3,R.id.cardView4,R.id.cardView5,R.id.cardView6,R.id.cardView7};
+        private ImageView[] imageViews = new ImageView[7];
+        private int[] imageViewId = {R.id.image1,R.id.image2,R.id.image3,R.id.image4,R.id.image5,R.id.image6,R.id.image7};
         private ImageView userImage;
         private FloatingActionButton fab;
 
@@ -93,19 +99,12 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 {
                         Map<String,String> map = new HashMap<>();
                         map.put("userName",currentUser);
-                        GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.memberType),map);
+                        //GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.memberType),map);
+                        //get important information about current user
+                        GetDataFromServer dataFromServer = new GetDataFromServer(this,asyncTaskInterface,getResources().getString(R.string.userInfo),map);
                         dataFromServer.sendJsonRequest();
-                        /*try {
-                                postData = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
-                                DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(this);
-                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(getResources().getString(R.string.memberType),postData);
-
-                        } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                        }*/
-
-                        myImage();//download image and set image in imageview
+                        //dataFromServer1.sendJsonRequest();
+                        myImage();//download image and set image in imageView
                 }else dialogClass.noInternetConnection();
         }
 
@@ -236,21 +235,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 return true;
         }
 
-        //get image from shared pref,if image is already downloaded,else it will download user image and save into shared pref
-        private void myImage()
-        {
-                if(sharedPreferenceData.myImageIsSave())
-                {
-                        Bitmap bitmap= sharedPreferenceData.getMyImage();
-                        userImage.setImageBitmap(bitmap);
-                }else
-                {
-                        DownLoadImageTask imageTask = new DownLoadImageTask(this);
-                        imageTask.execute(currentUser);
-                }
-
-        }
-
         //initialize all component and class object,also call some method
         private void initComponent()
         {
@@ -283,7 +267,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 internetIsOn = new CheckInternetIsOn(this);
                 dialogClass = new AlertDialogClass(this);
                 someMethod = new NeedSomeMethod(this);
-                GetImportantData importantData = new GetImportantData(this);
+                //GetImportantData importantData = new GetImportantData(this);
 
                 FirebaseMessaging.getInstance().subscribeToTopic("test");
                 String token = FirebaseInstanceId.getInstance().getToken();
@@ -299,11 +283,13 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 RegisterDeviceToken.registerToken(token,currentUser, date);
                 someMethod.reloadPage(refreshLayout,HomePageActivity.class);
                 someMethod.userCurrentStatus(currentUser,"active");
-                someMethod.myGroupName(currentUser);
-                importantData.myGroupType(currentUser);
-                importantData.getCurrentSession(currentUser);
-                closeApp();
 
+                //someMethod.myGroupName(currentUser);
+                //importantData.myGroupType(currentUser);
+                //importantData.getCurrentSession(currentUser);
+                closeApp();//terminate app
+
+                //get all group name from server
                if(internetIsOn.isOnline())
                {
                        groupList = new ArrayList<>();
@@ -316,29 +302,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                        map.put("date",someMethod.getDate());
                        dataFromServer = new GetDataFromServer(this,anInterface,getResources().getString(R.string.homePageInfo),map);
                        dataFromServer.sendJsonRequest();
-
-                       /*try {
-                               String POST_DATA = URLEncoder.encode("userName", "UTF-8")+"="+URLEncoder.encode("", "UTF-8");
-                               groupList = new ArrayList<>();
-                               DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(HomePageActivity.this);
-                               backgroundTask.setOnResultListener(taskInterface);
-                               backgroundTask.execute(getResources().getString(R.string.allGroupName), POST_DATA);
-                       } catch (UnsupportedEncodingException e) {
-                               e.printStackTrace();
-                       }
-
-
-                       try {
-                               //String url = "http://192.168.56.1/homePageInfo.php";
-                               String POST_DATA = URLEncoder.encode("userName", "UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(), "UTF-8")+"&"
-                                       +URLEncoder.encode("group", "UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(), "UTF-8")+"&"
-                                       +URLEncoder.encode("date", "UTF-8")+"="+URLEncoder.encode(someMethod.getDate(), "UTF-8");
-                               DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(HomePageActivity.this);
-                               backgroundTask.setOnResultListener(anInterface);
-                               backgroundTask.execute(getResources().getString(R.string.homePageInfo), POST_DATA);
-                       } catch (UnsupportedEncodingException e) {
-                               e.printStackTrace();
-                       }*/
 
                }else dialogClass.noInternetConnection();
 
@@ -461,7 +424,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
         }
 
-        //get json data from server and convert to string,also set in component
+        //get all group name ,json data from server and convert to string,also set in component
         private void processJsonData(String jsonData)
         {
                 try {
@@ -482,6 +445,22 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 }
         }
 
+        //get image from shared pref,if image is already downloaded,else it will download user image and save into shared pref
+        private void myImage()
+        {
+                if(sharedPreferenceData.myImageIsSave())
+                {
+                        Bitmap bitmap= sharedPreferenceData.getMyImage();
+                        userImage.setImageBitmap(bitmap);
+                }else
+                {
+                        DownLoadImageTask imageTask = new DownLoadImageTask(this);
+                        imageTask.setOnResultListener(onUploadImageResult);
+                        imageTask.execute();
+                }
+
+        }
+
         //log out method
         protected void userLogOut()
         {
@@ -492,7 +471,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                         public void run() {
                                 try {
                                         Thread.sleep(2500);
-                                        someMethod.userCurrentStatus(currentUser,"inactive");
                                 } catch (Exception e) {
                                 }
                                 progressDialog.dismiss();
@@ -501,6 +479,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialog) {
+                                someMethod.userCurrentStatus(currentUser,"inactive");
+                                sharedPreferenceData.clearAllData();
                                 sharedPreferenceData.ifUserLogIn(USER_LOGIN,false);
                                 finish();
                         }
@@ -508,6 +488,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         }
 
         //get all home page information
+        @SuppressLint("SetTextI18n")
         private void getInitialInformation(String message)
         {
                 String totalMeal=null;
@@ -559,6 +540,49 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 if(getIntent().getBooleanExtra("flag",false))finish();
         }
 
+        //get user information from server as json
+        private void processUserInfo(String info)
+        {
+                try {
+                        String groupName = null,groupType = null,memType = null,imgName = null,currentSession = null;
+                        JSONObject jsonObject = new JSONObject(info);
+                        JSONArray jsonArray = jsonObject.optJSONArray("info");
+                        int count=0;
+                        while (count< jsonArray.length())
+                        {
+                                JSONObject jObject = jsonArray.getJSONObject(count);
+                                groupName  = jObject.getString("groupId");
+                                groupType = jObject.getString("groupType");
+                                memType = jObject.getString("memType");
+                                imgName = jObject.getString("userImg");
+                                currentSession = jObject.getString("session");
+                                count++;
+                        }
+
+                        if(groupName==null)
+                                sharedPreferenceData.myGroup("nope");
+                        else sharedPreferenceData.myGroup(groupName);
+                        if(groupType!=null)
+                                sharedPreferenceData.myGroupType(groupType);
+                        if(memType!=null)
+                        {
+                                sharedPreferenceData.userType(memType);
+                                if(!userType.equals(memType))
+                                {
+                                        sharedPreferenceData.userType(memType);
+                                        userType = memType;
+                                }
+                        }
+                        if (imgName!=null)
+                                sharedPreferenceData.saveMyImageName(imgName);
+                        if(currentSession!=null)
+                                sharedPreferenceData.myCurrentSession(currentSession);
+
+                } catch (JSONException e) {
+                        e.printStackTrace();
+                }
+        }
+
         //get group information from server
         OnAsyncTaskInterface taskInterface = new OnAsyncTaskInterface() {
 
@@ -575,7 +599,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         };
 
         //get member information from server
-        OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
+        /*OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
                 public void onResultSuccess(final String message) {
                         runOnUiThread(new Runnable() {
@@ -597,7 +621,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 }
                         });
                 }
-        };
+        };*/
 
         //get all home page information
         OnAsyncTaskInterface anInterface = new OnAsyncTaskInterface() {
@@ -609,6 +633,33 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 public void run() {
                                       if (message!=null)
                                               getInitialInformation(message);
+                                }
+                        });
+                }
+        };
+
+        OnUploadImageResult onUploadImageResult = new OnUploadImageResult() {
+                @Override
+                public void onSuccess(final String response, final Bitmap bitmap) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        userImage.setImageBitmap(bitmap);
+                                        sharedPreferenceData.myImage(bitmap,true);
+                                }
+                        });
+                }
+        };
+
+
+        OnAsyncTaskInterface asyncTaskInterface = new OnAsyncTaskInterface() {
+                @Override
+                public void onResultSuccess(final String message) {
+                        runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                        if(message!=null)
+                                                processUserInfo(message);
                                 }
                         });
                 }

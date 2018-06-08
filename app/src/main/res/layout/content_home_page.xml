@@ -53,12 +53,14 @@
                             android:id="@+id/txtDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
                             android:layout_alignParentTop="true"
-                            android:layout_alignStart="@+id/rlayout3"
-                            android:padding="5dp"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="40dp"
                             android:hint="date"
-                            android:paddingLeft="15dp"/>
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/offWhite"
+                            android:padding="5dp"
+                            android:paddingLeft="15dp" />
 
                         <LinearLayout
                             android:layout_below="@id/txtDate"
@@ -79,7 +81,7 @@
                                 android:layout_weight="1"
                                 android:gravity="start"
                                 android:text="Total Cost"
-                                android:textColor="#9E9E9E"
+                                android:textColor="@color/black"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
 
@@ -118,7 +120,7 @@
                                 android:textStyle="bold"
                                 android:gravity="start"
                                 android:layout_marginLeft="20dp"
-                                android:textColor="#9E9E9E"/>
+                                android:textColor="@color/black"/>
                             <TextView
                                 android:id="@+id/txtMeal"
                                 android:layout_width="0dp"
@@ -152,7 +154,7 @@
                                 android:textStyle="bold"
                                 android:gravity="start"
                                 android:layout_marginLeft="20dp"
-                                android:textColor="#9E9E9E"/>
+                                android:textColor="@color/black"/>
                             <TextView
                                 android:id="@+id/txtTmeal"
                                 android:layout_width="0dp"
@@ -184,7 +186,7 @@
                                 android:layout_weight="1"
                                 android:gravity="start"
                                 android:text="My Meal"
-                                android:textColor="#9E9E9E"
+                                android:textColor="@color/black"
                                 android:textSize="16dp"
                                 android:textStyle="bold" />
                             <TextView

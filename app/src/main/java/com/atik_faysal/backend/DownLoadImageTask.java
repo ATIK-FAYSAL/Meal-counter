@@ -1,45 +1,65 @@
 package com.atik_faysal.backend;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.content.Context;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
+import com.atik_faysal.interfaces.ImageSuccessResult;
+import com.atik_faysal.interfaces.OnUploadImageResult;
+import com.atik_faysal.model.MyImageModel;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class DownLoadImageTask extends AsyncTask<String,Void,Bitmap>
+public class DownLoadImageTask extends AsyncTask<Void,Void,Void>
 {
-        private SharedPreferenceData sharedPreferenceData;
 
+        private SharedPreferenceData sharedPreferenceData;
+        private OnUploadImageResult successResult;
+        @SuppressLint("StaticFieldLeak")
+        private Context context;
         public DownLoadImageTask(Context context)
         {
                 sharedPreferenceData = new SharedPreferenceData(context);
+                this.context = context;
         }
 
-        @Override
-        protected Bitmap doInBackground(String... voids)
+        public void setOnResultListener(OnUploadImageResult resultListener)
         {
-                String userName = voids[0];
-                String imageUrl = "http://mealcounter.bdtechnosoft.com/"+userName+".png";
-                try {
-                        URLConnection connection = new URL(imageUrl).openConnection();
-                        connection.setConnectTimeout(1000*20);
-                        connection.setReadTimeout(1000*20);
-
-                        return BitmapFactory.decodeStream((InputStream)connection.getContent(),null,null);
-                } catch (IOException e) {
-                        e.printStackTrace();
-                        return null;
-                }
+                this.successResult = resultListener;
         }
 
         @Override
-        protected void onPostExecute(Bitmap bitmap) {
-                super.onPostExecute(bitmap);
-                if(bitmap!=null)
-                        sharedPreferenceData.myImage(bitmap,true);
+        protected Void doInBackground(Void... voids)
+        {
+                String name = sharedPreferenceData.getMyImageName();
+                Log.d("IMAGE UNIQUE ID ",name);
+                String url = "http://mealcounter.bdtechnosoft.com/images/"+name+".png";
+                ImageRequest imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
+                        @Override
+                        public void onResponse(Bitmap response) {
+                                successResult.onSuccess("success",response);
+                        }
+                }, 0, 0, ImageView.ScaleType.CENTER_CROP, null, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                                Log.d("IMAGE ERROR ",error.toString());
+                                error.printStackTrace();
+                        }
+                });
+                MyImageModel.getInstances(context).addToRequestQue(imageRequest);
+                return null;
         }
+
 }

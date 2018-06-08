@@ -1,5 +1,6 @@
 package com.atik_faysal.backend;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,8 +16,8 @@ import com.atik_faysal.mealcounter.EditYourProfile;
 public class SharedPreferenceData
 {
         //Object creation
-        SharedPreferences sharedPreferences;
-        SharedPreferences.Editor editor;
+        private SharedPreferences sharedPreferences;
+        private SharedPreferences.Editor editor;
 
         //static variable
         private static final String INPUT_TASK_COMPLETE = "inputTask";
@@ -28,20 +29,14 @@ public class SharedPreferenceData
         private final static String USER_INFO = "currentInfo";
         private final static String USER_IMAGE = "image";
         private final static String SESSION = "session";
-
+        private final static String IS_IMAGE_SAVE = "isSave";
+        private final static String IMAGE_PATH = "path";
+        private final static String IMAGE_NAME = "imageName";
         private Context context;
 
         public SharedPreferenceData (Context context)
         {
                 this.context = context;
-        }
-
-        public boolean returnInputTaskResult(String prefName)
-        {
-                boolean flag;
-                sharedPreferences = context.getSharedPreferences(prefName,Context.MODE_PRIVATE);
-                flag = sharedPreferences.getBoolean(INPUT_TASK_COMPLETE,false);
-                return flag;
         }
 
         //this mehtod contain username ,password,and checkbox status
@@ -119,7 +114,6 @@ public class SharedPreferenceData
                 return flag;
         }
 
-
         public void userType(String type)
         {
                 sharedPreferences = context.getSharedPreferences(MEMBER_TYPE,Context.MODE_PRIVATE);
@@ -168,7 +162,6 @@ public class SharedPreferenceData
                 return value;
         }
 
-
         //save user profile image
         public void myImage(Bitmap bitmap, boolean flag)
         {
@@ -185,7 +178,7 @@ public class SharedPreferenceData
         public Bitmap getMyImage()
         {
                 sharedPreferences = context.getSharedPreferences(USER_IMAGE,Context.MODE_PRIVATE);
-                String imagePath = sharedPreferences.getString("path","null");
+                String imagePath = sharedPreferences.getString(IMAGE_PATH,"null");
                 byte[] decodedByte = Base64.decode(imagePath, 0);
                 return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
         }
@@ -193,7 +186,15 @@ public class SharedPreferenceData
         public boolean myImageIsSave()
         {
                 sharedPreferences = context.getSharedPreferences(USER_IMAGE,Context.MODE_PRIVATE);
-                return sharedPreferences.getBoolean("isSave",false);
+                return sharedPreferences.getBoolean(IS_IMAGE_SAVE,false);
+        }
+
+        public String getmyCurrentSession()
+        {
+                String value;
+                sharedPreferences = context.getSharedPreferences(SESSION,Context.MODE_PRIVATE);
+                value = sharedPreferences.getString("session","null");
+                return value;
         }
 
         public void myCurrentSession(String session)
@@ -204,11 +205,30 @@ public class SharedPreferenceData
                 editor.apply();
         }
 
-        public String getmyCurrentSession()
+        @SuppressLint("CommitPrefEdits")
+        public void saveMyImageName(String imageName)
+        {
+                sharedPreferences = context.getSharedPreferences(IMAGE_NAME,Context.MODE_PRIVATE);
+                editor = sharedPreferences.edit();
+                editor.putString("imgName",imageName);
+                editor.apply();
+        }
+
+        public String getMyImageName()
         {
                 String value;
-                sharedPreferences = context.getSharedPreferences(SESSION,Context.MODE_PRIVATE);
-                value = sharedPreferences.getString("session","null");
+                sharedPreferences = context.getSharedPreferences(IMAGE_NAME,Context.MODE_PRIVATE);
+                value = sharedPreferences.getString("imgName","null");
                 return value;
+        }
+
+        public void clearAllData()
+        {
+                String[] prefNames = new String[]{USER_IMAGE,USER_INFO,MEMBER_TYPE,GROUP_NAME,GROUP_TYPE,SESSION};
+                for(int i=0;i<prefNames.length-1;i++)
+                {
+                        sharedPreferences = context.getSharedPreferences(prefNames[i],Context.MODE_PRIVATE);
+                        sharedPreferences.edit().clear().apply();
+                }
         }
 }
