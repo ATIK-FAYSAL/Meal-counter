@@ -104,8 +104,6 @@ public class InputMeal extends Fragment
                 bOk.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                                //String url = "http://192.168.56.1/inputMeal.php";
-
                                 breakfast = eBreakfast.getText().toString();
                                 lunch = eLaunch.getText().toString();
                                 dinner = eDinner.getText().toString();
@@ -147,22 +145,6 @@ public class InputMeal extends Fragment
                                         map.put("total",String.valueOf(totalMeal));
                                         PostData postData = new PostData(getContext(),anInterface);
                                         postData.InsertData(getResources().getString(R.string.inputMeal),map);
-
-                                        /*try {
-                                                String data = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8")+"&"
-                                                        +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDate(),"UTF-8")+"&"
-                                                        +URLEncoder.encode("member","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8")+"&"
-                                                        +URLEncoder.encode("breakfast","UTF-8")+"="+URLEncoder.encode(breakfast,"UTF-8")+"&"
-                                                        +URLEncoder.encode("lunch","UTF-8")+"="+URLEncoder.encode(lunch,"UTF-8")+"&"
-                                                        +URLEncoder.encode("dinner","UTF-8")+"="+URLEncoder.encode(dinner,"UTF-8")+"&"
-                                                        +URLEncoder.encode("total","UTF-8")+"="+URLEncoder.encode(String.valueOf(totalMeal),"UTF-8");
-
-                                                backgroundTask = new DatabaseBackgroundTask(getContext());
-                                                backgroundTask.setOnResultListener(anInterface);
-                                                backgroundTask.execute(getResources().getString(R.string.inputMeal),data);
-                                        } catch (UnsupportedEncodingException e) {
-                                                e.printStackTrace();
-                                        }*/
                                 }
                         }
                 });
@@ -195,14 +177,6 @@ public class InputMeal extends Fragment
                         map.put("userName",sharedPreferenceData.getCurrentUserName());
                         GetDataFromServer dataFromServer = new GetDataFromServer(getContext(),onAsyncTaskInterface,getResources().getString(R.string.allMeal),map);
                         dataFromServer.sendJsonRequest();
-                        /*try {
-                                String data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8");
-                                backgroundTask = new DatabaseBackgroundTask(getContext());
-                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(getResources().getString(R.string.allMeal),data);
-                        } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                        }*/
                 }else dialogClass.noInternetConnection();
         }
 
@@ -216,7 +190,6 @@ public class InputMeal extends Fragment
                 txtDate.setText(date);
                 txtMonth.setText("#"+sharedPreferenceData.getmyCurrentSession());
         }
-
 
         //json data processing ,it's convert json data to string and set on array list
         private void processJsonData(String jsonData)

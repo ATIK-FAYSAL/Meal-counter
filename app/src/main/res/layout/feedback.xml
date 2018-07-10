@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color2"
     android:focusableInTouchMode="true">
-
 
     <include
         android:id="@+id/toolbar1"
@@ -12,26 +11,27 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar1"
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:id="@+id/relativeLayout3"
-        android:background="@drawable/text_style4">
+        android:layout_marginBottom="8dp">
 
         <TextView
             android:id="@+id/txtName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="14dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
             android:hint="name"
             android:text="atik faysal"
-            android:textColor="@color/color2"
-            android:textSize="20dp" />
+            android:textColor="@color/userName"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
 
         <EditText
@@ -40,20 +40,21 @@
             android:layout_height="160dp"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/txtName"
-            android:layout_marginTop="17dp"
-            android:background="@drawable/button2"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="7dp"
             android:layout_marginRight="7dp"
-            android:hint=" your feedback"
+            android:layout_marginTop="17dp"
+            android:background="@drawable/button2"
+            android:gravity="start"
+            android:hint="your feedback"
             android:inputType="textMultiLine"
             android:lines="15"
-            android:textSize="14dp"
-            android:gravity="start"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
             android:scrollbars="vertical"
-            android:layout_marginBottom="10dp"
             android:textColor="@color/black"
-            android:paddingRight="7dp"
-            android:paddingLeft="7dp"/>
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/bFeedback"
@@ -63,24 +64,25 @@
             android:layout_alignEnd="@+id/eFeedback"
             android:layout_alignStart="@+id/eFeedback"
             android:layout_below="@+id/eFeedback"
-            android:layout_marginTop="45dp"
-            android:text="post"
-            android:background="@drawable/button1"
             android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"/>
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="45dp"
+            android:background="@drawable/button1"
+            android:text="post"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
-
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-3940256099942544/6300978111"/>
 
     </RelativeLayout>
 
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"/>
 
 </RelativeLayout>

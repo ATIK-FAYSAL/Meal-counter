@@ -69,7 +69,6 @@ public class MonthReport extends AppCompatActivity
         private SharedPreferenceData sharedPreferenceData;
         private NeedSomeMethod someMethod;
         private SimpleDateFormat format;
-        private DatabaseBackgroundTask backgroundTask;
         private AlertDialogClass dialogClass;
         private CheckInternetIsOn internetIsOn;
         private List<CostModel>modelList;
@@ -103,7 +102,6 @@ public class MonthReport extends AppCompatActivity
                 sharedPreferenceData = new SharedPreferenceData(this);
                 internetIsOn = new CheckInternetIsOn(this);
                 someMethod = new NeedSomeMethod(this);
-                backgroundTask = new DatabaseBackgroundTask(this);
                 dialogClass = new AlertDialogClass(this);
                 format = new SimpleDateFormat("MMMM-dd-yyyy");
                 modelList = new ArrayList<>();
@@ -116,15 +114,6 @@ public class MonthReport extends AppCompatActivity
                         map.put("name",sharedPreferenceData.getCurrentUserName());
                         GetDataFromServer dataFromServer = new GetDataFromServer(this,asyncTaskInterface,getResources().getString(R.string.report),map);
                         dataFromServer.sendJsonRequest();
-                        /*try {
-                                String data = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8")+"&"
-                                        +URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8");
-                                backgroundTask.setOnResultListener(asyncTaskInterface);
-                                backgroundTask.execute(getResources().getString(R.string.report),data);
-
-                        } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                        }*/
                 }else dialogClass.noInternetConnection();
         }
 

@@ -39,8 +39,6 @@ public class AdapterMemberList extends RecyclerView.Adapter<AdapterMemberList.Vi
 
         //private final static String URL = "http://192.168.56.1/remove_member.php";
         //private final static String FILE_URL = "http://192.168.56.1/adminSetting.php";
-        private static String DATA ;
-        private String classType;
         private String currentUser;
 
 

@@ -99,15 +99,6 @@ public class ApproveBalance extends AppCompatActivity
                         map.put("check","all");
                         GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.approveBalance),map);
                         dataFromServer.sendJsonRequest();
-                        /*String file = getResources().getString(R.string.approveBalance);
-                        try {
-                                String data = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8")+"&"
-                                        +URLEncoder.encode("check","UTF-8")+"="+URLEncoder.encode("all","UTF-8");
-                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(file,data);
-                        } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                        }*/
                 }else dialogClass.noInternetConnection();
 
         }

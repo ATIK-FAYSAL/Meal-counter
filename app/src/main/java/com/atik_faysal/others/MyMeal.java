@@ -1,5 +1,6 @@
 package com.atik_faysal.others;
 
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,11 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.atik_faysal.adapter.MealAdapter;
-import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
@@ -28,12 +29,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by USER on 3/19/2018.
@@ -45,9 +46,10 @@ public class MyMeal extends Fragment
 
         private SharedPreferenceData sharedPreferenceData;
         private AlertDialogClass dialogClass;
-        private DatabaseBackgroundTask backgroundTask;
         private CheckInternetIsOn internetIsOn;
         private RelativeLayout emptyView;
+        private TextView txtNoResult;
+        private ProgressBar progressBar;
 
         @Nullable
         @Override
@@ -63,7 +65,9 @@ public class MyMeal extends Fragment
                 NeedSomeMethod someMethod = new NeedSomeMethod(getContext());
                 dialogClass = new AlertDialogClass(getContext());
                 internetIsOn = new CheckInternetIsOn(getContext());
-                backgroundTask = new DatabaseBackgroundTask(getContext());
+                txtNoResult = view.findViewById(R.id.txtNoResult);
+                txtNoResult.setVisibility(View.INVISIBLE);
+                progressBar = view.findViewById(R.id.progressBar);
 
                 someMethod.reloadPage(refreshLayout, MealClass.class);
                 someMethod.setAdmob(adView);
@@ -82,24 +86,15 @@ public class MyMeal extends Fragment
                         map.put("userName",sharedPreferenceData.getCurrentUserName());
                         GetDataFromServer dataFromServer = new GetDataFromServer(getContext(),onAsyncTaskInterface,getResources().getString(R.string.myMeal),map);
                         dataFromServer.sendJsonRequest();
-                        /*try {
-                                String data = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getCurrentUserName(),"UTF-8");
-                                backgroundTask = new DatabaseBackgroundTask(getContext());
-                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(getResources().getString(R.string.myMeal),data);
-                        } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                        }*/
                 }else dialogClass.noInternetConnection();
         }
-
 
 
         //json data processing ,it's convert json data to string and set on array list
         private void processJsonData(String jsonData)
         {
                 String name,date,breakfast,dinner,lunch,total;
-                List<MealModel> modelList = new ArrayList<>();
+                final List<MealModel> modelList = new ArrayList<>();
                 try {
                         JSONObject jsonObject = new JSONObject(jsonData);
                         JSONArray jsonArray = jsonObject.optJSONArray("mealInfo");
@@ -117,18 +112,36 @@ public class MyMeal extends Fragment
                                 count++;
                         }
 
-                        if(modelList.isEmpty())
-                        {
-                                listView.setEmptyView(emptyView);
-                        }else
-                             emptyView.setVisibility(View.INVISIBLE);
-
-                        MealAdapter adapter = new MealAdapter(getContext(), modelList);
-                        listView.setAdapter(adapter);
-
-
                 } catch (JSONException e) {
                         e.printStackTrace();
+                }finally {
+                        final Timer timer = new Timer();
+                        final Handler handler = new Handler();
+
+                        final  Runnable runnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                        if(modelList.isEmpty())
+                                        {
+                                                txtNoResult.setVisibility(View.VISIBLE);
+                                                listView.setEmptyView(emptyView);
+                                        }
+                                        else
+                                        {
+                                                emptyView.setVisibility(View.INVISIBLE);
+                                                MealAdapter adapter = new MealAdapter(getContext(), modelList);
+                                                listView.setAdapter(adapter);
+                                        }
+                                        progressBar.setVisibility(View.GONE);
+                                        timer.cancel();
+                                }
+                        };
+                        timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                        handler.post(runnable);
+                                }
+                        },2800);
                 }
         }
 

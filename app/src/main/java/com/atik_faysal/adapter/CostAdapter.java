@@ -3,6 +3,7 @@ package com.atik_faysal.adapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
@@ -16,6 +17,7 @@ import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
+import com.atik_faysal.mealcounter.MemberDetails;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.CostModel;
@@ -117,6 +119,15 @@ public class CostAdapter extends BaseAdapter
                         @Override
                         public void onClick(View v) {
                                 editShoppingCost(costList.get(position).getId(),costList.get(position).getDate(),costList.get(position).getTaka());
+                        }
+                });
+
+                txtName.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                                Intent page = new Intent(context,MemberDetails.class);
+                                page.putExtra("userName",costList.get(position).getName());
+                                context.startActivity(page);
                         }
                 });
 

@@ -77,14 +77,6 @@ public class MemBalances extends AppCompatActivity
                         map.put("action","all");
                         GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.memBalances),map);
                         dataFromServer.sendJsonRequest();
-                        /*try {
-                                String data = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8")+"&"
-                                        +URLEncoder.encode("action","UTF-8")+"="+URLEncoder.encode("all","UTF-8");
-                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(getResources().getString(R.string.memBalances),data);
-                        } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                        }*/
                 }else dialogClass.noInternetConnection();
         }
 

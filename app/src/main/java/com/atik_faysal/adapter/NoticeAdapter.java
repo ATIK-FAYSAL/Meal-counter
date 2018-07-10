@@ -22,6 +22,8 @@ import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
+import com.atik_faysal.mealcounter.Feedback;
+import com.atik_faysal.mealcounter.MemberDetails;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.NoticeBoard;
 import com.atik_faysal.mealcounter.R;
@@ -125,11 +127,22 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.MyViewHold
 
                 private void setListeners() {
                         bRemove.setOnClickListener(NoticeAdapter.MyViewHolder.this);
+                        txtUserName.setOnClickListener(NoticeAdapter.MyViewHolder.this);
                 }
 
                 @Override
                 public void onClick(View view) {
-                        removeNotice(model.getId());
+                        switch (view.getId())
+                        {
+                                case R.id.bRemove:
+                                        removeNotice(model.getId());
+                                        break;
+                                case R.id.txtName:
+                                        Intent page = new Intent(context,MemberDetails.class);
+                                        page.putExtra("userName",model.getUserName());
+                                        context.startActivity(page);
+                                        break;
+                        }
                 }
 
                 private void removeNotice(final String noticeId)
@@ -153,15 +166,6 @@ public class NoticeAdapter extends RecyclerView.Adapter<NoticeAdapter.MyViewHold
                                                 map.put("id",id);
                                                 PostData postData = new PostData(context,onAsyncTaskInterface);
                                                 postData.InsertData(context.getResources().getString(R.string.removeNotice),map);
-                                                /*try {
-                                                        post = URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(id,"UTF-8");
-                                                        DatabaseBackgroundTask backgroundTask = new DatabaseBackgroundTask(context);
-                                                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                        backgroundTask.execute(context.getResources().getString(R.string.removeNotice),post);
-
-                                                } catch (UnsupportedEncodingException e) {
-                                                        e.printStackTrace();
-                                                }*/
                                                 dialog.dismiss();
 
                                         }

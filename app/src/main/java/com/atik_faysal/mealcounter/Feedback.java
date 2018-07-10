@@ -1,5 +1,7 @@
 package com.atik_faysal.mealcounter;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +32,7 @@ public class Feedback extends AppCompatActivity
         private EditText eFeedback;
         private Button bFeedback;
         private Toolbar toolbar;
+        private TextView txtName;
 
         private AlertDialogClass dialogClass;
         private NeedSomeMethod someMethod;
@@ -47,11 +50,13 @@ public class Feedback extends AppCompatActivity
         }
 
         //initialize all user information related variable by getText from textView or editText
+        @SuppressLint("ClickableViewAccessibility")
         private void initComponent()
         {
                 eFeedback = findViewById(R.id.eFeedback);
-                TextView txtName = findViewById(R.id.txtName);
+                txtName = findViewById(R.id.txtName);
                 bFeedback = findViewById(R.id.bFeedback);
+                bFeedback.setBackgroundDrawable(getDrawable(R.drawable.disable_button));
                 toolbar = findViewById(R.id.toolbar1);
                 AdView adView = findViewById(R.id.adView);
                 setSupportActionBar(toolbar);
@@ -94,8 +99,16 @@ public class Feedback extends AppCompatActivity
 
                         @Override
                         public void afterTextChanged(Editable s) {
-                                if(eFeedback.getText().toString().length()<20)bFeedback.setEnabled(false);
-                                else bFeedback.setEnabled(true);
+                                if(eFeedback.getText().toString().length()<20)
+                                {
+                                        bFeedback.setEnabled(false);
+                                        bFeedback.setBackgroundDrawable(getDrawable(R.drawable.disable_button));
+                                }
+                                else
+                                {
+                                        bFeedback.setEnabled(true);
+                                        bFeedback.setBackgroundDrawable(getDrawable(R.drawable.button1));
+                                }
                         }
                 });
 
@@ -134,21 +147,20 @@ public class Feedback extends AppCompatActivity
                                         map.put("date",someMethod.getDateWithTime());
                                         PostData postData = new PostData(Feedback.this,onAsyncTaskInterface);
                                         postData.InsertData(getResources().getString(R.string.feedback),map);
-                                        /*try {
-                                                POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8")+"&"
-                                                        +URLEncoder.encode("feedback","UTF-8")+"="+URLEncoder.encode(eFeedback.getText().toString(),"UTF-8")+"&"
-                                                        +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDateWithTime(),"UTF-8");
-                                        } catch (UnsupportedEncodingException e) {
-                                                e.printStackTrace();
-                                        }
-
-                                        checkBackgroundTask = new DatabaseBackgroundTask(Feedback.this);
-                                        checkBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                        checkBackgroundTask.execute(getResources().getString(R.string.feedback),POST_DATA);*/
                                 }else dialogClass.noInternetConnection();
 
                         }
                 });
+
+                txtName.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                                Intent page = new Intent(Feedback.this,MemberDetails.class);
+                                page.putExtra("userName",currentUser);
+                                startActivity(page);
+                        }
+                });
+
         }
 
 

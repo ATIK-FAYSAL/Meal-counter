@@ -71,6 +71,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         private int[] imageViewId = {R.id.image1,R.id.image2,R.id.image3,R.id.image4,R.id.image5,R.id.image6,R.id.image7};
         private ImageView userImage;
         private FloatingActionButton fab;
+        private TextView txtPhone;
 
         private SharedPreferenceData sharedPreferenceData;
         private CheckInternetIsOn internetIsOn;
@@ -238,7 +239,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         //initialize all component and class object,also call some method
         private void initComponent()
         {
-
                 Toolbar toolbar = findViewById(R.id.toolbar);
                 setSupportActionBar(toolbar);
 
@@ -253,6 +253,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                 refreshLayout.setColorSchemeResources(R.color.color2,R.color.red,R.color.color6);
                 View view = navigationView.inflateHeaderView(R.layout.nav_header_home_page);
                 TextView txtUserName = view.findViewById(R.id.txtName);
+                txtPhone = view.findViewById(R.id.txtPhone);
                 userImage = view.findViewById(R.id.userImage);
                 txtSession = findViewById(R.id.txtSession);
                 txtTotalCost = findViewById(R.id.txtTaka);
@@ -377,7 +378,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                         else if((sharedPreferenceData.getMyGroupType().equals("secret")||sharedPreferenceData.getMyGroupType().equals("close"))
                                                 &&sharedPreferenceData.getUserType().equals("member"))
                                                 startActivity(new Intent(HomePageActivity.this,CostForSecretCloseMem.class));
-
                                 }
                         }
                 }else if(id==cardViewId[3]||id==imageViewId[3])
@@ -544,7 +544,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
         private void processUserInfo(String info)
         {
                 try {
-                        String groupName = null,groupType = null,memType = null,imgName = null,currentSession = null;
+                        String groupName = null,groupType = null,memType = null,imgName = null,currentSession = null,phone=null;
                         JSONObject jsonObject = new JSONObject(info);
                         JSONArray jsonArray = jsonObject.optJSONArray("info");
                         int count=0;
@@ -556,6 +556,7 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 memType = jObject.getString("memType");
                                 imgName = jObject.getString("userImg");
                                 currentSession = jObject.getString("session");
+                                phone = jObject.getString("phone");
                                 count++;
                         }
 
@@ -577,6 +578,8 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 sharedPreferenceData.saveMyImageName(imgName);
                         if(currentSession!=null)
                                 sharedPreferenceData.myCurrentSession(currentSession);
+                        if(phone!=null)
+                                txtPhone.setText(phone);
 
                 } catch (JSONException e) {
                         e.printStackTrace();
@@ -597,31 +600,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                         });
                 }
         };
-
-        //get member information from server
-        /*OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
-                @Override
-                public void onResultSuccess(final String message) {
-                        runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                        if(message.equals("no result"))
-                                        {
-                                                someMethod.closeActivity(HomePageActivity.this,LogInActivity.class);
-                                                sharedPreferenceData.ifUserLogIn(USER_LOGIN,false);
-                                        }
-                                        else
-                                        {
-                                                if(!userType.equals(message))
-                                                {
-                                                        sharedPreferenceData.userType(message);
-                                                        userType = message;
-                                                }
-                                        }
-                                }
-                        });
-                }
-        };*/
 
         //get all home page information
         OnAsyncTaskInterface anInterface = new OnAsyncTaskInterface() {
@@ -650,7 +628,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                         });
                 }
         };
-
 
         OnAsyncTaskInterface asyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override

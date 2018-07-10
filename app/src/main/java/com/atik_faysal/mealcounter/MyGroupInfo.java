@@ -256,20 +256,6 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                               map.put("description",description);
                               PostData postData = new PostData(MyGroupInfo.this,onAsyncTaskInterface);
                               postData.InsertData(getResources().getString(R.string.editGroupInfo),map);
-                              /*try {
-                                   DATA = URLEncoder.encode("groupID","UTF-8")+"="+URLEncoder.encode(groupId.getText().toString(),"UTF-8")+"&"
-                                        +URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(name,"UTF-8")+"&"
-                                        +URLEncoder.encode("address","UTF-8")+"="+URLEncoder.encode(address,"UTF-8")+"&"
-                                        +URLEncoder.encode("fixedTime","UTF-8")+"="+URLEncoder.encode(time,"UTF-8")+"&"
-                                        +URLEncoder.encode("groupType","UTF-8")+"="+URLEncoder.encode(type,"UTF-8")+"&"
-                                        +URLEncoder.encode("description","UTF-8")+"="+URLEncoder.encode(description,"UTF-8");
-
-                                   backgroundTask = new DatabaseBackgroundTask(MyGroupInfo.this);
-                                   backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                   backgroundTask.execute(getResources().getString(R.string.editGroupInfo),DATA);
-                              } catch (UnsupportedEncodingException e) {
-                                   e.printStackTrace();
-                              }*/
                          }else dialogClass.noInternetConnection();
                     }
                }
@@ -307,16 +293,6 @@ public class MyGroupInfo extends AppCompatActivity implements TimePickerDialog.O
                map.put("userName",currentUser);
                GetDataFromServer dataFromServer = new GetDataFromServer(this,taskInterface,getResources().getString(R.string.groupInfo),map);
                dataFromServer.sendJsonRequest();
-               /*try {
-                    POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
-
-                    backgroundTask = new DatabaseBackgroundTask(MyGroupInfo.this);
-                    backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                    backgroundTask.execute(getResources().getString(R.string.groupInfo),POST_DATA);
-
-               }catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-               }*/
           }else dialogClass.noInternetConnection();
      }
 

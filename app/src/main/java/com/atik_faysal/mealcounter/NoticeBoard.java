@@ -1,5 +1,6 @@
 package com.atik_faysal.mealcounter;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -56,6 +57,7 @@ public class NoticeBoard extends AppCompatActivity
         }
 
         //initialize all user information related variable by getText from textView or editText
+        @SuppressLint("ClickableViewAccessibility")
         private void initComponent()
         {
                 txtTitle  = findViewById(R.id.txtTitle);
@@ -161,19 +163,6 @@ public class NoticeBoard extends AppCompatActivity
                                                 map.put("date",someMethod.getDateWithTime());
                                                 PostData postData = new PostData(NoticeBoard.this,onAsyncTaskInterface);
                                                 postData.InsertData(getResources().getString(R.string.notice),map);
-                                                /*try {
-                                                        POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8")+"&"
-                                                                +URLEncoder.encode("title","UTF-8")+"="+URLEncoder.encode(title,"UTF-8")+"&"
-                                                                +URLEncoder.encode("notice","UTF-8")+"="+URLEncoder.encode(notice,"UTF-8")+"&"
-                                                                +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(someMethod.getDateWithTime(),"UTF-8");
-
-                                                        backgroundTask = new DatabaseBackgroundTask(NoticeBoard.this);
-                                                        backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                        backgroundTask.execute(getResources().getString(R.string.notice),POST_DATA);
-
-                                                } catch (UnsupportedEncodingException e) {
-                                                        e.printStackTrace();
-                                                }*/
                                         }else dialogClass.noInternetConnection();
                                 }
                         }
@@ -192,18 +181,6 @@ public class NoticeBoard extends AppCompatActivity
                         dataFromServer.sendJsonRequest();
                 }else dialogClass.noInternetConnection();
 
-                /*try {
-                       if(internetIsOn.isOnline())
-                       {
-                               POST = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(currentUser,"UTF-8");
-                               backgroundTask = new DatabaseBackgroundTask(this);
-                               backgroundTask.setOnResultListener(asyncTaskInterface);
-                               backgroundTask.execute(getResources().getString(R.string.allNotice),POST);
-                       }else dialogClass.noInternetConnection();
-
-                } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                }*/
         }
 
         //get all notice and set into list view

@@ -87,12 +87,6 @@ public class ShoppingCost extends AppCompatActivity
                         map.put("userName",sharedPreferenceData.getCurrentUserName());
                         GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.shoppingCost),map);
                         dataFromServer.sendJsonRequest();
-                        /*try {
-                                String DATA = URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(sharedPreferenceData.getCurrentUserName(), "UTF-8");
-                                importantData.getAllShoppingCost(getResources().getString(R.string.shoppingCost), DATA,infoInterfaces);
-                        } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                        }*/
 
                 }else dialogClass.noInternetConnection();
         }
@@ -144,18 +138,6 @@ public class ShoppingCost extends AppCompatActivity
                                         PostData postData = new PostData(ShoppingCost.this,onAsyncTaskInterface);
                                         postData.InsertData(getResources().getString(R.string.shoppingCostNotify),map);
 
-                                        /*try {
-                                                String post = URLEncoder.encode("group","UTF-8")+"="+URLEncoder.encode(sharedPreferenceData.getMyGroupName(),"UTF-8")+"&"
-                                                        +URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(txtName.getText().toString(),"UTF-8")+"&"
-                                                        +URLEncoder.encode("cost","UTF-8")+"="+URLEncoder.encode(taka,"UTF-8")+"&"
-                                                        +URLEncoder.encode("date","UTF-8")+"="+URLEncoder.encode(txtDate.getText().toString(),"UTF-8")+"&"
-                                                        +URLEncoder.encode("action","UTF-8")+"="+URLEncoder.encode(action,"UTF-8");
-                                                backgroundTask = new DatabaseBackgroundTask(ShoppingCost.this);
-                                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                backgroundTask.execute(getResources().getString(R.string.shoppingCostNotify),post);
-                                        } catch (UnsupportedEncodingException e) {
-                                                e.printStackTrace();
-                                        }*/
                                 }else dialogClass.noInternetConnection();
                         }
                 });

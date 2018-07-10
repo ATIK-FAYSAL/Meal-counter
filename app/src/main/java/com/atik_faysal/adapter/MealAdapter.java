@@ -2,6 +2,7 @@ package com.atik_faysal.adapter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -15,6 +16,8 @@ import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
+import com.atik_faysal.mealcounter.Feedback;
+import com.atik_faysal.mealcounter.MemberDetails;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.MealModel;
@@ -40,7 +43,6 @@ public class MealAdapter extends BaseAdapter
         private SharedPreferenceData sharedPreferenceData;
         private AlertDialog alertDialog;
         private CheckInternetIsOn internetIsOn;
-        private DatabaseBackgroundTask backgroundTask;
         private Activity activity;
         private AlertDialogClass dialogClass;
         private NeedSomeMethod someMethod;
@@ -114,6 +116,15 @@ public class MealAdapter extends BaseAdapter
                         }
                 });
 
+                txtName.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                                Intent page = new Intent(context,MemberDetails.class);
+                                page.putExtra("userName",mealList.get(position).getName());
+                                context.startActivity(page);
+                        }
+                });
+
                 return view;
         }
 
@@ -158,7 +169,6 @@ public class MealAdapter extends BaseAdapter
                 done.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                                backgroundTask = new DatabaseBackgroundTask(context);
                                 //String url = "http://192.168.56.1/editMeal.php";
                                 String breakfast = eBreakfast.getText().toString();
                                 String lunch = eLaunch.getText().toString();

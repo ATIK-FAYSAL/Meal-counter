@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.atik_faysal.mealcounter.MemberDetails;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.CostModel;
 import com.atik_faysal.others.EachMemReport;
@@ -87,6 +88,15 @@ public class ReportAdapter extends BaseAdapter
                                 Intent intent = new Intent(context, EachMemReport.class);
                                 intent.putExtra("map", (Serializable) infoMap);
                                 context.startActivity(intent);
+                        }
+                });
+
+                txtUserName.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                                Intent page = new Intent(context,MemberDetails.class);
+                                page.putExtra("userName",modelList.get(position).getId());
+                                context.startActivity(page);
                         }
                 });
 

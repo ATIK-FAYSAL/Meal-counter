@@ -26,6 +26,7 @@ import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.CostOfSecretCloseGroup;
+import com.atik_faysal.mealcounter.MemberDetails;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.MealModel;
@@ -97,6 +98,15 @@ public class MemBalanceAdapter  extends BaseAdapter
                         @Override
                         public void onClick(View view) {
                                 editShoppingCost(balanceModels.get(position).getName(),balanceModels.get(position).getId(),balanceModels.get(position).getBalance());
+                        }
+                });
+
+                txtName.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                                Intent page = new Intent(context,MemberDetails.class);
+                                page.putExtra("userName",balanceModels.get(position).getName());
+                                context.startActivity(page);
                         }
                 });
 

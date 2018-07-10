@@ -74,12 +74,6 @@ public class CostForSecretCloseMem extends AppCompatActivity
                         map.put("userName",sharedPreferenceData.getCurrentUserName());
                         GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.shoppingCost),map);
                         dataFromServer.sendJsonRequest();
-                        /*try {
-                                String DATA = URLEncoder.encode("userName", "UTF-8") + "=" + URLEncoder.encode(sharedPreferenceData.getCurrentUserName(), "UTF-8");
-                                importantData.getAllShoppingCost(getResources().getString(R.string.shoppingCost), DATA,infoInterfaces);
-                        } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                        }*/
 
                 }else dialogClass.noInternetConnection();
         }

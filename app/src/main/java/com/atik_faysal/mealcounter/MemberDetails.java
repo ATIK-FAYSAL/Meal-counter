@@ -39,6 +39,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
+import com.bumptech.glide.Glide;
 
 import static android.content.ContentValues.TAG;
 
@@ -58,7 +59,7 @@ public class MemberDetails extends AppCompatActivity
         private EditText eName,eEmail,eAddress,eFaWord;
         public ImageView imageView;
 
-        private String name,userName,phone,email,address,fWord,taka,group,date;
+        private String name,userName,phone,email,address,fWord,taka,group,date,userImg;
         public String user;
         private String currentUser;
 
@@ -132,17 +133,6 @@ public class MemberDetails extends AppCompatActivity
                         GetDataFromServer fromServer = new GetDataFromServer(this,onAsyncTaskInterface,
                              getResources().getString(R.string.getMemberInfo),map);
                         fromServer.sendJsonRequest();
-
-                        /*try {
-                                POST_DATA = URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(user,"UTF-8");
-                                databaseBackgroundTask = new DatabaseBackgroundTask(this);
-                                databaseBackgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                databaseBackgroundTask.execute(getResources().getString(R.string.getMemberInfo),POST_DATA);
-
-                                new ImageDownLoad().execute();
-                        } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                        }*/
                 }else dialogClass.noInternetConnection();
 
                 //calling method
@@ -269,13 +259,14 @@ public class MemberDetails extends AppCompatActivity
                                         fWord = jObject.getString("fWord");
                                         group = jObject.getString("group");
                                         date = jObject.getString("date");
+                                        userImg =jObject.getString("userImg");
                                         count++;
                                 }
                         } catch (JSONException e) {
                                 e.printStackTrace();
                         }
 
-
+                        //set user info in textview
                         eName.setText(name);
                         txtUserName.setText(userName);
                         ePhone.setText(phone);
@@ -285,6 +276,12 @@ public class MemberDetails extends AppCompatActivity
                         eEmail.setText(email);
                         txtTaka.setText(taka);
                         txtGroup.setText(group);
+                        if(!userImg.equals("null"))//get user image if exit
+                        {
+                                Glide.with(this).
+                                     load("http://mealcounter.bdtechnosoft.com/images/"+userImg+".png").
+                                     into(imageView);
+                        }
                 }
         }
 

@@ -2,6 +2,7 @@ package com.atik_faysal.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,7 @@ import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
+import com.atik_faysal.mealcounter.MemberDetails;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.CostModel;
@@ -125,6 +127,7 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
                         {
                                 bApprv.setOnClickListener(BalanceApprovalAdapter.ViewHolder.this);
                                 bCancel.setOnClickListener(BalanceApprovalAdapter.ViewHolder.this);
+                                txtName.setOnClickListener(BalanceApprovalAdapter.ViewHolder.this);
                         }
                 }
 
@@ -139,6 +142,11 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
                                 case R.id.bApprove:
                                         approveBalance();
                                         break;
+                                case R.id.txtName:
+                                        Intent page = new Intent(context,MemberDetails.class);
+                                        page.putExtra("userName",model.getName());
+                                        context.startActivity(page);
+                                        break;
                         }
                 }
 
@@ -152,12 +160,6 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
                                 map.put("id",model.getId());
                                 map.put("check","remove");
 
-                                /*try {
-                                         data = URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(model.getId(),"UTF-8")+"&"
-                                                +URLEncoder.encode("check","UTF-8")+"="+URLEncoder.encode("remove","UTF-8");
-                                } catch (UnsupportedEncodingException e) {
-                                        e.printStackTrace();
-                                }*/
                         }else dialogClass.error("Only admin can delete balance.you are not an admin..");
                 }
 
@@ -171,14 +173,6 @@ public class BalanceApprovalAdapter extends RecyclerView.Adapter<BalanceApproval
                                 map.put("check","approve");
                                 map.put("taka",model.getTaka());
                                 map.put("userName",model.getName());
-                                /*try {
-                                         data = URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(model.getId(),"UTF-8")+"&"
-                                                +URLEncoder.encode("check","UTF-8")+"="+URLEncoder.encode("approve","UTF-8")+"&"
-                                                +URLEncoder.encode("taka","UTF-8")+"="+URLEncoder.encode(model.getTaka(),"UTF-8")+"&"
-                                                +URLEncoder.encode("userName","UTF-8")+"="+URLEncoder.encode(model.getName(),"UTF-8");
-                                } catch (UnsupportedEncodingException e) {
-                                        e.printStackTrace();
-                                }*/
                         }else dialogClass.error("Only admin can approved balance.you are not an admin..");
                 }
 
