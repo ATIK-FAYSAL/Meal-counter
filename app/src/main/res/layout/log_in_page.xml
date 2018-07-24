@@ -1,157 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawerLayout"
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:id="@+id/drawerLayout"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@drawable/log_in_page_background">
+
+<RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/log_in_page_background">
+    android:layout_height="wrap_content"
+    android:focusableInTouchMode="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:focusableInTouchMode="true">
+        android:layout_height="match_parent"
+        android:id="@+id/layout0">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/appLogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignEnd="@+id/txtForgotPass"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="70dp"
+            android:src="@drawable/logo"
+            app:civ_border_color="#000" />
+
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/layout0">
+            android:id="@+id/relativeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/appLogo"
+            android:layout_marginTop="60dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/appLogo"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignEnd="@+id/txtForgotPass"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="70dp"
-                android:src="@drawable/logo"
-                app:civ_border_color="#000" />
-
-
-            <RelativeLayout
-                android:id="@+id/relativeLayout"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/appLogo"
-                android:layout_marginTop="60dp">
+                android:id="@+id/layout1"
+                android:orientation="vertical"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
 
-                <LinearLayout
+                <EditText
+                    android:id="@+id/txtName"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="45dp"
+                    android:background="@drawable/log_in_textstyle"
+                    android:drawableLeft="@drawable/icon_name"
+                    android:gravity="center"
+                    android:hint="Username"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"
+                    android:padding="10dp"/>
+
+                <EditText
+                    android:id="@+id/ePassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="45dp"
+                    android:background="@drawable/log_in_textstyle"
+                    android:drawableLeft="@drawable/icon_pass"
+                    android:gravity="center"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:textColor="@color/black"
+                    android:textColorHint="#9E9E9E"
+                    android:padding="10dp"
+                    android:layout_marginTop="15dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout1"
+
+                android:id="@+id/layout3">
+                <CheckBox
+                    android:id="@+id/cRemember"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout2"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_toLeftOf="@+id/appLogo"
+                    android:layout_toStartOf="@+id/appLogo"
+                    android:text=" Remember me"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:onClick="onClickCheckBox"
+                    android:layout_marginLeft="40dp"/>
+
+                <Button
+                    android:id="@+id/bSignIn"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/layout1"
-                    android:orientation="vertical"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp">
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="45dp"
+                    android:background="@drawable/log_in_button_background"
+                    android:gravity="center"
+                    android:text="Sign In"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp"/>
 
-                    <EditText
-                        android:id="@+id/txtName"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginRight="45dp"
-                        android:background="@drawable/log_in_textstyle"
-                        android:drawableLeft="@drawable/icon_name"
-                        android:gravity="center"
-                        android:hint="Username"
-                        android:inputType="textPersonName"
-                        android:textColor="@color/black"
-                        android:textColorHint="#9E9E9E"
-                        android:padding="10dp"/>
-
-                    <EditText
-                        android:id="@+id/ePassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginRight="45dp"
-                        android:background="@drawable/log_in_textstyle"
-                        android:drawableLeft="@drawable/icon_pass"
-                        android:gravity="center"
-                        android:hint="Password"
-                        android:inputType="textPassword"
-                        android:textColor="@color/black"
-                        android:textColorHint="#9E9E9E"
-                        android:padding="10dp"
-                        android:layout_marginTop="15dp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/layout1"
-
-                    android:id="@+id/layout3">
-                    <CheckBox
-                        android:id="@+id/cRemember"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/layout2"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="30dp"
-                        android:layout_toLeftOf="@+id/appLogo"
-                        android:layout_toStartOf="@+id/appLogo"
-                        android:text=" Remember me"
-                        android:textColor="@color/black"
-                        android:gravity="center"
-                        android:onClick="onClickCheckBox"
-                        android:layout_marginLeft="40dp"/>
-
-                    <Button
-                        android:id="@+id/bSignIn"
-                        style="@style/Base.Widget.AppCompat.Button.Borderless"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginRight="45dp"
-                        android:background="@drawable/log_in_button_background"
-                        android:gravity="center"
-                        android:text="Sign In"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:layout_marginTop="10dp"/>
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-
-            <TextView
-                android:id="@+id/txtForgotPass"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/relativeLayout"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="25dp"
-                android:text="Forgot Password"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/txtSignUp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/txtForgotPass"
-                android:text="Don't have an account?Sign Up"
-                android:textColor="@color/black"
-                android:layout_marginTop="50dp"/>
+            </LinearLayout>
 
         </RelativeLayout>
 
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
+
+        <TextView
+            android:id="@+id/txtForgotPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:text="Forgot Password"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/txtSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true"
-            ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
-        </com.google.android.gms.ads.AdView>
+            android:layout_below="@+id/txtForgotPass"
+            android:text="Don't have an account?Sign Up"
+            android:textColor="@color/black"
+            android:layout_marginTop="50dp"/>
 
     </RelativeLayout>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+    </com.google.android.gms.ads.AdView>
+
+</RelativeLayout>
 
 </ScrollView>

@@ -40,7 +40,7 @@
                 android:id="@+id/empty_view"
                 layout="@layout/empty"/>
 
-            <ListView
+            <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/list"
@@ -48,7 +48,7 @@
                 android:dividerHeight="8dp"
                 android:divider="@color/color8"
                 android:layout_marginTop="5dp">
-            </ListView>
+            </android.support.v7.widget.RecyclerView>
 
             <com.google.android.gms.ads.AdView
                 xmlns:ads="http://schemas.android.com/apk/res-auto"

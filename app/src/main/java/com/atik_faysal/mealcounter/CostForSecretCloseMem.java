@@ -6,6 +6,9 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
@@ -13,7 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.atik_faysal.adapter.CostAdapter;
+
+import com.atik_faysal.adapter.CostAdapterNew;
 import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
@@ -34,10 +38,11 @@ import java.util.TimerTask;
 public class CostForSecretCloseMem extends AppCompatActivity
 {
 
-        private ListView listView;
+        private RecyclerView listView;
         private RelativeLayout emptyView;
         private TextView textView;
         private ProgressBar progressBar;
+        private LinearLayoutManager layoutManager;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +63,7 @@ public class CostForSecretCloseMem extends AppCompatActivity
                 textView = findViewById(R.id.txtNoResult);
                 textView.setVisibility(View.INVISIBLE);
                 progressBar = findViewById(R.id.progressBar);
+                layoutManager = new LinearLayoutManager(this);
 
                 NeedSomeMethod someMethod = new NeedSomeMethod(this);
                 SharedPreferenceData sharedPreferenceData = new SharedPreferenceData(this);
@@ -72,6 +78,7 @@ public class CostForSecretCloseMem extends AppCompatActivity
                 {
                         Map<String,String> map = new HashMap<>();
                         map.put("userName",sharedPreferenceData.getCurrentUserName());
+                        map.put("action","all");
                         GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.shoppingCost),map);
                         dataFromServer.sendJsonRequest();
 
@@ -101,7 +108,7 @@ public class CostForSecretCloseMem extends AppCompatActivity
         {
                 final List<CostModel> costList = new ArrayList<>();
                 int count=0;
-                String name,taka,date,id;
+                String name,taka,date,id,status;
                 try {
                         JSONObject jsonObject = new JSONObject(result);
                         JSONArray jsonArray = jsonObject.optJSONArray("costList");
@@ -113,8 +120,9 @@ public class CostForSecretCloseMem extends AppCompatActivity
                                 name = jObject.getString("name");
                                 taka = jObject.getString("taka");
                                 date = jObject.getString("date");
+                                status = jObject.getString("status");
 
-                                costList.add(new CostModel(id,name,taka,date,""));
+                                costList.add(new CostModel(id,name,taka,date,status));
                                 count++;
                         }
 
@@ -130,13 +138,18 @@ public class CostForSecretCloseMem extends AppCompatActivity
                                         if(costList.isEmpty())
                                         {
                                                 textView.setVisibility(View.VISIBLE);
-                                                listView.setEmptyView(emptyView);
+                                                listView.setVisibility(View.INVISIBLE);
+                                                emptyView.setVisibility(View.VISIBLE);
                                         }
                                         else
                                         {
                                                 emptyView.setVisibility(View.INVISIBLE);
-                                                CostAdapter adapter = new CostAdapter(CostForSecretCloseMem.this, costList);
+                                                CostAdapterNew adapter = new CostAdapterNew(CostForSecretCloseMem.this, costList);
                                                 listView.setAdapter(adapter);
+                                                listView.setAdapter(adapter);
+                                                layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                                                listView.setLayoutManager(layoutManager);
+                                                listView.setItemAnimator(new DefaultItemAnimator());
                                         }
                                         progressBar.setVisibility(View.GONE);
                                         timer.cancel();

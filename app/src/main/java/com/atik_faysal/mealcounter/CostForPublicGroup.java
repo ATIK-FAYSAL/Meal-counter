@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
@@ -13,9 +15,6 @@ import com.atik_faysal.superClasses.ShoppingCost;
 
 public class CostForPublicGroup extends ShoppingCost
 {
-
-
-
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
@@ -55,11 +54,12 @@ public class CostForPublicGroup extends ShoppingCost
                                                         CostForPublicGroup.super.initComponent();
                                                         someMethod.progress("Adding today's cost...","Today's cost added successfully.Please wait for admin approval.");
                                                         break;
-                                                case "error":
-                                                        dialogClass.error("Execution failed,Please try again.");
-                                                        break;
                                                 case "exist":
                                                         dialogClass.error("Execution failed,Today's shopping cost is already added.");
+                                                        break;
+                                                default:
+                                                        Toast.makeText(CostForPublicGroup.this,result,Toast.LENGTH_LONG).show();
+                                                        dialogClass.error("Execution failed,Please try again.");
                                                         break;
                                         }
                                 }

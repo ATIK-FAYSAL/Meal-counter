@@ -29,14 +29,26 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter
                 Fragment object = null;
                 if(position==0)
                 {
-                        if(action.equals("shopping"))object = new ShoppingList();
-                        else if(action.equals("schedule"))object = new InputMeal();
+                        switch (action) {
+                                case "shopping":
+                                        object = new ShoppingList();
+                                        break;
+                                case "schedule":
+                                        object = new InputMeal();
+                                        break;
+                        }
                         return object;
                 }
                 else if(position==1)
                 {
-                        if(action.equals("shopping"))object = new MakeShoppingList();
-                        else if(action.equals("schedule"))object = new MyMeal();
+                        switch (action) {
+                                case "shopping":
+                                        object = new MakeShoppingList();
+                                        break;
+                                case "schedule":
+                                        object = new MyMeal();
+                                        break;
+                        }
                         return object;
                 }
                 else return null;

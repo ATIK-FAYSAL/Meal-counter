@@ -1,42 +1,36 @@
 package com.atik_faysal.superClasses;
 
 import android.annotation.SuppressLint;
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.atik_faysal.adapter.CostAdapter;
-import com.atik_faysal.adapter.MemBalanceAdapter;
+import com.atik_faysal.adapter.CostAdapterNew;
 import com.atik_faysal.backend.DatabaseBackgroundTask;
 import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.backend.GetImportantData;
 import com.atik_faysal.backend.PostData;
 import com.atik_faysal.backend.SharedPreferenceData;
-import com.atik_faysal.interfaces.InfoInterfaces;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
 import com.atik_faysal.mealcounter.AlertDialogClass;
 import com.atik_faysal.mealcounter.CheckInternetIsOn;
 import com.atik_faysal.mealcounter.NeedSomeMethod;
 import com.atik_faysal.mealcounter.R;
 import com.atik_faysal.model.CostModel;
-import com.atik_faysal.others.MemBalances;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,12 +48,12 @@ public class ShoppingCost extends AppCompatActivity
         protected GetImportantData importantData;
         protected DatabaseBackgroundTask backgroundTask;
 
-        private ListView listView;
+        private RecyclerView listView;
         private TextView txtName,txtDate,txtTaka;
         private RelativeLayout emptyView;
         private TextView textView;
         private ProgressBar progressBar;
-
+        private LinearLayoutManager layoutManager;
 
         protected void initComponent()
         {
@@ -78,6 +72,7 @@ public class ShoppingCost extends AppCompatActivity
                 textView = findViewById(R.id.txtNoResult);
                 textView.setVisibility(View.INVISIBLE);
                 progressBar = findViewById(R.id.progressBar);
+                layoutManager = new LinearLayoutManager(this);
                 currentDate = someMethod.getDate();
                 txtDate.setText(currentDate);
 
@@ -85,6 +80,7 @@ public class ShoppingCost extends AppCompatActivity
                 {
                         Map<String,String> map = new HashMap<>();
                         map.put("userName",sharedPreferenceData.getCurrentUserName());
+                        map.put("action","all");
                         GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface,getResources().getString(R.string.shoppingCost),map);
                         dataFromServer.sendJsonRequest();
 
@@ -148,7 +144,7 @@ public class ShoppingCost extends AppCompatActivity
         {
                 final List<CostModel> costList = new ArrayList<>();
                 int count=0;
-                String name,taka,date,id;
+                String name,taka,date,id,status;
                 try {
                         JSONObject jsonObject = new JSONObject(result);
                         JSONArray jsonArray = jsonObject.optJSONArray("costList");
@@ -160,8 +156,9 @@ public class ShoppingCost extends AppCompatActivity
                                 name = jObject.getString("name");
                                 taka = jObject.getString("taka");
                                 date = jObject.getString("date");
+                                status = jObject.getString("status");
 
-                                costList.add(new CostModel(id,name,taka,date,""));
+                                costList.add(new CostModel(id,name,taka,date,status));
                                 count++;
                         }
 
@@ -177,13 +174,17 @@ public class ShoppingCost extends AppCompatActivity
                                         if(costList.isEmpty())
                                         {
                                                 textView.setVisibility(View.VISIBLE);
-                                                listView.setEmptyView(emptyView);
+                                                listView.setVisibility(View.GONE);
+                                                emptyView.setVisibility(View.VISIBLE);
                                         }
                                         else
                                         {
                                                 emptyView.setVisibility(View.INVISIBLE);
-                                                CostAdapter adapter = new CostAdapter(ShoppingCost.this, costList);
+                                                CostAdapterNew adapter = new CostAdapterNew(ShoppingCost.this, costList);
                                                 listView.setAdapter(adapter);
+                                                layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                                                listView.setLayoutManager(layoutManager);
+                                                listView.setItemAnimator(new DefaultItemAnimator());
                                         }
                                         progressBar.setVisibility(View.GONE);
                                         timer.cancel();

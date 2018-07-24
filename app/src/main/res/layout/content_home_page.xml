@@ -262,7 +262,7 @@
                                         android:layout_centerHorizontal="true"
                                         android:layout_gravity="center_horizontal"
                                         android:onClick="onButtonClick"
-                                        android:src="@drawable/icon_input" />
+                                        android:src="@drawable/icon_group" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -270,7 +270,7 @@
                                         android:layout_below="@+id/image1"
                                         android:layout_marginTop="30dp"
                                         android:gravity="center"
-                                        android:text="Input meal"
+                                        android:text="Make group"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
                                         android:textSize="18sp"
@@ -302,22 +302,22 @@
 
                                     <ImageView
                                         android:id="@+id/image2"
-                                        android:layout_width="100dp"
-                                        android:layout_height="100dp"
+                                        android:layout_width="60dp"
+                                        android:layout_height="70dp"
                                         android:layout_alignParentTop="true"
                                         android:layout_centerHorizontal="true"
                                         android:layout_gravity="center_horizontal"
                                         android:onClick="onButtonClick"
-                                        android:src="@drawable/icon_meal" />
+                                        android:src="@drawable/icon_input"
+                                        android:layout_marginTop="15dp"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_below="@+id/image2"
-                                        android:layout_centerHorizontal="true"
-                                        android:layout_marginTop="16dp"
+                                        android:layout_marginTop="30dp"
                                         android:gravity="center"
-                                        android:text="Balance"
+                                        android:text="Input meal"
                                         android:textAlignment="center"
                                         android:textColor="@color/black"
                                         android:textSize="18sp"

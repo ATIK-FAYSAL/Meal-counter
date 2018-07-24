@@ -3,96 +3,139 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
+    android:layout_marginTop="5dp"
     android:background="@color/white"
     app:cardCornerRadius="5dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/layout1"
-            android:layout_marginTop="8dp">
-            <TextView
-                android:id="@+id/txtName"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:hint="Username"
-                android:paddingLeft="10dp"
-                android:textColor="@color/userName"
-                android:textSize="20dp" />
-            <TextView
-                android:id="@+id/txtId"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="50dp"
-                android:layout_toStartOf="@+id/bEdit"
-                android:textSize="15dp"
-                android:hint="cost id"
-                android:textColor="@color/colorAccent"
-                android:text="#P10001"
-                android:gravity="center"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lini1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/layout1"
-            android:layout_marginBottom="10dp">
-
-            <TextView
-                android:id="@+id/txtDate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="10dp"
-                android:hint="date"
-                android:textStyle="normal"
-                android:textColor="@color/offWhite"
-                android:textSize="16dp" />
-
-            <TextView
-                android:id="@+id/txtTaka"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="10dp"
-                android:hint="taka"
-                android:gravity="start"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="17dp"
-                android:drawableLeft="@drawable/icon_taka"
-                android:drawablePadding="8dp"/>
-
-        </LinearLayout>
-
+        android:layout_height="112dp">
 
         <ImageView
             android:id="@+id/bEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/lini1"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
             android:layout_marginEnd="12dp"
             android:clickable="true"
             android:src="@drawable/icon_edit"
             android:tint="@color/color2" />
 
+        <TextView
+            android:id="@+id/txtStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="45dp"
+            android:paddingRight="15dp"
+            android:hint=""
+            android:textSize="15dp"
+            android:textColor="@color/color6"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtStatus"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="5dp"
+
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtStatus"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/txtName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_weight="1"
+                    android:hint="Username"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/userName"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/txtId"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toStartOf="@+id/bEdit"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:hint="cost id"
+                    android:paddingLeft="10dp"
+                    android:text="#P10001"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lini1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="date"
+                    android:padding="10dp"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/offWhite"
+                    android:textSize="14dp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/txtTaka"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/icon_taka"
+                    android:drawablePadding="8dp"
+                    android:gravity="start"
+                    android:hint="taka"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imgCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/bEdit"
+            android:layout_marginTop="33dp"
+            app:srcCompat="@drawable/icon_delete" />
+
+        <ImageView
+            android:id="@+id/imgDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/bEdit"
+            android:layout_marginBottom="21dp"
+            app:srcCompat="@drawable/icon_done" />
+
+
     </RelativeLayout>
+
 </android.support.v7.widget.CardView>

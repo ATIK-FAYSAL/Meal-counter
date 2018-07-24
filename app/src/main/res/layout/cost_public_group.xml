@@ -172,12 +172,12 @@
 
             </RelativeLayout>
 
-            <ListView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/costList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="12dp"
-                android:layout_marginLeft="12dp"
+                android:layout_marginRight="7dp"
+                android:layout_marginLeft="7dp"
                 android:dividerHeight="4dp"
                 android:nestedScrollingEnabled="true"
                 android:smoothScrollbar="true"
@@ -185,7 +185,7 @@
                 android:scrollbarSize="@dimen/activity_vertical_margin"
                 android:divider="@color/color8">
 
-            </ListView>
+            </android.support.v7.widget.RecyclerView>
 
         </RelativeLayout>
 

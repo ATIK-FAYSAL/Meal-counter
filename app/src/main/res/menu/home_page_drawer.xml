@@ -4,10 +4,6 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/makeGroup"
-            android:icon="@drawable/icon_group"
-            android:title="Make group" />
 
         <item
             android:id="@+id/myGroup"
@@ -18,6 +14,7 @@
             android:id="@+id/editProfile"
             android:icon="@drawable/icon_edit"
             android:title="Edit profile" />
+
         <item
             android:id="@+id/acceptRequest"
             android:icon="@drawable/icon_accept"

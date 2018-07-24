@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,16 +22,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
 import com.atik_faysal.backend.DownLoadImageTask;
 import com.atik_faysal.backend.GetDataFromServer;
 import com.atik_faysal.interfaces.OnAsyncTaskInterface;
-import com.atik_faysal.backend.GetImportantData;
 import com.atik_faysal.backend.RegisterDeviceToken;
 import com.atik_faysal.backend.SharedPreferenceData;
 import com.atik_faysal.interfaces.OnUploadImageResult;
@@ -40,7 +34,6 @@ import com.atik_faysal.model.SearchableModel;
 import com.atik_faysal.others.AboutUs;
 import com.atik_faysal.others.ChangePassword;
 import com.atik_faysal.others.CreateSession;
-import com.atik_faysal.others.MemBalances;
 import com.atik_faysal.setRemainder.SetRemainder;
 import com.gdacciaro.iOSDialog.iOSDialog;
 import com.gdacciaro.iOSDialog.iOSDialogBuilder;
@@ -180,12 +173,6 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
 
                 switch (id)
                 {
-                        case R.id.makeGroup:
-                                if(internetIsOn.isOnline())
-                                        startActivity(new Intent(HomePageActivity.this,MakeMyGroup.class));
-                                else dialogClass.noInternetConnection();
-                                break;
-
                         case R.id.myGroup:
                                 if(internetIsOn.isOnline())
                                         startActivity(new Intent(HomePageActivity.this,MyGroupInfo.class));
@@ -342,9 +329,9 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 dialogClass.notMember();
                         else
                         {
-                                if(sharedPreferenceData.getmyCurrentSession().equals("nope"))
-                                        dialogClass.error("No session available,please contact with admin.");
-                                else startActivity(new Intent(HomePageActivity.this,MealClass.class));
+                                if(internetIsOn.isOnline())
+                                        startActivity(new Intent(HomePageActivity.this,MakeMyGroup.class));
+                                else dialogClass.noInternetConnection();
                         }
                 }else if(id==cardViewId[1]||id==imageViewId[1])
                 {
@@ -352,13 +339,9 @@ public class HomePageActivity extends AppCompatActivity implements NavigationVie
                                 dialogClass.notMember();
                         else
                         {
-                                if (sharedPreferenceData.getmyCurrentSession().equals("nope"))
+                                if(sharedPreferenceData.getmyCurrentSession().equals("nope"))
                                         dialogClass.error("No session available,please contact with admin.");
-                                else
-                                        if(sharedPreferenceData.getMyGroupType().equals("secret")||sharedPreferenceData.getMyGroupType().equals("close"))
-                                                startActivity(new Intent(HomePageActivity.this,MemBalances.class));
-                                        else
-                                                startActivity(new Intent(HomePageActivity.this,ApproveBalance.class));
+                                else startActivity(new Intent(HomePageActivity.this,MealClass.class));
                         }
                 }else if(id==cardViewId[2]||id==imageViewId[2])
                 {

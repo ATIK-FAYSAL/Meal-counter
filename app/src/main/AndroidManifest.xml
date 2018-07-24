@@ -113,10 +113,6 @@
             android:screenOrientation="portrait"
             android:label="Cost List"/>
 
-        <activity android:name=".ApproveBalance"
-            android:label="Pending balances"
-            android:screenOrientation="portrait"/>
-
         <activity android:name=".MonthReport"
             android:label="Report"
             android:screenOrientation="portrait"/>
@@ -137,12 +133,7 @@
             android:label="Change Password"
             android:screenOrientation="portrait"/>
 
-        <activity android:name="com.atik_faysal.others.MemBalances"
-            android:label="Member balances"
-            android:screenOrientation="portrait"/>
-
         <activity android:name="com.atik_faysal.setRemainder.SetRemainder"/>
-
 
         <activity android:name="com.atik_faysal.setRemainder.AddReminderActivity"
             android:label="Add remainder"
@@ -186,7 +177,6 @@
                 <data android:scheme="@string/log_in_protocall" />
             </intent-filter>
         </activity>
-
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

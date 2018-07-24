@@ -67,14 +67,6 @@ public class CostOfSecretCloseGroup extends ShoppingCost {
                         GetDataFromServer dataFromServer = new GetDataFromServer(this,onAsyncTaskInterface
                              ,getResources().getString(R.string.groupMemberName),map);
                         dataFromServer.sendJsonRequest();
-                        /*try {
-                                String DATA = URLEncoder.encode("group", "UTF-8") + "=" + URLEncoder.encode(sharedPreferenceData.getMyGroupName(), "UTF-8");
-                                backgroundTask = new DatabaseBackgroundTask(this);
-                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                backgroundTask.execute(getResources().getString(R.string.groupMemberName), DATA);
-                        } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                        }*/
                 } else dialogClass.noInternetConnection();
         }
 

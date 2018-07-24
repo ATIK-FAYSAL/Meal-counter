@@ -80,7 +80,7 @@ public class CostAdapter extends BaseAdapter
         public View getView(final int position, View convertView, ViewGroup parent)
         {
 
-                TextView txtName,txtDate,txtTaka,txtId;
+                TextView txtName,txtDate,txtTaka,txtId,txtStatus;
                 ImageView bEdit;
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 assert inflater != null;
@@ -91,11 +91,13 @@ public class CostAdapter extends BaseAdapter
                 txtTaka = view.findViewById(R.id.txtTaka);
                 txtId = view.findViewById(R.id.txtId);
                 bEdit = view.findViewById(R.id.bEdit);
+                txtStatus = view.findViewById(R.id.txtStatus);
 
                 txtId.setText("#ID-1005"+costList.get(position).getId());
                 txtName.setText(costList.get(position).getName());
                 txtTaka.setText(costList.get(position).getTaka());
                 txtDate.setText(costList.get(position).getDate());
+                txtStatus.setText(costList.get(position).getStatus());
 
                 bEdit.setEnabled(false);
                 bEdit.setImageDrawable(null);
@@ -136,6 +138,7 @@ public class CostAdapter extends BaseAdapter
 
 
         //it will show an alertDialog and you can icon_edit_blue shopping cost from here
+        @SuppressLint("SetTextI18n")
         private void editShoppingCost(final String id, final String date, String taka)
         {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -151,7 +154,7 @@ public class CostAdapter extends BaseAdapter
                 txtId = view.findViewById(R.id.txtId);
                 txtTaka = view.findViewById(R.id.txtTaka);
 
-                txtId.setText("#D"+id);
+                txtId.setText("#ID-1005"+id);
                 txtDate.setText(date);
                 txtTaka.setText(taka);
 
@@ -181,19 +184,6 @@ public class CostAdapter extends BaseAdapter
                                         PostData postData = new PostData(context,onAsyncTaskInterface);
                                         postData.InsertData(context.getResources().getString(R.string.costEdit),map);
                                 }else dialogClass.noInternetConnection();
-
-                                /*try {
-                                        if(internetIsOn.isOnline())
-                                        {
-                                                String data = URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(id,"UTF-8")+"&"
-                                                        +URLEncoder.encode("taka","UTF-8")+"="+URLEncoder.encode(taka,"UTF-8");
-
-                                                backgroundTask.setOnResultListener(onAsyncTaskInterface);
-                                                backgroundTask.execute(context.getResources().getString(R.string.costEdit),data);
-                                        }else dialogClass.noInternetConnection();
-                                } catch (UnsupportedEncodingException e) {
-                                        e.printStackTrace();
-                                }*/
                         }
                 });
 
@@ -204,7 +194,6 @@ public class CostAdapter extends BaseAdapter
                         }
                 });
         }
-
 
         private OnAsyncTaskInterface onAsyncTaskInterface = new OnAsyncTaskInterface() {
                 @Override
